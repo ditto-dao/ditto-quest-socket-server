@@ -1,0 +1,27 @@
+{
+  "name": "ditto-quest-socket-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ditto-dao/ditto-quest-socket-server.git",
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=development dotenv -e .env ts-node ./index.ts",
+    "build": "tsc",
+    "pm2": "tsc && pm2 start pm2.config.json"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
+    "express": "^4.21.1",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.3.0",
+    "redis": "^4.7.0",
+    "socket.io": "^4.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

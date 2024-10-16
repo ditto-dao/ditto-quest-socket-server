@@ -1,0 +1,18 @@
+{
+    "apps": [
+        {
+            "name": "Ditto Quest Dev Socket Server",
+            "script": "dist/index.js",
+            "interpreter": "/home/ubuntu/.nvm/versions/node/v22.4.0/bin/node",
+            "node_args": "-r dotenv/config",
+            "autorestart": true,
+            "env": {
+                "NODE_ENV": "prod",
+                "LOG_LEVEL": "info"
+            },
+            "error_file": "./logs/pm2_error.log",
+            "out_file": "./logs/pm2_out.log",
+            "merge_logs": true
+        }
+    ]
+}
