@@ -25,19 +25,19 @@ async function main() {
     logger.info(`SOCKET_ORIGIN: ${SOCKET_ORIGIN}`)
     logger.info(`SOCKET_PATH: ${SOCKET_PATH}`)
 
-    // Redis
+/*     // Redis
     const redisClient = createClient({
         url: 'redis://localhost:6379'
     })
     redisClient.on('error', (err) => logger.error(`Redis Client Error ${err}`))
     redisClient.connect().then(() => {
         logger.info('Connected to Redis')
-    })
+    }) */
 
     // Socket manager
     const socketManager = new SocketManager(io)
 
-    await setupSocketHandlers(io, redisClient)
+    await setupSocketHandlers(io)
 
     setupGlobalErrorHandlers()
 
@@ -49,19 +49,19 @@ async function main() {
         logger.error(`Server error: ${error}`)
     })
 
-    process.on('SIGINT', () => gracefulShutdown(io, redisClient))
-    process.on('SIGTERM', () => gracefulShutdown(io, redisClient))
+    process.on('SIGINT', () => gracefulShutdown(io))
+    process.on('SIGTERM', () => gracefulShutdown(io))
 }
 
 async function gracefulShutdown(
     io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>, 
+    //redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>, 
 ) {
     io.close(() => {
         logger.info('Socket server closed.')
     })
 
-    await redisClient.quit()
+    //await redisClient.quit()
     process.exit(0)
 }
 

@@ -9,7 +9,6 @@ export interface EventPayloadWithUserId {
 
 export async function setupSocketHandlers(
     io: SocketServer, 
-    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>, 
 ): Promise<void> {
 
     io.on("connection", async (socket) => {
