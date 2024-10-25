@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Wooden Sword",
+        "description": "A basic sword made of wood. Suitable for beginners.",
+        "str": 5,
+        "def": 0,
+        "dex": 1,
+        "magic": 0,
+        "hp": 0,
+        "rarity": "D",
+        "type": "weapon"
+    },
+    {
+        "id": 2,
+        "name": "Wooden Shield",
+        "description": "A basic shield made of wood. Suitable for beginners.",
+        "str": 0,
+        "def": 10,
+        "dex": 0,
+        "magic": 0,
+        "hp": 0,
+        "rarity": "D",
+        "type": "shield"
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "craftingRecipe": {
+            "equipmentId": 1,
+            "durationS": 3,
+            "CraftingRecipeItems": [
+                {
+                    "itemId": 1,
+                    "quantity": 10
+                }
+            ]
+        }
+    },
+    {
+        "craftingRecipe": {
+            "equipmentId": 2,
+            "durationS": 3,
+            "CraftingRecipeItems": [
+                {
+                    "itemId": 1,
+                    "quantity": 10
+                }
+            ]
+        }
+    }
+]

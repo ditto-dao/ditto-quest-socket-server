@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `exp_hp` INTEGER NOT NULL DEFAULT 42;

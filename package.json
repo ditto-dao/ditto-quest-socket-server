@@ -7,14 +7,32 @@
   "scripts": {
     "dev": "NODE_ENV=development dotenv -e .env ts-node ./index.ts",
     "build": "tsc",
-    "pm2": "tsc && pm2 start pm2.config.json"
+    "pm2": "tsc && pm2 start pm2.config.json",
+
+    "prisma:dev:migrate": "prisma migrate dev",
+    "prisma:dev:generate": "prisma generate",
+    "prisma:dev:studio": "prisma studio",
+    "prisma:dev:push": "prisma db push",
+
+    "prisma:prod:migrate": "prisma migrate deploy",
+    "prisma:prod:generate": "prisma generate",
+
+    "prisma:dev": "NODE_ENV=development yarn prisma:dev:generate && yarn prisma:dev:migrate",
+    "prisma:prod": "NODE_ENV=production yarn prisma:prod:generate && yarn prisma:prod:migrate",
+
+    "seed-items": "ts-node ./src/scripts/items/seed-items-db.ts",
+    "seed-equipment": "ts-node ./src/scripts/equipment/seed-equipment-db.ts",
+    "seed-crafting-recipes": "ts-node ./src/scripts/crafting/seed-crafting-recipes-db.ts",
+    "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts"
   },
   "dependencies": {
+    "@prisma/client": "^5.21.1",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "express": "^4.21.1",
     "pino": "^9.5.0",
     "pino-pretty": "^11.3.0",
+    "prisma": "^5.21.1",
     "redis": "^4.7.0",
     "socket.io": "^4.8.0"
   },

@@ -6,3 +6,5 @@ export const PORT = (process.env.PORT !== undefined && !isNaN(parseInt(process.e
 export const SOCKET_ORIGIN = process.env.SOCKET_ORIGIN || ""
 
 export const SOCKET_PATH = process.env.SOCKET_PATH || ""
+
+export const HP_EXP_PER_EXP = (process.env.HP_EXP_PER_EXP !== undefined && !isNaN(parseFloat(process.env.HP_EXP_PER_EXP))) ? parseFloat(process.env.HP_EXP_PER_EXP) : 1

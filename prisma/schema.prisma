@@ -1,0 +1,218 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Prisma schema file
+
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  telegramId             Int     @id
+  username               String?
+  goldBalance            Int     @default(0)
+  level                  Int     @default(1)
+  expToNextLevel         Int     @default(42) @map("exp_to_next_level")
+  exp                    Int     @default(0)
+  str                    Int     @default(1)
+  def                    Int     @default(1)
+  dex                    Int     @default(1)
+  magic                  Int     @default(1)
+  hpLevel                Int     @default(1) @map("hp_level")
+  expHp                  Int     @default(0) @map("exp_hp")
+  expToNextHpLevel       Int     @default(42) @map("exp_to_next_hp_level")
+  outstandingSkillPoints Int     @default(0) @map("outstanding_skill_points")
+
+  // Optional equipment relationships
+  hatId       Int? @unique
+  armourId    Int? @unique
+  weaponId    Int? @unique
+  shieldId    Int? @unique
+  capeId      Int? @unique
+  necklaceId  Int? @unique
+  petId       Int? @unique
+  spellbookId Int? @unique
+
+  // Relations to the EquipmentInventory table
+  hat       EquipmentInventory? @relation("Hat", fields: [hatId], references: [id])
+  armour    EquipmentInventory? @relation("Armour", fields: [armourId], references: [id])
+  weapon    EquipmentInventory? @relation("Weapon", fields: [weaponId], references: [id])
+  shield    EquipmentInventory? @relation("Shield", fields: [shieldId], references: [id])
+  cape      EquipmentInventory? @relation("Cape", fields: [capeId], references: [id])
+  necklace  EquipmentInventory? @relation("Necklace", fields: [necklaceId], references: [id])
+  pet       EquipmentInventory? @relation("Pet", fields: [petId], references: [id])
+  spellbook EquipmentInventory? @relation("Spellbook", fields: [spellbookId], references: [id])
+
+  // User relations to inventories
+  equipmentInventory EquipmentInventory[]
+  itemInventory      ItemInventory[]
+
+  // Relation to Combat stats
+  combat Combat?
+}
+
+model Combat {
+  userId  Int @id
+  str     Int @default(1)
+  def     Int @default(1)
+  dex     Int @default(1)
+  magic   Int @default(1)
+  hp      Int @default(10)
+  hpLevel Int @default(1)
+
+  // Relation back to the User
+  user User @relation(fields: [userId], references: [telegramId])
+}
+
+// Define enums for Rarity and Type
+enum Rarity {
+  S
+  A
+  B
+  C
+  D
+}
+
+enum EquipmentType {
+  hat
+  armour
+  weapon
+  shield
+  cape
+  necklace
+  pet
+  spellbook
+}
+
+// Equipment table
+model Equipment {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  description String        @default("")
+  str         Int           @default(0)
+  def         Int           @default(0)
+  dex         Int           @default(0)
+  magic       Int           @default(0)
+  hp          Int           @default(0)
+  rarity      Rarity
+  type        EquipmentType // hat, armour, weapon, shield, cape, necklace, pet, spellbook
+
+  equipmentInventory EquipmentInventory[]
+
+  CraftingRecipe CraftingRecipe[]
+}
+
+// Items table
+model Item {
+  itemId       Int         @id @default(autoincrement())
+  name         String      @unique
+  description  String      @default("")
+  rarity       Rarity
+  consumableId Int?
+  consumable   Consumable? @relation(fields: [consumableId], references: [id])
+
+  itemInventory ItemInventory[]
+
+  CraftingRecipeItems CraftingRecipeItems[]
+}
+
+// Equipment Inventory table
+model EquipmentInventory {
+  id          Int @id @default(autoincrement())
+  equipmentId Int
+  userId      Int
+
+  equipment Equipment @relation(fields: [equipmentId], references: [id])
+  user      User      @relation(fields: [userId], references: [telegramId])
+
+  // Opposite relations for the equipment types (mirroring the User relations)
+  hat       User? @relation("Hat")
+  armour    User? @relation("Armour")
+  weapon    User? @relation("Weapon")
+  shield    User? @relation("Shield")
+  cape      User? @relation("Cape")
+  necklace  User? @relation("Necklace")
+  pet       User? @relation("Pet")
+  spellbook User? @relation("Spellbook")
+
+  // Enforce unique combination of userId and equipmentId
+  @@unique([userId, equipmentId])
+}
+
+// Item Inventory table
+model ItemInventory {
+  id       Int @id @default(autoincrement())
+  itemId   Int
+  userId   Int
+  quantity Int
+
+  item Item @relation(fields: [itemId], references: [itemId])
+  user User @relation(fields: [userId], references: [telegramId])
+
+  // Enforce unique combination of userId and itemId
+  @@unique([userId, itemId])
+}
+
+// Define an enum for effect types
+enum EffectType {
+  plus // Represented as "+"
+  times // Represented as "*"
+}
+
+// Consumable table using enums for effects
+model Consumable {
+  id Int @id @default(autoincrement())
+
+  str       Int?
+  strEffect EffectType? @map("str_effect")
+
+  def       Int?
+  defEffect EffectType? @map("def_effect")
+
+  dex       Int?
+  dexEffect EffectType? @map("dex_effect")
+
+  magic       Int?
+  magicEffect EffectType? @map("magic_effect")
+
+  hp       Int?
+  hpEffect EffectType? @map("hp_effect")
+
+  maxHp       Int?        @map("max_hp")
+  maxHpEffect EffectType? @map("max_hp_effect")
+
+  durationS Int? // Duration in seconds for consumables
+
+  Item Item[]
+}
+
+model CraftingRecipe {
+  id          Int       @id @default(autoincrement())
+  equipmentId Int       @unique
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  durationS   Int
+
+  // This table defines the items required for crafting
+  CraftingRecipeItems CraftingRecipeItems[]
+}
+
+model CraftingRecipeItems {
+  id       Int            @id @default(autoincrement())
+  recipeId Int
+  recipe   CraftingRecipe @relation(fields: [recipeId], references: [id])
+  itemId   Int
+  item     Item           @relation(fields: [itemId], references: [itemId])
+  quantity Int            @default(1) // Number of items required to craft the equipment
+
+  @@unique([recipeId, itemId]) // Ensure unique combination of item and recipe
+}
