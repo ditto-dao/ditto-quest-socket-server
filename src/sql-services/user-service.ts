@@ -1,7 +1,7 @@
 import { logger } from '../utils/logger';
 import { calculateExpForNextLevel, getEquipFieldByType } from '../utils/helpers';
 import { prisma } from './client';
-import { EquipmentInventory, EquipmentType } from '@prisma/client';
+import { EquipmentInventory, EquipmentType, User } from '@prisma/client';
 
 // Interface for user input
 interface CreateUserInput {
@@ -10,7 +10,7 @@ interface CreateUserInput {
 }
 
 // Function to create a user
-export async function createUser(input: CreateUserInput) {
+export async function createUser(input: CreateUserInput): Promise<User> {
     try {
         // Create a new user in the database
         const user = await prisma.user.create({
@@ -18,13 +18,133 @@ export async function createUser(input: CreateUserInput) {
                 telegramId: input.telegramId,
                 username: input.username,
                 combat: {
-                    create: {} // No need to specify defaults; Prisma handles this from the schema
-                }
+                    create: {}, // No need to specify defaults; Prisma handles this from the schema
+                },
             },
             include: {
-                combat: true
-            }
+                hat: true,
+                armour: true,
+                weapon: true,
+                shield: true,
+                cape: true,
+                necklace: true,
+                pet: true,
+                spellbook: true,
+                equipmentInventory: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: {
+                            select: {
+                                id: true,
+                                name: true,
+                                description: true,
+                                str: true,
+                                def: true,
+                                dex: true,
+                                magic: true,
+                                hp: true,
+                                rarity: true,
+                                type: true,
+                            },
+                        },
+                    },
+                },
+                itemInventory: {
+                    select: {
+                        id: true,
+                        itemId: true,
+                        quantity: true,
+                        item: {
+                            select: {
+                                itemId: true,
+                                name: true,
+                                description: true,
+                                rarity: true,
+                            },
+                        },
+                    },
+                },
+                combat: true, // Include combat stats if needed
+
+                // Include equipped slime with full trait details
+                equippedSlime: {
+                    include: {
+                        AuraDominant: true,
+                        AuraHidden1: true,
+                        AuraHidden2: true,
+                        AuraHidden3: true,
+                        BodyDominant: true,
+                        BodyHidden1: true,
+                        BodyHidden2: true,
+                        BodyHidden3: true,
+                        CoreDominant: true,
+                        CoreHidden1: true,
+                        CoreHidden2: true,
+                        CoreHidden3: true,
+                        HeadpieceDominant: true,
+                        HeadpieceHidden1: true,
+                        HeadpieceHidden2: true,
+                        HeadpieceHidden3: true,
+                        TailDominant: true,
+                        TailHidden1: true,
+                        TailHidden2: true,
+                        TailHidden3: true,
+                        ArmsDominant: true,
+                        ArmsHidden1: true,
+                        ArmsHidden2: true,
+                        ArmsHidden3: true,
+                        EyesDominant: true,
+                        EyesHidden1: true,
+                        EyesHidden2: true,
+                        EyesHidden3: true,
+                        MouthDominant: true,
+                        MouthHidden1: true,
+                        MouthHidden2: true,
+                        MouthHidden3: true,
+                    },
+                },
+
+                // Include all owned slimes with full trait details
+                Slime: {
+                    include: {
+                        AuraDominant: true,
+                        AuraHidden1: true,
+                        AuraHidden2: true,
+                        AuraHidden3: true,
+                        BodyDominant: true,
+                        BodyHidden1: true,
+                        BodyHidden2: true,
+                        BodyHidden3: true,
+                        CoreDominant: true,
+                        CoreHidden1: true,
+                        CoreHidden2: true,
+                        CoreHidden3: true,
+                        HeadpieceDominant: true,
+                        HeadpieceHidden1: true,
+                        HeadpieceHidden2: true,
+                        HeadpieceHidden3: true,
+                        TailDominant: true,
+                        TailHidden1: true,
+                        TailHidden2: true,
+                        TailHidden3: true,
+                        ArmsDominant: true,
+                        ArmsHidden1: true,
+                        ArmsHidden2: true,
+                        ArmsHidden3: true,
+                        EyesDominant: true,
+                        EyesHidden1: true,
+                        EyesHidden2: true,
+                        EyesHidden3: true,
+                        MouthDominant: true,
+                        MouthHidden1: true,
+                        MouthHidden2: true,
+                        MouthHidden3: true,
+                    },
+                },
+            },
         });
+
         logger.info(`User created: ${user}`);
         return user;
     } catch (error) {
@@ -48,7 +168,7 @@ export async function userExists(telegramId: number): Promise<boolean> {
 }
 
 // Function to retrieve a user by their telegramId
-export async function getUserBasicData(telegramId: number) {
+export async function getUserData(telegramId: number): Promise<User | null> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
@@ -61,10 +181,123 @@ export async function getUserBasicData(telegramId: number) {
                 necklace: true,
                 pet: true,
                 spellbook: true,
+                equipmentInventory: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: {
+                            select: {
+                                id: true,
+                                name: true,
+                                description: true,
+                                str: true,
+                                def: true,
+                                dex: true,
+                                magic: true,
+                                hp: true,
+                                rarity: true,
+                                type: true,
+                            },
+                        },
+                    },
+                },
+                itemInventory: {
+                    select: {
+                        id: true,
+                        itemId: true,
+                        quantity: true,
+                        item: {
+                            select: {
+                                itemId: true, // Use itemId instead of id
+                                name: true,
+                                description: true,
+                                rarity: true,
+                            },
+                        },
+                    },
+                },
+                combat: true, // Include combat stats if needed
+
+                // Include equipped slime with full trait details
+                equippedSlime: {
+                    include: {
+                        AuraDominant: true,
+                        AuraHidden1: true,
+                        AuraHidden2: true,
+                        AuraHidden3: true,
+                        BodyDominant: true,
+                        BodyHidden1: true,
+                        BodyHidden2: true,
+                        BodyHidden3: true,
+                        CoreDominant: true,
+                        CoreHidden1: true,
+                        CoreHidden2: true,
+                        CoreHidden3: true,
+                        HeadpieceDominant: true,
+                        HeadpieceHidden1: true,
+                        HeadpieceHidden2: true,
+                        HeadpieceHidden3: true,
+                        TailDominant: true,
+                        TailHidden1: true,
+                        TailHidden2: true,
+                        TailHidden3: true,
+                        ArmsDominant: true,
+                        ArmsHidden1: true,
+                        ArmsHidden2: true,
+                        ArmsHidden3: true,
+                        EyesDominant: true,
+                        EyesHidden1: true,
+                        EyesHidden2: true,
+                        EyesHidden3: true,
+                        MouthDominant: true,
+                        MouthHidden1: true,
+                        MouthHidden2: true,
+                        MouthHidden3: true,
+                    },
+                },
+
+                // Include all owned slimes with full trait details
+                Slime: {
+                    include: {
+                        AuraDominant: true,
+                        AuraHidden1: true,
+                        AuraHidden2: true,
+                        AuraHidden3: true,
+                        BodyDominant: true,
+                        BodyHidden1: true,
+                        BodyHidden2: true,
+                        BodyHidden3: true,
+                        CoreDominant: true,
+                        CoreHidden1: true,
+                        CoreHidden2: true,
+                        CoreHidden3: true,
+                        HeadpieceDominant: true,
+                        HeadpieceHidden1: true,
+                        HeadpieceHidden2: true,
+                        HeadpieceHidden3: true,
+                        TailDominant: true,
+                        TailHidden1: true,
+                        TailHidden2: true,
+                        TailHidden3: true,
+                        ArmsDominant: true,
+                        ArmsHidden1: true,
+                        ArmsHidden2: true,
+                        ArmsHidden3: true,
+                        EyesDominant: true,
+                        EyesHidden1: true,
+                        EyesHidden2: true,
+                        EyesHidden3: true,
+                        MouthDominant: true,
+                        MouthHidden1: true,
+                        MouthHidden2: true,
+                        MouthHidden3: true,
+                    },
+                },
             },
         });
+
         if (user) {
-            logger.info(`User found: ${user}`);
+            logger.info(`User found for ID: ${telegramId}`);
             return user;
         } else {
             logger.info(`No user found with telegramId: ${telegramId}`);
@@ -75,6 +308,7 @@ export async function getUserBasicData(telegramId: number) {
         throw error;
     }
 }
+
 
 // Function to update a user's gold balance
 export async function updateUserGoldBalance(telegramId: number, increment: number): Promise<number> {

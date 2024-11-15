@@ -2,6 +2,7 @@
 CREATE TABLE `User` (
     `telegramId` INTEGER NOT NULL,
     `username` VARCHAR(191) NULL,
+    `goldBalance` INTEGER NOT NULL DEFAULT 0,
     `level` INTEGER NOT NULL DEFAULT 1,
     `exp_to_next_level` INTEGER NOT NULL DEFAULT 42,
     `exp` INTEGER NOT NULL DEFAULT 0,
@@ -9,9 +10,10 @@ CREATE TABLE `User` (
     `def` INTEGER NOT NULL DEFAULT 1,
     `dex` INTEGER NOT NULL DEFAULT 1,
     `magic` INTEGER NOT NULL DEFAULT 1,
-    `hp` INTEGER NOT NULL DEFAULT 10,
-    `max_hp` INTEGER NOT NULL DEFAULT 10,
+    `hp_level` INTEGER NOT NULL DEFAULT 1,
+    `exp_hp` INTEGER NOT NULL DEFAULT 0,
     `exp_to_next_hp_level` INTEGER NOT NULL DEFAULT 42,
+    `outstanding_skill_points` INTEGER NOT NULL DEFAULT 0,
     `hatId` INTEGER NULL,
     `armourId` INTEGER NULL,
     `weaponId` INTEGER NULL,
@@ -21,7 +23,6 @@ CREATE TABLE `User` (
     `petId` INTEGER NULL,
     `spellbookId` INTEGER NULL,
 
-    UNIQUE INDEX `User_telegramId_key`(`telegramId`),
     UNIQUE INDEX `User_hatId_key`(`hatId`),
     UNIQUE INDEX `User_armourId_key`(`armourId`),
     UNIQUE INDEX `User_weaponId_key`(`weaponId`),
@@ -34,9 +35,23 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Combat` (
+    `userId` INTEGER NOT NULL,
+    `str` INTEGER NOT NULL DEFAULT 1,
+    `def` INTEGER NOT NULL DEFAULT 1,
+    `dex` INTEGER NOT NULL DEFAULT 1,
+    `magic` INTEGER NOT NULL DEFAULT 1,
+    `hp` INTEGER NOT NULL DEFAULT 10,
+    `hpLevel` INTEGER NOT NULL DEFAULT 1,
+
+    PRIMARY KEY (`userId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Equipment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL DEFAULT '',
     `str` INTEGER NOT NULL DEFAULT 0,
     `def` INTEGER NOT NULL DEFAULT 0,
     `dex` INTEGER NOT NULL DEFAULT 0,
@@ -53,6 +68,7 @@ CREATE TABLE `Equipment` (
 CREATE TABLE `Item` (
     `itemId` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL DEFAULT '',
     `rarity` ENUM('S', 'A', 'B', 'C', 'D') NOT NULL,
     `consumableId` INTEGER NULL,
 
@@ -66,7 +82,6 @@ CREATE TABLE `EquipmentInventory` (
     `equipmentId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `EquipmentInventory_userId_equipmentId_key`(`userId`, `equipmentId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -101,6 +116,27 @@ CREATE TABLE `Consumable` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `CraftingRecipe` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `equipmentId` INTEGER NOT NULL,
+    `durationS` INTEGER NOT NULL,
+
+    UNIQUE INDEX `CraftingRecipe_equipmentId_key`(`equipmentId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CraftingRecipeItems` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `recipeId` INTEGER NOT NULL,
+    `itemId` INTEGER NOT NULL,
+    `quantity` INTEGER NOT NULL DEFAULT 1,
+
+    UNIQUE INDEX `CraftingRecipeItems_recipeId_itemId_key`(`recipeId`, `itemId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_hatId_fkey` FOREIGN KEY (`hatId`) REFERENCES `EquipmentInventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -126,6 +162,9 @@ ALTER TABLE `User` ADD CONSTRAINT `User_petId_fkey` FOREIGN KEY (`petId`) REFERE
 ALTER TABLE `User` ADD CONSTRAINT `User_spellbookId_fkey` FOREIGN KEY (`spellbookId`) REFERENCES `EquipmentInventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Combat` ADD CONSTRAINT `Combat_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`telegramId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Item` ADD CONSTRAINT `Item_consumableId_fkey` FOREIGN KEY (`consumableId`) REFERENCES `Consumable`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -139,3 +178,12 @@ ALTER TABLE `ItemInventory` ADD CONSTRAINT `ItemInventory_itemId_fkey` FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE `ItemInventory` ADD CONSTRAINT `ItemInventory_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`telegramId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CraftingRecipe` ADD CONSTRAINT `CraftingRecipe_equipmentId_fkey` FOREIGN KEY (`equipmentId`) REFERENCES `Equipment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CraftingRecipeItems` ADD CONSTRAINT `CraftingRecipeItems_recipeId_fkey` FOREIGN KEY (`recipeId`) REFERENCES `CraftingRecipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CraftingRecipeItems` ADD CONSTRAINT `CraftingRecipeItems_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `Item`(`itemId`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -167,7 +167,7 @@ export async function getUserSpecificEquipment(telegramId: number, equipmentInvI
 // Function to add equipment to user's inventory
 export async function mintEquipmentToUser(telegramId: number, equipmentId: number): Promise<EquipmentInventory & { equipment: Equipment } | null> {
     try {
-        if ((await userExists(telegramId))) throw new Error(`User does not exist.`);
+        if (!(await userExists(telegramId))) throw new Error(`User does not exist.`);
 
         // Create a new entry for the equipment in the inventory
         const newInventory = await prisma.equipmentInventory.create({

@@ -6,7 +6,7 @@ async function seedItems() {
     const itemsPath = path.join(__dirname, '../../encyclopedia/items.json');
     const itemsData = fs.readFileSync(itemsPath, 'utf-8');
     const items = JSON.parse(itemsData);
-
+ 
     try {
         const result = await prisma.item.createMany({
             data: items,

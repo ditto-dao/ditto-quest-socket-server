@@ -1,4 +1,4 @@
-import { EquipmentType } from "@prisma/client";
+import { EquipmentType, Rarity, TraitType } from "@prisma/client";
 import { HP_EXP_PER_EXP } from "./config";
 
 // Helper function to calculate experience needed for the next level
@@ -32,5 +32,24 @@ export function getEquipFieldByType(type: EquipmentType): string | null {
             return 'spellbookId';
         default:
             return null;
+    }
+}
+
+export const rarities: Rarity[] = ['D', 'C', 'B', 'A', 'S'];
+
+export const traitTypes: TraitType[] = ['Aura', 'Body', 'Core', 'Headpiece', 'Tail', 'Arms', 'Eyes', 'Mouth'];
+
+export const probabiltyToPassDownTrait: number[] = [0.375, 0.094, 0.023, 0.008]
+
+export function getMutationProbability(rarity: Rarity): number {
+    switch (rarity) {
+        case 'D':
+        case 'C':
+            return 0.25;
+        case 'B':
+        case 'A':
+            return 0.125;
+        default:
+            return 0;
     }
 }

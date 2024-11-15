@@ -20,9 +20,13 @@
     "prisma:dev": "NODE_ENV=development yarn prisma:dev:generate && yarn prisma:dev:migrate",
     "prisma:prod": "NODE_ENV=production yarn prisma:prod:generate && yarn prisma:prod:migrate",
 
+    "generate-traits-test-data": "ts-node ./src/encyclopedia/scripts/generate-traits-test-data.ts",
+
     "seed-items": "ts-node ./src/scripts/items/seed-items-db.ts",
     "seed-equipment": "ts-node ./src/scripts/equipment/seed-equipment-db.ts",
     "seed-crafting-recipes": "ts-node ./src/scripts/crafting/seed-crafting-recipes-db.ts",
+    "seed-slime-traits": "ts-node ./src/scripts/slime-traits/seed-slime-traits-db.ts",
+    "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
     "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts"
   },
   "dependencies": {

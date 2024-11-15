@@ -6,7 +6,8 @@ import { DefaultEventsMap, Server } from "socket.io"
 import { setupSocketHandlers } from "./src/socket/socket-handlers"
 import { setupGlobalErrorHandlers } from "./src/utils/global-error-handler"
 import { PORT, SOCKET_ORIGIN, SOCKET_PATH } from "./src/utils/config"
-import { SocketManager } from "./src/socket/handlers/socket-manager"
+import { SocketManager } from "./src/socket/socket-manager"
+import { IdleManager } from "./src/managers/idle-manager"
 
 
 async function main() {
@@ -37,7 +38,10 @@ async function main() {
     // Socket manager
     const socketManager = new SocketManager(io)
 
-    await setupSocketHandlers(io)
+    // Idle manager
+    const idleManager = new IdleManager(socketManager)
+
+    await setupSocketHandlers(io, socketManager, idleManager)
 
     setupGlobalErrorHandlers()
 

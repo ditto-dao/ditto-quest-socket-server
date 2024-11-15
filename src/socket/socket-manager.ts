@@ -1,4 +1,4 @@
-import { logger } from '../../utils/logger'
+import { logger } from '../utils/logger'
 import { Server as SocketServer } from "socket.io"
 
 export class SocketManager {

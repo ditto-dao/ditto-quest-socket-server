@@ -1,7 +1,7 @@
 import { logger } from '../utils/logger';
 import { prisma } from './client';
 
-interface CraftingRecipeRes {
+export interface CraftingRecipeRes {
   equipmentId: number;
   equipmentName: string;
   durationS: number;
@@ -12,7 +12,7 @@ interface CraftingRecipeRes {
   }[];
 }
 
-export async function getCraftingRecipeForItem(equipmentId: number): Promise<CraftingRecipeRes> {
+export async function getCraftingRecipeForEquipment(equipmentId: number): Promise<CraftingRecipeRes> {
   try {
     const recipe = await prisma.craftingRecipe.findUnique({
       where: { equipmentId },
@@ -35,7 +35,7 @@ export async function getCraftingRecipeForItem(equipmentId: number): Promise<Cra
     });
 
     if (!recipe) {
-      throw new Error(`Crafting recipe not found.`)
+      throw new Error(`Crafting recipe not found.`);
     }
 
     const craftingRecipe: CraftingRecipeRes = {

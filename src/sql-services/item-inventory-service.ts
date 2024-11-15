@@ -1,11 +1,15 @@
-import { Item, ItemInventory } from '@prisma/client';
+import { Item, ItemInventory, Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
 import { userExists } from './user-service';
 
-// Function to check if a user owns all specified items
-export async function doesUserOwnItems(telegramId: number, itemIds: number[]): Promise<boolean> {
+// Function to check if a user owns all specified items with the required quantities
+export async function doesUserOwnItems(telegramId: number, itemIds: number[], quantities: number[]): Promise<boolean> {
     try {
+        if (itemIds.length !== quantities.length) {
+            throw new Error('Item IDs and quantities arrays must have the same length.');
+        }
+
         // Fetch all items from the user's inventory that match the provided itemIds
         const userInventory = await prisma.itemInventory.findMany({
             where: {
@@ -16,19 +20,29 @@ export async function doesUserOwnItems(telegramId: number, itemIds: number[]): P
             }
         });
 
-        // Check if the user owns all items (if the number of items in the inventory matches the provided itemIds)
-        const ownsAllItems = userInventory.length === itemIds.length;
+        // Check if the user owns all items with the required quantities
+        const ownsAllItems = itemIds.every((itemId, index) => {
+            const requiredQuantity = quantities[index];
+            const inventoryItem = userInventory.find(inv => inv.itemId === itemId);
+            return inventoryItem && inventoryItem.quantity >= requiredQuantity;
+        });
 
         if (ownsAllItems) {
-            logger.info(`User ${telegramId} owns all requested items: ${itemIds.join(', ')}`);
+            logger.info(`User ${telegramId} owns all requested items with sufficient quantities: ${itemIds.join(', ')}`);
         } else {
-            const missingItems = itemIds.filter(id => !userInventory.some(inv => inv.itemId === id));
-            logger.info(`User ${telegramId} does not own these items: ${missingItems.join(', ')}`);
+            const missingOrInsufficientItems = itemIds
+                .filter((itemId, index) => {
+                    const requiredQuantity = quantities[index];
+                    const inventoryItem = userInventory.find(inv => inv.itemId === itemId);
+                    return !inventoryItem || inventoryItem.quantity < requiredQuantity;
+                })
+                .map((itemId, index) => `${itemId} (required: ${quantities[index]})`);
+            logger.info(`User ${telegramId} does not own these items with sufficient quantities: ${missingOrInsufficientItems.join(', ')}`);
         }
 
         return ownsAllItems;
     } catch (error) {
-        logger.error(`Error checking if user ${telegramId} owns items ${itemIds.join(', ')}: ${error}`);
+        logger.error(`Error checking if user ${telegramId} owns items ${itemIds.join(', ')} with required quantities: ${error}`);
         throw error;
     }
 }
@@ -59,8 +73,17 @@ export async function getUserItemInventory(telegramId: number): Promise<(ItemInv
 }
 
 interface ItemInventoryRes {
-    itemId: number,
-    quantity: number
+    itemInventory: {
+        id: number;
+        itemId: number;
+        quantity: number;
+        item: {
+            itemId: number;
+            name: string;
+            description: string;
+            rarity: string;
+        };
+    };
 }
 
 // Function to get a specific item from the user's inventory
@@ -74,8 +97,15 @@ export async function getUserSpecificItem(telegramId: number, itemId: number): P
                 }
             },
             include: {
-                item: true // To include item details like name and rarity
-            }
+                item: {
+                    select: {
+                        itemId: true,
+                        name: true,
+                        description: true,
+                        rarity: true,
+                    },
+                },
+            },
         });
 
         if (!userInventory) {
@@ -86,8 +116,7 @@ export async function getUserSpecificItem(telegramId: number, itemId: number): P
         logger.info(`Fetched item ${userInventory.item.name} for user ${telegramId}. Quantity: ${userInventory.quantity}`);
 
         return {
-            itemId: userInventory.itemId,
-            quantity: userInventory.quantity,
+            itemInventory: userInventory,
         };
     } catch (error) {
         logger.error(`Failed to fetch item ${itemId} for user ${telegramId}: ${error}`);
@@ -98,7 +127,7 @@ export async function getUserSpecificItem(telegramId: number, itemId: number): P
 // Function to mint item(s) to user's inventory
 export async function mintItemToUser(telegramId: number, itemId: number, quantity: number = 1): Promise<ItemInventoryRes> {
     try {
-        if ((await userExists(telegramId))) throw new Error(`User does not exist.`);
+        if (!(await userExists(telegramId))) throw new Error(`User does not exist.`);
 
         // Check if the user already has the item in their inventory
         let existingInventory = await prisma.itemInventory.findUnique({
@@ -109,8 +138,15 @@ export async function mintItemToUser(telegramId: number, itemId: number, quantit
                 }
             },
             include: {
-                item: true // To include item details
-            }
+                item: {
+                    select: {
+                        itemId: true,
+                        name: true,
+                        description: true,
+                        rarity: true,
+                    },
+                },
+            },
         });
 
         // If the item is already in the inventory, increment the quantity
@@ -123,19 +159,31 @@ export async function mintItemToUser(telegramId: number, itemId: number, quantit
                     }
                 },
                 include: {
-                    item: true
-                }
+                    item: {
+                        select: {
+                            itemId: true,
+                            name: true,
+                            description: true,
+                            rarity: true,
+                        },
+                    },
+                },
             });
             logger.info(`Item ${updatedInventory.item.name} quantity increased by ${quantity}. New quantity: ${updatedInventory.quantity}`);
             return {
-                itemId: updatedInventory.item.itemId,
-                quantity: updatedInventory.quantity
+                itemInventory: updatedInventory,
             };
         }
 
         // If the inventory entry doesn't exist, check the item existence before minting it
         const item = await prisma.item.findUnique({
-            where: { itemId }
+            where: { itemId },
+            select: {
+                itemId: true,
+                name: true,
+                description: true,
+                rarity: true,
+            },
         });
 
         if (!item) {
@@ -150,14 +198,20 @@ export async function mintItemToUser(telegramId: number, itemId: number, quantit
                 quantity: quantity
             },
             include: {
-                item: true
-            }
+                item: {
+                    select: {
+                        itemId: true,
+                        name: true,
+                        description: true,
+                        rarity: true,
+                    },
+                },
+            },
         });
         logger.info(`Item ${newInventory.item.name} minted to user with telegramId ${telegramId}. Quantity: ${newInventory.quantity}`);
 
         return {
-            itemId: newInventory.item.itemId,
-            quantity: newInventory.quantity
+            itemInventory: newInventory,
         };
 
     } catch (error) {
@@ -166,61 +220,103 @@ export async function mintItemToUser(telegramId: number, itemId: number, quantit
     }
 }
 
-// Function to delete item(s) from user's inventory
-export async function deleteItemFromUserInventory(telegramId: number, itemId: number, quantityToRemove: number = 1): Promise<ItemInventoryRes> {
+export async function deleteItemsFromUserInventory(
+    telegramId: number,
+    itemIds: number[],
+    quantitiesToRemove: number[]
+): Promise<ItemInventoryRes[]> {
     try {
-        // Fetch the user and item from their inventory
-        const userInventory = await prisma.itemInventory.findUnique({
+        if (itemIds.length !== quantitiesToRemove.length) {
+            throw new Error('itemIds and quantitiesToRemove arrays must have the same length.');
+        }
+
+        // Fetch all relevant items from the user's inventory in a single query
+        const userInventory = await prisma.itemInventory.findMany({
             where: {
-                userId_itemId: {
-                    userId: telegramId,
-                    itemId: itemId
+                userId: telegramId,
+                itemId: {
+                    in: itemIds
                 }
+            },
+            include: {
+                item: {
+                    select: {
+                        itemId: true,
+                        name: true,
+                        description: true,
+                        rarity: true,
+                    },
+                },
+            },
+        });
+
+        const results: ItemInventoryRes[] = [];
+        const batchOperations: Prisma.PrismaPromise<any>[] = [];
+
+        itemIds.forEach((itemId, index) => {
+            const quantityToRemove = quantitiesToRemove[index];
+            const inventoryItem = userInventory.find(inv => inv.itemId === itemId);
+
+            if (!inventoryItem) {
+                throw new Error(`Item with ID ${itemId} not found in inventory.`);
+            }
+
+            if (quantityToRemove > inventoryItem.quantity) {
+                throw new Error(`Insufficient balance of item with ID ${itemId} in inventory.`);
+            }
+
+            if (inventoryItem.quantity > quantityToRemove) {
+                // Create a PrismaPromise for updating the item and push it to the batch
+                const updateOperation = prisma.itemInventory.update({
+                    where: { id: inventoryItem.id },
+                    data: {
+                        quantity: {
+                            decrement: quantityToRemove
+                        }
+                    },
+                    include: {
+                        item: {
+                            select: {
+                                itemId: true,
+                                name: true,
+                                description: true,
+                                rarity: true,
+                            },
+                        },
+                    },
+                });
+                batchOperations.push(updateOperation);
+
+                results.push({
+                    itemInventory: {
+                        ...inventoryItem,
+                        quantity: inventoryItem.quantity - quantityToRemove,
+                    }
+                });
+            } else {
+                // Create a PrismaPromise for deleting the item and push it to the batch
+                const deleteOperation = prisma.itemInventory.delete({
+                    where: { id: inventoryItem.id }
+                });
+                batchOperations.push(deleteOperation);
+
+                results.push({
+                    itemInventory: {
+                        id: inventoryItem.id,
+                        itemId: inventoryItem.itemId,
+                        quantity: 0,
+                        item: inventoryItem.item,
+                    }
+                });
             }
         });
 
-        if (!userInventory) {
-            throw new Error(`Item not found in inventory.`);
-        }
+        // Execute all operations as a transaction
+        await prisma.$transaction(batchOperations);
 
-        // Check the current quantity in the user's inventory
-        const currentQuantity = userInventory.quantity;
-
-        if (quantityToRemove > currentQuantity) {
-            throw new Error(`Insufficient balance of item in inventory.`);
-        }
-
-        if (currentQuantity > quantityToRemove) {
-            // If the current quantity is greater than the amount to remove, decrement the quantity
-            const updatedInventory = await prisma.itemInventory.update({
-                where: { id: userInventory.id },
-                data: {
-                    quantity: {
-                        decrement: quantityToRemove
-                    }
-                }
-            });
-            const remainingQuantity = updatedInventory.quantity;
-            logger.info(`Decremented item ${itemId} quantity by ${quantityToRemove} for user ${telegramId}. Remaining quantity: ${remainingQuantity}`);
-
-            return {
-                itemId: itemId,
-                quantity: remainingQuantity
-            };
-        } else {
-            // If the current quantity is equal to the amount to remove, delete the item from the inventory
-            await prisma.itemInventory.delete({
-                where: { id: userInventory.id }
-            });
-            logger.info(`Deleted item ${itemId} from user ${telegramId}'s inventory as the quantity is now 0.`);
-
-            return {
-                itemId: itemId,
-                quantity: 0
-            };
-        }
+        return results;
     } catch (error) {
-        logger.error(`Failed to delete item from user inventory: ${error}`);
+        logger.error(`Failed to delete items from user inventory: ${error}`);
         throw error;
     }
 }

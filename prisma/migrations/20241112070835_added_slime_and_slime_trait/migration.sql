@@ -1,0 +1,161 @@
+-- CreateTable
+CREATE TABLE `Slime` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `ownerId` INTEGER NOT NULL,
+    `Aura_D` INTEGER NOT NULL,
+    `Aura_H1` INTEGER NOT NULL,
+    `Aura_H2` INTEGER NOT NULL,
+    `Aura_H3` INTEGER NOT NULL,
+    `Body_D` INTEGER NOT NULL,
+    `Body_H1` INTEGER NOT NULL,
+    `Body_H2` INTEGER NOT NULL,
+    `Body_H3` INTEGER NOT NULL,
+    `Core_D` INTEGER NOT NULL,
+    `Core_H1` INTEGER NOT NULL,
+    `Core_H2` INTEGER NOT NULL,
+    `Core_H3` INTEGER NOT NULL,
+    `Headpiece_D` INTEGER NOT NULL,
+    `Headpiece_H1` INTEGER NOT NULL,
+    `Headpiece_H2` INTEGER NOT NULL,
+    `Headpiece_H3` INTEGER NOT NULL,
+    `Tail_D` INTEGER NOT NULL,
+    `Tail_H1` INTEGER NOT NULL,
+    `Tail_H2` INTEGER NOT NULL,
+    `Tail_H3` INTEGER NOT NULL,
+    `Arms_D` INTEGER NOT NULL,
+    `Arms_H1` INTEGER NOT NULL,
+    `Arms_H2` INTEGER NOT NULL,
+    `Arms_H3` INTEGER NOT NULL,
+    `Eyes_D` INTEGER NOT NULL,
+    `Eyes_H1` INTEGER NOT NULL,
+    `Eyes_H2` INTEGER NOT NULL,
+    `Eyes_H3` INTEGER NOT NULL,
+    `Mouth_D` INTEGER NOT NULL,
+    `Mouth_H1` INTEGER NOT NULL,
+    `Mouth_H2` INTEGER NOT NULL,
+    `Mouth_H3` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `SlimeTrait` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `type` ENUM('Aura', 'Body', 'Core', 'Headpiece', 'Tail', 'Arms', 'Eyes', 'Mouth') NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `rarity` ENUM('S', 'A', 'B', 'C', 'D') NOT NULL,
+    `pairId` INTEGER NULL,
+    `mutationId` INTEGER NULL,
+    `str` INTEGER NOT NULL DEFAULT 0,
+    `def` INTEGER NOT NULL DEFAULT 0,
+    `dex` INTEGER NOT NULL DEFAULT 0,
+    `magic` INTEGER NOT NULL DEFAULT 0,
+    `hp` INTEGER NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_ownerId_fkey` FOREIGN KEY (`ownerId`) REFERENCES `User`(`telegramId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Aura_D_fkey` FOREIGN KEY (`Aura_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Aura_H1_fkey` FOREIGN KEY (`Aura_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Aura_H2_fkey` FOREIGN KEY (`Aura_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Aura_H3_fkey` FOREIGN KEY (`Aura_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Body_D_fkey` FOREIGN KEY (`Body_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Body_H1_fkey` FOREIGN KEY (`Body_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Body_H2_fkey` FOREIGN KEY (`Body_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Body_H3_fkey` FOREIGN KEY (`Body_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Core_D_fkey` FOREIGN KEY (`Core_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Core_H1_fkey` FOREIGN KEY (`Core_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Core_H2_fkey` FOREIGN KEY (`Core_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Core_H3_fkey` FOREIGN KEY (`Core_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Headpiece_D_fkey` FOREIGN KEY (`Headpiece_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Headpiece_H1_fkey` FOREIGN KEY (`Headpiece_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Headpiece_H2_fkey` FOREIGN KEY (`Headpiece_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Headpiece_H3_fkey` FOREIGN KEY (`Headpiece_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Tail_D_fkey` FOREIGN KEY (`Tail_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Tail_H1_fkey` FOREIGN KEY (`Tail_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Tail_H2_fkey` FOREIGN KEY (`Tail_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Tail_H3_fkey` FOREIGN KEY (`Tail_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Arms_D_fkey` FOREIGN KEY (`Arms_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Arms_H1_fkey` FOREIGN KEY (`Arms_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Arms_H2_fkey` FOREIGN KEY (`Arms_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Arms_H3_fkey` FOREIGN KEY (`Arms_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Eyes_D_fkey` FOREIGN KEY (`Eyes_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Eyes_H1_fkey` FOREIGN KEY (`Eyes_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Eyes_H2_fkey` FOREIGN KEY (`Eyes_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Eyes_H3_fkey` FOREIGN KEY (`Eyes_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Mouth_D_fkey` FOREIGN KEY (`Mouth_D`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Mouth_H1_fkey` FOREIGN KEY (`Mouth_H1`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Mouth_H2_fkey` FOREIGN KEY (`Mouth_H2`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Slime` ADD CONSTRAINT `Slime_Mouth_H3_fkey` FOREIGN KEY (`Mouth_H3`) REFERENCES `SlimeTrait`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `SlimeTrait` ADD CONSTRAINT `SlimeTrait_pairId_fkey` FOREIGN KEY (`pairId`) REFERENCES `SlimeTrait`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `SlimeTrait` ADD CONSTRAINT `SlimeTrait_mutationId_fkey` FOREIGN KEY (`mutationId`) REFERENCES `SlimeTrait`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
