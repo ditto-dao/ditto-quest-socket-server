@@ -1,7 +1,7 @@
 import { logger } from '../utils/logger';
 import { calculateExpForNextLevel, getEquipFieldByType } from '../utils/helpers';
 import { prisma } from './client';
-import { EquipmentInventory, EquipmentType, User } from '@prisma/client';
+import { Inventory, EquipmentType, User } from '@prisma/client';
 
 // Interface for user input
 interface CreateUserInput {
@@ -30,43 +30,19 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                 necklace: true,
                 pet: true,
                 spellbook: true,
-                equipmentInventory: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: {
-                            select: {
-                                id: true,
-                                name: true,
-                                description: true,
-                                str: true,
-                                def: true,
-                                dex: true,
-                                magic: true,
-                                hp: true,
-                                rarity: true,
-                                type: true,
-                            },
-                        },
-                    },
-                },
-                itemInventory: {
+                inventory: {
                     select: {
                         id: true,
                         itemId: true,
+                        equipmentId: true,
                         quantity: true,
-                        item: {
-                            select: {
-                                itemId: true,
-                                name: true,
-                                description: true,
-                                rarity: true,
-                            },
-                        },
-                    },
+                        order: true,
+                        createdAt: true,
+                        item: true,       // Includes all fields of Item
+                        equipment: true,  // Includes all fields of Equipment
+                    }
                 },
                 combat: true, // Include combat stats if needed
-
                 // Include equipped slime with full trait details
                 equippedSlime: {
                     include: {
@@ -106,7 +82,7 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                 },
 
                 // Include all owned slimes with full trait details
-                Slime: {
+                slimes: {
                     include: {
                         AuraDominant: true,
                         AuraHidden1: true,
@@ -145,7 +121,7 @@ export async function createUser(input: CreateUserInput): Promise<User> {
             },
         });
 
-        logger.info(`User created: ${user}`);
+        logger.info(`User created: ${JSON.stringify(user, null, 2)}`);
         return user;
     } catch (error) {
         logger.error(`Failed to create user: ${error}`);
@@ -181,40 +157,17 @@ export async function getUserData(telegramId: number): Promise<User | null> {
                 necklace: true,
                 pet: true,
                 spellbook: true,
-                equipmentInventory: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: {
-                            select: {
-                                id: true,
-                                name: true,
-                                description: true,
-                                str: true,
-                                def: true,
-                                dex: true,
-                                magic: true,
-                                hp: true,
-                                rarity: true,
-                                type: true,
-                            },
-                        },
-                    },
-                },
-                itemInventory: {
+                inventory: {
                     select: {
                         id: true,
                         itemId: true,
+                        equipmentId: true,
                         quantity: true,
-                        item: {
-                            select: {
-                                itemId: true, // Use itemId instead of id
-                                name: true,
-                                description: true,
-                                rarity: true,
-                            },
-                        },
-                    },
+                        order: true,
+                        createdAt: true,
+                        item: true,       // Includes all fields of Item
+                        equipment: true,  // Includes all fields of Equipment
+                    }
                 },
                 combat: true, // Include combat stats if needed
 
@@ -257,7 +210,7 @@ export async function getUserData(telegramId: number): Promise<User | null> {
                 },
 
                 // Include all owned slimes with full trait details
-                Slime: {
+                slimes: {
                     include: {
                         AuraDominant: true,
                         AuraHidden1: true,
@@ -309,6 +262,13 @@ export async function getUserData(telegramId: number): Promise<User | null> {
     }
 }
 
+export async function getNextInventoryOrder(telegramId: number): Promise<number> {
+    const maxOrder = await prisma.inventory.aggregate({
+        where: { userId: telegramId },
+        _max: { order: true },
+    });
+    return (maxOrder._max.order ?? -1) + 1; // Start from 0 if no records exist
+}
 
 // Function to update a user's gold balance
 export async function updateUserGoldBalance(telegramId: number, increment: number): Promise<number> {
@@ -532,22 +492,27 @@ export async function useSkillPointsToUpgradeSkill(telegramId: number, pointsToU
     }
 }
 
-// Function to equip equipment by equipment inventory id
+/* USER SPECIFIC EQUIPMENT FUNCTIONS */
+
+// Function to equip equipment by inventory id
 export async function equipEquipmentForUser(
     telegramId: number,
-    equipmentInvId: number
-): Promise<EquipmentInventory & { equipment: { type: EquipmentType } } | null> {
+    inventoryId: number
+): Promise<boolean> {
     try {
         // Fetch the equipment from the user's inventory
-        const equipmentInventory = await prisma.equipmentInventory.findUnique({
-            where: { id: equipmentInvId },
+        const equipmentInventory = await prisma.inventory.findUnique({
+            where: { id: inventoryId },
             include: { equipment: true } // Include equipment details
         });
 
         // Check if the equipment exists and belongs to the user
         if (!equipmentInventory || equipmentInventory.userId !== telegramId) {
-            logger.error(`Equipment ${equipmentInvId} not found in inventory for user ${telegramId}`);
-            return null;
+            throw new Error(`Inventory id ${inventoryId} not found in inventory for user ${telegramId}`);
+        }
+
+        if (!equipmentInventory.equipment) {
+            throw new Error(`Inventory object is not an equipment`);
         }
 
         const equipmentType = equipmentInventory.equipment.type;
@@ -563,7 +528,7 @@ export async function equipEquipmentForUser(
         await prisma.user.update({
             where: { telegramId },
             data: {
-                [equipField]: equipmentInvId // Equip the new equipment
+                [equipField]: inventoryId // Equip the new equipment
             },
             include: {
                 [equipField]: true
@@ -571,10 +536,10 @@ export async function equipEquipmentForUser(
         });
 
         logger.info(`User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`);
-        return equipmentInventory;
+        return true;
 
     } catch (error) {
-        logger.error(`Failed to equip equipment ${equipmentInvId} for user ${telegramId}: ${error}`);
+        logger.error(`Failed to equip equipment ${inventoryId} for user ${telegramId}: ${error}`);
         throw error;
     }
 }
@@ -583,29 +548,44 @@ export async function equipEquipmentForUser(
 export async function unequipEquipmentForUser(
     telegramId: number,
     equipmentType: EquipmentType
-): Promise<void> {
+): Promise<boolean> {
     try {
-        // Define the corresponding field to update based on the equipment type
+        // Map the equipment type to the corresponding database field
         const equipField = getEquipFieldByType(equipmentType);
 
         if (!equipField) {
             throw new Error(`Invalid equipment type: ${equipmentType}`);
         }
 
-        // Update the user and set the specific equipment field to null (unequip)
-        const updatedUser = await prisma.user.update({
+        // Fetch the user's currently equipped item for the given slot
+        const user = await prisma.user.findUnique({
+            where: { telegramId },
+            select: { [equipField]: true } // Only fetch the specific field to check
+        });
+
+        if (!user) {
+            throw new Error(`User with telegramId ${telegramId} not found.`);
+        }
+
+        // Check if the slot is already empty
+        if (user[equipField] === null) {
+            logger.info(`User ${telegramId} already has nothing equipped in the ${equipmentType} slot.`);
+            return false; // No need to update
+        }
+
+        // Perform the unequip operation
+        await prisma.user.update({
             where: { telegramId },
             data: {
-                [equipField]: null // Unequip the item by setting the field to null
+                [equipField]: null
             }
         });
 
         logger.info(`User ${telegramId} unequipped equipment of type ${equipmentType}.`);
+        return true;
 
     } catch (error) {
         logger.error(`Failed to unequip equipment of type ${equipmentType} for user ${telegramId}: ${error}`);
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 }

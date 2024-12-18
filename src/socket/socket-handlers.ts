@@ -4,9 +4,9 @@ import { logger } from "../utils/logger"
 import { setupValidateLoginSocketHandlers } from "./handlers/validate-login-socket-handlers"
 import { SocketManager } from "./socket-manager"
 import { setupItemsSocketHandlers } from "./handlers/items-socket-handlers"
-import { IdleManager } from "../managers/idle-manager"
 import { setupCraftingSocketHandlers } from "./handlers/crafting-handlers"
 import { setupSlimeSocketHandlers } from "./handlers/slime-handlers"
+import { IdleManager } from "../managers/idle-managers/idle-manager"
 
 export interface EventPayloadWithUserId {
     userId: number,
@@ -22,13 +22,13 @@ export async function setupSocketHandlers(
     io.on("connection", async (socket) => {
         logger.info("An adapter has connected")
 
-        setupValidateLoginSocketHandlers(socket, socketManager)
+        setupValidateLoginSocketHandlers(socket, socketManager, idleManager)
 
-        setupItemsSocketHandlers(socket)
+        setupItemsSocketHandlers(socket, socketManager, idleManager)
 
-        setupCraftingSocketHandlers(socket, idleManager)
+        setupCraftingSocketHandlers(socket, socketManager, idleManager)
 
-        setupSlimeSocketHandlers(socket)
+        setupSlimeSocketHandlers(socket, socketManager, idleManager)
 
         socket.on("disconnect", async (socket) => {
             logger.info("An adapter has disconnected")

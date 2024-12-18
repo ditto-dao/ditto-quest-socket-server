@@ -22,9 +22,16 @@ async function deleteSpecificTables() {
         // Then delete from Equipment and Items tables
         await prisma.equipment.deleteMany();
         logger.info('Deleted all records from Equipment.');
+        await resetAutoIncrement('Equipment');
 
         await prisma.item.deleteMany();
         logger.info('Deleted all records from Item.');
+        await resetAutoIncrement('Item');
+
+        await prisma.slimeTrait.deleteMany();
+        logger.info('Deleted all records from SlimeTrait.');
+        await resetAutoIncrement('SlimeTrait');
+
 
         logger.info('Successfully deleted all data and reset auto-increment from the specified tables.');
     } catch (error) {

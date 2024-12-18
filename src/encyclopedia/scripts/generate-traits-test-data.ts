@@ -61,9 +61,8 @@ for (const traitType of traits) {
         type: traitType,
         name: `Trait_${traitId}_${traitType}`,
         rarity,
-        // Set pairId to the next trait for odd ids, and previous trait for even ids
-        pairId: i % 2 === 0 ? traitId + 1 : traitId - 1,
-        mutationId: rarityIndex < rarities.length - 1 ? mutationId + Math.floor(i / 2) : undefined,
+        pairId: rarity !== 'S' ? (i % 2 === 0 ? traitId + 1 : traitId - 1) : undefined,
+        mutationId: rarityIndex < rarities.length - 1 && rarity !== 'S' ? mutationId + Math.floor(i / 2) : undefined,
         // Assign stats based on rarity
         str: generateRandomStat(maxStat),
         def: generateRandomStat(maxStat),
@@ -71,7 +70,7 @@ for (const traitType of traits) {
         magic: generateRandomStat(maxStat),
         hp: generateRandomStat(maxStat),
       };
-      
+
       allTraits.push(trait);
       traitId++;
     }

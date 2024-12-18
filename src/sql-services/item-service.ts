@@ -15,7 +15,7 @@ export async function getAllItems(): Promise<Item[]> {
 export async function getItemById(itemId: number): Promise<Item | null> {
     try {
         const item = await prisma.item.findUnique({
-            where: { itemId },
+            where: { id: itemId },
             include: { consumable: true }  // Include related consumable if applicable
         });
         return item;

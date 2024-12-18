@@ -1,233 +1,258 @@
 // equip/unequip and change combat
 //  Adjusts user attributes such as str, def, dex, and magic, potentially as a result of equipping or unequipping items or using consumable items.
 
-import { Equipment, EquipmentInventory } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
-import { userExists } from './user-service';
+import { getNextInventoryOrder } from './user-service';
 
-// Function to check if a user owns all specified equipment by equipment id
-export async function doesUserOwnEquipments(telegramId: number, equipmentIds: number[]): Promise<boolean> {
+// Function to check if a user owns all specified equipment with required quantities
+export async function doesUserOwnEquipments(
+    telegramId: number,
+    equipmentIds: number[],
+    quantities: number[]
+): Promise<boolean> {
     try {
-        // Fetch all equipment from the user's inventory that match the provided equipmentIds
-        const userInventory = await prisma.equipmentInventory.findMany({
+        // Validation: Ensure equipmentIds and quantities match in length
+        if (equipmentIds.length !== quantities.length) {
+            throw new Error("Equipment IDs and quantities arrays must have the same length.");
+        }
+
+        // Early return for empty input
+        if (equipmentIds.length === 0) {
+            logger.info(`No equipment IDs provided to check ownership for user ${telegramId}.`);
+            return true; // Trivially true
+        }
+
+        // Combine equipmentIds and quantities into a Map to handle duplicates
+        const equipmentQuantityMap = new Map<number, number>();
+        equipmentIds.forEach((id, index) => {
+            const requiredQuantity = quantities[index];
+            equipmentQuantityMap.set(id, (equipmentQuantityMap.get(id) || 0) + requiredQuantity);
+        });
+
+        // Fetch the user's inventory for the specified equipment IDs
+        const userInventory = await prisma.inventory.findMany({
             where: {
                 userId: telegramId,
                 equipmentId: {
-                    in: equipmentIds
+                    in: Array.from(equipmentQuantityMap.keys())
                 }
-            }
-        });
-
-        // Check if the user owns all equipment (if the number of equipment in the inventory matches the provided equipmentIds)
-        const ownsAllEquipments = userInventory.length === equipmentIds.length;
-
-        if (ownsAllEquipments) {
-            logger.info(`User ${telegramId} owns all requested equipment: ${equipmentIds.join(', ')}`);
-        } else {
-            const missingEquipment = equipmentIds.filter(id => !userInventory.some(inv => inv.equipmentId === id));
-            logger.info(`User ${telegramId} does not own these equipment: ${missingEquipment.join(', ')}`);
-        }
-
-        return ownsAllEquipments;
-    } catch (error) {
-        logger.error(`Error checking if user ${telegramId} owns equipment ${equipmentIds.join(', ')}: ${error}`);
-        throw error;
-    }
-}
-
-// Function to check if a user owns all specified equipment by equipment id
-export async function doesUserOwnEquipmentsByEquipmentInventoryId(telegramId: number, equipmentInvIds: number[]): Promise<boolean> {
-    try {
-        // Fetch all equipment inventory entries from the user's inventory that match the provided equipment inventory IDs
-        const userInventory = await prisma.equipmentInventory.findMany({
-            where: {
-                userId: telegramId,
-                id: {
-                    in: equipmentInvIds
-                }
-            }
-        });
-
-        // Check if the user owns all the equipment (if the number of equipment inventory entries matches the provided IDs)
-        const ownsAllEquipments = userInventory.length === equipmentInvIds.length;
-
-        if (ownsAllEquipments) {
-            logger.info(`User ${telegramId} owns all requested equipment inventory IDs: ${equipmentInvIds.join(', ')}`);
-        } else {
-            const missingEquipments = equipmentInvIds.filter(id => !userInventory.some(inv => inv.id === id));
-            logger.info(`User ${telegramId} does not own these equipment inventory IDs: ${missingEquipments.join(', ')}`);
-        }
-
-        return ownsAllEquipments;
-    } catch (error) {
-        logger.error(`Error checking if user ${telegramId} owns equipment inventory IDs ${equipmentInvIds.join(', ')}: ${error}`);
-        throw error;
-    }
-}
-
-// Function to check if equipment is equipped
-export async function isUserEquipmentEquipped(telegramId: number, equipmentInvId: number): Promise<boolean> {
-    try {
-        // Fetch the user with all equipped items (hatId, armourId, weaponId, etc.)
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
+            },
             select: {
-                hatId: true,
-                armourId: true,
-                weaponId: true,
-                shieldId: true,
-                capeId: true,
-                necklaceId: true,
-                petId: true,
-                spellbookId: true
+                equipmentId: true,
+                quantity: true
             }
         });
 
-        if (!user) {
-            throw new Error(`User does not exist.`)
-        }
+        // Map the user's inventory to a lookup table
+        const inventoryMap = new Map<number, number>();
+        userInventory.forEach((inv) => {
+            inventoryMap.set(inv.equipmentId!, inv.quantity);
+        });
 
-        // Check if the equipmentInvId is one of the equipped items
-        const isEquipped = [
-            user.hatId,
-            user.armourId,
-            user.weaponId,
-            user.shieldId,
-            user.capeId,
-            user.necklaceId,
-            user.petId,
-            user.spellbookId
-        ].includes(equipmentInvId);
+        // Check if the user owns all equipment with required quantities
+        const missingOrInsufficientEquipment: string[] = [];
+        const ownsAllEquipments = Array.from(equipmentQuantityMap.entries()).every(([equipmentId, requiredQuantity]) => {
+            const userQuantity = inventoryMap.get(equipmentId) || 0;
+            if (userQuantity < requiredQuantity) {
+                missingOrInsufficientEquipment.push(
+                    `Equipment ${equipmentId} (required: ${requiredQuantity}, owned: ${userQuantity})`
+                );
+                return false;
+            }
+            return true;
+        });
 
-        if (isEquipped) {
-            logger.info(`User ${telegramId} has equipment ${equipmentInvId} equipped.`);
+        // Logging
+        if (ownsAllEquipments) {
+            logger.info(
+                `User ${telegramId} owns all requested equipment with sufficient quantities: ${Array.from(equipmentQuantityMap.keys()).join(", ")}`
+            );
         } else {
-            logger.info(`User ${telegramId} does not have equipment ${equipmentInvId} equipped.`);
+            logger.info(
+                `User ${telegramId} does not own these equipment with sufficient quantities: ${missingOrInsufficientEquipment.join(", ")}`
+            );
         }
 
-        return isEquipped;
+        return ownsAllEquipments;
     } catch (error) {
-        logger.error(`Failed to check if equipment ${equipmentInvId} is equipped for user ${telegramId}: ${error}`);
+        logger.error(
+            `Error checking if user ${telegramId} owns equipment with required quantities: ${error}`
+        );
         throw error;
     }
 }
 
-// Function to get all equipment from the user's inventory
-export async function getUserEquipmentInventory(telegramId: number): Promise<(EquipmentInventory & { equipment: Equipment})[]> {
+export async function mintEquipmentToUser(
+    telegramId: number,
+    equipmentId: number,
+    quantity: number = 1
+): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }>> {
     try {
-        // Fetch all equipment from the user's inventory
-        const userInventory = await prisma.equipmentInventory.findMany({
-            where: { userId: telegramId },
-            include: {
-                equipment: true // To include equipment details (name, rarity, etc.)
-            }
-        });
-
-        if (!userInventory.length) {
-            logger.info(`No equipment found in the inventory for user with telegramId ${telegramId}`);
-            return [];
-        }
-
-        logger.info(`Fetched ${userInventory.length} equipment from the inventory for user with telegramId ${telegramId}`);
-        return userInventory;
-    } catch (error) {
-        logger.error(`Failed to fetch user equipment inventory: ${error}`);
-        throw error;
-    }
-}
-
-// Function to get a specific equipment from the user's inventory
-export async function getUserSpecificEquipment(telegramId: number, equipmentInvId: number): Promise<EquipmentInventory & { equipment: Equipment } | null> {
-    try {
-        const userEquipment = await prisma.equipmentInventory.findUnique({
+        // Check if the equipment already exists in the user's inventory
+        const existingInventory = await prisma.inventory.findFirst({
             where: {
-                id: equipmentInvId,
-                userId: telegramId
-            },
-            include: {
-                equipment: true // To include equipment details like name, etc.
-            }
-        });
-
-        if (!userEquipment) {
-            logger.info(`Equipment ${equipmentInvId} not found in inventory for user ${telegramId}.`);
-            return null;
-        }
-
-        logger.info(`Fetched equipment ${userEquipment.equipment.name} for user ${telegramId}.`);
-
-        return userEquipment;
-    } catch (error) {
-        logger.error(`Failed to fetch equipment ${equipmentInvId} for user ${telegramId}: ${error}`);
-        throw error;
-    }
-}
-
-// Function to add equipment to user's inventory
-export async function mintEquipmentToUser(telegramId: number, equipmentId: number): Promise<EquipmentInventory & { equipment: Equipment } | null> {
-    try {
-        if (!(await userExists(telegramId))) throw new Error(`User does not exist.`);
-
-        // Create a new entry for the equipment in the inventory
-        const newInventory = await prisma.equipmentInventory.create({
-            data: {
                 userId: telegramId,
-                equipmentId: equipmentId
+                equipmentId: equipmentId,
+                itemId: null, // Ensure this is specifically an equipment entry
             },
-            include: {
-                equipment: true
-            }
         });
-        logger.info(`Equipment ${newInventory.equipment.name} added to user with telegramId ${telegramId}.`);
 
-        return newInventory;
+        if (existingInventory) {
+            // Case 1: Equipment exists → Increment the quantity
+            const updatedInventory = await prisma.inventory.update({
+                where: { id: existingInventory.id },
+                data: {
+                    quantity: {
+                        increment: quantity,
+                    },
+                },
+                include: {
+                    equipment: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            imgsrc: true,
+                            str: true,
+                            def: true,
+                            dex: true,
+                            magic: true,
+                            hp: true,
+                            rarity: true,
+                            type: true,
+                        },
+                    },
+                },
+            });
 
+            logger.info(
+                `Updated quantity for equipment ${updatedInventory.equipment?.name}. New quantity: ${updatedInventory.quantity}`
+            );
+            return updatedInventory;
+        } else {
+            // Case 2: Equipment does not exist → Create a new entry
+            const nextOrder = await getNextInventoryOrder(telegramId); // Get the next order index
+
+            const newInventory = await prisma.inventory.create({
+                data: {
+                    userId: telegramId,
+                    equipmentId: equipmentId,
+                    itemId: null, // Ensure null for non-item entries
+                    quantity: quantity,
+                    order: nextOrder
+                },
+                include: {
+                    equipment: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            imgsrc: true,
+                            str: true,
+                            def: true,
+                            dex: true,
+                            magic: true,
+                            hp: true,
+                            rarity: true,
+                            type: true,
+                        },
+                    },
+                },
+            });
+
+            logger.info(
+                `Added new equipment ${newInventory.equipment?.name} to user ${telegramId}. Quantity: ${newInventory.quantity}`
+            );
+            return newInventory;
+        }
     } catch (error) {
-        logger.error(`Failed to add equipment to user: ${error}`);
+        logger.error(`Error minting equipment to user: ${error}`);
         throw error;
     }
 }
 
 // Function to delete equipment from user's inventory
 export async function deleteEquipmentFromUserInventory(
-    telegramId: number, 
-    equipmentInvId: number
-): Promise<EquipmentInventory & { equipment: Equipment } | null> {
+    telegramId: number,
+    equipmentIds: number[],
+    quantitiesToRemove: number[]
+): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }>[]> {
     try {
-        // Fetch the equipment from the user's inventory to check existence
-        const equipmentInventory = await prisma.equipmentInventory.findUnique({
-            where: {
-                id: equipmentInvId
-            },
-            include: {
-                equipment: true // Include equipment details
-            }
-        });
-
-        // Check if the equipment exists in the user's inventory
-        if (!equipmentInventory || equipmentInventory.userId !== telegramId) {
-            logger.error(`Equipment ${equipmentInvId} not found in inventory for user ${telegramId}`);
-            return null;
+        // Validate input lengths
+        if (equipmentIds.length !== quantitiesToRemove.length) {
+            throw new Error("Equipment IDs and quantities arrays must have the same length.");
         }
 
-        // Delete the equipment from the user's inventory
-        const deletedEquipment = await prisma.equipmentInventory.delete({
-            where: {
-                id: equipmentInvId
-            },
-            include: {
-                equipment: true // Include equipment details
+        const updatedInventories: Prisma.InventoryGetPayload<{ include: { equipment: true } }>[] = [];
+
+        for (let i = 0; i < equipmentIds.length; i++) {
+            const equipmentId = equipmentIds[i];
+            const quantityToRemove = quantitiesToRemove[i];
+
+            // Fetch the current inventory for the user
+            const existingInventory = await prisma.inventory.findFirst({
+                where: {
+                    userId: telegramId,
+                    equipmentId: equipmentId,
+                    itemId: null, // Ensure it's specifically equipment
+                },
+                include: {
+                    equipment: true, // Include equipment details
+                },
+            });
+
+            if (!existingInventory) {
+                logger.warn(
+                    `Equipment with ID ${equipmentId} not found in user ${telegramId}'s inventory. Skipping.`
+                );
+                continue; // Skip to the next equipment
             }
-        });
 
-        logger.info(`Deleted equipment ${equipmentInventory.equipment.name} (ID: ${equipmentInvId}) from user ${telegramId}'s inventory.`);
-        return deletedEquipment;
+            let updatedInventory;
 
+            if (existingInventory.quantity > quantityToRemove) {
+                // Case 1: Reduce quantity
+                updatedInventory = await prisma.inventory.update({
+                    where: { id: existingInventory.id },
+                    data: {
+                        quantity: {
+                            decrement: quantityToRemove,
+                        },
+                    },
+                    include: {
+                        equipment: true,
+                    },
+                });
+
+                logger.info(
+                    `Reduced quantity of equipment ID ${equipmentId} for user ${telegramId}. New quantity: ${updatedInventory.quantity}`
+                );
+            } else {
+                // Case 2: Prepare to delete and return object with quantity: 0
+                updatedInventory = {
+                    ...existingInventory,
+                    quantity: 0, // Simulate the quantity reaching 0
+                };
+
+                // Delete the inventory entry
+                await prisma.inventory.delete({
+                    where: { id: existingInventory.id },
+                });
+
+                logger.info(
+                    `Removed equipment ID ${equipmentId} from user ${telegramId}'s inventory.`
+                );
+            }
+
+            // Add the updated/deleted inventory to the result array
+            updatedInventories.push(updatedInventory);
+        }
+
+        return updatedInventories;
     } catch (error) {
-        logger.error(`Failed to delete equipment ${equipmentInvId} from user ${telegramId}'s inventory: ${error}`);
+        logger.error(`Error deleting equipment from user inventory: ${error}`);
         throw error;
-    } finally {
-        await prisma.$disconnect();
     }
 }

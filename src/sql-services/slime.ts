@@ -3,7 +3,7 @@ import { prisma } from './client';
 import { logger } from '../utils/logger';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
 
-type SlimeWithTraits = Slime & {
+export type SlimeWithTraits = Slime & {
   owner: Pick<User, 'telegramId'>;
   AuraDominant: SlimeTrait;
   AuraHidden1: SlimeTrait;
@@ -187,6 +187,7 @@ export async function generateRandomGen0Slime(ownerId: number, probabilities: nu
     const slime = await prisma.slime.create({
       data: {
         ownerId,
+        generation: 0,
         Aura_D: traits.Aura.dominant,
         Aura_H1: traits.Aura.hidden1,
         Aura_H2: traits.Aura.hidden2,
@@ -362,6 +363,7 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
     const childSlime = await prisma.slime.create({
       data: {
         ownerId: sire.ownerId,
+        generation: Math.max(sire.generation, dame.generation) + 1,
         Aura_D: childData['Aura_D'],
         Aura_H1: childData['Aura_H1'],
         Aura_H2: childData['Aura_H2'],

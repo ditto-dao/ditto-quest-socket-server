@@ -4,8 +4,7 @@ import { logger } from '../utils/logger';
 async function purgeUserRelatedData() {
   try {
     // Delete from related tables first to avoid foreign key constraints
-    await prisma.equipmentInventory.deleteMany({});
-    await prisma.itemInventory.deleteMany({});
+    await prisma.inventory.deleteMany({});
     await prisma.slime.deleteMany({});
     await prisma.combat.deleteMany({});
 
@@ -13,8 +12,7 @@ async function purgeUserRelatedData() {
     await prisma.user.deleteMany({});
 
     // Reset auto-increment counters for each table
-    await prisma.$executeRaw`ALTER TABLE EquipmentInventory AUTO_INCREMENT = 1`;
-    await prisma.$executeRaw`ALTER TABLE ItemInventory AUTO_INCREMENT = 1`;
+    await prisma.$executeRaw`ALTER TABLE Inventory AUTO_INCREMENT = 1`;
     await prisma.$executeRaw`ALTER TABLE Slime AUTO_INCREMENT = 1`;
     await prisma.$executeRaw`ALTER TABLE Combat AUTO_INCREMENT = 1`;
     await prisma.$executeRaw`ALTER TABLE User AUTO_INCREMENT = 1`;

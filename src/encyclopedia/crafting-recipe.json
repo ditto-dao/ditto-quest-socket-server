@@ -2,7 +2,7 @@
     {
         "craftingRecipe": {
             "equipmentId": 1,
-            "durationS": 3,
+            "durationS": 30,
             "CraftingRecipeItems": [
                 {
                     "itemId": 1,
@@ -14,7 +14,7 @@
     {
         "craftingRecipe": {
             "equipmentId": 2,
-            "durationS": 3,
+            "durationS": 60,
             "CraftingRecipeItems": [
                 {
                     "itemId": 1,

@@ -7,7 +7,7 @@ import { setupSocketHandlers } from "./src/socket/socket-handlers"
 import { setupGlobalErrorHandlers } from "./src/utils/global-error-handler"
 import { PORT, SOCKET_ORIGIN, SOCKET_PATH } from "./src/utils/config"
 import { SocketManager } from "./src/socket/socket-manager"
-import { IdleManager } from "./src/managers/idle-manager"
+import { IdleManager } from "./src/managers/idle-managers/idle-manager"
 
 
 async function main() {
@@ -26,20 +26,21 @@ async function main() {
     logger.info(`SOCKET_ORIGIN: ${SOCKET_ORIGIN}`)
     logger.info(`SOCKET_PATH: ${SOCKET_PATH}`)
 
-/*     // Redis
+    // Redis
     const redisClient = createClient({
         url: 'redis://localhost:6379'
     })
     redisClient.on('error', (err) => logger.error(`Redis Client Error ${err}`))
     redisClient.connect().then(() => {
         logger.info('Connected to Redis')
-    }) */
+    })
 
     // Socket manager
     const socketManager = new SocketManager(io)
 
     // Idle manager
-    const idleManager = new IdleManager(socketManager)
+    //const idleManager = new IdleManager(socketManager)
+    const idleManager = new IdleManager(redisClient, socketManager);
 
     await setupSocketHandlers(io, socketManager, idleManager)
 

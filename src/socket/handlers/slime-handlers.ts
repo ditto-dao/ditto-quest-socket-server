@@ -1,18 +1,27 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
-import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "redis"
 import { logger } from "../../utils/logger"
 import { burnSlime, generateRandomGen0Slime } from "../../sql-services/slime"
 import { GEN_0_SLIME_TRAIT_PROBABILITIES } from "../../utils/config"
+import { IdleManager } from "../../managers/idle-managers/idle-manager"
+import { SocketManager } from "../socket-manager"
+import { IdleBreedingManager } from "../../managers/idle-managers/breeding-idle-manager"
 
 interface BurnSlimeRequest {
     userId: number,
     slimeId: number
 }
 
+interface BreedSlimeRequest {
+    userId: number,
+    sireId: number,
+    dameId: number
+}
+
 export async function setupSlimeSocketHandlers(
     socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-    //redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
+    socketManager: SocketManager,
+    idleManager: IdleManager
 ): Promise<void> {
     socket.on("mint-gen-0-slime", async (userId: number) => {
         try {
@@ -52,4 +61,32 @@ export async function setupSlimeSocketHandlers(
         }
     })
 
+    socket.on("breed-slimes", async (data: BreedSlimeRequest) => {
+        try {
+            logger.info(`Received breed-slimes event from user ${data.userId}`)
+
+            IdleBreedingManager.startBreeding(socketManager, idleManager, data.userId, data.sireId, data.dameId, Date.now());
+
+        } catch (error) {
+            logger.error(`Error processing breed-slime: ${error}`)
+            socket.emit('error', {
+                userId: data.userId,
+                msg: 'Failed to breed slime'
+            })
+        }
+    })
+
+    socket.on("stop-breed-slimes", async (data: BreedSlimeRequest) => {
+        try {
+            logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
+
+            IdleBreedingManager.stopBreeding(idleManager, data.userId, data.sireId, data.dameId);
+        } catch (error) {
+            logger.error(`Error processing breed-slime: ${error}`)
+            socket.emit('error', {
+                userId: data.userId,
+                msg: 'Failed to breed slime'
+            })
+        }
+    })
 }

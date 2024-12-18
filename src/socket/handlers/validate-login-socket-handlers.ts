@@ -6,6 +6,7 @@ import { logger } from "../../utils/logger"
 import { SocketManager } from "../socket-manager"
 import { BOT_TOKEN } from "../../utils/config"
 import { createUser, getUserData, userExists } from "../../sql-services/user-service"
+import { IdleManager } from "../../managers/idle-managers/idle-manager"
 
 interface ValidateLoginPayload {
     initData: string
@@ -23,6 +24,7 @@ export async function setupValidateLoginSocketHandlers(
     socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
     //redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
     socketManager: SocketManager,
+    idleManager: IdleManager
 ): Promise<void> {
     socket.on("validate-login", async (data: ValidateLoginPayload) => {
         try {
@@ -45,6 +47,8 @@ export async function setupValidateLoginSocketHandlers(
                 logger.info(`Valid login data: ${JSON.stringify(data, null, 2)}`)
                 socketManager.cacheSocketIdForUser(userData.id, socket.id)
                 socket.emit('login-validated', userData.id)
+                
+                await idleManager.loadIdleActivitiesOnLogin(userData.id);
                 await handleUserData(socket, userData.id, userData.username)
             }
 
@@ -59,6 +63,7 @@ export async function setupValidateLoginSocketHandlers(
 
     socket.on("logout-user", async (userId: number) => {
         socketManager.removeSocketIdCacheForUser(userId)
+        idleManager.saveAllIdleActivitiesOnLogout(userId)
     })
 }
 
@@ -100,7 +105,6 @@ const handleUserData = async (socket: Socket<DefaultEventsMap, DefaultEventsMap,
         user = await getUserData(userId)
     }
 
-    logger.info(JSON.stringify(user, null, 2))
     socket.emit('user-data-on-login', {
         userId: userId,
         payload: user

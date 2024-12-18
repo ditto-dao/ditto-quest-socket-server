@@ -53,3 +53,17 @@ export function getMutationProbability(rarity: Rarity): number {
             return 0;
     }
 }
+
+export function getBreedingTimeSByGeneration(gen: number): number {
+    if (gen < 1) {
+        return 60;
+    } else if (gen <= 3) {
+        return 120;
+    } else if (gen <= 5) {
+        return 180;
+    } else if (gen <= 7) {
+        return 240;
+    } else {
+        return 300;
+    }
+}

@@ -1,9 +1,11 @@
 [
     {
-        "itemId": 1,
+        "id": 1,
         "name": "Wood",
         "rarity": "D",
         "description": "A piece of wood. Good for building things.",
-        "consumableId": null
+        "imgsrc": "https://oldschool.runescape.wiki/images/thumb/Logs_detail.png/260px-Logs_detail.png?6c104",
+        "consumableId": null,
+        "farmingDurationS": 5
     }
 ]

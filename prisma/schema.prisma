@@ -34,34 +34,33 @@ model User {
   outstandingSkillPoints Int     @default(0) @map("outstanding_skill_points")
 
   // Optional equipment relationships
-  hatId       Int? @unique
-  armourId    Int? @unique
-  weaponId    Int? @unique
-  shieldId    Int? @unique
-  capeId      Int? @unique
-  necklaceId  Int? @unique
-  petId       Int? @unique
-  spellbookId Int? @unique
+  hatInventoryId       Int? @unique
+  armourInventoryId    Int? @unique
+  weaponInventoryId    Int? @unique
+  shieldInventoryId    Int? @unique
+  capeInventoryId      Int? @unique
+  necklaceInventoryId  Int? @unique
+  petInventoryId       Int? @unique
+  spellbookInventoryId Int? @unique
 
-  // Relations to the EquipmentInventory table
-  hat       EquipmentInventory? @relation("Hat", fields: [hatId], references: [id])
-  armour    EquipmentInventory? @relation("Armour", fields: [armourId], references: [id])
-  weapon    EquipmentInventory? @relation("Weapon", fields: [weaponId], references: [id])
-  shield    EquipmentInventory? @relation("Shield", fields: [shieldId], references: [id])
-  cape      EquipmentInventory? @relation("Cape", fields: [capeId], references: [id])
-  necklace  EquipmentInventory? @relation("Necklace", fields: [necklaceId], references: [id])
-  pet       EquipmentInventory? @relation("Pet", fields: [petId], references: [id])
-  spellbook EquipmentInventory? @relation("Spellbook", fields: [spellbookId], references: [id])
+  // Relations to the Inventory table for equipped items
+  hat       Inventory? @relation("Hat", fields: [hatInventoryId], references: [id])
+  armour    Inventory? @relation("Armour", fields: [armourInventoryId], references: [id])
+  weapon    Inventory? @relation("Weapon", fields: [weaponInventoryId], references: [id])
+  shield    Inventory? @relation("Shield", fields: [shieldInventoryId], references: [id])
+  cape      Inventory? @relation("Cape", fields: [capeInventoryId], references: [id])
+  necklace  Inventory? @relation("Necklace", fields: [necklaceInventoryId], references: [id])
+  pet       Inventory? @relation("Pet", fields: [petInventoryId], references: [id])
+  spellbook Inventory? @relation("Spellbook", fields: [spellbookInventoryId], references: [id])
 
-  // User relations to inventories
-  equipmentInventory EquipmentInventory[]
-  itemInventory      ItemInventory[]
+  // Relation to inventory
+  inventory Inventory[]
 
   // Relation to Combat stats
   combat Combat?
 
   // Relation to slimes
-  Slime Slime[]
+  slimes Slime[]
 
   // Relation to equipped slime
   equippedSlimeId Int?   @unique
@@ -104,6 +103,7 @@ enum TraitType {
 model Slime {
   id         Int   @id @default(autoincrement())
   ownerId    Int
+  generation Int
   owner      User  @relation(fields: [ownerId], references: [telegramId])
   equippedBy User? @relation("EquippedSlime")
 
@@ -269,6 +269,7 @@ model Equipment {
   id          Int           @id @default(autoincrement())
   name        String        @unique
   description String        @default("")
+  imgsrc      String
   str         Int           @default(0)
   def         Int           @default(0)
   dex         Int           @default(0)
@@ -277,57 +278,55 @@ model Equipment {
   rarity      Rarity
   type        EquipmentType // hat, armour, weapon, shield, cape, necklace, pet, spellbook
 
-  equipmentInventory EquipmentInventory[]
+  equipmentInventory Inventory[]
 
   CraftingRecipe CraftingRecipe[]
 }
 
 // Items table
 model Item {
-  itemId       Int         @id @default(autoincrement())
-  name         String      @unique
-  description  String      @default("")
-  rarity       Rarity
-  consumableId Int?
-  consumable   Consumable? @relation(fields: [consumableId], references: [id])
+  id               Int         @id @default(autoincrement())
+  name             String      @unique
+  description      String      @default("")
+  imgsrc           String
+  rarity           Rarity
+  consumableId     Int?
+  consumable       Consumable? @relation(fields: [consumableId], references: [id])
+  farmingDurationS Int?
 
-  itemInventory ItemInventory[]
+  itemInventory Inventory[]
 
   CraftingRecipeItems CraftingRecipeItems[]
 }
 
-// Equipment Inventory table
-model EquipmentInventory {
-  id          Int @id @default(autoincrement())
-  equipmentId Int
+// Inventory table
+model Inventory {
+  id          Int      @id @default(autoincrement())
   userId      Int
+  itemId      Int? // References Item table (nullable for equipment entries)
+  equipmentId Int? // References Equipment table (nullable for item entries)
+  quantity    Int      @default(1)
+  order       Int      @default(0) // Order for sorting in the inventory
+  createdAt   DateTime @default(now())
 
-  equipment Equipment @relation(fields: [equipmentId], references: [id])
-  user      User      @relation(fields: [userId], references: [telegramId])
+  // Relations to User
+  user      User       @relation(fields: [userId], references: [telegramId])
+  item      Item?      @relation(fields: [itemId], references: [id])
+  equipment Equipment? @relation(fields: [equipmentId], references: [id])
 
-  // Opposite relations for the equipment types (mirroring the User relations)
-  hat       User? @relation("Hat")
-  armour    User? @relation("Armour")
-  weapon    User? @relation("Weapon")
-  shield    User? @relation("Shield")
-  cape      User? @relation("Cape")
-  necklace  User? @relation("Necklace")
-  pet       User? @relation("Pet")
-  spellbook User? @relation("Spellbook")
-}
+  // Relations for equipped items (mirrored from User)
+  hatUser       User? @relation("Hat")
+  armourUser    User? @relation("Armour")
+  weaponUser    User? @relation("Weapon")
+  shieldUser    User? @relation("Shield")
+  capeUser      User? @relation("Cape")
+  necklaceUser  User? @relation("Necklace")
+  petUser       User? @relation("Pet")
+  spellbookUser User? @relation("Spellbook")
 
-// Item Inventory table
-model ItemInventory {
-  id       Int @id @default(autoincrement())
-  itemId   Int
-  userId   Int
-  quantity Int
-
-  item Item @relation(fields: [itemId], references: [itemId])
-  user User @relation(fields: [userId], references: [telegramId])
-
-  // Enforce unique combination of userId and itemId
-  @@unique([userId, itemId])
+  // Enforce uniqueness: Only one row per user-item or user-equipment combo
+  @@unique([userId, itemId, equipmentId])
+  @@index([userId, order])
 }
 
 // Define an enum for effect types
@@ -378,7 +377,7 @@ model CraftingRecipeItems {
   recipeId Int
   recipe   CraftingRecipe @relation(fields: [recipeId], references: [id])
   itemId   Int
-  item     Item           @relation(fields: [itemId], references: [itemId])
+  item     Item           @relation(fields: [itemId], references: [id])
   quantity Int            @default(1) // Number of items required to craft the equipment
 
   @@unique([recipeId, itemId]) // Ensure unique combination of item and recipe
