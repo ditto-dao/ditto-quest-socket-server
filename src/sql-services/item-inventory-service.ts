@@ -5,7 +5,7 @@ import { getNextInventoryOrder } from './user-service';
 
 // Function to check if a user owns all specified items with the required quantities
 export async function doesUserOwnItems(
-    telegramId: number,
+    telegramId: string,
     itemIds: number[],
     quantities: number[]
 ): Promise<boolean> {
@@ -77,7 +77,7 @@ export async function doesUserOwnItems(
 }
 
 export async function mintItemToUser(
-    telegramId: number,
+    telegramId: string,
     itemId: number,
     quantity: number = 1
 ): Promise<Prisma.InventoryGetPayload<{ include: { item: true } }>> {
@@ -158,7 +158,7 @@ export async function mintItemToUser(
 }
 
 export async function deleteItemsFromUserInventory(
-    telegramId: number,
+    telegramId: string,
     itemIds: number[],
     quantitiesToRemove: number[]
 ): Promise<Prisma.InventoryGetPayload<{ include: { item: true } }>[]> {

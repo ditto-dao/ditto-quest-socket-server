@@ -102,7 +102,7 @@ export class IdleFarmingManager {
             }
         });
 
-        if (repetitions > 0) await mintItemToUser(userId, farming.itemId, repetitions);
+        if (repetitions > 0) await mintItemToUser(userId.toString(), farming.itemId, repetitions);
 
         return {
             type: 'farming',
@@ -125,9 +125,7 @@ export class IdleFarmingManager {
         itemId: number,
     ): Promise<void> {
         try {
-            const updatedItemsInv = await mintItemToUser(userId, itemId);
-
-            logger.info(JSON.stringify(updatedItemsInv, null, 2));
+            const updatedItemsInv = await mintItemToUser(userId.toString(), itemId);
 
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,

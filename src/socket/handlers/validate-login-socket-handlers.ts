@@ -99,10 +99,10 @@ const isInitDataValid = async (telegramInitData: string, botToken: string): Prom
 
 const handleUserData = async (socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, userId: number, username?: string): Promise<void> => {
     let user
-    if (!(await userExists(userId))) {
-        user = await createUser({ telegramId: userId, username: username })
+    if (!(await userExists(userId.toString()))) {
+        user = await createUser({ telegramId: userId.toString(), username: username })
     } else {
-        user = await getUserData(userId)
+        user = await getUserData(userId.toString())
     }
 
     socket.emit('user-data-on-login', {

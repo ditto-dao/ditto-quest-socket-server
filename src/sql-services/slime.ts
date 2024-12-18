@@ -89,7 +89,7 @@ export async function fetchSlimeObjectWithTraits(slimeId: number): Promise<Slime
   }
 }
 
-export async function burnSlime(telegramId: number, slimeId: number): Promise<number> {
+export async function burnSlime(telegramId: string, slimeId: number): Promise<number> {
   try {
     // Check if the slime is owned by the user with the specified telegramId
     const slime = await prisma.slime.findUnique({
@@ -159,7 +159,7 @@ export async function getRandomSlimeTraitId(traitType: TraitType, probabilities:
   }
 }
 
-export async function generateRandomGen0Slime(ownerId: number, probabilities: number[]): Promise<Slime> {
+export async function generateRandomGen0Slime(ownerId: string, probabilities: number[]): Promise<Slime> {
   try {
     // Check if probabilities sum to 1 and length matches rarities array
     const sum = probabilities.reduce((acc, curr) => acc + curr, 0);

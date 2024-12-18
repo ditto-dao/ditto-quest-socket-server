@@ -7,6 +7,7 @@ import { setupItemsSocketHandlers } from "./handlers/items-socket-handlers"
 import { setupCraftingSocketHandlers } from "./handlers/crafting-handlers"
 import { setupSlimeSocketHandlers } from "./handlers/slime-handlers"
 import { IdleManager } from "../managers/idle-managers/idle-manager"
+import { setupUserSocketHandlers } from "./handlers/user-socket-handlers"
 
 export interface EventPayloadWithUserId {
     userId: number,
@@ -23,6 +24,8 @@ export async function setupSocketHandlers(
         logger.info("An adapter has connected")
 
         setupValidateLoginSocketHandlers(socket, socketManager, idleManager)
+
+        setupUserSocketHandlers(socket)
 
         setupItemsSocketHandlers(socket, socketManager, idleManager)
 

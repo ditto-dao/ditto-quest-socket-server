@@ -18,7 +18,7 @@ export class IdleBreedingManager {
 
         if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
         if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");
-        if (sire.ownerId !== userId) throw new Error("User does not own slimes.");
+        if (sire.ownerId !== userId.toString()) throw new Error("User does not own slimes.");
 
         const idleBreedingActivity: IdleActivityQueueElement = {
             userId: userId,

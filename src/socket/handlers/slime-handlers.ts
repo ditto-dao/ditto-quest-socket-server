@@ -27,7 +27,7 @@ export async function setupSlimeSocketHandlers(
         try {
             logger.info(`Received mint-gen-0-slime event from user ${userId}`)
 
-            const slime = await generateRandomGen0Slime(userId, GEN_0_SLIME_TRAIT_PROBABILITIES)
+            const slime = await generateRandomGen0Slime(userId.toString(), GEN_0_SLIME_TRAIT_PROBABILITIES)
 
             socket.emit("slime-mint-update", {
                 userId: userId,
@@ -46,7 +46,7 @@ export async function setupSlimeSocketHandlers(
         try {
             logger.info(`Received burn-slime event from user ${data.userId}`)
 
-            const res = await burnSlime(data.userId, data.slimeId)
+            const res = await burnSlime(data.userId.toString(), data.slimeId)
 
             socket.emit("slime-burn-update", {
                 userId: data.userId,

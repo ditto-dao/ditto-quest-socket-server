@@ -18,7 +18,7 @@ datasource db {
 }
 
 model User {
-  telegramId             Int     @id
+  telegramId             String     @id
   username               String?
   goldBalance            Int     @default(0)
   level                  Int     @default(1)
@@ -68,7 +68,7 @@ model User {
 }
 
 model Combat {
-  userId  Int @id
+  userId  String @id
   str     Int @default(1)
   def     Int @default(1)
   dex     Int @default(1)
@@ -102,7 +102,7 @@ enum TraitType {
 
 model Slime {
   id         Int   @id @default(autoincrement())
-  ownerId    Int
+  ownerId    String
   generation Int
   owner      User  @relation(fields: [ownerId], references: [telegramId])
   equippedBy User? @relation("EquippedSlime")
@@ -302,7 +302,7 @@ model Item {
 // Inventory table
 model Inventory {
   id          Int      @id @default(autoincrement())
-  userId      Int
+  userId      String
   itemId      Int? // References Item table (nullable for equipment entries)
   equipmentId Int? // References Equipment table (nullable for item entries)
   quantity    Int      @default(1)

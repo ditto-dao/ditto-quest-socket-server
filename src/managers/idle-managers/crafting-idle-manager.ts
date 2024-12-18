@@ -14,7 +14,7 @@ export class IdleCraftingManager {
         const now = Date.now();
         const recipe = await getCraftingRecipeForEquipment(equipmentId);
 
-        if (!(await doesUserOwnItems(userId, recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
+        if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
             throw new Error(`Unable to start idle crafting. User does not have all the required items.`);
         }
 
@@ -86,7 +86,7 @@ export class IdleCraftingManager {
             timestamp += crafting.durationS * 1000; // Add duration to timestamp
 
             if (timestamp <= now) {
-                if ((await doesUserOwnItems(userId, recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions + 1)))) {
+                if ((await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions + 1)))) {
                     repetitions++
                 } else {
                     startCurrentRepetition = false;
@@ -121,9 +121,9 @@ export class IdleCraftingManager {
 
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
-            await deleteItemsFromUserInventory(userId, recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions));
+            await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions));
 
-            await mintEquipmentToUser(userId, recipe.equipmentId, repetitions);
+            await mintEquipmentToUser(userId.toString(), recipe.equipmentId, repetitions);
         }
 
         return {
@@ -152,14 +152,12 @@ export class IdleCraftingManager {
         try {
             const recipe = await getCraftingRecipeForEquipment(equipmentId);
 
-            if (!(await doesUserOwnItems(userId, recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
+            if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
                 throw new Error(`Unable to run crafting complete callback. User does not have all the required items.`);
             }
 
-            const updatedItemsInv = await deleteItemsFromUserInventory(userId, recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
-            const updatedEquipmentInv = await mintEquipmentToUser(userId, equipmentId);
-
-            logger.info(JSON.stringify(updatedEquipmentInv, null ,2))
+            const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
+            const updatedEquipmentInv = await mintEquipmentToUser(userId.toString(), equipmentId);
 
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,

@@ -26,7 +26,7 @@ export async function setupItemsSocketHandlers(
         try {
             logger.info(`Received mint-item event from user ${data.userId}`)
 
-            const res = await mintItemToUser(data.userId, data.itemId, data.quantity)
+            const res = await mintItemToUser(data.userId.toString(), data.itemId, data.quantity)
 
             socket.emit("update-inventory", {
                 userId: data.userId,

@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 import { prisma } from './client';
 
 // Function to get user combat
-export async function getUserCombat(userId: number): Promise<Combat> {
+export async function getUserCombat(userId: string): Promise<Combat> {
     try {
         // Fetch the combat record for the given userId
         const combat = await prisma.combat.findUnique({
@@ -25,7 +25,7 @@ export async function getUserCombat(userId: number): Promise<Combat> {
 }
 
 // Function to increment/decrement hp
-export async function incrementHp(userId: number, amount: number): Promise<number> {
+export async function incrementHp(userId: string, amount: number): Promise<number> {
     try {
         // Fetch the current hp and hpLevel from the Combat record
         const combat = await prisma.combat.findUnique({
@@ -58,7 +58,7 @@ export async function incrementHp(userId: number, amount: number): Promise<numbe
 }
 
 // Function to update user's combat stats based on equipped items
-export async function updateCombatStats(telegramId: number): Promise<Combat> {
+export async function updateCombatStats(telegramId: string): Promise<Combat> {
     try {
         // Fetch the user's equipment inventory (only equipped items)
         const user = await prisma.user.findUnique({

@@ -1,11 +1,11 @@
 import { logger } from '../utils/logger';
 import { calculateExpForNextLevel, getEquipFieldByType } from '../utils/helpers';
 import { prisma } from './client';
-import { Inventory, EquipmentType, User } from '@prisma/client';
+import { Inventory, EquipmentType, User, Prisma } from '@prisma/client';
 
 // Interface for user input
 interface CreateUserInput {
-    telegramId: number;
+    telegramId: string;
     username?: string;
 }
 
@@ -130,7 +130,7 @@ export async function createUser(input: CreateUserInput): Promise<User> {
 }
 
 // Function to check if a user exists by their telegramId
-export async function userExists(telegramId: number): Promise<boolean> {
+export async function userExists(telegramId: string): Promise<boolean> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
@@ -144,7 +144,7 @@ export async function userExists(telegramId: number): Promise<boolean> {
 }
 
 // Function to retrieve a user by their telegramId
-export async function getUserData(telegramId: number): Promise<User | null> {
+export async function getUserData(telegramId: string): Promise<User | null> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
@@ -262,7 +262,7 @@ export async function getUserData(telegramId: number): Promise<User | null> {
     }
 }
 
-export async function getNextInventoryOrder(telegramId: number): Promise<number> {
+export async function getNextInventoryOrder(telegramId: string): Promise<number> {
     const maxOrder = await prisma.inventory.aggregate({
         where: { userId: telegramId },
         _max: { order: true },
@@ -271,7 +271,7 @@ export async function getNextInventoryOrder(telegramId: number): Promise<number>
 }
 
 // Function to update a user's gold balance
-export async function updateUserGoldBalance(telegramId: number, increment: number): Promise<number> {
+export async function updateUserGoldBalance(telegramId: string, increment: number): Promise<number> {
     try {
         const user = await prisma.user.update({
             where: { telegramId },
@@ -297,7 +297,7 @@ interface IncrementMaxHpExpResponse {
 }
 
 // Function to increment experience for maxHp and check for maxHp level-up, return true if level up
-export async function incrementMaxHpExp(telegramId: number, hpExpToAdd: number): Promise<IncrementMaxHpExpResponse> {
+export async function incrementMaxHpExp(telegramId: string, hpExpToAdd: number): Promise<IncrementMaxHpExpResponse> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
@@ -353,7 +353,7 @@ interface IncrementUserExpResponse {
 }
 
 // Function to increment a user's experience points
-export async function incrementUserExp(telegramId: number, expToAdd: number): Promise<IncrementUserExpResponse> {
+export async function incrementUserExp(telegramId: string, expToAdd: number): Promise<IncrementUserExpResponse> {
     try {
         let user = await prisma.user.update({
             where: { telegramId },
@@ -384,7 +384,7 @@ interface CheckAndHandleLevelUpUserResponse {
 }
 
 // Function to handle the leveling up process if necesssary
-export async function checkAndHandleLevelUp(telegramId: number): Promise<CheckAndHandleLevelUpUserResponse | null> {
+export async function checkAndHandleLevelUp(telegramId: string): Promise<CheckAndHandleLevelUpUserResponse | null> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
@@ -443,7 +443,7 @@ interface UseSPToUpgradeSkillResponse {
 }
 
 // Function to use skill points to increase skill
-export async function useSkillPointsToUpgradeSkill(telegramId: number, pointsToUse: number, skill: 'str' | 'def' | 'dex' | 'magic' | 'hp' | 'maxHp'): Promise<UseSPToUpgradeSkillResponse> {
+export async function useSkillPointsToUpgradeSkill(telegramId: string, pointsToUse: number, skill: 'str' | 'def' | 'dex' | 'magic' | 'hp' | 'maxHp'): Promise<UseSPToUpgradeSkillResponse> {
     try {
         // Fetch user data with all skill fields to ensure TypeScript recognizes the properties correctly
         const user = await prisma.user.findUnique({
@@ -496,9 +496,9 @@ export async function useSkillPointsToUpgradeSkill(telegramId: number, pointsToU
 
 // Function to equip equipment by inventory id
 export async function equipEquipmentForUser(
-    telegramId: number,
+    telegramId: string,
     inventoryId: number
-): Promise<boolean> {
+): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }>> {
     try {
         // Fetch the equipment from the user's inventory
         const equipmentInventory = await prisma.inventory.findUnique({
@@ -536,7 +536,7 @@ export async function equipEquipmentForUser(
         });
 
         logger.info(`User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`);
-        return true;
+        return equipmentInventory;
 
     } catch (error) {
         logger.error(`Failed to equip equipment ${inventoryId} for user ${telegramId}: ${error}`);
@@ -546,7 +546,7 @@ export async function equipEquipmentForUser(
 
 // Function to unequip equipment by type for the user
 export async function unequipEquipmentForUser(
-    telegramId: number,
+    telegramId: string,
     equipmentType: EquipmentType
 ): Promise<boolean> {
     try {
