@@ -134,6 +134,12 @@ export class IdleFarmingManager {
 
         } catch (error) {
             logger.error(`Error during farming complete callback for user ${userId}: ${error}`);
+            socketManager.emitEvent(userId, 'farming-stop', {
+                userId: userId,
+                payload: {
+                    itemId: itemId,
+                }
+            });
         }
     }
 

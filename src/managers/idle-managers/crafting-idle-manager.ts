@@ -11,7 +11,6 @@ export class IdleCraftingManager {
     constructor() { }
 
     static async startCrafting(socketManager: SocketManager, idleManager: IdleManager, userId: number, equipmentId: number, startTimestamp: number) {
-        const now = Date.now();
         const recipe = await getCraftingRecipeForEquipment(equipmentId);
 
         if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
@@ -30,7 +29,7 @@ export class IdleCraftingManager {
             startTimestamp: startTimestamp,
             durationS: recipe.durationS,
             nextTriggerTimestamp: startTimestamp + recipe.durationS * 1000,
-            activityCompleteCallback: async () => await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, recipe.durationS, equipmentId),
+            activityCompleteCallback: async () => await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, equipmentId),
             activityStopCallback: async () => await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipmentId)
         };
 
@@ -146,15 +145,10 @@ export class IdleCraftingManager {
     static async craftingCompleteCallback(
         socketManager: SocketManager,
         userId: number,
-        durationS: number,
         equipmentId: number,
     ): Promise<void> {
         try {
             const recipe = await getCraftingRecipeForEquipment(equipmentId);
-
-            if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
-                throw new Error(`Unable to run crafting complete callback. User does not have all the required items.`);
-            }
 
             const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
             const updatedEquipmentInv = await mintEquipmentToUser(userId.toString(), equipmentId);
@@ -164,8 +158,18 @@ export class IdleCraftingManager {
                 payload: [...updatedItemsInv, updatedEquipmentInv]
             });
 
+            if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
+                throw new Error(`User does not have all the required items for subsequent iteration.`);
+            }
+
         } catch (error) {
             logger.error(`Error during crafting complete callback for user ${userId}: ${error}`);
+            socketManager.emitEvent(userId, 'crafting-stop', {
+                userId: userId,
+                payload: {
+                    equipmentId: equipmentId,
+                }
+            });
         }
     }
 
