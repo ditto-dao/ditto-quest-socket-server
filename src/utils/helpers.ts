@@ -11,30 +11,6 @@ export function calculateHpExpGained(exp: number): number {
     return Math.round(exp * HP_EXP_PER_EXP);
 }
 
-// Helper function to determine which user field corresponds to the equipment type
-export function getEquipFieldByType(type: EquipmentType): string | null {
-    switch (type) {
-        case 'hat':
-            return 'hatId';
-        case 'armour':
-            return 'armourId';
-        case 'weapon':
-            return 'weaponId';
-        case 'shield':
-            return 'shieldId';
-        case 'cape':
-            return 'capeId';
-        case 'necklace':
-            return 'necklaceId';
-        case 'pet':
-            return 'petId';
-        case 'spellbook':
-            return 'spellbookId';
-        default:
-            return null;
-    }
-}
-
 export const rarities: Rarity[] = ['D', 'C', 'B', 'A', 'S'];
 
 export const traitTypes: TraitType[] = ['Aura', 'Body', 'Core', 'Headpiece', 'Tail', 'Arms', 'Eyes', 'Mouth'];

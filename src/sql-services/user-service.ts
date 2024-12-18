@@ -1,5 +1,5 @@
 import { logger } from '../utils/logger';
-import { calculateExpForNextLevel, getEquipFieldByType } from '../utils/helpers';
+import { calculateExpForNextLevel } from '../utils/helpers';
 import { prisma } from './client';
 import { Inventory, EquipmentType, User, Prisma } from '@prisma/client';
 
@@ -22,14 +22,86 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                 },
             },
             include: {
-                hat: true,
-                armour: true,
-                weapon: true,
-                shield: true,
-                cape: true,
-                necklace: true,
-                pet: true,
-                spellbook: true,
+                hat: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                armour: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                weapon: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                shield: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                cape: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                necklace: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                pet: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                spellbook: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
                 inventory: {
                     select: {
                         id: true,
@@ -149,14 +221,86 @@ export async function getUserData(telegramId: string): Promise<User | null> {
         const user = await prisma.user.findUnique({
             where: { telegramId },
             include: {
-                hat: true,
-                armour: true,
-                weapon: true,
-                shield: true,
-                cape: true,
-                necklace: true,
-                pet: true,
-                spellbook: true,
+                hat: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                armour: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                weapon: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                shield: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                cape: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                necklace: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                pet: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                spellbook: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
                 inventory: {
                     select: {
                         id: true,
@@ -494,7 +638,123 @@ export async function useSkillPointsToUpgradeSkill(telegramId: string, pointsToU
 
 /* USER SPECIFIC EQUIPMENT FUNCTIONS */
 
-// Function to equip equipment by inventory id
+// Function to get equipped item from user by equipment type
+export async function getEquippedByEquipmentType(
+    telegramId: string,
+    equipmentType: EquipmentType
+): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }> | null> {
+    try {
+        // Fetch the user's equipped item for the given equipment type
+        const user = await prisma.user.findUnique({
+            where: { telegramId },
+            include: {
+                hat: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                armour: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                weapon: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                shield: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                cape: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                necklace: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                pet: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+                spellbook: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        equipment: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                    }
+                },
+            },
+        });
+
+        if (!user) {
+            throw new Error(`User with telegramId ${telegramId} not found.`);
+        }
+
+        // Dynamically extract the equipped item based on the equipment type
+        const equippedInventory = user[equipmentType] as Prisma.InventoryGetPayload<{
+            include: {
+                id: true,
+                equipmentId: true,
+                equipment: true,
+                quantity: true,
+                order: true,
+                createdAt: true,
+            }
+        }> | null;
+
+        return equippedInventory;
+    } catch (error) {
+        console.error(`Error fetching equipped item for user ${telegramId}: ${error}`);
+        throw error;
+    }
+}
+
+// Function to equip equipment by inventory ID
 export async function equipEquipmentForUser(
     telegramId: string,
     inventoryId: number
@@ -503,12 +763,12 @@ export async function equipEquipmentForUser(
         // Fetch the equipment from the user's inventory
         const equipmentInventory = await prisma.inventory.findUnique({
             where: { id: inventoryId },
-            include: { equipment: true } // Include equipment details
+            include: { equipment: true }, // Include equipment details
         });
 
         // Check if the equipment exists and belongs to the user
-        if (!equipmentInventory || equipmentInventory.userId !== telegramId) {
-            throw new Error(`Inventory id ${inventoryId} not found in inventory for user ${telegramId}`);
+        if (!equipmentInventory || equipmentInventory.userId.toString() !== telegramId) {
+            throw new Error(`Inventory ID ${inventoryId} not found in inventory for user ${telegramId}`);
         }
 
         if (!equipmentInventory.equipment) {
@@ -516,30 +776,28 @@ export async function equipEquipmentForUser(
         }
 
         const equipmentType = equipmentInventory.equipment.type;
+        const equipField = `${equipmentType}InventoryId`; // Dynamically construct the inventory ID field name
 
-        // Define the corresponding field to update based on the equipment type
-        const equipField = getEquipFieldByType(equipmentType);
-
-        if (!equipField) {
-            throw new Error(`Invalid equipment type: ${equipmentType}`);
-        }
-
-        // Unequip the currently equipped item of the same type, if any
-        await prisma.user.update({
+        // Equip the new equipment
+        const updatedUser = await prisma.user.update({
             where: { telegramId },
             data: {
-                [equipField]: inventoryId // Equip the new equipment
+                [equipField]: inventoryId, // Update the specific inventory field for the equipment type
             },
             include: {
-                [equipField]: true
-            }
+                [equipmentType]: { include: { equipment: true } }, // Include the updated relation details
+            },
         });
 
-        logger.info(`User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`);
-        return equipmentInventory;
+        logger.info(
+            `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`
+        );
 
+        return equipmentInventory; // Return the equipment inventory details
     } catch (error) {
-        logger.error(`Failed to equip equipment ${inventoryId} for user ${telegramId}: ${error}`);
+        logger.error(
+            `Failed to equip equipment ${inventoryId} for user ${telegramId}: ${error}`
+        );
         throw error;
     }
 }
@@ -550,17 +808,13 @@ export async function unequipEquipmentForUser(
     equipmentType: EquipmentType
 ): Promise<boolean> {
     try {
-        // Map the equipment type to the corresponding database field
-        const equipField = getEquipFieldByType(equipmentType);
-
-        if (!equipField) {
-            throw new Error(`Invalid equipment type: ${equipmentType}`);
-        }
+        // Dynamically construct the inventory ID field name
+        const equipField = `${equipmentType}InventoryId`;
 
         // Fetch the user's currently equipped item for the given slot
         const user = await prisma.user.findUnique({
             where: { telegramId },
-            select: { [equipField]: true } // Only fetch the specific field to check
+            select: { [equipField]: true }, // Fetch only the relevant field
         });
 
         if (!user) {
@@ -569,23 +823,32 @@ export async function unequipEquipmentForUser(
 
         // Check if the slot is already empty
         if (user[equipField] === null) {
-            logger.info(`User ${telegramId} already has nothing equipped in the ${equipmentType} slot.`);
-            return false; // No need to update
+            logger.info(
+                `User ${telegramId} already has nothing equipped in the ${equipmentType} slot.`
+            );
+            return false; // No update needed
         }
 
         // Perform the unequip operation
-        await prisma.user.update({
+        const updatedUser = await prisma.user.update({
             where: { telegramId },
             data: {
-                [equipField]: null
-            }
+                [equipField]: null, // Clear the field for the equipment type
+            },
+            include: {
+                [equipmentType]: true, // Include the related equipment details
+            },
         });
 
-        logger.info(`User ${telegramId} unequipped equipment of type ${equipmentType}.`);
-        return true;
+        logger.info(
+            `User ${telegramId} unequipped equipment of type ${equipmentType}.`
+        );
 
+        return !!updatedUser;
     } catch (error) {
-        logger.error(`Failed to unequip equipment of type ${equipmentType} for user ${telegramId}: ${error}`);
+        logger.error(
+            `Failed to unequip equipment of type ${equipmentType} for user ${telegramId}: ${error}`
+        );
         throw error;
     }
 }
