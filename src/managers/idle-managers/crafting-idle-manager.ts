@@ -11,33 +11,43 @@ export class IdleCraftingManager {
     constructor() { }
 
     static async startCrafting(socketManager: SocketManager, idleManager: IdleManager, userId: number, equipmentId: number, startTimestamp: number) {
-        const recipe = await getCraftingRecipeForEquipment(equipmentId);
+        try {
+            const recipe = await getCraftingRecipeForEquipment(equipmentId);
 
-        if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
-            throw new Error(`Unable to start idle crafting. User does not have all the required items.`);
+            if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
+                throw new Error(`Unable to start idle crafting. User does not have all the required items.`);
+            }
+
+            if (!recipe) throw new Error('Equipment not found');
+
+            if (!recipe.durationS) throw new Error('Equipment cannot be crafted');
+
+            const idleCraftingActivity: IdleActivityQueueElement = {
+                userId: userId,
+                activity: 'crafting',
+                equipmentId: recipe.equipmentId,
+                name: recipe.equipmentName,
+                startTimestamp: startTimestamp,
+                durationS: recipe.durationS,
+                nextTriggerTimestamp: startTimestamp + recipe.durationS * 1000,
+                activityCompleteCallback: async () => await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, equipmentId),
+                activityStopCallback: async () => await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipmentId)
+            };
+
+            idleManager.appendIdleActivityByUser(userId, idleCraftingActivity);
+            idleManager.queueIdleActivityElement(idleCraftingActivity);
+
+            logger.info(`Started idle crafting for user ${userId} for equipmentId: ${equipmentId}.`);
+            logger.info(JSON.stringify(idleCraftingActivity, null, 2));
+        } catch (error) {
+            logger.error(`Error starting crafting ${userId}: ${error}`);
+            socketManager.emitEvent(userId, 'crafting-stop', {
+                userId: userId,
+                payload: {
+                    equipmentId: equipmentId,
+                }
+            });
         }
-
-        if (!recipe) throw new Error('Equipment not found');
-
-        if (!recipe.durationS) throw new Error('Equipment cannot be crafted');
-
-        const idleCraftingActivity: IdleActivityQueueElement = {
-            userId: userId,
-            activity: 'crafting',
-            equipmentId: recipe.equipmentId,
-            name: recipe.equipmentName,
-            startTimestamp: startTimestamp,
-            durationS: recipe.durationS,
-            nextTriggerTimestamp: startTimestamp + recipe.durationS * 1000,
-            activityCompleteCallback: async () => await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, equipmentId),
-            activityStopCallback: async () => await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipmentId)
-        };
-
-        idleManager.appendIdleActivityByUser(userId, idleCraftingActivity);
-        idleManager.queueIdleActivityElement(idleCraftingActivity);
-
-        logger.info(`Started idle crafting for user ${userId} for equipmentId: ${equipmentId}.`);
-        logger.info(JSON.stringify(idleCraftingActivity, null, 2));
     }
 
     static stopCrafting(idleManager: IdleManager, userId: number, equipmentId: number) {

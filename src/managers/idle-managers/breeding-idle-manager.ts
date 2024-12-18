@@ -10,44 +10,55 @@ export class IdleBreedingManager {
     constructor() { }
 
     static async startBreeding(socketManager: SocketManager, idleManager: IdleManager, userId: number, sireId: number, dameId: number, startTimestamp: number) {
-        const now = Date.now();
+        try {
+            const now = Date.now();
 
-        const sire: SlimeWithTraits = await fetchSlimeObjectWithTraits(sireId);
-        const dame: SlimeWithTraits = await fetchSlimeObjectWithTraits(dameId);
-        const breedingDurationS = getBreedingTimeSByGeneration(sire.generation) + getBreedingTimeSByGeneration(dame.generation);
+            const sire: SlimeWithTraits = await fetchSlimeObjectWithTraits(sireId);
+            const dame: SlimeWithTraits = await fetchSlimeObjectWithTraits(dameId);
+            const breedingDurationS = getBreedingTimeSByGeneration(sire.generation) + getBreedingTimeSByGeneration(dame.generation);
 
-        if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
-        if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");
-        if (sire.ownerId !== userId.toString()) throw new Error("User does not own slimes.");
+            if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
+            if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");
+            if (sire.ownerId !== userId.toString()) throw new Error("User does not own slimes.");
 
-        const idleBreedingActivity: IdleActivityQueueElement = {
-            userId: userId,
-            activity: 'breeding',
-            sireId: sire.id,
-            dameId: dame.id,
-            name: '',
-            startTimestamp: startTimestamp,
-            durationS: breedingDurationS,
-            nextTriggerTimestamp: startTimestamp + breedingDurationS * 1000,
-            activityCompleteCallback: async () => await IdleBreedingManager.breedingCompleteCallback(socketManager, userId, sire.id, dame.id, breedingDurationS),
-            activityStopCallback: async () => await IdleBreedingManager.breedingStopCallback(socketManager, userId, sire.id, dame.id)
-        }
-
-        // Emit breeding-start before queueing activity
-        socketManager.emitEvent(userId, 'breeding-start', {
-            userId: userId,
-            payload: {
-                sireId: sireId,
-                dameId: dameId,
-                startTimestamp: now,
-                durationS: breedingDurationS
+            const idleBreedingActivity: IdleActivityQueueElement = {
+                userId: userId,
+                activity: 'breeding',
+                sireId: sire.id,
+                dameId: dame.id,
+                name: '',
+                startTimestamp: startTimestamp,
+                durationS: breedingDurationS,
+                nextTriggerTimestamp: startTimestamp + breedingDurationS * 1000,
+                activityCompleteCallback: async () => await IdleBreedingManager.breedingCompleteCallback(socketManager, userId, sire.id, dame.id, breedingDurationS),
+                activityStopCallback: async () => await IdleBreedingManager.breedingStopCallback(socketManager, userId, sire.id, dame.id)
             }
-        });
 
-        idleManager.appendIdleActivityByUser(userId, idleBreedingActivity);
-        idleManager.queueIdleActivityElement(idleBreedingActivity);
+            // Emit breeding-start before queueing activity
+            socketManager.emitEvent(userId, 'breeding-start', {
+                userId: userId,
+                payload: {
+                    sireId: sireId,
+                    dameId: dameId,
+                    startTimestamp: now,
+                    durationS: breedingDurationS
+                }
+            });
 
-        logger.info(`Started idle breeding for user ${userId} for sireId: ${sireId} and dameId: ${dameId}.`);
+            idleManager.appendIdleActivityByUser(userId, idleBreedingActivity);
+            idleManager.queueIdleActivityElement(idleBreedingActivity);
+
+            logger.info(`Started idle breeding for user ${userId} for sireId: ${sireId} and dameId: ${dameId}.`);
+        } catch (error) {
+            logger.error(`Error starting breeding ${userId}: ${error}`);
+            socketManager.emitEvent(userId, 'breeding-stop', {
+                userId: userId,
+                payload: {
+                    sireId: sireId,
+                    dameId: dameId,
+                }
+            });
+        }
     }
 
     static stopBreeding(idleManager: IdleManager, userId: number, sireId: number, dameId: number) {
@@ -159,6 +170,13 @@ export class IdleBreedingManager {
             });
         } catch (error) {
             logger.error(`Error during breeding complete callback for user ${userId}: ${error}`);
+            socketManager.emitEvent(userId, 'breeding-stop', {
+                userId: userId,
+                payload: {
+                    sireId: sireId,
+                    dameId: dameId,
+                }
+            });
         }
     }
 

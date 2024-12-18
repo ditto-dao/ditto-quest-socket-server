@@ -10,26 +10,36 @@ export class IdleFarmingManager {
     constructor() { }
 
     static async startFarming(socketManager: SocketManager, idleManager: IdleManager, userId: number, itemId: number, startTimestamp: number) {
-        const item = await getItemById(itemId);
+        try {
+            const item = await getItemById(itemId);
 
-        if (!item) throw new Error('Item not found');
-
-        if (!item.farmingDurationS) throw new Error('Item cannot be farmed');
-
-        const idleFarmingActivity: IdleActivityQueueElement = {
-            userId: userId,
-            activity: 'farming',
-            itemId: item.id,
-            name: item.name,
-            startTimestamp: startTimestamp,
-            durationS: item.farmingDurationS,
-            nextTriggerTimestamp: startTimestamp + item.farmingDurationS * 1000,
-            activityCompleteCallback: async () => await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, item.farmingDurationS!, itemId),
-            activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, itemId)
-        };
-
-        idleManager.appendIdleActivityByUser(userId, idleFarmingActivity);
-        idleManager.queueIdleActivityElement(idleFarmingActivity);
+            if (!item) throw new Error('Item not found');
+    
+            if (!item.farmingDurationS) throw new Error('Item cannot be farmed');
+    
+            const idleFarmingActivity: IdleActivityQueueElement = {
+                userId: userId,
+                activity: 'farming',
+                itemId: item.id,
+                name: item.name,
+                startTimestamp: startTimestamp,
+                durationS: item.farmingDurationS,
+                nextTriggerTimestamp: startTimestamp + item.farmingDurationS * 1000,
+                activityCompleteCallback: async () => await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, item.farmingDurationS!, itemId),
+                activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, itemId)
+            };
+    
+            idleManager.appendIdleActivityByUser(userId, idleFarmingActivity);
+            idleManager.queueIdleActivityElement(idleFarmingActivity);
+        } catch (error) {
+            logger.error(`Error starting farming ${userId}: ${error}`);
+            socketManager.emitEvent(userId, 'farming-stop', {
+                userId: userId,
+                payload: {
+                    itemId: itemId,
+                }
+            });
+        }
     }
 
     static stopFarming(idleManager: IdleManager, userId: number, itemId: number) {
