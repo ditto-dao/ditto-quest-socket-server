@@ -3,7 +3,7 @@ import { HP_EXP_PER_EXP } from "./config";
 
 // Helper function to calculate experience needed for the next level
 export function calculateExpForNextLevel(nextLevel: number): number {
-    return Math.floor((1 / 8) * (nextLevel - 1 + 300 * Math.pow(2, (nextLevel - 1) / 7)));
+    return Math.floor((1 / 4) * (nextLevel - 1 + 300 * Math.pow(2, (nextLevel - 1) / 7)));
 }
 
 // Helper function to calculate HP experience gained for given EXP gained
@@ -30,7 +30,7 @@ export function getMutationProbability(rarity: Rarity): number {
     }
 }
 
-export function getBreedingTimeSByGeneration(gen: number): number {
+export function getBreedingTimesByGeneration(gen: number): number {
     if (gen < 1) {
         return 60;
     } else if (gen <= 3) {
