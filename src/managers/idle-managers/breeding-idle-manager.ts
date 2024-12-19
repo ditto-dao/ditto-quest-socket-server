@@ -1,7 +1,7 @@
 import { SocketManager } from "../../socket/socket-manager";
 import { breedSlimes, fetchSlimeObjectWithTraits, SlimeWithTraits } from "../../sql-services/slime";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
-import { getBreedingTimeSByGeneration } from "../../utils/helpers";
+import { getBreedingTimesByGeneration } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
 import { IdleActivityQueueElement, IdleManager, ProgressUpdate } from "./idle-manager";
 
@@ -15,7 +15,7 @@ export class IdleBreedingManager {
 
             const sire: SlimeWithTraits = await fetchSlimeObjectWithTraits(sireId);
             const dame: SlimeWithTraits = await fetchSlimeObjectWithTraits(dameId);
-            const breedingDurationS = getBreedingTimeSByGeneration(sire.generation) + getBreedingTimeSByGeneration(dame.generation);
+            const breedingDurationS = getBreedingTimesByGeneration(sire.generation) + getBreedingTimesByGeneration(dame.generation);
 
             if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
             if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");

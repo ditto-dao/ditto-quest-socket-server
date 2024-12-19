@@ -121,9 +121,16 @@ export class IdleManager {
         primaryKey1?: number
     ): void {
         try {
-            const index = this.findIndexByActivity(this.idleActivityQueue, userId, activity, primaryKey0, primaryKey1);
-            this.idleActivityQueue[index].activityStopCallback();
-            this.removeElementFromListByIndex(this.idleActivityQueue, index, 'queue');
+            const indices = this.findAllIndicesByActivity(this.idleActivityQueue, userId, activity, primaryKey0, primaryKey1);
+
+            // Sort indices in descending order to safely remove from the list
+            indices.sort((a, b) => b - a);
+
+            for (const index of indices) {
+                this.idleActivityQueue[index].activityStopCallback();
+                this.removeElementFromListByIndex(this.idleActivityQueue, index, 'queue');
+            }
+
             if (this.idleActivityQueue.length === 0) this.clearGlobalTimeout();
         } catch (err) {
             logger.error(`Error removing ${activity} idle activity from queue for user ${userId}: ${err}`);
@@ -142,14 +149,21 @@ export class IdleManager {
                 throw new Error('User has no idle activities.');
             }
 
-            const index = this.findIndexByActivity(
+            const indices = this.findAllIndicesByActivity(
                 this.idleActivitiesQueueElementByUser[userId],
                 userId,
                 activity,
                 primaryKey0,
                 primaryKey1
             );
-            this.removeElementFromListByIndex(this.idleActivitiesQueueElementByUser[userId], index, `user list for userId ${userId}`);
+
+            // Sort indices in descending order to safely remove from the list
+            indices.sort((a, b) => b - a);
+
+            for (const index of indices) {
+                this.removeElementFromListByIndex(this.idleActivitiesQueueElementByUser[userId], index, `user list for userId ${userId}`);
+            }
+
         } catch (err) {
             logger.error(`Error removing ${activity} idle activity for user ${userId}: ${err}`);
         }
@@ -219,13 +233,13 @@ export class IdleManager {
         }
     }
 
-    private findIndexByActivity(
+    private findAllIndicesByActivity(
         list: IdleActivityQueueElement[],
         userId: number,
         activity: IdleActivityLabel,
         primaryKey0?: number,
         primaryKey1?: number
-    ): number {
+    ): number[] {
         if (!primaryKey0 && (activity === 'farming' || activity === 'crafting')) {
             throw new Error('Primary key not found.');
         }
@@ -233,29 +247,35 @@ export class IdleManager {
             throw new Error('Primary key not found.');
         }
 
-        return list.findIndex((element) => {
-            if (element.userId !== userId || element.activity !== activity) {
-                return false;
-            }
+        return list
+            .map((element, index) => {
+                if (element.userId !== userId || element.activity !== activity) {
+                    return null;
+                }
 
-            switch (activity) {
-                case 'farming':
-                    return 'itemId' in element && element.itemId === primaryKey0;
-                case 'crafting':
-                    return 'equipmentId' in element && element.equipmentId === primaryKey0;
-                case 'breeding':
-                    return (
-                        'sireId' in element &&
-                        element.sireId === primaryKey0 &&
-                        'dameId' in element &&
-                        element.dameId === primaryKey1
-                    );
-                case 'combat':
-                    throw new Error('Combat activity not supported yet.');
-                default:
-                    throw new Error('Idle activity not recognized.');
-            }
-        });
+                const isMatch = (() => {
+                    switch (activity) {
+                        case 'farming':
+                            return 'itemId' in element && element.itemId === primaryKey0;
+                        case 'crafting':
+                            return 'equipmentId' in element && element.equipmentId === primaryKey0;
+                        case 'breeding':
+                            return (
+                                'sireId' in element &&
+                                element.sireId === primaryKey0 &&
+                                'dameId' in element &&
+                                element.dameId === primaryKey1
+                            );
+                        case 'combat':
+                            throw new Error('Combat activity not supported yet.');
+                        default:
+                            throw new Error('Idle activity not recognized.');
+                    }
+                })();
+
+                return isMatch ? index : null;
+            })
+            .filter((index) => index !== null) as number[];
     }
 
     private removeElementFromListByIndex(
