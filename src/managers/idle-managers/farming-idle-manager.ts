@@ -25,7 +25,7 @@ export class IdleFarmingManager {
                 startTimestamp: startTimestamp,
                 durationS: item.farmingDurationS,
                 nextTriggerTimestamp: startTimestamp + item.farmingDurationS * 1000,
-                activityCompleteCallback: async () => await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, item.farmingDurationS!, itemId),
+                activityCompleteCallback: async () => await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, itemId),
                 activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, itemId)
             };
     
@@ -131,7 +131,6 @@ export class IdleFarmingManager {
     static async farmingCompleteCallback(
         socketManager: SocketManager,
         userId: number,
-        farmingDurationS: number,
         itemId: number,
     ): Promise<void> {
         try {
