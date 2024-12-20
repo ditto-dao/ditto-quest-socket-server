@@ -32,14 +32,14 @@ export function getMutationProbability(rarity: Rarity): number {
 
 export function getBreedingTimesByGeneration(gen: number): number {
     if (gen < 1) {
-        return 60;
+        return 1800;
     } else if (gen <= 3) {
-        return 120;
+        return 2700;
     } else if (gen <= 5) {
-        return 180;
+        return 3600;
     } else if (gen <= 7) {
-        return 240;
+        return 7200;
     } else {
-        return 300;
+        return 10800;
     }
 }

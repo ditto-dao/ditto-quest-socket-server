@@ -1,5 +1,5 @@
 import { SocketManager } from "../../socket/socket-manager";
-import { breedSlimes, fetchSlimeObjectWithTraits, SlimeWithTraits } from "../../sql-services/slime";
+import { breedSlimes, fetchSlimeObjectWithTraits, getEquippedSlimeId, SlimeWithTraits } from "../../sql-services/slime";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { getBreedingTimesByGeneration } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
@@ -11,8 +11,7 @@ export class IdleBreedingManager {
 
     static async startBreeding(socketManager: SocketManager, idleManager: IdleManager, userId: number, sireId: number, dameId: number, startTimestamp: number) {
         try {
-            const now = Date.now();
-
+            const equippedSlimeId = await getEquippedSlimeId(userId);
             const sire: SlimeWithTraits = await fetchSlimeObjectWithTraits(sireId);
             const dame: SlimeWithTraits = await fetchSlimeObjectWithTraits(dameId);
             const breedingDurationS = getBreedingTimesByGeneration(sire.generation) + getBreedingTimesByGeneration(dame.generation);
@@ -20,6 +19,7 @@ export class IdleBreedingManager {
             if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
             if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");
             if (sire.ownerId !== userId.toString()) throw new Error("User does not own slimes.");
+            if (sire.ownerId === equippedSlimeId?.toString() || dame.ownerId === equippedSlimeId?.toString()) throw new Error("Cannot breed equipped slime.");
 
             const idleBreedingActivity: IdleActivityQueueElement = {
                 userId: userId,
@@ -30,20 +30,9 @@ export class IdleBreedingManager {
                 startTimestamp: startTimestamp,
                 durationS: breedingDurationS,
                 nextTriggerTimestamp: startTimestamp + breedingDurationS * 1000,
-                activityCompleteCallback: async () => await IdleBreedingManager.breedingCompleteCallback(socketManager, userId, sire.id, dame.id, breedingDurationS),
+                activityCompleteCallback: async () => await IdleBreedingManager.breedingCompleteCallback(socketManager, userId, sire.id, dame.id),
                 activityStopCallback: async () => await IdleBreedingManager.breedingStopCallback(socketManager, userId, sire.id, dame.id)
             }
-
-            // Emit breeding-start before queueing activity
-            socketManager.emitEvent(userId, 'breeding-start', {
-                userId: userId,
-                payload: {
-                    sireId: sireId,
-                    dameId: dameId,
-                    startTimestamp: now,
-                    durationS: breedingDurationS
-                }
-            });
 
             idleManager.appendIdleActivityByUser(userId, idleBreedingActivity);
             idleManager.queueIdleActivityElement(idleBreedingActivity);
@@ -86,6 +75,10 @@ export class IdleBreedingManager {
 
         logger.info(`Breeding activity loaded: ${JSON.stringify(breeding, null, 2)}`);
 
+        const sire: SlimeWithTraits = await fetchSlimeObjectWithTraits(breeding.sireId);
+        const dame: SlimeWithTraits = await fetchSlimeObjectWithTraits(breeding.dameId);
+        const breedingDurationS = getBreedingTimesByGeneration(sire.generation) + getBreedingTimesByGeneration(dame.generation);
+
         const now = Date.now();
         const maxProgressEndTimestamp = breeding.logoutTimestamp + MAX_OFFLINE_IDLE_PROGRESS_S * 1000;
         const progressEndTimestamp = Math.min(maxProgressEndTimestamp, now);
@@ -125,6 +118,17 @@ export class IdleBreedingManager {
             IdleBreedingManager.startBreeding(socketManager, idleManager, userId, breeding.sireId, breeding.dameId, currentRepetitionStart);
         }
 
+        // Emit breeding-start before queueing activity
+        socketManager.emitEvent(userId, 'breeding-start', {
+            userId: userId,
+            payload: {
+                sireId: breeding.sireId,
+                dameId: breeding.dameId,
+                startTimestamp: currentRepetitionStart,
+                durationS: breedingDurationS
+            }
+        });
+
         const mintedSlimeIds = [];
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
@@ -148,7 +152,6 @@ export class IdleBreedingManager {
         userId: number,
         sireId: number,
         dameId: number,
-        breedingDurationS: number
     ): Promise<void> {
         try {
             const slime = await breedSlimes(sireId, dameId);
@@ -158,16 +161,6 @@ export class IdleBreedingManager {
                 payload: slime,
             });
 
-            // Emit breeding-start before queueing activity
-            socketManager.emitEvent(userId, 'breeding-start', {
-                userId: userId,
-                payload: {
-                    sireId: sireId,
-                    dameId: dameId,
-                    startTimestamp: Date.now(),
-                    durationS: breedingDurationS
-                }
-            });
         } catch (error) {
             logger.error(`Error during breeding complete callback for user ${userId}: ${error}`);
             socketManager.emitEvent(userId, 'breeding-stop', {

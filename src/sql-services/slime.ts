@@ -441,6 +441,28 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
   }
 }
 
+export async function getEquippedSlimeId(telegramId: number): Promise<number | null> {
+  try {
+    // Fetch the user with the equipped slime relation
+    const user = await prisma.user.findUnique({
+      where: { telegramId: telegramId.toString() },
+      select: {
+        equippedSlimeId: true, // Select only the equipped slime ID
+      },
+    });
+
+    if (!user) {
+      console.error(`User with telegramId ${telegramId} not found.`);
+      return null;
+    }
+
+    return user.equippedSlimeId || null; // Return the slime ID or null if none equipped
+  } catch (error) {
+    console.error("Error fetching equipped slime ID:", error);
+    throw error; // Re-throw the error for further handling
+  }
+}
+
 /* HELPERS */
 
 function getChildTraitId({
