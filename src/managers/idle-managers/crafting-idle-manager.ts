@@ -2,6 +2,7 @@ import { SocketManager } from "../../socket/socket-manager";
 import { getCraftingRecipeForEquipment } from "../../sql-services/crafting-service";
 import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 import { deleteItemsFromUserInventory, doesUserOwnItems } from "../../sql-services/item-inventory-service";
+import { addCraftingExp, getUserCraftingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleActivityQueueElement, IdleManager, ProgressUpdate } from "./idle-manager";
@@ -18,9 +19,9 @@ export class IdleCraftingManager {
                 throw new Error(`Unable to start idle crafting. User does not have all the required items.`);
             }
 
-            if (!recipe) throw new Error('Equipment not found');
+            if (!recipe) throw new Error('Crafting recipe not found');
 
-            if (!recipe.durationS) throw new Error('Equipment cannot be crafted');
+            if ((await getUserCraftingLevel(userId) < recipe.craftingLevelRequired)) throw new Error('Insufficient crafting level');
 
             const idleCraftingActivity: IdleActivityQueueElement = {
                 userId: userId,
@@ -128,11 +129,14 @@ export class IdleCraftingManager {
             });
         }
 
+        let expRes; 
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
             await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions));
 
             await mintEquipmentToUser(userId.toString(), recipe.equipmentId, repetitions);
+
+            expRes = await addCraftingExp(userId, recipe.craftingExp * repetitions);
         }
 
         return {
@@ -147,7 +151,9 @@ export class IdleCraftingManager {
                     equipmentId: recipe.equipmentId,
                     equipmentName: recipe.equipmentName,
                     quantity: repetitions
-                }]
+                }],
+                craftingExpGained: (repetitions > 0) ? recipe.craftingExp * repetitions : undefined,
+                craftingLevelsGained: expRes?.craftingLevelsGained
             },
         };
     }
@@ -162,10 +168,17 @@ export class IdleCraftingManager {
 
             const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
             const updatedEquipmentInv = await mintEquipmentToUser(userId.toString(), equipmentId);
-
+            
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,
                 payload: [...updatedItemsInv, updatedEquipmentInv]
+            });
+
+            const expRes = await addCraftingExp(userId, recipe.craftingExp);
+
+            socketManager.emitEvent(userId, 'update-crafting-exp', {
+                userId: userId,
+                payload: expRes,
             });
 
             if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {

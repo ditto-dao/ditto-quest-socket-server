@@ -1,6 +1,7 @@
 import { SocketManager } from "../../socket/socket-manager";
 import { mintItemToUser } from "../../sql-services/item-inventory-service";
 import { getItemById } from "../../sql-services/item-service";
+import { addFarmingExp, getUserFarmingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleActivityQueueElement, IdleManager, ProgressUpdate } from "./idle-manager";
@@ -14,9 +15,11 @@ export class IdleFarmingManager {
             const item = await getItemById(itemId);
 
             if (!item) throw new Error('Item not found');
-    
-            if (!item.farmingDurationS) throw new Error('Item cannot be farmed');
-    
+
+            if (!item.farmingDurationS || !item.farmingExp || !item.farmingLevelRequired) throw new Error('Item cannot be farmed');
+
+            if ((await getUserFarmingLevel(userId)) < item.farmingLevelRequired) throw new Error("Insufficient farming level");
+
             const idleFarmingActivity: IdleActivityQueueElement = {
                 userId: userId,
                 activity: 'farming',
@@ -28,7 +31,7 @@ export class IdleFarmingManager {
                 activityCompleteCallback: async () => await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, itemId),
                 activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, itemId)
             };
-    
+
             idleManager.appendIdleActivityByUser(userId, idleFarmingActivity);
             idleManager.queueIdleActivityElement(idleFarmingActivity);
         } catch (error) {
@@ -66,6 +69,12 @@ export class IdleFarmingManager {
         }
 
         logger.info(`Farming activity loaded: ${JSON.stringify(farming, null, 2)}`);
+
+        const item = await getItemById(farming.itemId);
+
+        if (!item || !item.farmingExp) {
+            throw new Error(`Item cannot be farmed.`)
+        }
 
         const now = Date.now();
         const maxProgressEndTimestamp = farming.logoutTimestamp + MAX_OFFLINE_IDLE_PROGRESS_S * 1000;
@@ -112,7 +121,11 @@ export class IdleFarmingManager {
             }
         });
 
-        if (repetitions > 0) await mintItemToUser(userId.toString(), farming.itemId, repetitions);
+        let expRes; 
+        if (repetitions > 0) {
+            await mintItemToUser(userId.toString(), farming.itemId, repetitions);
+            expRes = await addFarmingExp(userId, item.farmingExp * repetitions)
+        }
 
         return {
             type: 'farming',
@@ -123,7 +136,9 @@ export class IdleFarmingManager {
                         itemName: farming.name || 'Item',
                         quantity: repetitions
                     }
-                ]
+                ],
+                farmingExpGained: (repetitions > 0) ? item.farmingExp * repetitions : undefined,
+                farmingLevelsGained: expRes?.farmingLevelsGained
             },
         };
     }
@@ -135,10 +150,16 @@ export class IdleFarmingManager {
     ): Promise<void> {
         try {
             const updatedItemsInv = await mintItemToUser(userId.toString(), itemId);
+            const expRes = await addFarmingExp(userId, updatedItemsInv.item!.farmingExp!);
 
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,
                 payload: [updatedItemsInv],
+            });
+
+            socketManager.emitEvent(userId, 'update-farming-exp', {
+                userId: userId,
+                payload: expRes,
             });
 
         } catch (error) {

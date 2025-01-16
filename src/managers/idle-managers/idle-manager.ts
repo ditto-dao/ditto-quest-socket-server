@@ -26,6 +26,10 @@ export interface ProgressUpdate {
         slimes?: {
             slimeId: number;
         }[];
+        farmingExpGained?: number;
+        farmingLevelsGained?: number;
+        craftingExpGained?: number;
+        craftingLevelsGained?: number;
     };
 }
 
