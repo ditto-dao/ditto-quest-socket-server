@@ -3,9 +3,11 @@
         "craftingRecipe": {
             "equipmentId": 1,
             "durationS": 30,
+            "craftingLevelRequired": 1,
+            "craftingExp": 5,
             "CraftingRecipeItems": [
                 {
-                    "itemId": 1,
+                    "itemId": 30,
                     "quantity": 10
                 }
             ]
@@ -15,9 +17,11 @@
         "craftingRecipe": {
             "equipmentId": 2,
             "durationS": 60,
+            "craftingLevelRequired": 1,
+            "craftingExp": 5,
             "CraftingRecipeItems": [
                 {
-                    "itemId": 1,
+                    "itemId": 30,
                     "quantity": 10
                 }
             ]
