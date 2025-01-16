@@ -8,24 +8,23 @@
     "dev": "NODE_ENV=development dotenv -e .env ts-node ./index.ts",
     "build": "tsc",
     "pm2": "tsc && pm2 start pm2.config.json",
-
     "prisma:dev:migrate": "prisma migrate dev",
     "prisma:dev:generate": "prisma generate",
     "prisma:dev:studio": "prisma studio",
     "prisma:dev:push": "prisma db push",
-
     "prisma:prod:migrate": "prisma migrate deploy",
     "prisma:prod:generate": "prisma generate",
-
     "prisma:dev": "NODE_ENV=development yarn prisma:dev:generate && yarn prisma:dev:migrate",
     "prisma:prod": "NODE_ENV=production yarn prisma:prod:generate && yarn prisma:prod:migrate",
 
+    "generate-items-from-csv": "ts-node ./src/encyclopedia/scripts/item-csv-to-json.ts",
     "generate-traits-test-data": "ts-node ./src/encyclopedia/scripts/generate-traits-test-data.ts",
 
     "seed-items": "ts-node ./src/scripts/items/seed-items-db.ts",
     "seed-equipment": "ts-node ./src/scripts/equipment/seed-equipment-db.ts",
     "seed-crafting-recipes": "ts-node ./src/scripts/crafting/seed-crafting-recipes-db.ts",
     "seed-slime-traits": "ts-node ./src/scripts/slime-traits/seed-slime-traits-db.ts",
+
     "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
     "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts"
   },
@@ -43,6 +42,7 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
+    "csv-parser": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
