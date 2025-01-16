@@ -1,4 +1,4 @@
-import { EquipmentType, Rarity, TraitType } from "@prisma/client";
+import { Rarity, TraitType } from "@prisma/client";
 import { HP_EXP_PER_EXP } from "./config";
 
 // Helper function to calculate experience needed for the next level

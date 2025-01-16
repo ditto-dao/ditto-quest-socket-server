@@ -18,6 +18,8 @@ async function seedCraftingRecipes() {
                 data: {
                     equipmentId: craftingRecipe.equipmentId,
                     durationS: craftingRecipe.durationS,
+                    craftingLevelRequired: craftingRecipe.craftingLevelRequired,
+                    craftingExp: craftingRecipe.craftingExp,
                     CraftingRecipeItems: {
                         create: craftingRecipe.CraftingRecipeItems.map((item: any) => ({
                             itemId: item.itemId,

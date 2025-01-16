@@ -5,6 +5,8 @@ export interface CraftingRecipeRes {
   equipmentId: number;
   equipmentName: string;
   durationS: number;
+  craftingLevelRequired: number;
+  craftingExp: number;
   requiredItems: {
     itemId: number;
     itemName: string;
@@ -42,6 +44,8 @@ export async function getCraftingRecipeForEquipment(equipmentId: number): Promis
       equipmentId: recipe.equipmentId,
       equipmentName: recipe.equipment.name,
       durationS: recipe.durationS,
+      craftingLevelRequired: recipe.craftingLevelRequired,
+      craftingExp: recipe.craftingExp,
       requiredItems: recipe.CraftingRecipeItems.map((recipeItem) => ({
         itemId: recipeItem.itemId,
         itemName: recipeItem.item.name,

@@ -1,7 +1,7 @@
 import { logger } from '../utils/logger';
 import { calculateExpForNextLevel } from '../utils/helpers';
 import { prisma } from './client';
-import { Inventory, EquipmentType, User, Prisma } from '@prisma/client';
+import { EquipmentType, User, Prisma } from '@prisma/client';
 
 // Interface for user input
 interface CreateUserInput {
@@ -851,4 +851,115 @@ export async function unequipEquipmentForUser(
         );
         throw error;
     }
+}
+
+/* USER SPECIFIC FARMING FUNCTIONS */
+
+export async function getUserFarmingLevel(telegramId: number): Promise<number> {
+  try {
+    // Fetch the user farming level
+    const user = await prisma.user.findUnique({
+      where: { telegramId: telegramId.toString() },
+      select: { farmingLevel: true }, // Select only the farming level
+    });
+
+    if (!user) {
+      throw new Error(`User with telegramId ${telegramId} not found.`);
+    }
+
+    return user.farmingLevel;
+  } catch (error) {
+    console.error(`Error fetching user farming level: ${error}`);
+    throw error; // Re-throw the error for further handling
+  }
+}
+
+export async function addFarmingExp(userId: number, expToAdd: number) {
+    const user = await prisma.user.findUnique({ where: { telegramId: userId.toString() } });
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    let { farmingExp, expToNextFarmingLevel, farmingLevel } = user;
+    let farmingLevelsGained = 0;
+
+    // Add experience
+    farmingExp += expToAdd;
+
+    // Check for level-ups
+    while (farmingExp >= expToNextFarmingLevel) {
+        farmingExp -= expToNextFarmingLevel; // Remove exp required for the current level
+        farmingLevel += 1; // Increment level
+        farmingLevelsGained += 1;
+        expToNextFarmingLevel = calculateExpForNextLevel(farmingLevel + 1); // Calculate new exp requirement
+    }
+
+    // Update the user
+    await prisma.user.update({
+        where: { telegramId: userId.toString() },
+        data: {
+            farmingExp,
+            expToNextFarmingLevel,
+            farmingLevel,
+        },
+    });
+
+    return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
+}
+
+
+/* USER SPECIFIC CRAFTING FUNCTIONS */
+
+export async function getUserCraftingLevel(telegramId: number): Promise<number> {
+    try {
+      // Fetch the user farming level
+      const user = await prisma.user.findUnique({
+        where: { telegramId: telegramId.toString() },
+        select: { craftingLevel: true }, // Select only the farming level
+      });
+  
+      if (!user) {
+        throw new Error(`User with telegramId ${telegramId} not found.`);
+      }
+  
+      return user.craftingLevel;
+    } catch (error) {
+      console.error(`Error fetching user crafting level: ${error}`);
+      throw error; // Re-throw the error for further handling
+    }
+  }
+
+export async function addCraftingExp(userId: number, expToAdd: number) {
+    const user = await prisma.user.findUnique({ where: { telegramId: userId.toString() } });
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    let { craftingExp, expToNextCraftingLevel, craftingLevel } = user;
+    let craftingLevelsGained = 0;
+
+    // Add experience
+    craftingExp += expToAdd;
+
+    // Check for level-ups
+    while (craftingExp >= expToNextCraftingLevel) {
+        craftingExp -= expToNextCraftingLevel; // Remove exp required for the current level
+        craftingLevel += 1; // Increment level
+        craftingLevelsGained += 1;
+        expToNextCraftingLevel = calculateExpForNextLevel(craftingLevel + 1); // Calculate new exp requirement
+    }
+
+    // Update the user
+    await prisma.user.update({
+        where: { telegramId: userId.toString() },
+        data: {
+            craftingLevel,
+            craftingExp,
+            expToNextCraftingLevel,
+        },
+    });
+
+    return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
 }

@@ -108,8 +108,11 @@ export async function mintItemToUser(
                             description: true,
                             imgsrc: true,
                             rarity: true,
-                            consumableId: true,       // Include these missing fields
-                            farmingDurationS: true,   // Include these missing fields
+                            consumableId: true,
+                            farmingDurationS: true,
+                            farmingLevelRequired: true,
+                            farmingExp: true,
+                            sellPriceGP: true,
                         },
                     },
                 },
@@ -139,8 +142,11 @@ export async function mintItemToUser(
                             description: true,
                             imgsrc: true,
                             rarity: true,
-                            consumableId: true,       // Include these missing fields
-                            farmingDurationS: true,   // Include these missing fields
+                            consumableId: true,
+                            farmingDurationS: true,
+                            farmingLevelRequired: true,
+                            farmingExp: true,
+                            sellPriceGP: true,
                         },
                     },
                 },
