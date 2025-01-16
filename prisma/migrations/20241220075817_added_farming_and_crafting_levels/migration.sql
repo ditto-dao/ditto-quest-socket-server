@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `craftingLevel` INTEGER NOT NULL DEFAULT 1,
+    ADD COLUMN `farmingLevel` INTEGER NOT NULL DEFAULT 1;

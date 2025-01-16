@@ -18,11 +18,11 @@ datasource db {
 }
 
 model User {
-  telegramId             String     @id
+  telegramId             String  @id
   username               String?
   goldBalance            Int     @default(0)
   level                  Int     @default(1)
-  expToNextLevel         Int     @default(42) @map("exp_to_next_level")
+  expToNextLevel         Int     @default(83) @map("exp_to_next_level")
   exp                    Int     @default(0)
   str                    Int     @default(1)
   def                    Int     @default(1)
@@ -30,8 +30,18 @@ model User {
   magic                  Int     @default(1)
   hpLevel                Int     @default(1) @map("hp_level")
   expHp                  Int     @default(0) @map("exp_hp")
-  expToNextHpLevel       Int     @default(42) @map("exp_to_next_hp_level")
+  expToNextHpLevel       Int     @default(83) @map("exp_to_next_hp_level")
   outstandingSkillPoints Int     @default(0) @map("outstanding_skill_points")
+
+  // Farming
+  farmingLevel          Int @default(1)
+  farmingExp            Int @default(0)
+  expToNextFarmingLevel Int @default(83) @map("exp_to_next_farming_level")
+
+  // Crafting
+  craftingLevel          Int @default(1)
+  craftingExp            Int @default(0)
+  expToNextCraftingLevel Int @default(83) @map("exp_to_next_crafting_level")
 
   // Optional equipment relationships
   hatInventoryId       Int? @unique
@@ -69,12 +79,12 @@ model User {
 
 model Combat {
   userId  String @id
-  str     Int @default(1)
-  def     Int @default(1)
-  dex     Int @default(1)
-  magic   Int @default(1)
-  hp      Int @default(10)
-  hpLevel Int @default(1)
+  str     Int    @default(1)
+  def     Int    @default(1)
+  dex     Int    @default(1)
+  magic   Int    @default(1)
+  hp      Int    @default(10)
+  hpLevel Int    @default(1)
 
   // Relation back to the User
   user User @relation(fields: [userId], references: [telegramId])
@@ -101,11 +111,11 @@ enum TraitType {
 }
 
 model Slime {
-  id         Int   @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   ownerId    String
   generation Int
-  owner      User  @relation(fields: [ownerId], references: [telegramId])
-  equippedBy User? @relation("EquippedSlime")
+  owner      User   @relation(fields: [ownerId], references: [telegramId])
+  equippedBy User?  @relation("EquippedSlime")
 
   // Traits with dominant and hidden genes
   Aura_D  Int
@@ -285,14 +295,18 @@ model Equipment {
 
 // Items table
 model Item {
-  id               Int         @id @default(autoincrement())
-  name             String      @unique
-  description      String      @default("")
-  imgsrc           String
-  rarity           Rarity
-  consumableId     Int?
-  consumable       Consumable? @relation(fields: [consumableId], references: [id])
-  farmingDurationS Int?
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  description  String      @default("")
+  imgsrc       String
+  rarity       Rarity
+  consumableId Int?
+  consumable   Consumable? @relation(fields: [consumableId], references: [id])
+  sellPriceGP Int?
+
+  farmingDurationS     Int?
+  farmingLevelRequired Int?
+  farmingExp           Int?
 
   itemInventory Inventory[]
 
@@ -367,6 +381,9 @@ model CraftingRecipe {
   equipmentId Int       @unique
   equipment   Equipment @relation(fields: [equipmentId], references: [id])
   durationS   Int
+
+  craftingLevelRequired Int
+  craftingExp           Int
 
   // This table defines the items required for crafting
   CraftingRecipeItems CraftingRecipeItems[]
