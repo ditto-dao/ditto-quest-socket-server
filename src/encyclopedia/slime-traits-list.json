@@ -1,0 +1,11 @@
+{
+    "backgroundColourHex": ["#b0b0b0", "#8fbf71", "#5b9eea", "#ba78f9", "#f6b74c"],
+    "body": ["chartreuxKitty", "cymricKitty", "himalayanKitty", "lapermKitty", "mainecoonKitty", "munchkinKitty", "ragamuffinKitty", "sphynxKitty"],
+    "pattern": ["none", "dragon", "tiger", "twoTone", "spotted", "threeTone"],
+    "primaryColour": ["blue", "diamond", "emerald", "green", "orange", "pink", "purple", "red", "sapphire"],
+    "accent": ["level1", "level2", "level3", "level4", "level5"],
+    "detail": ["level1", "level2", "level3", "level4", "level5", "level6", "level7", "level8", "level9", "level10", "level11"],
+    "eyeColour": ["black", "blue", "emerald", "green", "greenBrown", "navyBlue", "purple", "redBrown"],
+    "eyeShape": ["crazy", "fabulous", "googly", "otaku", "raisedBrow", "simple", "thicccBrowz", "wingtips"],
+    "mouth": ["beardKitty", "daliKitty", "gerbilKitty", "happyGoKitty", "normalKitty", "openKitty", "poutyKitty", "sayCheeseKitty", "tongueKitty"]
+}

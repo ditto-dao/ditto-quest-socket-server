@@ -16,19 +16,20 @@
     "prisma:prod:generate": "prisma generate",
     "prisma:dev": "NODE_ENV=development yarn prisma:dev:generate && yarn prisma:dev:migrate",
     "prisma:prod": "NODE_ENV=production yarn prisma:prod:generate && yarn prisma:prod:migrate",
-
     "generate-items-from-csv": "ts-node ./src/encyclopedia/scripts/item-csv-to-json.ts",
     "generate-traits-test-data": "ts-node ./src/encyclopedia/scripts/generate-traits-test-data.ts",
-
+    "assign-random-stats-to-traits": "ts-node ./src/encyclopedia/scripts/assign-stats-to-traits.ts",
     "seed-items": "ts-node ./src/scripts/items/seed-items-db.ts",
     "seed-equipment": "ts-node ./src/scripts/equipment/seed-equipment-db.ts",
     "seed-crafting-recipes": "ts-node ./src/scripts/crafting/seed-crafting-recipes-db.ts",
     "seed-slime-traits": "ts-node ./src/scripts/slime-traits/seed-slime-traits-db.ts",
-
     "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
     "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.730.0",
+    "@aws-sdk/crc64-nvme-crt": "^3.730.0",
+    "@aws-sdk/types": "^3.723.0",
     "@prisma/client": "^5.21.1",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
@@ -37,6 +38,7 @@
     "pino-pretty": "^11.3.0",
     "prisma": "^5.21.1",
     "redis": "^4.7.0",
+    "sharp": "^0.33.5",
     "socket.io": "^4.8.0"
   },
   "devDependencies": {

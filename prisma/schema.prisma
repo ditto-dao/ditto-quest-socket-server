@@ -100,13 +100,13 @@ enum Rarity {
 }
 
 enum TraitType {
-  Aura
   Body
-  Core
-  Headpiece
-  Tail
-  Arms
-  Eyes
+  Pattern
+  PrimaryColour
+  Accent
+  Detail
+  EyeColour
+  EyeShape
   Mouth
 }
 
@@ -114,44 +114,45 @@ model Slime {
   id         Int    @id @default(autoincrement())
   ownerId    String
   generation Int
+  imageUri   String
   owner      User   @relation(fields: [ownerId], references: [telegramId])
   equippedBy User?  @relation("EquippedSlime")
 
   // Traits with dominant and hidden genes
-  Aura_D  Int
-  Aura_H1 Int
-  Aura_H2 Int
-  Aura_H3 Int
-
   Body_D  Int
   Body_H1 Int
   Body_H2 Int
   Body_H3 Int
 
-  Core_D  Int
-  Core_H1 Int
-  Core_H2 Int
-  Core_H3 Int
+  Pattern_D  Int
+  Pattern_H1 Int
+  Pattern_H2 Int
+  Pattern_H3 Int
 
-  Headpiece_D  Int
-  Headpiece_H1 Int
-  Headpiece_H2 Int
-  Headpiece_H3 Int
+  PrimaryColour_D  Int
+  PrimaryColour_H1 Int
+  PrimaryColour_H2 Int
+  PrimaryColour_H3 Int
 
-  Tail_D  Int
-  Tail_H1 Int
-  Tail_H2 Int
-  Tail_H3 Int
+  Accent_D  Int
+  Accent_H1 Int
+  Accent_H2 Int
+  Accent_H3 Int
 
-  Arms_D  Int
-  Arms_H1 Int
-  Arms_H2 Int
-  Arms_H3 Int
+  Detail_D  Int
+  Detail_H1 Int
+  Detail_H2 Int
+  Detail_H3 Int
 
-  Eyes_D  Int
-  Eyes_H1 Int
-  Eyes_H2 Int
-  Eyes_H3 Int
+  EyeColour_D  Int
+  EyeColour_H1 Int
+  EyeColour_H2 Int
+  EyeColour_H3 Int
+
+  EyeShape_D  Int
+  EyeShape_H1 Int
+  EyeShape_H2 Int
+  EyeShape_H3 Int
 
   Mouth_D  Int
   Mouth_H1 Int
@@ -159,40 +160,40 @@ model Slime {
   Mouth_H3 Int
 
   // Relations to SlimeTrait
-  AuraDominant SlimeTrait @relation("AuraDominant", fields: [Aura_D], references: [id])
-  AuraHidden1  SlimeTrait @relation("AuraHidden1", fields: [Aura_H1], references: [id])
-  AuraHidden2  SlimeTrait @relation("AuraHidden2", fields: [Aura_H2], references: [id])
-  AuraHidden3  SlimeTrait @relation("AuraHidden3", fields: [Aura_H3], references: [id])
-
   BodyDominant SlimeTrait @relation("BodyDominant", fields: [Body_D], references: [id])
   BodyHidden1  SlimeTrait @relation("BodyHidden1", fields: [Body_H1], references: [id])
   BodyHidden2  SlimeTrait @relation("BodyHidden2", fields: [Body_H2], references: [id])
   BodyHidden3  SlimeTrait @relation("BodyHidden3", fields: [Body_H3], references: [id])
 
-  CoreDominant SlimeTrait @relation("CoreDominant", fields: [Core_D], references: [id])
-  CoreHidden1  SlimeTrait @relation("CoreHidden1", fields: [Core_H1], references: [id])
-  CoreHidden2  SlimeTrait @relation("CoreHidden2", fields: [Core_H2], references: [id])
-  CoreHidden3  SlimeTrait @relation("CoreHidden3", fields: [Core_H3], references: [id])
+  PatternDominant SlimeTrait @relation("PatternDominant", fields: [Pattern_D], references: [id])
+  PatternHidden1  SlimeTrait @relation("PatternHidden1", fields: [Pattern_H1], references: [id])
+  PatternHidden2  SlimeTrait @relation("PatternHidden2", fields: [Pattern_H2], references: [id])
+  PatternHidden3  SlimeTrait @relation("PatternHidden3", fields: [Pattern_H3], references: [id])
 
-  HeadpieceDominant SlimeTrait @relation("HeadpieceDominant", fields: [Headpiece_D], references: [id])
-  HeadpieceHidden1  SlimeTrait @relation("HeadpieceHidden1", fields: [Headpiece_H1], references: [id])
-  HeadpieceHidden2  SlimeTrait @relation("HeadpieceHidden2", fields: [Headpiece_H2], references: [id])
-  HeadpieceHidden3  SlimeTrait @relation("HeadpieceHidden3", fields: [Headpiece_H3], references: [id])
+  PrimaryColourDominant SlimeTrait @relation("PrimaryColourDominant", fields: [PrimaryColour_D], references: [id])
+  PrimaryColourHidden1  SlimeTrait @relation("PrimaryColourHidden1", fields: [PrimaryColour_H1], references: [id])
+  PrimaryColourHidden2  SlimeTrait @relation("PrimaryColourHidden2", fields: [PrimaryColour_H2], references: [id])
+  PrimaryColourHidden3  SlimeTrait @relation("PrimaryColourHidden3", fields: [PrimaryColour_H3], references: [id])
 
-  TailDominant SlimeTrait @relation("TailDominant", fields: [Tail_D], references: [id])
-  TailHidden1  SlimeTrait @relation("TailHidden1", fields: [Tail_H1], references: [id])
-  TailHidden2  SlimeTrait @relation("TailHidden2", fields: [Tail_H2], references: [id])
-  TailHidden3  SlimeTrait @relation("TailHidden3", fields: [Tail_H3], references: [id])
+  AccentDominant SlimeTrait @relation("AccentDominant", fields: [Accent_D], references: [id])
+  AccentHidden1  SlimeTrait @relation("AccentHidden1", fields: [Accent_H1], references: [id])
+  AccentHidden2  SlimeTrait @relation("AccentHidden2", fields: [Accent_H2], references: [id])
+  AccentHidden3  SlimeTrait @relation("AccentHidden3", fields: [Accent_H3], references: [id])
 
-  ArmsDominant SlimeTrait @relation("ArmsDominant", fields: [Arms_D], references: [id])
-  ArmsHidden1  SlimeTrait @relation("ArmsHidden1", fields: [Arms_H1], references: [id])
-  ArmsHidden2  SlimeTrait @relation("ArmsHidden2", fields: [Arms_H2], references: [id])
-  ArmsHidden3  SlimeTrait @relation("ArmsHidden3", fields: [Arms_H3], references: [id])
+  DetailDominant SlimeTrait @relation("DetailDominant", fields: [Detail_D], references: [id])
+  DetailHidden1  SlimeTrait @relation("DetailHidden1", fields: [Detail_H1], references: [id])
+  DetailHidden2  SlimeTrait @relation("DetailHidden2", fields: [Detail_H2], references: [id])
+  DetailHidden3  SlimeTrait @relation("DetailHidden3", fields: [Detail_H3], references: [id])
 
-  EyesDominant SlimeTrait @relation("EyesDominant", fields: [Eyes_D], references: [id])
-  EyesHidden1  SlimeTrait @relation("EyesHidden1", fields: [Eyes_H1], references: [id])
-  EyesHidden2  SlimeTrait @relation("EyesHidden2", fields: [Eyes_H2], references: [id])
-  EyesHidden3  SlimeTrait @relation("EyesHidden3", fields: [Eyes_H3], references: [id])
+  EyeColourDominant SlimeTrait @relation("EyeColourDominant", fields: [EyeColour_D], references: [id])
+  EyeColourHidden1  SlimeTrait @relation("EyeColourHidden1", fields: [EyeColour_H1], references: [id])
+  EyeColourHidden2  SlimeTrait @relation("EyeColourHidden2", fields: [EyeColour_H2], references: [id])
+  EyeColourHidden3  SlimeTrait @relation("EyeColourHidden3", fields: [EyeColour_H3], references: [id])
+
+  EyeShapeDominant SlimeTrait @relation("EyeShapeDominant", fields: [EyeShape_D], references: [id])
+  EyeShapeHidden1  SlimeTrait @relation("EyeShapeHidden1", fields: [EyeShape_H1], references: [id])
+  EyeShapeHidden2  SlimeTrait @relation("EyeShapeHidden2", fields: [EyeShape_H2], references: [id])
+  EyeShapeHidden3  SlimeTrait @relation("EyeShapeHidden3", fields: [EyeShape_H3], references: [id])
 
   MouthDominant SlimeTrait @relation("MouthDominant", fields: [Mouth_D], references: [id])
   MouthHidden1  SlimeTrait @relation("MouthHidden1", fields: [Mouth_H1], references: [id])
@@ -201,12 +202,14 @@ model Slime {
 }
 
 model SlimeTrait {
-  id         Int       @id @default(autoincrement())
-  type       TraitType
-  name       String
-  rarity     Rarity
-  pairId     Int? // Points to another SlimeTrait as a potential pair
-  mutationId Int? // Points to another SlimeTrait representing mutation to the next gen
+  id          Int       @id @default(autoincrement())
+  type        TraitType
+  name        String
+  rarity      Rarity
+  pair0Id     Int? // Points to another SlimeTrait as the first potential pair
+  mutation0Id Int? // Points to another SlimeTrait representing the first mutation to the next gen
+  pair1Id     Int? // Points to another SlimeTrait as the second potential pair
+  mutation1Id Int? // Points to another SlimeTrait representing the second mutation to the next gen
 
   str   Int @default(0)
   def   Int @default(0)
@@ -214,48 +217,57 @@ model SlimeTrait {
   magic Int @default(0)
   hp    Int @default(0)
 
-  pair     SlimeTrait? @relation("Pair", fields: [pairId], references: [id])
-  mutation SlimeTrait? @relation("Mutation", fields: [mutationId], references: [id])
+  // Relations for first pair and mutation
+  pair0     SlimeTrait? @relation("Pair0", fields: [pair0Id], references: [id])
+  mutation0 SlimeTrait? @relation("Mutation0", fields: [mutation0Id], references: [id])
 
-  // Reverse relations for pair and mutation
-  pairedTraits   SlimeTrait[] @relation("Pair")
-  mutationTraits SlimeTrait[] @relation("Mutation")
+  // Reverse relations for first pair and mutation
+  paired0Traits   SlimeTrait[] @relation("Pair0")
+  mutation0Traits SlimeTrait[] @relation("Mutation0")
+
+  // Relations for second pair and mutation
+  pair1     SlimeTrait? @relation("Pair1", fields: [pair1Id], references: [id])
+  mutation1 SlimeTrait? @relation("Mutation1", fields: [mutation1Id], references: [id])
+
+  // Reverse relations for second pair and mutation
+  paired1Traits   SlimeTrait[] @relation("Pair1")
+  mutation1Traits SlimeTrait[] @relation("Mutation1")
 
   // Relations to Slime (reverse)
-  slimesAsAuraDominant Slime[] @relation("AuraDominant")
-  slimesAsAuraHidden1  Slime[] @relation("AuraHidden1")
-  slimesAsAuraHidden2  Slime[] @relation("AuraHidden2")
-  slimesAsAuraHidden3  Slime[] @relation("AuraHidden3")
-
   slimesAsBodyDominant Slime[] @relation("BodyDominant")
   slimesAsBodyHidden1  Slime[] @relation("BodyHidden1")
   slimesAsBodyHidden2  Slime[] @relation("BodyHidden2")
   slimesAsBodyHidden3  Slime[] @relation("BodyHidden3")
 
-  slimesAsCoreDominant Slime[] @relation("CoreDominant")
-  slimesAsCoreHidden1  Slime[] @relation("CoreHidden1")
-  slimesAsCoreHidden2  Slime[] @relation("CoreHidden2")
-  slimesAsCoreHidden3  Slime[] @relation("CoreHidden3")
+  slimesAsPatternDominant Slime[] @relation("PatternDominant")
+  slimesAsPatternHidden1  Slime[] @relation("PatternHidden1")
+  slimesAsPatternHidden2  Slime[] @relation("PatternHidden2")
+  slimesAsPatternHidden3  Slime[] @relation("PatternHidden3")
 
-  slimesAsHeadpieceDominant Slime[] @relation("HeadpieceDominant")
-  slimesAsHeadpieceHidden1  Slime[] @relation("HeadpieceHidden1")
-  slimesAsHeadpieceHidden2  Slime[] @relation("HeadpieceHidden2")
-  slimesAsHeadpieceHidden3  Slime[] @relation("HeadpieceHidden3")
+  slimesAsPrimaryColourDominant Slime[] @relation("PrimaryColourDominant")
+  slimesAsPrimaryColourHidden1  Slime[] @relation("PrimaryColourHidden1")
+  slimesAsPrimaryColourHidden2  Slime[] @relation("PrimaryColourHidden2")
+  slimesAsPrimaryColourHidden3  Slime[] @relation("PrimaryColourHidden3")
 
-  slimesAsTailDominant Slime[] @relation("TailDominant")
-  slimesAsTailHidden1  Slime[] @relation("TailHidden1")
-  slimesAsTailHidden2  Slime[] @relation("TailHidden2")
-  slimesAsTailHidden3  Slime[] @relation("TailHidden3")
+  slimesAsAccentDominant Slime[] @relation("AccentDominant")
+  slimesAsAccentHidden1  Slime[] @relation("AccentHidden1")
+  slimesAsAccentHidden2  Slime[] @relation("AccentHidden2")
+  slimesAsAccentHidden3  Slime[] @relation("AccentHidden3")
 
-  slimesAsArmsDominant Slime[] @relation("ArmsDominant")
-  slimesAsArmsHidden1  Slime[] @relation("ArmsHidden1")
-  slimesAsArmsHidden2  Slime[] @relation("ArmsHidden2")
-  slimesAsArmsHidden3  Slime[] @relation("ArmsHidden3")
+  slimesAsDetailDominant Slime[] @relation("DetailDominant")
+  slimesAsDetailHidden1  Slime[] @relation("DetailHidden1")
+  slimesAsDetailHidden2  Slime[] @relation("DetailHidden2")
+  slimesAsDetailHidden3  Slime[] @relation("DetailHidden3")
 
-  slimesAsEyesDominant Slime[] @relation("EyesDominant")
-  slimesAsEyesHidden1  Slime[] @relation("EyesHidden1")
-  slimesAsEyesHidden2  Slime[] @relation("EyesHidden2")
-  slimesAsEyesHidden3  Slime[] @relation("EyesHidden3")
+  slimesAsEyeColourDominant Slime[] @relation("EyeColourDominant")
+  slimesAsEyeColourHidden1  Slime[] @relation("EyeColourHidden1")
+  slimesAsEyeColourHidden2  Slime[] @relation("EyeColourHidden2")
+  slimesAsEyeColourHidden3  Slime[] @relation("EyeColourHidden3")
+
+  slimesAsEyeShapeDominant Slime[] @relation("EyeShapeDominant")
+  slimesAsEyeShapeHidden1  Slime[] @relation("EyeShapeHidden1")
+  slimesAsEyeShapeHidden2  Slime[] @relation("EyeShapeHidden2")
+  slimesAsEyeShapeHidden3  Slime[] @relation("EyeShapeHidden3")
 
   slimesAsMouthDominant Slime[] @relation("MouthDominant")
   slimesAsMouthHidden1  Slime[] @relation("MouthHidden1")
@@ -302,7 +314,7 @@ model Item {
   rarity       Rarity
   consumableId Int?
   consumable   Consumable? @relation(fields: [consumableId], references: [id])
-  sellPriceGP Int?
+  sellPriceGP  Int?
 
   farmingDurationS     Int?
   farmingLevelRequired Int?

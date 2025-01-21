@@ -2,37 +2,38 @@ import { Slime, SlimeTrait, TraitType, User } from '@prisma/client';
 import { prisma } from './client';
 import { logger } from '../utils/logger';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
+import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
 
 export type SlimeWithTraits = Slime & {
   owner: Pick<User, 'telegramId'>;
-  AuraDominant: SlimeTrait;
-  AuraHidden1: SlimeTrait;
-  AuraHidden2: SlimeTrait;
-  AuraHidden3: SlimeTrait;
   BodyDominant: SlimeTrait;
   BodyHidden1: SlimeTrait;
   BodyHidden2: SlimeTrait;
   BodyHidden3: SlimeTrait;
-  CoreDominant: SlimeTrait;
-  CoreHidden1: SlimeTrait;
-  CoreHidden2: SlimeTrait;
-  CoreHidden3: SlimeTrait;
-  HeadpieceDominant: SlimeTrait;
-  HeadpieceHidden1: SlimeTrait;
-  HeadpieceHidden2: SlimeTrait;
-  HeadpieceHidden3: SlimeTrait;
-  TailDominant: SlimeTrait;
-  TailHidden1: SlimeTrait;
-  TailHidden2: SlimeTrait;
-  TailHidden3: SlimeTrait;
-  ArmsDominant: SlimeTrait;
-  ArmsHidden1: SlimeTrait;
-  ArmsHidden2: SlimeTrait;
-  ArmsHidden3: SlimeTrait;
-  EyesDominant: SlimeTrait;
-  EyesHidden1: SlimeTrait;
-  EyesHidden2: SlimeTrait;
-  EyesHidden3: SlimeTrait;
+  PatternDominant: SlimeTrait;
+  PatternHidden1: SlimeTrait;
+  PatternHidden2: SlimeTrait;
+  PatternHidden3: SlimeTrait;
+  PrimaryColourDominant: SlimeTrait;
+  PrimaryColourHidden1: SlimeTrait;
+  PrimaryColourHidden2: SlimeTrait;
+  PrimaryColourHidden3: SlimeTrait;
+  AccentDominant: SlimeTrait;
+  AccentHidden1: SlimeTrait;
+  AccentHidden2: SlimeTrait;
+  AccentHidden3: SlimeTrait;
+  DetailDominant: SlimeTrait;
+  DetailHidden1: SlimeTrait;
+  DetailHidden2: SlimeTrait;
+  DetailHidden3: SlimeTrait;
+  EyeColourDominant: SlimeTrait;
+  EyeColourHidden1: SlimeTrait;
+  EyeColourHidden2: SlimeTrait;
+  EyeColourHidden3: SlimeTrait;
+  EyeShapeDominant: SlimeTrait;
+  EyeShapeHidden1: SlimeTrait;
+  EyeShapeHidden2: SlimeTrait;
+  EyeShapeHidden3: SlimeTrait;
   MouthDominant: SlimeTrait;
   MouthHidden1: SlimeTrait;
   MouthHidden2: SlimeTrait;
@@ -45,34 +46,34 @@ export async function fetchSlimeObjectWithTraits(slimeId: number): Promise<Slime
       where: { id: slimeId },
       include: {
         owner: { select: { telegramId: true } },
-        AuraDominant: true,
-        AuraHidden1: true,
-        AuraHidden2: true,
-        AuraHidden3: true,
         BodyDominant: true,
         BodyHidden1: true,
         BodyHidden2: true,
         BodyHidden3: true,
-        CoreDominant: true,
-        CoreHidden1: true,
-        CoreHidden2: true,
-        CoreHidden3: true,
-        HeadpieceDominant: true,
-        HeadpieceHidden1: true,
-        HeadpieceHidden2: true,
-        HeadpieceHidden3: true,
-        TailDominant: true,
-        TailHidden1: true,
-        TailHidden2: true,
-        TailHidden3: true,
-        ArmsDominant: true,
-        ArmsHidden1: true,
-        ArmsHidden2: true,
-        ArmsHidden3: true,
-        EyesDominant: true,
-        EyesHidden1: true,
-        EyesHidden2: true,
-        EyesHidden3: true,
+        PatternDominant: true,
+        PatternHidden1: true,
+        PatternHidden2: true,
+        PatternHidden3: true,
+        PrimaryColourDominant: true,
+        PrimaryColourHidden1: true,
+        PrimaryColourHidden2: true,
+        PrimaryColourHidden3: true,
+        AccentDominant: true,
+        AccentHidden1: true,
+        AccentHidden2: true,
+        AccentHidden3: true,
+        DetailDominant: true,
+        DetailHidden1: true,
+        DetailHidden2: true,
+        DetailHidden3: true,
+        EyeColourDominant: true,
+        EyeColourHidden1: true,
+        EyeColourHidden2: true,
+        EyeColourHidden3: true,
+        EyeShapeDominant: true,
+        EyeShapeHidden1: true,
+        EyeShapeHidden2: true,
+        EyeShapeHidden3: true,
         MouthDominant: true,
         MouthHidden1: true,
         MouthHidden2: true,
@@ -188,68 +189,70 @@ export async function generateRandomGen0Slime(ownerId: string, probabilities: nu
       data: {
         ownerId,
         generation: 0,
-        Aura_D: traits.Aura.dominant,
-        Aura_H1: traits.Aura.hidden1,
-        Aura_H2: traits.Aura.hidden2,
-        Aura_H3: traits.Aura.hidden3,
+        imageUri: '',
         Body_D: traits.Body.dominant,
         Body_H1: traits.Body.hidden1,
         Body_H2: traits.Body.hidden2,
         Body_H3: traits.Body.hidden3,
-        Core_D: traits.Core.dominant,
-        Core_H1: traits.Core.hidden1,
-        Core_H2: traits.Core.hidden2,
-        Core_H3: traits.Core.hidden3,
-        Headpiece_D: traits.Headpiece.dominant,
-        Headpiece_H1: traits.Headpiece.hidden1,
-        Headpiece_H2: traits.Headpiece.hidden2,
-        Headpiece_H3: traits.Headpiece.hidden3,
-        Tail_D: traits.Tail.dominant,
-        Tail_H1: traits.Tail.hidden1,
-        Tail_H2: traits.Tail.hidden2,
-        Tail_H3: traits.Tail.hidden3,
-        Arms_D: traits.Arms.dominant,
-        Arms_H1: traits.Arms.hidden1,
-        Arms_H2: traits.Arms.hidden2,
-        Arms_H3: traits.Arms.hidden3,
-        Eyes_D: traits.Eyes.dominant,
-        Eyes_H1: traits.Eyes.hidden1,
-        Eyes_H2: traits.Eyes.hidden2,
-        Eyes_H3: traits.Eyes.hidden3,
+        Pattern_D: traits.Pattern.dominant,
+        Pattern_H1: traits.Pattern.hidden1,
+        Pattern_H2: traits.Pattern.hidden2,
+        Pattern_H3: traits.Pattern.hidden3,
+        PrimaryColour_D: traits.PrimaryColour.dominant,
+        PrimaryColour_H1: traits.PrimaryColour.hidden1,
+        PrimaryColour_H2: traits.PrimaryColour.hidden2,
+        PrimaryColour_H3: traits.PrimaryColour.hidden3,
+        Accent_D: traits.Accent.dominant,
+        Accent_H1: traits.Accent.hidden1,
+        Accent_H2: traits.Accent.hidden2,
+        Accent_H3: traits.Accent.hidden3,
+        Detail_D: traits.Detail.dominant,
+        Detail_H1: traits.Detail.hidden1,
+        Detail_H2: traits.Detail.hidden2,
+        Detail_H3: traits.Detail.hidden3,
+        EyeColour_D: traits.EyeColour.dominant,
+        EyeColour_H1: traits.EyeColour.hidden1,
+        EyeColour_H2: traits.EyeColour.hidden2,
+        EyeColour_H3: traits.EyeColour.hidden3,
+        EyeShape_D: traits.EyeShape.dominant,
+        EyeShape_H1: traits.EyeShape.hidden1,
+        EyeShape_H2: traits.EyeShape.hidden2,
+        EyeShape_H3: traits.EyeShape.hidden3,
         Mouth_D: traits.Mouth.dominant,
         Mouth_H1: traits.Mouth.hidden1,
         Mouth_H2: traits.Mouth.hidden2,
         Mouth_H3: traits.Mouth.hidden3,
       },
       include: {
-        AuraDominant: true,
-        AuraHidden1: true,
-        AuraHidden2: true,
-        AuraHidden3: true,
+        owner: { select: { telegramId: true } },
         BodyDominant: true,
         BodyHidden1: true,
         BodyHidden2: true,
         BodyHidden3: true,
-        CoreDominant: true,
-        CoreHidden1: true,
-        CoreHidden2: true,
-        CoreHidden3: true,
-        HeadpieceDominant: true,
-        HeadpieceHidden1: true,
-        HeadpieceHidden2: true,
-        HeadpieceHidden3: true,
-        TailDominant: true,
-        TailHidden1: true,
-        TailHidden2: true,
-        TailHidden3: true,
-        ArmsDominant: true,
-        ArmsHidden1: true,
-        ArmsHidden2: true,
-        ArmsHidden3: true,
-        EyesDominant: true,
-        EyesHidden1: true,
-        EyesHidden2: true,
-        EyesHidden3: true,
+        PatternDominant: true,
+        PatternHidden1: true,
+        PatternHidden2: true,
+        PatternHidden3: true,
+        PrimaryColourDominant: true,
+        PrimaryColourHidden1: true,
+        PrimaryColourHidden2: true,
+        PrimaryColourHidden3: true,
+        AccentDominant: true,
+        AccentHidden1: true,
+        AccentHidden2: true,
+        AccentHidden3: true,
+        DetailDominant: true,
+        DetailHidden1: true,
+        DetailHidden2: true,
+        DetailHidden3: true,
+        EyeColourDominant: true,
+        EyeColourHidden1: true,
+        EyeColourHidden2: true,
+        EyeColourHidden3: true,
+        EyeShapeDominant: true,
+        EyeShapeHidden1: true,
+        EyeShapeHidden2: true,
+        EyeShapeHidden3: true,
         MouthDominant: true,
         MouthHidden1: true,
         MouthHidden2: true,
@@ -258,6 +261,11 @@ export async function generateRandomGen0Slime(ownerId: string, probabilities: nu
     });
 
     logger.info(`Generated new Gen0 Slime with ID: ${slime}`);
+
+    const uri = await processAndUploadSlimeImage(slime);
+    updateSlimeImageUri(slime.id, uri);
+
+    slime.imageUri = uri;
     return slime;
   } catch (error) {
     logger.error(`Failed to generate Gen0 Slime: ${error}`);
@@ -289,11 +297,30 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       const dameH3 = dame[`${trait}Hidden3` as keyof SlimeWithTraits] as SlimeTrait;
 
       let childDominantId;
-      if (sireD.pairId === dameD.id && dameD.pairId === sireD.id) {
-        // Mutate dominant gene
-        if (Math.random() < getMutationProbability(sireD.rarity)) {
-          childDominantId = dameD.mutationId!;
+      if (
+        (sireD.pair0Id === dameD.id && dameD.pair0Id === sireD.id) || // Pair via pair0Id
+        (sireD.pair1Id === dameD.id && dameD.pair0Id === sireD.id) || // Sire pair1Id ↔ Dame pair0Id
+        (sireD.pair0Id === dameD.id && dameD.pair1Id === sireD.id) || // Sire pair0Id ↔ Dame pair1Id
+        (sireD.pair1Id === dameD.id && dameD.pair1Id === sireD.id)    // Pair via pair1Id
+      ) {
+        // Determine which mutation ID to use
+        let mutationId: number | null = null;
+
+        if (sireD.pair0Id === dameD.id && dameD.pair0Id === sireD.id) {
+          mutationId = sireD.mutation0Id; // Pair0 ↔ Pair0
+        } else if (sireD.pair1Id === dameD.id && dameD.pair0Id === sireD.id) {
+          mutationId = sireD.mutation1Id; // Pair1 ↔ Pair0
+        } else if (sireD.pair0Id === dameD.id && dameD.pair1Id === sireD.id) {
+          mutationId = sireD.mutation0Id; // Pair0 ↔ Pair1
+        } else if (sireD.pair1Id === dameD.id && dameD.pair1Id === sireD.id) {
+          mutationId = sireD.mutation1Id; // Pair1 ↔ Pair1
+        }
+
+        if (mutationId && Math.random() < getMutationProbability(sireD.rarity)) {
+          // Mutation occurs
+          childDominantId = mutationId;
         } else {
+          // Regular inheritance logic
           childDominantId = getChildTraitId({
             sireDId: sireD.id,
             sireH1Id: sireH1.id,
@@ -305,17 +332,6 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
             dameH3Id: dameH3.id,
           });
         }
-      } else {
-        childDominantId = getChildTraitId({
-          sireDId: sireD.id,
-          sireH1Id: sireH1.id,
-          sireH2Id: sireH2.id,
-          sireH3Id: sireH3.id,
-          dameDId: dameD.id,
-          dameH1Id: dameH1.id,
-          dameH2Id: dameH2.id,
-          dameH3Id: dameH3.id,
-        });
       }
 
       // Hidden genes for the child
@@ -353,7 +369,7 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       });
 
       // Set all four genes for each trait in childData
-      childData[`${trait}_D`] = childDominantId;
+      childData[`${trait}_D`] = childDominantId!;
       childData[`${trait}_H1`] = childHidden1Id;
       childData[`${trait}_H2`] = childHidden2Id;
       childData[`${trait}_H3`] = childHidden3Id;
@@ -364,68 +380,70 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       data: {
         ownerId: sire.ownerId,
         generation: Math.max(sire.generation, dame.generation) + 1,
-        Aura_D: childData['Aura_D'],
-        Aura_H1: childData['Aura_H1'],
-        Aura_H2: childData['Aura_H2'],
-        Aura_H3: childData['Aura_H3'],
+        imageUri: '',
         Body_D: childData['Body_D'],
         Body_H1: childData['Body_H1'],
         Body_H2: childData['Body_H2'],
         Body_H3: childData['Body_H3'],
-        Core_D: childData['Core_D'],
-        Core_H1: childData['Core_H1'],
-        Core_H2: childData['Core_H2'],
-        Core_H3: childData['Core_H3'],
-        Headpiece_D: childData['Headpiece_D'],
-        Headpiece_H1: childData['Headpiece_H1'],
-        Headpiece_H2: childData['Headpiece_H2'],
-        Headpiece_H3: childData['Headpiece_H3'],
-        Tail_D: childData['Tail_D'],
-        Tail_H1: childData['Tail_H1'],
-        Tail_H2: childData['Tail_H2'],
-        Tail_H3: childData['Tail_H3'],
-        Arms_D: childData['Arms_D'],
-        Arms_H1: childData['Arms_H1'],
-        Arms_H2: childData['Arms_H2'],
-        Arms_H3: childData['Arms_H3'],
-        Eyes_D: childData['Eyes_D'],
-        Eyes_H1: childData['Eyes_H1'],
-        Eyes_H2: childData['Eyes_H2'],
-        Eyes_H3: childData['Eyes_H3'],
-        Mouth_D: childData['Mouth_D'],
-        Mouth_H1: childData['Mouth_H1'],
-        Mouth_H2: childData['Mouth_H2'],
-        Mouth_H3: childData['Mouth_H3'],
+        Pattern_D: childData["Pattern_D"],
+        Pattern_H1: childData["Pattern_H1"],
+        Pattern_H2: childData["Pattern_H2"],
+        Pattern_H3: childData["Pattern_H3"],
+        PrimaryColour_D: childData["PrimaryColour_D"],
+        PrimaryColour_H1: childData["PrimaryColour_H1"],
+        PrimaryColour_H2: childData["PrimaryColour_H2"],
+        PrimaryColour_H3: childData["PrimaryColour_H3"],
+        Accent_D: childData["Accent_D"],
+        Accent_H1: childData["Accent_H1"],
+        Accent_H2: childData["Accent_H2"],
+        Accent_H3: childData["Accent_H3"],
+        Detail_D: childData["Detail_D"],
+        Detail_H1: childData["Detail_H1"],
+        Detail_H2: childData["Detail_H2"],
+        Detail_H3: childData["Detail_H3"],
+        EyeColour_D: childData["EyeColour_D"],
+        EyeColour_H1: childData["EyeColour_H1"],
+        EyeColour_H2: childData["EyeColour_H2"],
+        EyeColour_H3: childData["EyeColour_H3"],
+        EyeShape_D: childData["EyeShape_D"],
+        EyeShape_H1: childData["EyeShape_H1"],
+        EyeShape_H2: childData["EyeShape_H2"],
+        EyeShape_H3: childData["EyeShape_H3"],
+        Mouth_D: childData["Mouth_D"],
+        Mouth_H1: childData["Mouth_H1"],
+        Mouth_H2: childData["Mouth_H2"],
+        Mouth_H3: childData["Mouth_H3"],
       },
       include: {
-        AuraDominant: true,
-        AuraHidden1: true,
-        AuraHidden2: true,
-        AuraHidden3: true,
+        owner: { select: { telegramId: true } },
         BodyDominant: true,
         BodyHidden1: true,
         BodyHidden2: true,
         BodyHidden3: true,
-        CoreDominant: true,
-        CoreHidden1: true,
-        CoreHidden2: true,
-        CoreHidden3: true,
-        HeadpieceDominant: true,
-        HeadpieceHidden1: true,
-        HeadpieceHidden2: true,
-        HeadpieceHidden3: true,
-        TailDominant: true,
-        TailHidden1: true,
-        TailHidden2: true,
-        TailHidden3: true,
-        ArmsDominant: true,
-        ArmsHidden1: true,
-        ArmsHidden2: true,
-        ArmsHidden3: true,
-        EyesDominant: true,
-        EyesHidden1: true,
-        EyesHidden2: true,
-        EyesHidden3: true,
+        PatternDominant: true,
+        PatternHidden1: true,
+        PatternHidden2: true,
+        PatternHidden3: true,
+        PrimaryColourDominant: true,
+        PrimaryColourHidden1: true,
+        PrimaryColourHidden2: true,
+        PrimaryColourHidden3: true,
+        AccentDominant: true,
+        AccentHidden1: true,
+        AccentHidden2: true,
+        AccentHidden3: true,
+        DetailDominant: true,
+        DetailHidden1: true,
+        DetailHidden2: true,
+        DetailHidden3: true,
+        EyeColourDominant: true,
+        EyeColourHidden1: true,
+        EyeColourHidden2: true,
+        EyeColourHidden3: true,
+        EyeShapeDominant: true,
+        EyeShapeHidden1: true,
+        EyeShapeHidden2: true,
+        EyeShapeHidden3: true,
         MouthDominant: true,
         MouthHidden1: true,
         MouthHidden2: true,
@@ -433,6 +451,9 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       },
     });
 
+    const uri = await processAndUploadSlimeImage(childSlime);
+    childSlime.imageUri = uri;
+    updateSlimeImageUri(childSlime.id, uri);
 
     return childSlime;
   } catch (error) {
@@ -520,4 +541,21 @@ function getChildTraitId({
 
   // Fallback if something goes wrong (shouldn't happen)
   throw new Error("Failed to select a trait to pass down.");
+}
+
+export async function updateSlimeImageUri(slimeId: number, imageUri: string): Promise<void> {
+  try {
+    // Update the slime record in the database
+    const updatedSlime = await prisma.slime.update({
+      where: { id: slimeId },
+      data: { imageUri },
+    });
+
+    // Log the success
+    logger.info(`Updated imageUri for Slime ID ${slimeId}: ${updatedSlime.imageUri}`);
+  } catch (error) {
+    // Handle errors and log them
+    logger.error(`Failed to update imageUri for Slime ID ${slimeId}: ${error}`);
+    throw new Error(`Could not update imageUri for Slime ID ${slimeId}`);
+  }
 }

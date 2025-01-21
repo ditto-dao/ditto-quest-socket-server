@@ -8,7 +8,9 @@ import { setupGlobalErrorHandlers } from "./src/utils/global-error-handler"
 import { PORT, SOCKET_ORIGIN, SOCKET_PATH } from "./src/utils/config"
 import { SocketManager } from "./src/socket/socket-manager"
 import { IdleManager } from "./src/managers/idle-managers/idle-manager"
+import "@aws-sdk/crc64-nvme-crt";
 
+require("@aws-sdk/crc64-nvme-crt");
 
 async function main() {
     // Socket
