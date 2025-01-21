@@ -34,7 +34,7 @@ const parseCsvToJson = async () => {
                         name: row['Item Name'],
                         rarity: row['Rarity'],
                         description: row['Description'],
-                        imgsrc: row['Image (Source)'],
+                        imgsrc: row['Image (Material)'],
                         consumableId: null,
                         farmingDurationS: parseInt(row['Farming Interval (S)'], 10),
                         farmingLevelRequired: parseInt(row['Farming Level Req'], 10),
