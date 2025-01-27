@@ -1,5 +1,5 @@
 import { Rarity, TraitType } from "@prisma/client";
-import { HP_EXP_PER_EXP } from "./config";
+import { GACHA_PULL_ODDS, HP_EXP_PER_EXP } from "./config";
 import { SlimeWithTraits } from "../sql-services/slime";
 
 // Helper function to calculate experience needed for the next level
@@ -25,6 +25,7 @@ export function getMutationProbability(rarity: Rarity): number {
             return 0.25;
         case 'B':
         case 'A':
+        case 'S':
             return 0.125;
         default:
             return 0;

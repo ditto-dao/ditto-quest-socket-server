@@ -24,7 +24,8 @@
     "seed-crafting-recipes": "ts-node ./src/scripts/crafting/seed-crafting-recipes-db.ts",
     "seed-slime-traits": "ts-node ./src/scripts/slime-traits/seed-slime-traits-db.ts",
     "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
-    "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts"
+    "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts",
+    "breed": "ts-node ./src/utils/breed-test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.730.0",

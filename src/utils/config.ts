@@ -13,7 +13,7 @@ export const BOT_TOKEN_DEV = process.env.BOT_TOKEN_DEV || ""
 
 export const HP_EXP_PER_EXP = (process.env.HP_EXP_PER_EXP !== undefined && !isNaN(parseFloat(process.env.HP_EXP_PER_EXP))) ? parseFloat(process.env.HP_EXP_PER_EXP) : 1
 
-export const GEN_0_SLIME_TRAIT_PROBABILITIES = process.env.GEN_0_SLIME_TRAIT_PROBABILITIES ? process.env.GEN_0_SLIME_TRAIT_PROBABILITIES.split(' ').map(prob => parseFloat(prob)) : []
+export const GACHA_PULL_ODDS = process.env.GACHA_PULL_ODDS ? process.env.GACHA_PULL_ODDS.split(' ').map(prob => parseFloat(prob)) : []
 
 export const MAX_CONCURRENT_IDLE_ACTIVITIES = (process.env.MAX_CONCURRENT_IDLE_ACTIVITIES !== undefined && !isNaN(parseInt(process.env.MAX_CONCURRENT_IDLE_ACTIVITIES))) ? parseInt(process.env.MAX_CONCURRENT_IDLE_ACTIVITIES) : 1
 
@@ -24,3 +24,7 @@ export const AWS_S3_REGION = process.env.AWS_S3_REGION || ""
 export const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || ""
 
 export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || ""
+
+export const SLIMES_TARGET_FOLDER = process.env.SLIMES_TARGET_FOLDER || ""
+
+export const S3_UPLOAD_CACHE_CONTROL = process.env.S3_UPLOAD_CACHE_CONTROL || ""

@@ -2,17 +2,17 @@
   {
     "id": 1,
     "type": "Body",
-    "name": "Chartreux Kitty",
-    "rarity": "D",
+    "name": "Laperm Kitty",
+    "rarity": "C",
     "pair0Id": 2,
     "mutation0Id": 5,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 0,
-    "def": 0,
-    "dex": 0,
-    "magic": 0,
-    "hp": 0
+    "str": 1,
+    "def": 5,
+    "dex": 4,
+    "magic": 6,
+    "hp": 12
   },
   {
     "id": 2,
@@ -23,31 +23,31 @@
     "mutation0Id": 5,
     "pair1Id": 3,
     "mutation1Id": 6,
-    "str": 2,
-    "def": 0,
-    "dex": 19,
-    "magic": 1,
-    "hp": 5
+    "str": 17,
+    "def": 20,
+    "dex": 10,
+    "magic": 5,
+    "hp": 17
   },
   {
     "id": 3,
     "type": "Body",
-    "name": "Himalayan Kitty",
-    "rarity": "C",
+    "name": "Sphynx Kitty",
+    "rarity": "D",
     "pair0Id": 2,
     "mutation0Id": 6,
     "pair1Id": 4,
     "mutation1Id": 7,
-    "str": 18,
+    "str": 0,
     "def": 0,
-    "dex": 4,
-    "magic": 9,
-    "hp": 16
+    "dex": 0,
+    "magic": 0,
+    "hp": 0
   },
   {
     "id": 4,
     "type": "Body",
-    "name": "Laperm Kitty",
+    "name": "Munchkin Kitty",
     "rarity": "D",
     "pair0Id": 3,
     "mutation0Id": 7,
@@ -68,56 +68,56 @@
     "mutation0Id": 8,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 8,
-    "def": 8,
-    "dex": 10,
-    "magic": 21,
-    "hp": 9
+    "str": 23,
+    "def": 26,
+    "dex": 7,
+    "magic": 35,
+    "hp": 26
   },
   {
     "id": 6,
     "type": "Body",
-    "name": "Munchkin Kitty",
+    "name": "Ragamuffin Kitty",
     "rarity": "A",
     "pair0Id": 5,
     "mutation0Id": 8,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 1,
-    "def": 81,
-    "dex": 2,
-    "magic": 69,
-    "hp": 14
+    "str": 91,
+    "def": 51,
+    "dex": 48,
+    "magic": 43,
+    "hp": 20
   },
   {
     "id": 7,
+    "name": "Himalayan Kitty",
     "type": "Body",
-    "name": "Sphynx Kitty",
     "rarity": "B",
     "pair0Id": null,
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 25,
-    "def": 43,
-    "dex": 5,
-    "magic": 14,
-    "hp": 11
+    "str": 47,
+    "def": 40,
+    "dex": 9,
+    "magic": 13,
+    "hp": 38
   },
   {
     "id": 8,
     "type": "Body",
-    "name": "Ragamuffin Kitty",
+    "name": "Chartreux Kitty",
     "rarity": "S",
     "pair0Id": null,
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 155,
-    "def": 186,
-    "dex": 104,
-    "magic": 179,
-    "hp": 86
+    "str": 152,
+    "def": 115,
+    "dex": 74,
+    "magic": 176,
+    "hp": 155
   },
   {
     "id": 9,
@@ -143,11 +143,11 @@
     "mutation0Id": 12,
     "pair1Id": 11,
     "mutation1Id": 13,
-    "str": 8,
-    "def": 8,
-    "dex": 4,
-    "magic": 3,
-    "hp": 5
+    "str": 17,
+    "def": 16,
+    "dex": 1,
+    "magic": 2,
+    "hp": 2
   },
   {
     "id": 11,
@@ -158,11 +158,11 @@
     "mutation0Id": 13,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 6,
-    "def": 5,
-    "dex": 12,
-    "magic": 13,
-    "hp": 6
+    "str": 7,
+    "def": 18,
+    "dex": 11,
+    "magic": 3,
+    "hp": 14
   },
   {
     "id": 12,
@@ -173,11 +173,11 @@
     "mutation0Id": 14,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 6,
-    "def": 16,
-    "dex": 49,
-    "magic": 29,
-    "hp": 30
+    "str": 8,
+    "def": 40,
+    "dex": 21,
+    "magic": 44,
+    "hp": 31
   },
   {
     "id": 13,
@@ -188,11 +188,11 @@
     "mutation0Id": 14,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 12,
-    "def": 72,
-    "dex": 53,
-    "magic": 93,
-    "hp": 62
+    "str": 61,
+    "def": 55,
+    "dex": 18,
+    "magic": 51,
+    "hp": 89
   },
   {
     "id": 14,
@@ -203,11 +203,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 121,
-    "def": 76,
-    "dex": 162,
-    "magic": 100,
-    "hp": 132
+    "str": 76,
+    "def": 21,
+    "dex": 99,
+    "magic": 28,
+    "hp": 195
   },
   {
     "id": 15,
@@ -233,11 +233,11 @@
     "mutation0Id": 19,
     "pair1Id": 17,
     "mutation1Id": 20,
-    "str": 2,
-    "def": 15,
-    "dex": 7,
-    "magic": 9,
-    "hp": 3
+    "str": 17,
+    "def": 19,
+    "dex": 3,
+    "magic": 10,
+    "hp": 0
   },
   {
     "id": 17,
@@ -248,11 +248,11 @@
     "mutation0Id": 20,
     "pair1Id": 18,
     "mutation1Id": 21,
-    "str": 11,
-    "def": 8,
-    "dex": 19,
-    "magic": 12,
-    "hp": 19
+    "str": 17,
+    "def": 1,
+    "dex": 12,
+    "magic": 0,
+    "hp": 13
   },
   {
     "id": 18,
@@ -278,11 +278,11 @@
     "mutation0Id": 22,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 10,
-    "def": 47,
-    "dex": 0,
-    "magic": 25,
-    "hp": 21
+    "str": 25,
+    "def": 19,
+    "dex": 48,
+    "magic": 28,
+    "hp": 2
   },
   {
     "id": 20,
@@ -293,11 +293,11 @@
     "mutation0Id": 22,
     "pair1Id": 21,
     "mutation1Id": 23,
-    "str": 15,
-    "def": 46,
-    "dex": 37,
-    "magic": 37,
-    "hp": 17
+    "str": 98,
+    "def": 98,
+    "dex": 47,
+    "magic": 32,
+    "hp": 52
   },
   {
     "id": 21,
@@ -308,11 +308,11 @@
     "mutation0Id": 23,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 17,
-    "def": 50,
-    "dex": 41,
-    "magic": 28,
-    "hp": 27
+    "str": 29,
+    "def": 35,
+    "dex": 16,
+    "magic": 5,
+    "hp": 0
   },
   {
     "id": 22,
@@ -323,11 +323,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 200,
-    "def": 137,
-    "dex": 77,
-    "magic": 134,
-    "hp": 87
+    "str": 197,
+    "def": 104,
+    "dex": 73,
+    "magic": 121,
+    "hp": 173
   },
   {
     "id": 23,
@@ -338,11 +338,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 64,
-    "def": 126,
-    "dex": 171,
-    "magic": 178,
-    "hp": 107
+    "str": 10,
+    "def": 164,
+    "dex": 108,
+    "magic": 170,
+    "hp": 84
   },
   {
     "id": 24,
@@ -368,11 +368,11 @@
     "mutation0Id": 27,
     "pair1Id": 26,
     "mutation1Id": 28,
-    "str": 3,
-    "def": 8,
-    "dex": 7,
-    "magic": 7,
-    "hp": 7
+    "str": 11,
+    "def": 5,
+    "dex": 12,
+    "magic": 10,
+    "hp": 10
   },
   {
     "id": 26,
@@ -383,11 +383,11 @@
     "mutation0Id": 28,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 32,
-    "def": 24,
-    "dex": 5,
-    "magic": 10,
-    "hp": 47
+    "str": 50,
+    "def": 11,
+    "dex": 22,
+    "magic": 23,
+    "hp": 42
   },
   {
     "id": 27,
@@ -398,11 +398,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 79,
-    "def": 54,
-    "dex": 20,
-    "magic": 46,
-    "hp": 67
+    "str": 82,
+    "def": 46,
+    "dex": 35,
+    "magic": 36,
+    "hp": 86
   },
   {
     "id": 28,
@@ -413,11 +413,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 149,
-    "def": 0,
-    "dex": 167,
-    "magic": 174,
-    "hp": 120
+    "str": 171,
+    "def": 30,
+    "dex": 179,
+    "magic": 17,
+    "hp": 45
   },
   {
     "id": 29,
@@ -443,11 +443,11 @@
     "mutation0Id": 32,
     "pair1Id": 31,
     "mutation1Id": 33,
-    "str": 16,
-    "def": 1,
-    "dex": 12,
-    "magic": 8,
-    "hp": 1
+    "str": 5,
+    "def": 4,
+    "dex": 2,
+    "magic": 3,
+    "hp": 18
   },
   {
     "id": 31,
@@ -458,11 +458,11 @@
     "mutation0Id": 33,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 24,
-    "def": 4,
-    "dex": 19,
-    "magic": 10,
-    "hp": 12
+    "str": 38,
+    "def": 3,
+    "dex": 27,
+    "magic": 18,
+    "hp": 20
   },
   {
     "id": 32,
@@ -473,11 +473,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 62,
-    "def": 25,
-    "dex": 12,
-    "magic": 62,
-    "hp": 3
+    "str": 68,
+    "def": 85,
+    "dex": 54,
+    "magic": 83,
+    "hp": 20
   },
   {
     "id": 33,
@@ -488,11 +488,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 9,
-    "def": 176,
-    "dex": 152,
-    "magic": 155,
-    "hp": 19
+    "str": 191,
+    "def": 175,
+    "dex": 47,
+    "magic": 112,
+    "hp": 106
   },
   {
     "id": 34,
@@ -503,11 +503,11 @@
     "mutation0Id": 38,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 12,
-    "def": 7,
-    "dex": 14,
-    "magic": 7,
-    "hp": 8
+    "str": 1,
+    "def": 11,
+    "dex": 10,
+    "magic": 5,
+    "hp": 4
   },
   {
     "id": 35,
@@ -533,11 +533,11 @@
     "mutation0Id": 39,
     "pair1Id": 37,
     "mutation1Id": 40,
-    "str": 7,
-    "def": 15,
-    "dex": 4,
-    "magic": 15,
-    "hp": 10
+    "str": 13,
+    "def": 12,
+    "dex": 20,
+    "magic": 5,
+    "hp": 8
   },
   {
     "id": 37,
@@ -548,11 +548,11 @@
     "mutation0Id": 40,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 9,
-    "def": 15,
+    "str": 13,
+    "def": 19,
     "dex": 5,
-    "magic": 12,
-    "hp": 14
+    "magic": 7,
+    "hp": 13
   },
   {
     "id": 38,
@@ -563,11 +563,11 @@
     "mutation0Id": 41,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 56,
-    "def": 48,
-    "dex": 16,
-    "magic": 63,
-    "hp": 26
+    "str": 97,
+    "def": 29,
+    "dex": 44,
+    "magic": 87,
+    "hp": 98
   },
   {
     "id": 39,
@@ -578,11 +578,11 @@
     "mutation0Id": 41,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 67,
-    "def": 34,
-    "dex": 15,
-    "magic": 44,
-    "hp": 42
+    "str": 28,
+    "def": 44,
+    "dex": 92,
+    "magic": 95,
+    "hp": 64
   },
   {
     "id": 40,
@@ -593,11 +593,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 14,
-    "def": 15,
-    "dex": 32,
-    "magic": 3,
-    "hp": 39
+    "str": 8,
+    "def": 7,
+    "dex": 15,
+    "magic": 29,
+    "hp": 15
   },
   {
     "id": 41,
@@ -608,11 +608,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 164,
-    "def": 158,
-    "dex": 20,
-    "magic": 19,
-    "hp": 77
+    "str": 143,
+    "def": 9,
+    "dex": 142,
+    "magic": 49,
+    "hp": 102
   },
   {
     "id": 42,
@@ -638,11 +638,11 @@
     "mutation0Id": 46,
     "pair1Id": 44,
     "mutation1Id": 47,
-    "str": 11,
-    "def": 17,
-    "dex": 14,
-    "magic": 6,
-    "hp": 7
+    "str": 5,
+    "def": 15,
+    "dex": 2,
+    "magic": 17,
+    "hp": 19
   },
   {
     "id": 44,
@@ -653,11 +653,11 @@
     "mutation0Id": 47,
     "pair1Id": 45,
     "mutation1Id": 48,
-    "str": 7,
-    "def": 6,
-    "dex": 14,
-    "magic": 3,
-    "hp": 20
+    "str": 6,
+    "def": 2,
+    "dex": 4,
+    "magic": 12,
+    "hp": 2
   },
   {
     "id": 45,
@@ -683,11 +683,11 @@
     "mutation0Id": 49,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 2,
-    "def": 75,
-    "dex": 1,
-    "magic": 88,
-    "hp": 66
+    "str": 22,
+    "def": 47,
+    "dex": 38,
+    "magic": 72,
+    "hp": 62
   },
   {
     "id": 47,
@@ -698,11 +698,11 @@
     "mutation0Id": 49,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 62,
-    "def": 98,
-    "dex": 76,
-    "magic": 13,
-    "hp": 49
+    "str": 32,
+    "def": 3,
+    "dex": 17,
+    "magic": 18,
+    "hp": 47
   },
   {
     "id": 48,
@@ -713,11 +713,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 7,
-    "def": 14,
-    "dex": 29,
-    "magic": 0,
-    "hp": 45
+    "str": 49,
+    "def": 43,
+    "dex": 16,
+    "magic": 15,
+    "hp": 8
   },
   {
     "id": 49,
@@ -728,11 +728,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 53,
-    "def": 24,
-    "dex": 130,
-    "magic": 50,
-    "hp": 136
+    "str": 194,
+    "def": 104,
+    "dex": 120,
+    "magic": 38,
+    "hp": 42
   },
   {
     "id": 50,
@@ -758,11 +758,11 @@
     "mutation0Id": 54,
     "pair1Id": 52,
     "mutation1Id": 55,
-    "str": 18,
-    "def": 0,
-    "dex": 9,
-    "magic": 9,
-    "hp": 3
+    "str": 13,
+    "def": 14,
+    "dex": 0,
+    "magic": 17,
+    "hp": 17
   },
   {
     "id": 52,
@@ -773,11 +773,11 @@
     "mutation0Id": 55,
     "pair1Id": 53,
     "mutation1Id": 56,
-    "str": 16,
-    "def": 10,
-    "dex": 13,
-    "magic": 10,
-    "hp": 8
+    "str": 19,
+    "def": 0,
+    "dex": 7,
+    "magic": 3,
+    "hp": 7
   },
   {
     "id": 53,
@@ -803,11 +803,11 @@
     "mutation0Id": 57,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 12,
-    "def": 11,
-    "dex": 19,
-    "magic": 6,
-    "hp": 1
+    "str": 14,
+    "def": 1,
+    "dex": 20,
+    "magic": 7,
+    "hp": 3
   },
   {
     "id": 55,
@@ -818,11 +818,11 @@
     "mutation0Id": 57,
     "pair1Id": 56,
     "mutation1Id": 58,
-    "str": 37,
-    "def": 18,
-    "dex": 27,
-    "magic": 50,
-    "hp": 21
+    "str": 28,
+    "def": 25,
+    "dex": 6,
+    "magic": 19,
+    "hp": 23
   },
   {
     "id": 56,
@@ -833,11 +833,11 @@
     "mutation0Id": 58,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 22,
-    "def": 7,
+    "str": 35,
+    "def": 33,
     "dex": 43,
-    "magic": 50,
-    "hp": 3
+    "magic": 12,
+    "hp": 17
   },
   {
     "id": 57,
@@ -848,11 +848,11 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 63,
-    "def": 12,
-    "dex": 23,
-    "magic": 43,
-    "hp": 4
+    "str": 47,
+    "def": 39,
+    "dex": 90,
+    "magic": 31,
+    "hp": 5
   },
   {
     "id": 58,
@@ -863,10 +863,10 @@
     "mutation0Id": null,
     "pair1Id": null,
     "mutation1Id": null,
-    "str": 149,
-    "def": 110,
-    "dex": 60,
-    "magic": 145,
-    "hp": 64
+    "str": 92,
+    "def": 140,
+    "dex": 13,
+    "magic": 172,
+    "hp": 44
   }
 ]

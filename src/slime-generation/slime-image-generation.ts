@@ -4,11 +4,10 @@ import { logger } from "../utils/logger";
 import { getColourHexByRarity, getHighestDominantTraitRarity, hexToRgba, toCamelCase } from "../utils/helpers";
 import { Readable } from "stream";
 import { s3 } from "../utils/s3";
-import { AWS_S3_REGION } from "../utils/config";
+import { AWS_S3_REGION, S3_UPLOAD_CACHE_CONTROL, SLIMES_TARGET_FOLDER } from "../utils/config";
 import { SlimeWithTraits } from "../sql-services/slime";
 
 const BUCKET = "kibble";
-const TARGET_FOLDER = "ditto-quest/slimes";
 
 // Function to fetch an image from S3
 async function fetchImageFromS3(bucket: string, key: string): Promise<Buffer | null> {
@@ -35,7 +34,7 @@ async function fetchImageFromS3(bucket: string, key: string): Promise<Buffer | n
 
 // Function to upload an image to S3
 async function uploadImageToS3(bucket: string, key: string, imageBuffer: Buffer): Promise<string> {
-    const finalKey = `${TARGET_FOLDER}/${key}`;
+    const finalKey = `${SLIMES_TARGET_FOLDER}/${key}`;
     try {
         await s3.send(
             new PutObjectCommand({
@@ -43,6 +42,7 @@ async function uploadImageToS3(bucket: string, key: string, imageBuffer: Buffer)
                 Key: finalKey,
                 Body: imageBuffer,
                 ContentType: "image/png",
+                CacheControl: S3_UPLOAD_CACHE_CONTROL,
             })
         );
         const uri = `https://${bucket}.s3.${AWS_S3_REGION}.amazonaws.com/${finalKey}`;

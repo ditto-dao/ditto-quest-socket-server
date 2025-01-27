@@ -1,8 +1,10 @@
-import { Slime, SlimeTrait, TraitType, User } from '@prisma/client';
+import { Rarity, Slime, SlimeTrait, TraitType, User } from '@prisma/client';
 import { prisma } from './client';
 import { logger } from '../utils/logger';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
 import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
+import { DOMINANT_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits, HIDDEN_TRAITS_GACHA_SPECS } from '../utils/gacha-odds';
+import { GACHA_PULL_ODDS } from '../utils/config';
 
 export type SlimeWithTraits = Slime & {
   owner: Pick<User, 'telegramId'>;
@@ -125,103 +127,154 @@ export async function burnSlime(telegramId: string, slimeId: number): Promise<nu
   }
 }
 
-export async function getRandomSlimeTraitId(traitType: TraitType, probabilities: number[]): Promise<number> {
+export async function getRandomSlimeTraitId(traitType: TraitType, probabilities: number[]): Promise<{ traitId: number, rarity: Rarity }> {
   try {
     // Ensure the probabilities array is of length 5 and sums to 1
-    if (probabilities.length !== 5 || probabilities.reduce((sum, p) => sum + p, 0) !== 1) {
-      throw new Error("Probabilities array must have 5 elements and sum to 1.");
+    if (probabilities.length !== 5 || probabilities.reduce((sum, p) => sum + p, 0) > 1e10) {
+      throw new Error(`Probabilities array must have 5 elements and sum to 1. probabilities: ${probabilities}`);
     }
 
-    // Step 1: Fetch one random trait ID per rarity
-    const traitIdPromises = rarities.map(rarity =>
-      prisma.slimeTrait.findFirst({
-        where: { type: traitType, rarity },
-        select: { id: true } // Only select the ID
-      }).then(result => result?.id)
-    );
-
-    const traitIds = (await Promise.all(traitIdPromises)).filter(Boolean) as number[]; // Filter out nulls if any
-
-    // Step 2: Randomly select a trait ID based on the provided probabilities
+    // Step 1: Select a rarity based on probabilities
     let random = Math.random();
     let cumulativeProbability = 0;
+    let selectedRarity: Rarity | null = null;
 
-    for (let i = 0; i < traitIds.length; i++) {
+    for (let i = 0; i < rarities.length; i++) {
       cumulativeProbability += probabilities[i];
       if (random < cumulativeProbability) {
-        return traitIds[i];
+        selectedRarity = rarities[i];
+        break;
       }
     }
 
-    throw new Error('No trait IDs pulled from db');
+    if (!selectedRarity) {
+      throw new Error("Failed to select a rarity based on probabilities.");
+    }
+
+    // Step 2: Fetch all trait IDs of the selected rarity and type
+    const traits = await prisma.slimeTrait.findMany({
+      where: { type: traitType, rarity: selectedRarity as Rarity },
+      select: { id: true },
+    });
+
+    if (!traits || traits.length === 0) {
+      throw new Error(`No traits found for rarity ${selectedRarity} and type ${traitType}.`);
+    }
+
+    // Step 3: Randomly select one trait ID from the fetched IDs
+    const randomIndex = Math.floor(Math.random() * traits.length);
+    return {
+      traitId: traits[randomIndex].id,
+      rarity: selectedRarity!
+    };
   } catch (error) {
     logger.error(`Failed to get random slime trait ID: ${error}`);
     throw error;
   }
 }
 
-export async function generateRandomGen0Slime(ownerId: string, probabilities: number[]): Promise<Slime> {
+export async function slimeGachaPull(ownerId: number): Promise<Slime> {
   try {
-    // Check if probabilities sum to 1 and length matches rarities array
-    const sum = probabilities.reduce((acc, curr) => acc + curr, 0);
-    if (sum !== 1 || probabilities.length !== rarities.length) {
-      throw new Error("Probabilities array must have a sum of 1 and match the length of raritie array.");
-    }
+    const rankPull = getGachaPullRarity();
 
-    // Helper function to generate a trait with the specified type and probabilities
-    const generateTraitSet = async (traitType: TraitType) => {
-      return {
-        dominant: await getRandomSlimeTraitId(traitType, probabilities),
-        hidden1: await getRandomSlimeTraitId(traitType, probabilities),
-        hidden2: await getRandomSlimeTraitId(traitType, probabilities),
-        hidden3: await getRandomSlimeTraitId(traitType, probabilities),
-      };
-    };
+    const gachaOddsDominantTraits = DOMINANT_TRAITS_GACHA_SPECS[rankPull];
+    const gachaOddsHiddenTraits = HIDDEN_TRAITS_GACHA_SPECS[rankPull];
 
-    // Generate trait sets for each trait type
-    const traits: Record<string, { dominant: number; hidden1: number; hidden2: number; hidden3: number }> = {};
-    for (const traitType of traitTypes) {
-      traits[traitType] = await generateTraitSet(traitType);
+    const dominantTraitProbs = [gachaOddsDominantTraits.chanceD, gachaOddsDominantTraits.chanceC, gachaOddsDominantTraits.chanceB, gachaOddsDominantTraits.chanceA, gachaOddsDominantTraits.chanceS];
+    const dominantTraitConfirmProbs = getDominantTraitConfirmProbs(rankPull);
+    const dominantTraitNormalizedProbsOnMaxCount = getNormalizedProbsWhenMaxCountReached(rankPull, dominantTraitProbs);
+
+    const hiddenTraitProbs = [gachaOddsHiddenTraits.chanceD, gachaOddsHiddenTraits.chanceC, gachaOddsHiddenTraits.chanceB, gachaOddsHiddenTraits.chanceA, gachaOddsHiddenTraits.chanceS];
+
+    const { min: minCount, max: maxCount } = getMinMaxForRank(rankPull, DOMINANT_TRAITS_GACHA_SPECS);
+    let currCount = 0;
+
+    const gachaSlimeTraits: Record<string, { dominant: number; hidden1: number; hidden2: number; hidden3: number }> = {};
+
+    const dominantCounts = { D: 0, C: 0, B: 0, A: 0, S: 0 }; // Track dominant traits
+    const hiddenCounts = { D: 0, C: 0, B: 0, A: 0, S: 0 }; // Track hidden traits
+
+    for (let i = 0; i < traitTypes.length; i++) {
+      let randomDTrait;
+
+      // Initialize gachaSlimeTraits[traitTypes[i]] if not already done
+      if (!gachaSlimeTraits[traitTypes[i]]) {
+        gachaSlimeTraits[traitTypes[i]] = { dominant: 0, hidden1: 0, hidden2: 0, hidden3: 0 };
+      }
+
+      // Enforce minCount and maxCount constraints for dominant traits
+      if (traitTypes.length - i === minCount - currCount) {
+        // Guarantee the next traits match the rank if we're below minCount
+        randomDTrait = await getRandomSlimeTraitId(traitTypes[i], dominantTraitConfirmProbs);
+      } else if (currCount >= maxCount) {
+        // Force traits to be lower than rankPull if maxCount reached
+        randomDTrait = await getRandomSlimeTraitId(traitTypes[i], dominantTraitNormalizedProbsOnMaxCount);
+      } else {
+        // Normal random trait selection based on rankPull probabilities
+        randomDTrait = await getRandomSlimeTraitId(traitTypes[i], dominantTraitProbs);
+      }
+
+      // Handle dominant traits
+      gachaSlimeTraits[traitTypes[i]].dominant = randomDTrait.traitId;
+      dominantCounts[randomDTrait.rarity] += 1;
+
+      // Increment current count if the trait matches rankPull
+      if (randomDTrait.rarity === rankPull) {
+        currCount += 1;
+      }
+
+      // Handle hidden traits
+      const randomH1Trait = (await getRandomSlimeTraitId(traitTypes[i], hiddenTraitProbs));
+      const randomH2Trait = (await getRandomSlimeTraitId(traitTypes[i], hiddenTraitProbs));
+      const randomH3Trait = (await getRandomSlimeTraitId(traitTypes[i], hiddenTraitProbs));
+
+      gachaSlimeTraits[traitTypes[i]].hidden1 = randomH1Trait.traitId;
+      gachaSlimeTraits[traitTypes[i]].hidden2 = randomH2Trait.traitId;
+      gachaSlimeTraits[traitTypes[i]].hidden3 = randomH3Trait.traitId;
+
+      hiddenCounts[randomH1Trait.rarity] += 1;
+      hiddenCounts[randomH2Trait.rarity] += 1;
+      hiddenCounts[randomH3Trait.rarity] += 1;
     }
 
     // Create the Slime record in the database
     const slime = await prisma.slime.create({
       data: {
-        ownerId,
+        ownerId: ownerId.toString(),
         generation: 0,
         imageUri: '',
-        Body_D: traits.Body.dominant,
-        Body_H1: traits.Body.hidden1,
-        Body_H2: traits.Body.hidden2,
-        Body_H3: traits.Body.hidden3,
-        Pattern_D: traits.Pattern.dominant,
-        Pattern_H1: traits.Pattern.hidden1,
-        Pattern_H2: traits.Pattern.hidden2,
-        Pattern_H3: traits.Pattern.hidden3,
-        PrimaryColour_D: traits.PrimaryColour.dominant,
-        PrimaryColour_H1: traits.PrimaryColour.hidden1,
-        PrimaryColour_H2: traits.PrimaryColour.hidden2,
-        PrimaryColour_H3: traits.PrimaryColour.hidden3,
-        Accent_D: traits.Accent.dominant,
-        Accent_H1: traits.Accent.hidden1,
-        Accent_H2: traits.Accent.hidden2,
-        Accent_H3: traits.Accent.hidden3,
-        Detail_D: traits.Detail.dominant,
-        Detail_H1: traits.Detail.hidden1,
-        Detail_H2: traits.Detail.hidden2,
-        Detail_H3: traits.Detail.hidden3,
-        EyeColour_D: traits.EyeColour.dominant,
-        EyeColour_H1: traits.EyeColour.hidden1,
-        EyeColour_H2: traits.EyeColour.hidden2,
-        EyeColour_H3: traits.EyeColour.hidden3,
-        EyeShape_D: traits.EyeShape.dominant,
-        EyeShape_H1: traits.EyeShape.hidden1,
-        EyeShape_H2: traits.EyeShape.hidden2,
-        EyeShape_H3: traits.EyeShape.hidden3,
-        Mouth_D: traits.Mouth.dominant,
-        Mouth_H1: traits.Mouth.hidden1,
-        Mouth_H2: traits.Mouth.hidden2,
-        Mouth_H3: traits.Mouth.hidden3,
+        Body_D: gachaSlimeTraits.Body.dominant,
+        Body_H1: gachaSlimeTraits.Body.hidden1,
+        Body_H2: gachaSlimeTraits.Body.hidden2,
+        Body_H3: gachaSlimeTraits.Body.hidden3,
+        Pattern_D: gachaSlimeTraits.Pattern.dominant,
+        Pattern_H1: gachaSlimeTraits.Pattern.hidden1,
+        Pattern_H2: gachaSlimeTraits.Pattern.hidden2,
+        Pattern_H3: gachaSlimeTraits.Pattern.hidden3,
+        PrimaryColour_D: gachaSlimeTraits.PrimaryColour.dominant,
+        PrimaryColour_H1: gachaSlimeTraits.PrimaryColour.hidden1,
+        PrimaryColour_H2: gachaSlimeTraits.PrimaryColour.hidden2,
+        PrimaryColour_H3: gachaSlimeTraits.PrimaryColour.hidden3,
+        Accent_D: gachaSlimeTraits.Accent.dominant,
+        Accent_H1: gachaSlimeTraits.Accent.hidden1,
+        Accent_H2: gachaSlimeTraits.Accent.hidden2,
+        Accent_H3: gachaSlimeTraits.Accent.hidden3,
+        Detail_D: gachaSlimeTraits.Detail.dominant,
+        Detail_H1: gachaSlimeTraits.Detail.hidden1,
+        Detail_H2: gachaSlimeTraits.Detail.hidden2,
+        Detail_H3: gachaSlimeTraits.Detail.hidden3,
+        EyeColour_D: gachaSlimeTraits.EyeColour.dominant,
+        EyeColour_H1: gachaSlimeTraits.EyeColour.hidden1,
+        EyeColour_H2: gachaSlimeTraits.EyeColour.hidden2,
+        EyeColour_H3: gachaSlimeTraits.EyeColour.hidden3,
+        EyeShape_D: gachaSlimeTraits.EyeShape.dominant,
+        EyeShape_H1: gachaSlimeTraits.EyeShape.hidden1,
+        EyeShape_H2: gachaSlimeTraits.EyeShape.hidden2,
+        EyeShape_H3: gachaSlimeTraits.EyeShape.hidden3,
+        Mouth_D: gachaSlimeTraits.Mouth.dominant,
+        Mouth_H1: gachaSlimeTraits.Mouth.hidden1,
+        Mouth_H2: gachaSlimeTraits.Mouth.hidden2,
+        Mouth_H3: gachaSlimeTraits.Mouth.hidden3,
       },
       include: {
         owner: { select: { telegramId: true } },
@@ -260,15 +313,21 @@ export async function generateRandomGen0Slime(ownerId: string, probabilities: nu
       },
     });
 
-    logger.info(`Generated new Gen0 Slime with ID: ${slime}`);
+    // Log gacha pull success
+    logger.info('Gacha Pull Successful!');
+    logger.info(`Rank Pull: ${rankPull}`);
+    logger.info(`Generated new Gen0 Slime with ID: ${slime.id}`);
+    logger.info(`Dominant Trait Counts: ${JSON.stringify(dominantCounts)}`);
+    logger.info(`Hidden Trait Counts: ${JSON.stringify(hiddenCounts)}`);
 
     const uri = await processAndUploadSlimeImage(slime);
     updateSlimeImageUri(slime.id, uri);
 
     slime.imageUri = uri;
     return slime;
+
   } catch (error) {
-    logger.error(`Failed to generate Gen0 Slime: ${error}`);
+    logger.error(`Failed to generate Gen0 Slime from gacha pull: ${error}`);
     throw error;
   }
 }
@@ -296,43 +355,43 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       const dameH2 = dame[`${trait}Hidden2` as keyof SlimeWithTraits] as SlimeTrait;
       const dameH3 = dame[`${trait}Hidden3` as keyof SlimeWithTraits] as SlimeTrait;
 
-      let childDominantId;
-      if (
-        (sireD.pair0Id === dameD.id && dameD.pair0Id === sireD.id) || // Pair via pair0Id
-        (sireD.pair1Id === dameD.id && dameD.pair0Id === sireD.id) || // Sire pair1Id ↔ Dame pair0Id
-        (sireD.pair0Id === dameD.id && dameD.pair1Id === sireD.id) || // Sire pair0Id ↔ Dame pair1Id
-        (sireD.pair1Id === dameD.id && dameD.pair1Id === sireD.id)    // Pair via pair1Id
-      ) {
-        // Determine which mutation ID to use
-        let mutationId: number | null = null;
+      // Default to inheritance logic
+      let childDominantId = getChildTraitId({
+        sireDId: sireD.id,
+        sireH1Id: sireH1.id,
+        sireH2Id: sireH2.id,
+        sireH3Id: sireH3.id,
+        dameDId: dameD.id,
+        dameH1Id: dameH1.id,
+        dameH2Id: dameH2.id,
+        dameH3Id: dameH3.id,
+      });
 
-        if (sireD.pair0Id === dameD.id && dameD.pair0Id === sireD.id) {
-          mutationId = sireD.mutation0Id; // Pair0 ↔ Pair0
-        } else if (sireD.pair1Id === dameD.id && dameD.pair0Id === sireD.id) {
-          mutationId = sireD.mutation1Id; // Pair1 ↔ Pair0
-        } else if (sireD.pair0Id === dameD.id && dameD.pair1Id === sireD.id) {
-          mutationId = sireD.mutation0Id; // Pair0 ↔ Pair1
-        } else if (sireD.pair1Id === dameD.id && dameD.pair1Id === sireD.id) {
-          mutationId = sireD.mutation1Id; // Pair1 ↔ Pair1
-        }
-
-        if (mutationId && Math.random() < getMutationProbability(sireD.rarity)) {
-          // Mutation occurs
-          childDominantId = mutationId;
+      // Check for pair0Id match
+      if (sireD.pair0Id === dameD.id &&
+        (dameD.pair0Id === sireD.id || dameD.pair1Id === sireD.id) && (sireD.mutation0Id === dameD.mutation0Id || sireD.mutation0Id === dameD.mutation1Id)) {
+        // Use mutation0Id if available and a mutation occurs
+        if (sireD.mutation0Id && Math.random() < getMutationProbability(sireD.rarity)) {
+          childDominantId = sireD.mutation0Id;
+          logger.info(`Mutation successful!`);
         } else {
-          // Regular inheritance logic
-          childDominantId = getChildTraitId({
-            sireDId: sireD.id,
-            sireH1Id: sireH1.id,
-            sireH2Id: sireH2.id,
-            sireH3Id: sireH3.id,
-            dameDId: dameD.id,
-            dameH1Id: dameH1.id,
-            dameH2Id: dameH2.id,
-            dameH3Id: dameH3.id,
-          });
+          logger.info(`Mutation unsuccessful!`);
         }
       }
+
+      // Check for pair1Id match
+      if (!childDominantId && sireD.pair1Id === dameD.id &&
+        (dameD.pair0Id === sireD.id || dameD.pair1Id === sireD.id) && (sireD.mutation1Id === dameD.mutation0Id || sireD.mutation1Id === dameD.mutation1Id)) {
+        // Use mutation1Id if available and a mutation occurs
+        if (sireD.mutation1Id && Math.random() < getMutationProbability(sireD.rarity)) {
+          childDominantId = sireD.mutation1Id;
+          logger.info(`Mutation successful!`);
+        } else {
+          logger.info(`Mutation unsuccessful!`);
+        }
+      }
+
+      logger.info(`childDominantId: ${childDominantId}`);
 
       // Hidden genes for the child
       const childHidden1Id = getChildTraitId({
@@ -369,10 +428,15 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       });
 
       // Set all four genes for each trait in childData
-      childData[`${trait}_D`] = childDominantId!;
+      childData[`${trait}_D`] = childDominantId;
       childData[`${trait}_H1`] = childHidden1Id;
       childData[`${trait}_H2`] = childHidden2Id;
       childData[`${trait}_H3`] = childHidden3Id;
+
+      logger.info(`childHidden1Id: ${childHidden1Id}`);
+      logger.info(`childHidden2Id: ${childHidden2Id}`);
+      logger.info(`childHidden3Id: ${childHidden3Id}`);
+
     }
 
     // Create child slime with complete trait data
@@ -558,4 +622,81 @@ export async function updateSlimeImageUri(slimeId: number, imageUri: string): Pr
     logger.error(`Failed to update imageUri for Slime ID ${slimeId}: ${error}`);
     throw new Error(`Could not update imageUri for Slime ID ${slimeId}`);
   }
+}
+
+function getGachaPullRarity(): string {
+  const random = Math.random();
+  let cumulative = 0;
+
+  // Iterate through probabilities to find the corresponding rarity
+  for (let i = 0; i < GACHA_PULL_ODDS.length; i++) {
+    cumulative += GACHA_PULL_ODDS[i];
+    if (random < cumulative) {
+      return GACHA_PULL_RARITIES[i];
+    }
+  }
+
+  // Fallback (should not happen if probabilities are valid)
+  throw new Error('Probabilities do not sum to 1 or unexpected error occurred.');
+}
+
+function getDominantTraitConfirmProbs(rankPull: string): number[] {
+  switch (rankPull) {
+    case 'SS':
+    case 'S':
+      return [0, 0, 0, 0, 1];
+    case 'A':
+      return [0, 0, 0, 1, 0];
+    case 'B':
+      return [0, 0, 1, 0, 0];
+    case 'C':
+      return [0, 1, 0, 0, 0];
+    case 'D':
+      return [1, 0, 0, 0, 0];
+    default:
+      throw new Error(`Invalid rankPull: ${rankPull}`);
+  }
+}
+
+function getNormalizedProbsWhenMaxCountReached(rankPull: string, dominantTraitProbs: number[]): number[] {
+  // Get the index of the current rank in the rarities array
+  if (rankPull === 'SS') rankPull = 'S';
+
+  const rankIndex = rarities.indexOf(rankPull as Rarity);
+  if (rankIndex === -1) {
+    throw new Error(`Invalid rankPull: ${rankPull}`);
+  }
+
+  // Set the probability for the current rank to 0
+  const adjustedProbs = dominantTraitProbs.map((prob, index) => (index === rankIndex ? 0 : prob));
+
+  // Calculate the total remaining probability
+  const remainingTotal = adjustedProbs.reduce((sum, prob) => sum + prob, 0);
+
+  // Normalize the remaining probabilities
+  const normalizedProbs = adjustedProbs.map((prob) => (prob / remainingTotal));
+
+  return normalizedProbs;
+}
+
+// Helper function to dynamically retrieve min and max count
+function getMinMaxForRank(
+  rankPull: string,
+  gachaSpecs: Record<string, GachaOddsDominantTraits>
+): { min: number; max: number } {
+  let rankPullForKey = rankPull
+  if (rankPull === 'SS') rankPullForKey = 'S';
+
+  const minKey = `min${rankPullForKey}` as keyof GachaOddsDominantTraits;
+  const maxKey = `max${rankPullForKey}` as keyof GachaOddsDominantTraits;
+
+  const min = gachaSpecs[rankPull][minKey];
+  const max = gachaSpecs[rankPull][maxKey];
+
+  if (!min || !max) throw new Error(`Invalid min max for rank pull.`)
+
+  logger.info(`${minKey}: ${min}`);
+  logger.info(`${maxKey}: ${max}`);
+
+  return { min, max };
 }
