@@ -173,7 +173,13 @@ export async function getRandomSlimeTraitId(traitType: TraitType, probabilities:
   }
 }
 
-export async function slimeGachaPull(ownerId: number): Promise<Slime> {
+interface GachaPullRes {
+  slime: Slime,
+  rankPull: string,
+  slimeNoBg: Buffer
+}
+
+export async function slimeGachaPull(ownerId: number): Promise<GachaPullRes> {
   try {
     const rankPull = getGachaPullRarity();
 
@@ -320,11 +326,16 @@ export async function slimeGachaPull(ownerId: number): Promise<Slime> {
     logger.info(`Dominant Trait Counts: ${JSON.stringify(dominantCounts)}`);
     logger.info(`Hidden Trait Counts: ${JSON.stringify(hiddenCounts)}`);
 
-    const uri = await processAndUploadSlimeImage(slime);
-    updateSlimeImageUri(slime.id, uri);
+    const res = await processAndUploadSlimeImage(slime);
+    updateSlimeImageUri(slime.id, res.uri);
 
-    slime.imageUri = uri;
-    return slime;
+    slime.imageUri = res.uri;
+
+    return {
+      slime,
+      rankPull,
+      slimeNoBg: res.imageNoBg
+    }
 
   } catch (error) {
     logger.error(`Failed to generate Gen0 Slime from gacha pull: ${error}`);
@@ -515,9 +526,9 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       },
     });
 
-    const uri = await processAndUploadSlimeImage(childSlime);
-    childSlime.imageUri = uri;
-    updateSlimeImageUri(childSlime.id, uri);
+    const res = await processAndUploadSlimeImage(childSlime);
+    childSlime.imageUri = res.uri;
+    updateSlimeImageUri(childSlime.id, res.uri);
 
     return childSlime;
   } catch (error) {
