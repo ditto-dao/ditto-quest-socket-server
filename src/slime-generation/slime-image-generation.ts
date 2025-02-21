@@ -54,8 +54,18 @@ async function uploadImageToS3(bucket: string, key: string, imageBuffer: Buffer)
     }
 }
 
+interface RGBAColor {
+    r: number;
+    g: number;
+    b: number;
+    alpha: number;
+}
+
 // Function to stack images
-async function stackImages(imageBuffers: Buffer[], backgroundColor: { r: number; g: number; b: number; alpha: number }): Promise<Buffer> {
+async function stackImages(
+    imageBuffers: Buffer[],
+    backgroundColor?: RGBAColor
+): Promise<Buffer> {
     const compositeImages = imageBuffers.map((buffer) => ({
         input: buffer,
         top: 0,
@@ -67,7 +77,9 @@ async function stackImages(imageBuffers: Buffer[], backgroundColor: { r: number;
             width: 1000,
             height: 1000,
             channels: 4,
-            background: backgroundColor,
+            background: backgroundColor
+                ? backgroundColor
+                : { r: 0, g: 0, b: 0, alpha: 0 }, // Transparent background
         },
     })
         .composite(compositeImages)
@@ -75,8 +87,13 @@ async function stackImages(imageBuffers: Buffer[], backgroundColor: { r: number;
         .toBuffer();
 }
 
+interface ProcessSlimeImageResponse {
+    uri: string,
+    imageNoBg: Buffer
+}
+
 // Main function
-export async function processAndUploadSlimeImage(slime: SlimeWithTraits): Promise<string> {
+export async function processAndUploadSlimeImage(slime: SlimeWithTraits): Promise<ProcessSlimeImageResponse> {
     try {
         const body = toCamelCase(slime.BodyDominant.name);
         const primaryColour = toCamelCase(slime.PrimaryColourDominant.name);
@@ -110,7 +127,12 @@ export async function processAndUploadSlimeImage(slime: SlimeWithTraits): Promis
         if (mouthBuffer) imageBuffers.push(mouthBuffer);
 
         const stackedImage = await stackImages(imageBuffers, backgroundColor);
-        return uploadImageToS3(BUCKET, `${slime.id}.png`, stackedImage);
+        const stackedImageNoBg = await stackImages(imageBuffers);
+
+        return {
+            uri: await uploadImageToS3(BUCKET, `${slime.id}.png`, stackedImage),
+            imageNoBg: stackedImageNoBg
+        }
     } catch (error) {
         logger.error(`Error processing and uploading slime image: ${error}`);
         throw error;
