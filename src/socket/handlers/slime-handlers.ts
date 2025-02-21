@@ -26,11 +26,20 @@ export async function setupSlimeSocketHandlers(
         try {
             logger.info(`Received mint-gen-0-slime event from user ${userId}`)
 
-            const slime = await slimeGachaPull(userId);
+            const res = await slimeGachaPull(userId);
 
-            socket.emit("slime-mint-update", {
+            socket.emit("update-slime-inventory", {
                 userId: userId,
-                payload: slime
+                payload: res.slime
+            })
+
+            socket.emit("slime-gacha-update", {
+                userId: userId,
+                payload: {
+                    slime: res.slime,
+                    rankPull: res.rankPull,
+                    slimeNoBg: res.slimeNoBg
+                }
             })
         } catch (error) {
             logger.error(`Error processing mint-gen-0-slime: ${error}`)
