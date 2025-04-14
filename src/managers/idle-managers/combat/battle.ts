@@ -109,7 +109,7 @@ export class Battle {
   }
 
   private async tickUserAttackLoop(delay: number) {
-    while (!this.battleEnded && this.tickFlags.userAttack) {
+    while (!this.battleEnded && this.tickFlags.userAttack && this.userCombat.hp > 0) {
       await sleep(delay);
       if (this.battleEnded) break;
       try {
@@ -121,7 +121,7 @@ export class Battle {
   }
 
   private async tickMonsterAttackLoop(delay: number) {
-    while (!this.battleEnded && this.tickFlags.monsterAttack) {
+    while (!this.battleEnded && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
       await sleep(delay);
       if (this.battleEnded) break;
       try {
