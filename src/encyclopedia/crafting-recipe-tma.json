@@ -1,0 +1,2654 @@
+[
+  {
+    "equipmentId": null,
+    "equipmentName": "Sticky Sword",
+    "type": "weapon",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/05/Aranite_2H_Blade_%28item%29.png/250px-Aranite_2H_Blade_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Slime Bronze Sword",
+    "type": "weapon",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/0b/Bronze_Sword_%28item%29.png/375px-Bronze_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Hardened Sword",
+    "type": "weapon",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/ed/Iron_Sword_%28item%29.png/375px-Iron_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Alloy Sword",
+    "type": "weapon",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/0b/Steel_Sword_%28item%29.png/375px-Steel_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Veil Sword",
+    "type": "weapon",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8f/Black_Sword_%28item%29.png/375px-Black_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 50
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Muck Sword",
+    "type": "weapon",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4e/Mithril_Sword_%28item%29.png/250px-Mithril_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 4,
+        "itemName": "Mystical Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/cf/Crystal_%28item%29.png/375px-Crystal_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Glow Sword",
+    "type": "weapon",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e5/Adamant_Sword_%28item%29.png/250px-Adamant_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 5,
+        "itemName": "Adamant Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f5/Adamantite_Ore_%28item%29.png/375px-Adamantite_Ore_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Frost Sword",
+    "type": "weapon",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/63/Ice_Sword_%28item%29.png/375px-Ice_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Ember Sword",
+    "type": "weapon",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Netherite_Sword_%28item%29.png/250px-Netherite_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Relic Sword",
+    "type": "weapon",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a2/Ancient_Sword_%28item%29.png/375px-Ancient_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 6,
+        "itemName": "Relic Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/2/22/Runite_Ore_%28item%29.png/375px-Runite_Ore_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Fracture Sword",
+    "type": "weapon",
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/7b/Strange_Sword_%28item%29.png/375px-Strange_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 26,
+        "itemName": "Magma Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/ee/Summoning_Shard_%28Crimson%29_%28item%29.png/375px-Summoning_Shard_%28Crimson%29_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Gleam Sword",
+    "type": "weapon",
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d9/Corundum_Sword_%28item%29.png/375px-Corundum_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 19,
+        "itemName": "Corundum Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/79/Corundumite_Ore_%28item%29.png/375px-Corundumite_Ore_%28item%29.png",
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Verdant Sword",
+    "type": "weapon",
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8c/Augite_Sword_%28item%29.png/375px-Augite_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 20,
+        "itemName": "Augite Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1e/Augite_Ore_%28item%29.png/375px-Augite_Ore_%28item%29.png",
+        "quantity": 110
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sanctum Sword",
+    "type": "weapon",
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/66/Divine_Sword_%28item%29.png/375px-Divine_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 10,
+        "itemName": "Sanctum Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Moonstone_%28item%29.png/375px-Moonstone_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Abyss Sword",
+    "type": "weapon",
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5b/Abyssium_Sword_%28item%29.png/375px-Abyssium_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 11,
+        "itemName": "Abyssium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d9/Gloomite_Ore_%28item%29.png/375px-Gloomite_Ore_%28item%29.png",
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Wisp Sword",
+    "type": "weapon",
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/fa/Brumite_Sword_%28item%29.png/375px-Brumite_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 12,
+        "itemName": "Brumite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4c/Mysticite_Fragment_%28item%29.png/375px-Mysticite_Fragment_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 18,
+        "itemName": "Ice Ooze Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/70/Pure_Crystal_%28item%29.png/375px-Pure_Crystal_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Dusk Sword",
+    "type": "weapon",
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/31/Fear_Hunter_Whip_%28item%29.png/250px-Fear_Hunter_Whip_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 13,
+        "itemName": "Dusk Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c5/Obsidian_Fragment_%28item%29.png/375px-Obsidian_Fragment_%28item%29.png",
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Siphon Sword",
+    "type": "weapon",
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f1/Witherite_Sword_%28item%29.png/375px-Witherite_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 14,
+        "itemName": "Witherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/62/Witherite_Ore_%28item%29.png/375px-Witherite_Ore_%28item%29.png",
+        "quantity": 150
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Rift Sword",
+    "type": "weapon",
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Eternity_Sword_%28item%29.png/250px-Eternity_Sword_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 15,
+        "itemName": "Netherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/07/Netherite_Ore_%28item%29.png/375px-Netherite_Ore_%28item%29.png",
+        "quantity": 180
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Eternal Slime Core",
+    "type": "weapon",
+    "durationS": 400,
+    "craftingLevelRequired": 200,
+    "craftingExp": 3200,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/55/Powered_Red_Crystal_%28item%29.png/250px-Powered_Red_Crystal_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 27,
+        "itemName": "Slime Core Essence",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Voidheart_%28item%29.png/375px-Voidheart_%28item%29.png",
+        "quantity": 200
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 100
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sticky Longbow",
+    "type": "weapon",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/43/Basic_Shortbow_%28item%29.png/250px-Basic_Shortbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Slime Bronze Longbow",
+    "type": "weapon",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/0e/Normal_Longbow_%28item%29.png/250px-Normal_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Hardened Longbow",
+    "type": "weapon",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/db/Oak_Longbow_%28item%29.png/250px-Oak_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Alloy Longbow",
+    "type": "weapon",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bb/Crystal_Longbow_%28item%29.png/250px-Crystal_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Veil Longbow",
+    "type": "weapon",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/46/Old_Hunting_Bow_%28item%29.png/250px-Old_Hunting_Bow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 50
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Muck Longbow",
+    "type": "weapon",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1e/Willow_Longbow_%28item%29.png/250px-Willow_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 4,
+        "itemName": "Mystical Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/cf/Crystal_%28item%29.png/375px-Crystal_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Glow Longbow",
+    "type": "weapon",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/17/Maple_Longbow_%28item%29.png/250px-Maple_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 5,
+        "itemName": "Adamant Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f5/Adamantite_Ore_%28item%29.png/375px-Adamantite_Ore_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 31,
+        "itemName": "Dacron",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/56/Grove_Logs_%28item%29.png/375px-Grove_Logs_%28item%29.png",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Frost Longbow",
+    "type": "weapon",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Ice_Longbow_%28item%29.png/250px-Ice_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Ember Longbow",
+    "type": "weapon",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c2/Engulfing_Vortex_Longbow_%28item%29.png/250px-Engulfing_Vortex_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Relic Longbow",
+    "type": "weapon",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a8/Stormsnap_%28item%29.png/250px-Stormsnap_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 6,
+        "itemName": "Relic Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/2/22/Runite_Ore_%28item%29.png/375px-Runite_Ore_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Fracture Longbow",
+    "type": "weapon",
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5a/Poisoned_Shortbow_%28item%29.png/250px-Poisoned_Shortbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 26,
+        "itemName": "Magma Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/ee/Summoning_Shard_%28Crimson%29_%28item%29.png/375px-Summoning_Shard_%28Crimson%29_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Gleam Longbow",
+    "type": "weapon",
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bb/Eternity_Bow_%28item%29.png/250px-Eternity_Bow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 19,
+        "itemName": "Corundum Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/79/Corundumite_Ore_%28item%29.png/375px-Corundumite_Ore_%28item%29.png",
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Verdant Longbow",
+    "type": "weapon",
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c1/Pure_Crystal_Longbow_%28item%29.png/250px-Pure_Crystal_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 20,
+        "itemName": "Augite Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1e/Augite_Ore_%28item%29.png/375px-Augite_Ore_%28item%29.png",
+        "quantity": 110
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sanctum Longbow",
+    "type": "weapon",
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/88/Malevolent_Blight_Longbow_%28item%29.png/250px-Malevolent_Blight_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 10,
+        "itemName": "Sanctum Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Moonstone_%28item%29.png/375px-Moonstone_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Abyss Longbow",
+    "type": "weapon",
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/be/Hollow_Nightmare_Longbow_%28item%29.png/250px-Hollow_Nightmare_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 11,
+        "itemName": "Abyssium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d9/Gloomite_Ore_%28item%29.png/375px-Gloomite_Ore_%28item%29.png",
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 33,
+        "itemName": "Spectra",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a5/Eldria_Logs_%28item%29.png/375px-Eldria_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Wisp Longbow",
+    "type": "weapon",
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/2/2a/Unholy_Longbow_%28m%29_%28item%29.png/250px-Unholy_Longbow_%28m%29_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 12,
+        "itemName": "Brumite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4c/Mysticite_Fragment_%28item%29.png/375px-Mysticite_Fragment_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 18,
+        "itemName": "Ice Ooze Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/70/Pure_Crystal_%28item%29.png/375px-Pure_Crystal_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 32,
+        "itemName": "Dyneema",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4e/Magic_Logs_%28item%29.png/375px-Magic_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Dusk Longbow",
+    "type": "weapon",
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/85/Ethereal_Longbow_%28item%29.png/250px-Ethereal_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 13,
+        "itemName": "Dusk Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c5/Obsidian_Fragment_%28item%29.png/375px-Obsidian_Fragment_%28item%29.png",
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 32,
+        "itemName": "Dyneema",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4e/Magic_Logs_%28item%29.png/375px-Magic_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Siphon Longbow",
+    "type": "weapon",
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5e/Elerine_Longbow_%28item%29.png/250px-Elerine_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 14,
+        "itemName": "Witherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/62/Witherite_Ore_%28item%29.png/375px-Witherite_Ore_%28item%29.png",
+        "quantity": 150
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 32,
+        "itemName": "Dyneema",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4e/Magic_Logs_%28item%29.png/375px-Magic_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Rift Longbow",
+    "type": "weapon",
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c2/Familiar_Longbow_%28item%29.png/250px-Familiar_Longbow_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 15,
+        "itemName": "Netherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/07/Netherite_Ore_%28item%29.png/375px-Netherite_Ore_%28item%29.png",
+        "quantity": 180
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 32,
+        "itemName": "Dyneema",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4e/Magic_Logs_%28item%29.png/375px-Magic_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sticky Staff",
+    "type": "weapon",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/ea/Mudball_Staff_%28item%29.png/250px-Mudball_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Slime Bronze Staff",
+    "type": "weapon",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/3e/Blight_Burst_Staff_%28item%29.png/250px-Blight_Burst_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 27
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Hardened Staff",
+    "type": "weapon",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1f/Blighted_Staff_%28item%29.png/250px-Blighted_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 36
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Alloy Staff",
+    "type": "weapon",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/57/Nature%27s_Call_Staff_%28item%29.png/250px-Nature%27s_Call_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 27
+      },
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 27
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Veil Staff",
+    "type": "weapon",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b5/Shadow_Wand_%28item%29.png/375px-Shadow_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 45
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 27
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Muck Staff",
+    "type": "weapon",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c8/Rotten_Staff_%28item%29.png/250px-Rotten_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 4,
+        "itemName": "Mystical Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/cf/Crystal_%28item%29.png/375px-Crystal_%28item%29.png",
+        "quantity": 63
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 27
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Glow Staff",
+    "type": "weapon",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5c/Archaic_Wand_%28item%29.png/250px-Archaic_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 5,
+        "itemName": "Adamant Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f5/Adamantite_Ore_%28item%29.png/375px-Adamantite_Ore_%28item%29.png",
+        "quantity": 81
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 36
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Frost Staff",
+    "type": "weapon",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c6/Water_Imbued_Wand_%28item%29.png/250px-Water_Imbued_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 72
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Ember Staff",
+    "type": "weapon",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/7d/Fire_Imbued_Wand_%28item%29.png/250px-Fire_Imbued_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 72
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Relic Staff",
+    "type": "weapon",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/76/Witherbind_Wand_%28item%29.png/250px-Witherbind_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 6,
+        "itemName": "Relic Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/2/22/Runite_Ore_%28item%29.png/375px-Runite_Ore_%28item%29.png",
+        "quantity": 72
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 45
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Fracture Staff",
+    "type": "weapon",
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/18/Desolation_Wand_%28item%29.png/250px-Desolation_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 26,
+        "itemName": "Magma Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/ee/Summoning_Shard_%28Crimson%29_%28item%29.png/375px-Summoning_Shard_%28Crimson%29_%28item%29.png",
+        "quantity": 81
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 45
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Gleam Staff",
+    "type": "weapon",
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4e/Eternity_Staff_%28item%29.png/250px-Eternity_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 19,
+        "itemName": "Corundum Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/79/Corundumite_Ore_%28item%29.png/375px-Corundumite_Ore_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Verdant Staff",
+    "type": "weapon",
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/82/Cloudburst_Staff_%28item%29.gif/232px-Cloudburst_Staff_%28item%29.gif",
+    "requiredItems": [
+      {
+        "itemId": 20,
+        "itemName": "Augite Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1e/Augite_Ore_%28item%29.png/375px-Augite_Ore_%28item%29.png",
+        "quantity": 99
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sanctum Staff",
+    "type": "weapon",
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Silent_Tangle_Wand_%28item%29.png/250px-Silent_Tangle_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 10,
+        "itemName": "Sanctum Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Moonstone_%28item%29.png/375px-Moonstone_%28item%29.png",
+        "quantity": 108
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 63
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Abyss Staff",
+    "type": "weapon",
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b4/Blazing_Shadow_Staff_%28item%29.png/250px-Blazing_Shadow_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 11,
+        "itemName": "Abyssium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d9/Gloomite_Ore_%28item%29.png/375px-Gloomite_Ore_%28item%29.png",
+        "quantity": 126
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Wisp Staff",
+    "type": "weapon",
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/49/Ocean_Song_%28item%29.png/250px-Ocean_Song_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 12,
+        "itemName": "Brumite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4c/Mysticite_Fragment_%28item%29.png/375px-Mysticite_Fragment_%28item%29.png",
+        "quantity": 108
+      },
+      {
+        "itemId": 18,
+        "itemName": "Ice Ooze Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/70/Pure_Crystal_%28item%29.png/375px-Pure_Crystal_%28item%29.png",
+        "quantity": 63
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Dusk Staff",
+    "type": "weapon",
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b7/Ethereal_Staff_%28item%29.png/250px-Ethereal_Staff_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 13,
+        "itemName": "Dusk Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c5/Obsidian_Fragment_%28item%29.png/375px-Obsidian_Fragment_%28item%29.png",
+        "quantity": 117
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 63
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Siphon Staff",
+    "type": "weapon",
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/91/Soul_Taker_Wand_%28item%29.png/250px-Soul_Taker_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 14,
+        "itemName": "Witherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/62/Witherite_Ore_%28item%29.png/375px-Witherite_Ore_%28item%29.png",
+        "quantity": 135
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Rift Staff",
+    "type": "weapon",
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/cc/Voidfire_Cascade_Wand_%28item%29.png/250px-Voidfire_Cascade_Wand_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 15,
+        "itemName": "Netherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/07/Netherite_Ore_%28item%29.png/375px-Netherite_Ore_%28item%29.png",
+        "quantity": 162
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 81
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Blight Helm",
+    "type": "hat",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/87/Netherite_Helmet_%28U%29_%28item%29.png/250px-Netherite_Helmet_%28U%29_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 64
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Void Helm",
+    "type": "hat",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8a/Voidium_Entity_Helmet_%28item%29.png/250px-Voidium_Entity_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 7,
+        "itemName": "Voidium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f8/Iridium_Ore_%28item%29.png/375px-Iridium_Ore_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 48
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Voidheart Helm",
+    "type": "hat",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/07/Voidium_Artificer_Helmet_%28item%29.png/250px-Voidium_Artificer_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 7,
+        "itemName": "Voidium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f8/Iridium_Ore_%28item%29.png/375px-Iridium_Ore_%28item%29.png",
+        "quantity": 96
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 56
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Protector Helm",
+    "type": "hat",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Vorloran_Protector_Helmet_%28item%29.png/250px-Vorloran_Protector_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 8,
+        "itemName": "Vorloran Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/af/Shadowpearl_%28item%29.png/375px-Shadowpearl_%28item%29.png",
+        "quantity": 112
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 64
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Watcher Helm",
+    "type": "hat",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1e/Vorloran_Watcher_Helmet_%28item%29.png/250px-Vorloran_Watcher_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 8,
+        "itemName": "Vorloran Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/af/Shadowpearl_%28item%29.png/375px-Shadowpearl_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Eldritch Hood",
+    "type": "hat",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Eldritch_Harbinger_Helmet_%28item%29.png/250px-Eldritch_Harbinger_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 9,
+        "itemName": "Eldritch Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/38/Echocite_Fragment_%28item%29.png/375px-Echocite_Fragment_%28item%29.png",
+        "quantity": 104
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 56
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Zephyr Crown",
+    "type": "hat",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a7/Aeris_God_Helmet_%28item%29.png/250px-Aeris_God_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 21,
+        "itemName": "Aeris Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5d/Air_Shard_%28item%29.png/375px-Air_Shard_%28item%29.png",
+        "quantity": 128
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Glacier Crown",
+    "type": "hat",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/08/Glacia_God_Helmet_%28item%29.png/250px-Glacia_God_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 22,
+        "itemName": "Glacia Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/6a/Water_Shard_%28item%29.png/375px-Water_Shard_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Terra Crown",
+    "type": "hat",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/01/Terran_God_Helmet_%28item%29.png/250px-Terran_God_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 23,
+        "itemName": "Terran Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/ad/Earth_Shard_%28item%29.png/375px-Earth_Shard_%28item%29.png",
+        "quantity": 136
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 88
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Inferno Crown",
+    "type": "hat",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/06/Ragnar_God_Helmet_%28item%29.png/250px-Ragnar_God_Helmet_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 24,
+        "itemName": "Ragnar Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/0f/Fire_Shard_%28item%29.png/375px-Fire_Shard_%28item%29.png",
+        "quantity": 144
+      },
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 96
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Blight Plate",
+    "type": "armour",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/51/Blight_Warder_Body_%28item%29.png/250px-Blight_Warder_Body_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Void Plate",
+    "type": "armour",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/81/Voidium_Artificer_Body_%28item%29.png/250px-Voidium_Artificer_Body_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 7,
+        "itemName": "Voidium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f8/Iridium_Ore_%28item%29.png/375px-Iridium_Ore_%28item%29.png",
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Voidheart Plate",
+    "type": "armour",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/9b/Voidium_Entity_Platebody_%28item%29.png/250px-Voidium_Entity_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 7,
+        "itemName": "Voidium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f8/Iridium_Ore_%28item%29.png/375px-Iridium_Ore_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Protector Plate",
+    "type": "armour",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d0/Vorloran_Protector_Platebody_%28item%29.png/250px-Vorloran_Protector_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 8,
+        "itemName": "Vorloran Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/af/Shadowpearl_%28item%29.png/375px-Shadowpearl_%28item%29.png",
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Watcher Plate",
+    "type": "armour",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c6/Vorloran_Watcher_Platebody_%28item%29.png/250px-Vorloran_Watcher_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 8,
+        "itemName": "Vorloran Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/af/Shadowpearl_%28item%29.png/375px-Shadowpearl_%28item%29.png",
+        "quantity": 150
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Eldritch Robes",
+    "type": "armour",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/54/Eldritch_Harbinger_Robes_%28item%29.png/250px-Eldritch_Harbinger_Robes_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 9,
+        "itemName": "Eldritch Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/38/Echocite_Fragment_%28item%29.png/375px-Echocite_Fragment_%28item%29.png",
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Zephyr Godplate",
+    "type": "armour",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b7/Aeris_God_Platebody_%28item%29.png/250px-Aeris_God_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 21,
+        "itemName": "Aeris Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5d/Air_Shard_%28item%29.png/375px-Air_Shard_%28item%29.png",
+        "quantity": 160
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 100
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Glacier Godplate",
+    "type": "armour",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/06/Glacia_God_Platebody_%28item%29.png/250px-Glacia_God_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 22,
+        "itemName": "Glacia Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/6a/Water_Shard_%28item%29.png/375px-Water_Shard_%28item%29.png",
+        "quantity": 150
+      },
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Terra Godplate",
+    "type": "armour",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c7/Terran_God_Platebody_%28item%29.png/250px-Terran_God_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 23,
+        "itemName": "Terran Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/ad/Earth_Shard_%28item%29.png/375px-Earth_Shard_%28item%29.png",
+        "quantity": 170
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 110
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Inferno Godplate",
+    "type": "armour",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/03/Ragnar_God_Platebody_%28item%29.png/250px-Ragnar_God_Platebody_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 24,
+        "itemName": "Ragnar Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/0f/Fire_Shard_%28item%29.png/375px-Fire_Shard_%28item%29.png",
+        "quantity": 180
+      },
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 120
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sticky Shield",
+    "type": "shield",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a2/Aranite_Shield_%28item%29.png/250px-Aranite_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Slime Bronze Shield",
+    "type": "shield",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/80/Bronze_Shield_%28item%29.png/250px-Bronze_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 25
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Hardened Shield",
+    "type": "shield",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/04/Iron_Shield_%28item%29.png/250px-Iron_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 35
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Alloy Shield",
+    "type": "shield",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e0/Steel_Shield_%28item%29.png/250px-Steel_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 25
+      },
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 25
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Veil Shield",
+    "type": "shield",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/fc/Black_Shield_%28item%29.png/250px-Black_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Muck Shield",
+    "type": "shield",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/2/24/Mithril_Shield_%28item%29.png/250px-Mithril_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 4,
+        "itemName": "Mystical Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/cf/Crystal_%28item%29.png/375px-Crystal_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Glow Shield",
+    "type": "shield",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d7/Adamant_Shield_%28item%29.png/250px-Adamant_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 5,
+        "itemName": "Adamant Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f5/Adamantite_Ore_%28item%29.png/375px-Adamantite_Ore_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 30,
+        "itemName": "Wood",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/34/Spruce_Logs_%28item%29.png/250px-Spruce_Logs_%28item%29.png",
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Frost Shield",
+    "type": "shield",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/db/Ice_Shield_%28item%29.png/250px-Ice_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Ember Shield",
+    "type": "shield",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b5/Crystal_Shield_%28item%29.png/250px-Crystal_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Relic Shield",
+    "type": "shield",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/3a/Ancient_Shield_%28item%29.png/250px-Ancient_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 6,
+        "itemName": "Relic Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/2/22/Runite_Ore_%28item%29.png/375px-Runite_Ore_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Fracture Shield",
+    "type": "shield",
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/33/Dragonfire_Shield_%28item%29.png/250px-Dragonfire_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 26,
+        "itemName": "Magma Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/ee/Summoning_Shard_%28Crimson%29_%28item%29.png/375px-Summoning_Shard_%28Crimson%29_%28item%29.png",
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Gleam Shield",
+    "type": "shield",
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/58/Corundum_Shield_%28item%29.png/250px-Corundum_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 19,
+        "itemName": "Corundum Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/79/Corundumite_Ore_%28item%29.png/375px-Corundumite_Ore_%28item%29.png",
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Verdant Shield",
+    "type": "shield",
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d2/Augite_Shield_%28item%29.png/250px-Augite_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 20,
+        "itemName": "Augite Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1e/Augite_Ore_%28item%29.png/375px-Augite_Ore_%28item%29.png",
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sanctum Shield",
+    "type": "shield",
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d7/%28P%29_Divine_Shield_%28item%29.png/250px-%28P%29_Divine_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 10,
+        "itemName": "Sanctum Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Moonstone_%28item%29.png/375px-Moonstone_%28item%29.png",
+        "quantity": 110
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Abyss Shield",
+    "type": "shield",
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/1f/Abyssal_Shield_%28item%29.png/250px-Abyssal_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 11,
+        "itemName": "Abyssium Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/d/d9/Gloomite_Ore_%28item%29.png/375px-Gloomite_Ore_%28item%29.png",
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Wisp Shield",
+    "type": "shield",
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/5b/%28G%29_Pure_Crystal_Shield_%28item%29.png/250px-%28G%29_Pure_Crystal_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 12,
+        "itemName": "Brumite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4c/Mysticite_Fragment_%28item%29.png/375px-Mysticite_Fragment_%28item%29.png",
+        "quantity": 110
+      },
+      {
+        "itemId": 18,
+        "itemName": "Ice Ooze Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/70/Pure_Crystal_%28item%29.png/375px-Pure_Crystal_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Dusk Shield",
+    "type": "shield",
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/1/18/Recoil_Shield_%28item%29.png/250px-Recoil_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 13,
+        "itemName": "Dusk Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c5/Obsidian_Fragment_%28item%29.png/375px-Obsidian_Fragment_%28item%29.png",
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Siphon Shield",
+    "type": "shield",
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/08/Wither_Guard_Shield_%28item%29.png/250px-Wither_Guard_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 14,
+        "itemName": "Witherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/62/Witherite_Ore_%28item%29.png/375px-Witherite_Ore_%28item%29.png",
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Rift Shield",
+    "type": "shield",
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a7/Fractured_Beast_Shield_%28item%29.png/250px-Fractured_Beast_Shield_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 15,
+        "itemName": "Netherite Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/0/07/Netherite_Ore_%28item%29.png/375px-Netherite_Ore_%28item%29.png",
+        "quantity": 160
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Eternal Barrier",
+    "type": "shield",
+    "durationS": 400,
+    "craftingLevelRequired": 200,
+    "craftingExp": 3200,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b4/Book_of_Occults_%28item%29.png/250px-Book_of_Occults_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 27,
+        "itemName": "Slime Core Essence",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Voidheart_%28item%29.png/375px-Voidheart_%28item%29.png",
+        "quantity": 180
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Sticky Mantle",
+    "type": "cape",
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/6/63/Cape_of_Prat_%28item%29.png/250px-Cape_of_Prat_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 150
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Bronze Warden Cape",
+    "type": "cape",
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/3/3a/Golden_Fire_Cape_%28item%29.png/374px-Golden_Fire_Cape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 1,
+        "itemName": "Bronze Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Copper_Ore_%28item%29.png/375px-Copper_Ore_%28item%29.png",
+        "quantity": 20
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 200
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Ironclad Wrap",
+    "type": "cape",
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f5/Weakness_Exploiter_Cape_%28item%29.png/375px-Weakness_Exploiter_Cape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 2,
+        "itemName": "Iron Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/4a/Tin_Ore_%28item%29.png/375px-Tin_Ore_%28item%29.png",
+        "quantity": 30
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 200
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Shroud of Shadows",
+    "type": "cape",
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/a/a9/Void_Shambler_Cape_%28item%29.png/375px-Void_Shambler_Cape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 3,
+        "itemName": "Shadow Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/7/75/Coal_Ore_%28item%29.png/375px-Coal_Ore_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 250
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Verdant Aegis Cloak",
+    "type": "cape",
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/93/Superior_Herblore_Skillcape_%28item%29.png/361px-Superior_Herblore_Skillcape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 4,
+        "itemName": "Mystical Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/cf/Crystal_%28item%29.png/375px-Crystal_%28item%29.png",
+        "quantity": 50
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 300
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Luminous Veil",
+    "type": "cape",
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/5/58/Superior_Prayer_Skillcape_%28item%29.png/361px-Superior_Prayer_Skillcape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 5,
+        "itemName": "Adamant Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f5/Adamantite_Ore_%28item%29.png/375px-Adamantite_Ore_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 350
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Cryo Cloak",
+    "type": "cape",
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f8/Shadow_Cloak_%28item%29.png/375px-Shadow_Cloak_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 16,
+        "itemName": "Ice Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/4/48/Azurian_Fragment_%28item%29.png/375px-Azurian_Fragment_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 400
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Infernal Drape",
+    "type": "cape",
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/fa/Voidborne_Cape_%28item%29.png/375px-Voidborne_Cape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 17,
+        "itemName": "Fire Crystal",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/bd/Abycite_Fragment_%28item%29.png/375px-Abycite_Fragment_%28item%29.png",
+        "quantity": 60
+      },
+      {
+        "itemId": 25,
+        "itemName": "Ooze Shards",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Oricha_%28item%29.png/375px-Oricha_%28item%29.png",
+        "quantity": 40
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 400
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Wispweave Cape",
+    "type": "cape",
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/b/b6/Wither_Cape_%28item%29.png/375px-Wither_Cape_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 13,
+        "itemName": "Dusk Ore",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/c/c5/Obsidian_Fragment_%28item%29.png/375px-Obsidian_Fragment_%28item%29.png",
+        "quantity": 70
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 500
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "equipmentName": "Mantle of Eternity",
+    "type": "cape",
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "imgsrc": "https://wiki.melvoridle.com/images/thumb/f/f8/Cape_of_Completion_%28Into_the_Abyss%29_%28item%29.png/278px-Cape_of_Completion_%28Into_the_Abyss%29_%28item%29.png",
+    "requiredItems": [
+      {
+        "itemId": 27,
+        "itemName": "Slime Core Essence",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/8/8d/Voidheart_%28item%29.png/375px-Voidheart_%28item%29.png",
+        "quantity": 100
+      },
+      {
+        "itemId": 29,
+        "itemName": "Wool",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/e/e7/Ash_%28item%29.png/375px-Ash_%28item%29.png",
+        "quantity": 500
+      },
+      {
+        "itemId": 28,
+        "itemName": "String",
+        "imgsrc": "https://wiki.melvoridle.com/images/thumb/9/96/Bowstring_%28item%29.png/375px-Bowstring_%28item%29.png",
+        "quantity": 100
+      }
+    ]
+  }
+]

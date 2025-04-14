@@ -80,7 +80,7 @@ export async function mintItemToUser(
     telegramId: string,
     itemId: number,
     quantity: number = 1
-): Promise<Prisma.InventoryGetPayload<{ include: { item: true } }>> {
+): Promise<Prisma.InventoryGetPayload<{ include: { item: { include: { statEffect: true } } } }>> {
     try {
         // Check if the item already exists in the user's inventory
         const existingInventory = await prisma.inventory.findFirst({
@@ -89,33 +89,23 @@ export async function mintItemToUser(
                 itemId: itemId,
                 equipmentId: null, // Ensure it's specifically an item
             },
+            include: {
+                item: {
+                    include: { statEffect: true }, // Ensure statEffect is included
+                }
+            }
         });
 
         if (existingInventory) {
             // Case 1: Item exists → Increment the quantity
             const updatedInventory = await prisma.inventory.update({
                 where: { id: existingInventory.id },
-                data: {
-                    quantity: {
-                        increment: quantity,
-                    },
-                },
+                data: { quantity: { increment: quantity } },
                 include: {
                     item: {
-                        select: {
-                            id: true,
-                            name: true,
-                            description: true,
-                            imgsrc: true,
-                            rarity: true,
-                            consumableId: true,
-                            farmingDurationS: true,
-                            farmingLevelRequired: true,
-                            farmingExp: true,
-                            sellPriceGP: true,
-                        },
-                    },
-                },
+                        include: { statEffect: true } // Ensure statEffect is included
+                    }
+                }
             });
 
             logger.info(
@@ -124,7 +114,7 @@ export async function mintItemToUser(
             return updatedInventory;
         } else {
             // Case 2: Item does not exist → Create a new entry
-            const nextOrder = await getNextInventoryOrder(telegramId); // Get the next order index
+            const nextOrder = await getNextInventoryOrder(telegramId); // Get next inventory order index
 
             const newInventory = await prisma.inventory.create({
                 data: {
@@ -136,20 +126,9 @@ export async function mintItemToUser(
                 },
                 include: {
                     item: {
-                        select: {
-                            id: true,
-                            name: true,
-                            description: true,
-                            imgsrc: true,
-                            rarity: true,
-                            consumableId: true,
-                            farmingDurationS: true,
-                            farmingLevelRequired: true,
-                            farmingExp: true,
-                            sellPriceGP: true,
-                        },
-                    },
-                },
+                        include: { statEffect: true } // Include full statEffect details
+                    }
+                }
             });
 
             logger.info(

@@ -18,56 +18,82 @@ datasource db {
 }
 
 model User {
-  telegramId             String  @id
-  username               String?
-  goldBalance            Int     @default(0)
-  level                  Int     @default(1)
-  expToNextLevel         Int     @default(83) @map("exp_to_next_level")
-  exp                    Int     @default(0)
-  str                    Int     @default(1)
-  def                    Int     @default(1)
-  dex                    Int     @default(1)
-  magic                  Int     @default(1)
-  hpLevel                Int     @default(1) @map("hp_level")
-  expHp                  Int     @default(0) @map("exp_hp")
-  expToNextHpLevel       Int     @default(83) @map("exp_to_next_hp_level")
-  outstandingSkillPoints Int     @default(0) @map("outstanding_skill_points")
+  telegramId  String  @id
+  username    String?
+  goldBalance Int     @default(0)
+
+  // Base ability stats
+  level                  Int @default(1)
+  expToNextLevel         Int @default(570) @map("exp_to_next_level")
+  exp                    Int @default(0)
+  str                    Int @default(1)
+  def                    Int @default(1)
+  dex                    Int @default(1)
+  luk                    Int @default(1)
+  magic                  Int @default(1)
+  hpLevel                Int @default(1) @map("hp_level")
+  expHp                  Int @default(0) @map("exp_hp")
+  expToNextHpLevel       Int @default(570) @map("exp_to_next_hp_level")
+  outstandingSkillPoints Int @default(0) @map("outstanding_skill_points")
+
+  // Base combat stats
+  maxHp             Float @default(100) @map("max_hp") // HP Level * 100
+  atkSpd            Float @default(10) @map("atk_spd") // 10 * DEX
+  acc               Float @default(100) @map("acc") // 100 * DEX ^ 1.1
+  eva               Float @default(100) @map("eva") // 100 * DEX ^ 1.05
+  maxMeleeDmg       Float @default(30) @map("max_melee_dmg") // 10 + 20 * STR ^ 0.7
+  maxRangedDmg      Float @default(30) @map("max_ranged_dmg") // 10 + 20 * DEX ^ 0.7
+  maxMagicDmg       Float @default(30) @map("max_magic_dmg") // 10 + 20 * MAGIC ^ 0.7
+  critChance        Float @default(0.006623) @map("crit_chance") // LUK / (LUK + 150)
+  critMultiplier    Float @default(1.290) @map("crit_multiplier") // 1.2 + 0.3 * log(LUK + 1)
+  dmgReduction      Float @default(10) @map("dmg_reduction") // 10 * DEF
+  magicDmgReduction Float @default(10) @map("magic_dmg_reduction") // (4 * DEF) + (6 * MAGIC)
+  hpRegenRate       Float @default(20) @map("hp_regen_rate") // s per tick
+  hpRegenAmount     Float @default(5.7) @map("hp_regen_amount")
+
+  lastBattleEndTimestamp DateTime? @map("last_battle_end_timestamp")
 
   // Farming
   farmingLevel          Int @default(1)
   farmingExp            Int @default(0)
-  expToNextFarmingLevel Int @default(83) @map("exp_to_next_farming_level")
+  expToNextFarmingLevel Int @default(570) @map("exp_to_next_farming_level")
 
   // Crafting
   craftingLevel          Int @default(1)
   craftingExp            Int @default(0)
-  expToNextCraftingLevel Int @default(83) @map("exp_to_next_crafting_level")
+  expToNextCraftingLevel Int @default(570) @map("exp_to_next_crafting_level")
+
+  /**
+   * // Crafting and farming boost
+   * doubleResourceOddsBase               Float @default(0.01)
+   * skillIntervalReductionMultiplierBase Float @default(1) // need to push db changes
+   */
+
+  doubleResourceOdds               Float @default(0.01)
+  skillIntervalReductionMultiplier Float @default(1)
 
   // Optional equipment relationships
-  hatInventoryId       Int? @unique
-  armourInventoryId    Int? @unique
-  weaponInventoryId    Int? @unique
-  shieldInventoryId    Int? @unique
-  capeInventoryId      Int? @unique
-  necklaceInventoryId  Int? @unique
-  petInventoryId       Int? @unique
-  spellbookInventoryId Int? @unique
+  hatInventoryId      Int? @unique
+  armourInventoryId   Int? @unique
+  weaponInventoryId   Int? @unique
+  shieldInventoryId   Int? @unique
+  capeInventoryId     Int? @unique
+  necklaceInventoryId Int? @unique
 
   // Relations to the Inventory table for equipped items
-  hat       Inventory? @relation("Hat", fields: [hatInventoryId], references: [id])
-  armour    Inventory? @relation("Armour", fields: [armourInventoryId], references: [id])
-  weapon    Inventory? @relation("Weapon", fields: [weaponInventoryId], references: [id])
-  shield    Inventory? @relation("Shield", fields: [shieldInventoryId], references: [id])
-  cape      Inventory? @relation("Cape", fields: [capeInventoryId], references: [id])
-  necklace  Inventory? @relation("Necklace", fields: [necklaceInventoryId], references: [id])
-  pet       Inventory? @relation("Pet", fields: [petInventoryId], references: [id])
-  spellbook Inventory? @relation("Spellbook", fields: [spellbookInventoryId], references: [id])
+  hat      Inventory? @relation("Hat", fields: [hatInventoryId], references: [id])
+  armour   Inventory? @relation("Armour", fields: [armourInventoryId], references: [id])
+  weapon   Inventory? @relation("Weapon", fields: [weaponInventoryId], references: [id])
+  shield   Inventory? @relation("Shield", fields: [shieldInventoryId], references: [id])
+  cape     Inventory? @relation("Cape", fields: [capeInventoryId], references: [id])
+  necklace Inventory? @relation("Necklace", fields: [necklaceInventoryId], references: [id])
 
   // Relation to inventory
   inventory Inventory[]
 
   // Relation to Combat stats
-  combat Combat?
+  combatId Int
+  combat   Combat @relation(fields: [combatId], references: [id])
 
   // Relation to slimes
   slimes Slime[]
@@ -75,19 +101,49 @@ model User {
   // Relation to equipped slime
   equippedSlimeId Int?   @unique
   equippedSlime   Slime? @relation("EquippedSlime", fields: [equippedSlimeId], references: [id])
+
+  DungeonLeaderboard DungeonLeaderboard[]
 }
 
 model Combat {
-  userId  String @id
-  str     Int    @default(1)
-  def     Int    @default(1)
-  dex     Int    @default(1)
-  magic   Int    @default(1)
-  hp      Int    @default(10)
-  hpLevel Int    @default(1)
+  id Int @id @default(autoincrement())
 
-  // Relation back to the User
-  user User @relation(fields: [userId], references: [telegramId])
+  attackType AttackType @default(Melee)
+  cp         Decimal    @default(699) @db.Decimal(65, 0)
+
+  hp                Float @default(100)
+  maxHp             Float @default(100) @map("max_hp")
+  atkSpd            Float @default(10) @map("atk_spd")
+  acc               Float @default(100) @map("acc")
+  eva               Float @default(100) @map("eva")
+  maxMeleeDmg       Float @default(30) @map("max_melee_dmg")
+  maxRangedDmg      Float @default(30) @map("max_ranged_dmg")
+  maxMagicDmg       Float @default(30) @map("max_magic_dmg")
+  critChance        Float @default(0.006623) @map("crit_chance")
+  critMultiplier    Float @default(1.290) @map("crit_multiplier")
+  dmgReduction      Float @default(10) @map("dmg_reduction")
+  magicDmgReduction Float @default(10) @map("magic_dmg_reduction")
+  hpRegenRate       Float @default(20) @map("hp_regen_rate")
+  hpRegenAmount     Float @default(5.7) @map("hp_regen_amount")
+
+  meleeFactor Float @default(0) @map("melee_factor")
+  rangeFactor Float @default(0) @map("range_factor")
+  magicFactor Float @default(0) @map("magic_factor")
+
+  reinforceAir   Float @default(0) @map("reinforce_air")
+  reinforceWater Float @default(0) @map("reinforce_water")
+  reinforceEarth Float @default(0) @map("reinforce_earth")
+  reinforceFire  Float @default(0) @map("reinforce_fire")
+
+  user User[]
+
+  Monster Monster[]
+}
+
+enum AttackType {
+  Melee
+  Ranged
+  Magic
 }
 
 // Define enums for Rarity and Type
@@ -211,11 +267,8 @@ model SlimeTrait {
   pair1Id     Int? // Points to another SlimeTrait as the second potential pair
   mutation1Id Int? // Points to another SlimeTrait representing the second mutation to the next gen
 
-  str   Int @default(0)
-  def   Int @default(0)
-  dex   Int @default(0)
-  magic Int @default(0)
-  hp    Int @default(0)
+  statEffectId Int?
+  statEffect   StatEffect? @relation(fields: [statEffectId], references: [id])
 
   // Relations for first pair and mutation
   pair0     SlimeTrait? @relation("Pair0", fields: [pair0Id], references: [id])
@@ -282,39 +335,51 @@ enum EquipmentType {
   shield
   cape
   necklace
-  pet
-  spellbook
 }
 
 // Equipment table
 model Equipment {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique
-  description String        @default("")
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  description String @db.Text
   imgsrc      String
-  str         Int           @default(0)
-  def         Int           @default(0)
-  dex         Int           @default(0)
-  magic       Int           @default(0)
-  hp          Int           @default(0)
-  rarity      Rarity
-  type        EquipmentType // hat, armour, weapon, shield, cape, necklace, pet, spellbook
+
+  buyPriceGP  Int?
+  sellPriceGP Int
+
+  buyPriceDittoWei Decimal? @db.Decimal(65, 0)
+
+  requiredLvl Int @default(1)
+
+  attackType AttackType? // only for weapon
+
+  statEffectId Int?
+  statEffect   StatEffect? @relation(fields: [statEffectId], references: [id])
+
+  rarity Rarity
+  type   EquipmentType
 
   equipmentInventory Inventory[]
 
   CraftingRecipe CraftingRecipe[]
+
+  MonsterDrop MonsterDrop[]
 }
 
 // Items table
 model Item {
   id           Int         @id @default(autoincrement())
   name         String      @unique
-  description  String      @default("")
+  description  String      @db.Text
   imgsrc       String
   rarity       Rarity
-  consumableId Int?
-  consumable   Consumable? @relation(fields: [consumableId], references: [id])
-  sellPriceGP  Int?
+  statEffectId Int?
+  statEffect   StatEffect? @relation(fields: [statEffectId], references: [id])
+
+  buyPriceGP  Int?
+  sellPriceGP Int
+
+  buyPriceDittoWei Decimal? @db.Decimal(65, 0)
 
   farmingDurationS     Int?
   farmingLevelRequired Int?
@@ -323,6 +388,8 @@ model Item {
   itemInventory Inventory[]
 
   CraftingRecipeItems CraftingRecipeItems[]
+
+  MonsterDrop MonsterDrop[]
 }
 
 // Inventory table
@@ -341,14 +408,12 @@ model Inventory {
   equipment Equipment? @relation(fields: [equipmentId], references: [id])
 
   // Relations for equipped items (mirrored from User)
-  hatUser       User? @relation("Hat")
-  armourUser    User? @relation("Armour")
-  weaponUser    User? @relation("Weapon")
-  shieldUser    User? @relation("Shield")
-  capeUser      User? @relation("Cape")
-  necklaceUser  User? @relation("Necklace")
-  petUser       User? @relation("Pet")
-  spellbookUser User? @relation("Spellbook")
+  hatUser      User? @relation("Hat")
+  armourUser   User? @relation("Armour")
+  weaponUser   User? @relation("Weapon")
+  shieldUser   User? @relation("Shield")
+  capeUser     User? @relation("Cape")
+  necklaceUser User? @relation("Necklace")
 
   // Enforce uniqueness: Only one row per user-item or user-equipment combo
   @@unique([userId, itemId, equipmentId])
@@ -357,35 +422,61 @@ model Inventory {
 
 // Define an enum for effect types
 enum EffectType {
-  plus // Represented as "+"
-  times // Represented as "*"
+  add // Represented as "+"
+  mul // Represented as "*"
 }
 
-// Consumable table using enums for effects
-model Consumable {
+model StatEffect {
   id Int @id @default(autoincrement())
 
-  str       Int?
-  strEffect EffectType? @map("str_effect")
+  maxHpMod                Float?      @map("max_hp_mod")
+  maxHpEffect             EffectType?
+  atkSpdMod               Float?      @map("atk_spd_mod")
+  atkSpdEffect            EffectType?
+  accMod                  Float?      @map("acc_mod")
+  accEffect               EffectType?
+  evaMod                  Float?      @map("eva_mod")
+  evaEffect               EffectType?
+  maxMeleeDmgMod          Float?      @map("max_melee_dmg_mod")
+  maxMeleeDmgEffect       EffectType?
+  maxRangedDmgMod         Float?      @map("max_ranged_dmg_mod")
+  maxRangedDmgEffect      EffectType?
+  maxMagicDmgMod          Float?      @map("max_magic_dmg_mod")
+  maxMagicDmgEffect       EffectType?
+  critChanceMod           Float?      @map("crit_chance_mod")
+  critChanceEffect        EffectType?
+  critMultiplierMod       Float?      @map("crit_multiplier_mod")
+  critMultiplierEffect    EffectType?
+  dmgReductionMod         Float?      @map("dmg_reduction_mod")
+  dmgReductionEffect      EffectType?
+  magicDmgReductionMod    Float?      @map("magic_dmg_reduction_mod")
+  magicDmgReductionEffect EffectType?
+  hpRegenRateMod          Float?      @map("hp_regen_rate_mod")
+  hpRegenRateEffect       EffectType?
+  hpRegenAmountMod        Float?      @map("hp_regen_amount_mod")
+  hpRegenAmountEffect     EffectType?
 
-  def       Int?
-  defEffect EffectType? @map("def_effect")
+  meleeFactor Float? @default(0) @map("melee_factor")
+  rangeFactor Float? @default(0) @map("range_factor")
+  magicFactor Float? @default(0) @map("magic_factor")
 
-  dex       Int?
-  dexEffect EffectType? @map("dex_effect")
+  reinforceAir   Float? @default(0) @map("reinforce_air")
+  reinforceWater Float? @default(0) @map("reinforce_water")
+  reinforceEarth Float? @default(0) @map("reinforce_earth")
+  reinforceFire  Float? @default(0) @map("reinforce_fire")
 
-  magic       Int?
-  magicEffect EffectType? @map("magic_effect")
+  doubleResourceOddsMod               Float? @map("double_resource_odds_mod") // always add
+  skillIntervalReductionMultiplierMod Float? @map("skill_interval_reduction_multiplier_mod") // always add
 
-  hp       Int?
-  hpEffect EffectType? @map("hp_effect")
-
-  maxHp       Int?        @map("max_hp")
-  maxHpEffect EffectType? @map("max_hp_effect")
-
-  durationS Int? // Duration in seconds for consumables
+  durationS Int? // Duration in seconds for temporary buffs
 
   Item Item[]
+
+  Equipment Equipment[]
+
+  SlimeTrait SlimeTrait[]
+
+  Monster Monster[] @relation("MonsterStatEffects")
 }
 
 model CraftingRecipe {
@@ -410,4 +501,154 @@ model CraftingRecipeItems {
   quantity Int            @default(1) // Number of items required to craft the equipment
 
   @@unique([recipeId, itemId]) // Ensure unique combination of item and recipe
+}
+
+model Monster {
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  description String @db.Text
+  imgsrc      String
+  level       Int    @default(1)
+
+  // Base ability stats (Before applying StatEffects)
+  str     Int @default(1)
+  def     Int @default(1)
+  dex     Int @default(1)
+  luk     Int @default(1)
+  magic   Int @default(1)
+  hpLevel Int @default(1) @map("hp_level")
+
+  maxHp             Float @default(100) @map("max_hp") // HP Level * 100
+  atkSpd            Float @default(10) @map("atk_spd") // 10 * DEX
+  acc               Float @default(100) @map("acc") // 100 * DEX ^ 1.1
+  eva               Float @default(100) @map("eva") // 100 * DEX ^ 1.05
+  maxMeleeDmg       Float @default(20) @map("max_melee_dmg") // 5 + 15 * STR ^ 0.7
+  maxRangedDmg      Float @default(20) @map("max_ranged_dmg") // 5 + 15 * DEX ^ 0.7
+  maxMagicDmg       Float @default(20) @map("max_magic_dmg") // 5 + 15 * MAGIC ^ 0.7
+  critChance        Float @default(0.006623) @map("crit_chance") // LUK / (LUK + 150)
+  critMultiplier    Float @default(1.290) @map("crit_multiplier") // 1.2 + 0.3 * log(LUK + 1)
+  dmgReduction      Float @default(10) @map("dmg_reduction") // 10 * DEF
+  magicDmgReduction Float @default(10) @map("magic_dmg_reduction") // (10 * DEF) + (5 * MAGIC)
+  hpRegenRate       Float @default(20) @map("hp_regen_rate") // s per tick
+  hpRegenAmount     Float @default(10.8) @map("hp_regen_amount")
+
+  // Exp and Gold Drops
+  exp         Int
+  minGoldDrop Int @default(0)
+  maxGoldDrop Int @default(0)
+
+  minDittoDrop Decimal @db.Decimal(65, 0) // wei
+  maxDittoDrop Decimal @db.Decimal(65, 0) // wei
+
+  // Drops relation (Many-to-Many through MonsterDrop)
+  drops MonsterDrop[]
+
+  // Combat stats (Derived from Base + Equipped StatEffects)
+  combatId Int
+  combat   Combat @relation(fields: [combatId], references: [id])
+
+  // Array of StatEffects (Similar to User Gear, Items, Slime Traits)
+  statEffects StatEffect[] @relation("MonsterStatEffects")
+
+  DomainMonster DomainMonster[]
+
+  DungeonMonsterSequence DungeonMonsterSequence[]
+}
+
+model MonsterDrop {
+  id          Int   @id @default(autoincrement())
+  monsterId   Int
+  itemId      Int?
+  equipmentId Int?
+  dropRate    Float // Probability (0.0 - 1.0)
+  quantity    Int   @default(1) // Amount of items dropped
+
+  // Relations
+  monster   Monster    @relation(fields: [monsterId], references: [id])
+  item      Item?      @relation(fields: [itemId], references: [id])
+  equipment Equipment? @relation(fields: [equipmentId], references: [id])
+
+  @@unique([monsterId, itemId, equipmentId]) // Ensure no duplicate drops per monster
+}
+
+model Domain {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String  @db.Text
+  imgsrc      String?
+
+  monsters DomainMonster[]
+
+  entryPriceGP       Int?
+  entryPriceDittoWei Decimal? @db.Decimal(65, 0)
+  isActive           Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DomainMonster {
+  id        Int   @id @default(autoincrement())
+  domainId  Int
+  monsterId Int
+  spawnRate Float
+
+  domain  Domain  @relation(fields: [domainId], references: [id])
+  monster Monster @relation(fields: [monsterId], references: [id])
+
+  @@unique([domainId, monsterId]) // prevent duplicates
+}
+
+model Dungeon {
+  id                  Int      @id @default(autoincrement())
+  name                String   @unique
+  description         String   @db.Text
+  imgsrc              String
+  monsterGrowthFactor Float    @default(1.05) // e.g., 1.05 = 5% growth per wave
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  entryPriceGP       Int?
+  entryPriceDittoWei Decimal? @db.Decimal(65, 0)
+  isActive           Boolean  @default(true)
+
+  // A predefined monster sequence
+  monsterSequence DungeonMonsterSequence[]
+
+  DungeonLeaderboard DungeonLeaderboard[]
+}
+
+model DungeonMonsterSequence {
+  id        Int      @id @default(autoincrement())
+  dungeonId Int
+  monsterId Int
+  order     Int // The sequence in which the monster appears
+  createdAt DateTime @default(now())
+
+  // Relations
+  dungeon Dungeon @relation(fields: [dungeonId], references: [id])
+  monster Monster @relation(fields: [monsterId], references: [id])
+
+  @@unique([dungeonId, order]) // Ensure one monster per slot in sequence
+}
+
+model DungeonLeaderboard {
+  id        Int    @id @default(autoincrement())
+  userId    String
+  dungeonId Int
+
+  monstersKilled Int      @default(0)
+  damageDealt    Float    @default(0)
+  damageTaken    Float    @default(0)
+  timeElapsedMs  Int      @default(0)
+  runDate        DateTime @default(now())
+
+  score Float @default(0)
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [telegramId])
+  dungeon Dungeon @relation(fields: [dungeonId], references: [id])
+
+  @@index([dungeonId, score])
+  @@index([userId, dungeonId])
 }

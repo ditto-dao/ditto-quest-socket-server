@@ -5,15 +5,16 @@ import { mintItemToUser } from "../../sql-services/item-inventory-service"
 import { IdleFarmingManager } from "../../managers/idle-managers/farming-idle-manager"
 import { SocketManager } from "../socket-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
+import { getItemById } from "../../sql-services/item-service"
 
 interface MintItemPayload {
-    userId: number,
+    userId: string,
     itemId: number,
     quantity: number
 }
 
 interface FarmItemPayload {
-    userId: number;
+    userId: string;
     itemId: number
 }
 
@@ -44,9 +45,13 @@ export async function setupItemsSocketHandlers(
 
     socket.on("farm-item", async (data: FarmItemPayload) => {
         try {
-            logger.info(`Received farm-item event from user ${data.userId}`)
+            logger.info(`Received farm-item event: ${JSON.stringify(data)}`);
 
-            IdleFarmingManager.startFarming(socketManager, idleManager, data.userId, data.itemId, Date.now());
+            const item = await getItemById(data.itemId);
+
+            if (!item) throw new Error(`Item not found.`);
+
+            IdleFarmingManager.startFarming(socketManager, idleManager, data.userId, item, Date.now());
         } catch (error) {
             logger.error(`Error processing farm-item: ${error}`)
             socket.emit('error', {

@@ -1,67 +1,79 @@
+import { Item } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
 import { mintItemToUser } from "../../sql-services/item-inventory-service";
-import { getItemById } from "../../sql-services/item-service";
 import { addFarmingExp, getUserFarmingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { IdleActivityQueueElement, IdleManager, ProgressUpdate } from "./idle-manager";
+import { IdleManager } from "./idle-manager";
+import { FarmingUpdate, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
 
 export class IdleFarmingManager {
 
     constructor() { }
 
-    static async startFarming(socketManager: SocketManager, idleManager: IdleManager, userId: number, itemId: number, startTimestamp: number) {
-        try {
-            const item = await getItemById(itemId);
+    static async startFarming(socketManager: SocketManager, idleManager: IdleManager, userId: string, item: Item, startTimestamp: number) {
+        let timerHandle: TimerHandle | undefined;
 
-            if (!item) throw new Error('Item not found');
+        try {
+            await idleManager.removeFarmingActivity(userId, item.id); // no duplicates
 
             if (!item.farmingDurationS || !item.farmingExp || !item.farmingLevelRequired) throw new Error('Item cannot be farmed');
 
             if ((await getUserFarmingLevel(userId)) < item.farmingLevelRequired) throw new Error("Insufficient farming level");
 
-            const idleFarmingActivity: IdleActivityQueueElement = {
-                userId: userId,
-                activity: 'farming',
-                itemId: item.id,
-                name: item.name,
-                startTimestamp: startTimestamp,
-                durationS: item.farmingDurationS,
-                nextTriggerTimestamp: startTimestamp + item.farmingDurationS * 1000,
-                activityCompleteCallback: async () => await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, itemId),
-                activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, itemId)
+            const completeCallback = async () => {
+                try {
+                    await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, item.id);
+                } catch (err) {
+                    logger.error(`Farming callback failed for user ${userId}, item ${item.id}: ${err}`);
+                    await idleManager.removeFarmingActivity(userId, item.id);
+                }
             };
 
-            idleManager.appendIdleActivityByUser(userId, idleFarmingActivity);
-            idleManager.queueIdleActivityElement(idleFarmingActivity);
+            timerHandle = IdleManager.startCustomInterval((startTimestamp + (item.farmingDurationS * 1000)) - Date.now(), item.farmingDurationS * 1000, completeCallback);
+
+            const idleFarmingActivity: IdleFarmingIntervalElement = {
+                userId: userId,
+                activity: 'farming',
+                item: item,
+                startTimestamp: startTimestamp,
+                durationS: item.farmingDurationS,
+                activityCompleteCallback: completeCallback,
+                activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, item.id),
+                activityInterval: timerHandle
+            };
+
+            await idleManager.appendIdleActivityByUser(userId, idleFarmingActivity);
         } catch (error) {
             logger.error(`Error starting farming ${userId}: ${error}`);
+
+            if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
+
             socketManager.emitEvent(userId, 'farming-stop', {
                 userId: userId,
                 payload: {
-                    itemId: itemId,
+                    itemId: item.id,
                 }
             });
         }
     }
 
-    static stopFarming(idleManager: IdleManager, userId: number, itemId: number) {
-        idleManager.removeIdleActivityByUser(userId, 'farming', itemId);
-        idleManager.removeIdleActivityElementFromQueue(userId, 'farming', itemId);
+    static stopFarming(idleManager: IdleManager, userId: string, itemId: number) {
+        idleManager.removeFarmingActivity(userId, itemId);
     }
 
     static async handleLoadedFarmingActivity(
         socketManager: SocketManager,
         idleManager: IdleManager,
-        farming: IdleActivityQueueElement,
-        userId: number
-    ): Promise<ProgressUpdate> {
+        farming: IdleFarmingIntervalElement,
+        userId: string
+    ): Promise<FarmingUpdate | undefined> {
         if (farming.activity !== "farming") {
             throw new Error("Invalid activity type. Expected farming activity.");
         }
 
-        if (!farming.itemId) {
-            throw new Error("Item id not found in farming activity.");
+        if (!farming.item) {
+            throw new Error("Item not found in farming activity.");
         }
 
         if (!farming.logoutTimestamp) {
@@ -70,10 +82,8 @@ export class IdleFarmingManager {
 
         logger.info(`Farming activity loaded: ${JSON.stringify(farming, null, 2)}`);
 
-        const item = await getItemById(farming.itemId);
-
-        if (!item || !item.farmingExp) {
-            throw new Error(`Item cannot be farmed.`)
+        if (!farming.item || !farming.item.farmingExp) {
+            throw new Error(`Item cannot be farmed.`);
         }
 
         const now = Date.now();
@@ -106,46 +116,46 @@ export class IdleFarmingManager {
             currentRepetitionStart = progressEndTimestamp - elapsedWithinCurrentRepetition;
         }
 
-        logger.info(`Farming rpetitions completed after logout: ${repetitions}`);
+        logger.info(`Farming repetition completed after logout: ${repetitions}`);
         logger.info(`Current repetition start timestamp: ${currentRepetitionStart}`);
 
         // Start current repetition
-        IdleFarmingManager.startFarming(socketManager, idleManager, userId, farming.itemId, currentRepetitionStart);
+        IdleFarmingManager.startFarming(socketManager, idleManager, userId, farming.item, currentRepetitionStart);
 
         socketManager.emitEvent(userId, 'farming-start', {
             userId: userId,
             payload: {
-                itemId: farming.itemId,
+                itemId: farming.item.id,
                 startTimestamp: currentRepetitionStart,
                 durationS: farming.durationS
             }
         });
 
-        let expRes; 
+        let expRes;
         if (repetitions > 0) {
-            await mintItemToUser(userId.toString(), farming.itemId, repetitions);
-            expRes = await addFarmingExp(userId, item.farmingExp * repetitions)
+            await mintItemToUser(userId.toString(), farming.item.id, repetitions);
+            expRes = await addFarmingExp(userId, farming.item.farmingExp * repetitions);
+            return {
+                type: 'farming',
+                update: {
+                    items: [
+                        {
+                            itemId: farming.item.id,
+                            itemName: farming.item.name || 'Item',
+                            quantity: repetitions,
+                            uri: farming.item.imgsrc
+                        }
+                    ],
+                    farmingExpGained: (repetitions > 0) ? farming.item.farmingExp * repetitions : undefined,
+                    farmingLevelsGained: expRes?.farmingLevelsGained
+                },
+            };
         }
-
-        return {
-            type: 'farming',
-            update: {
-                items: [
-                    {
-                        itemId: farming.itemId,
-                        itemName: farming.name || 'Item',
-                        quantity: repetitions
-                    }
-                ],
-                farmingExpGained: (repetitions > 0) ? item.farmingExp * repetitions : undefined,
-                farmingLevelsGained: expRes?.farmingLevelsGained
-            },
-        };
     }
 
     static async farmingCompleteCallback(
         socketManager: SocketManager,
-        userId: number,
+        userId: string,
         itemId: number,
     ): Promise<void> {
         try {
@@ -170,12 +180,13 @@ export class IdleFarmingManager {
                     itemId: itemId,
                 }
             });
+            throw error;
         }
     }
 
     static async farmingStopCallback(
         socketManager: SocketManager,
-        userId: number,
+        userId: string,
         itemId: number,
     ): Promise<void> {
         try {

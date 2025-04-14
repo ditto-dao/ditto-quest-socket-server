@@ -1,11 +1,11 @@
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "redis";
 import { logger } from "../utils/logger";
-import { IdleActivityQueueElement } from "../managers/idle-managers/idle-manager";
+import { IdleActivityIntervalElement } from "../managers/idle-managers/idle-manager-types";
 
 export async function storeIdleActivityQueueElements(
     redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
-    userId: number,
-    activities: IdleActivityQueueElement[]
+    userId: string,
+    activities: IdleActivityIntervalElement[]
 ): Promise<void> {
     const redisKey = `user:${userId}:idleActivityQueueElements`;
 
@@ -17,6 +17,7 @@ export async function storeIdleActivityQueueElements(
             // Create a plain object excluding callback functions
             const serializableActivity = {
                 ...activity,
+                activityInterval: undefined,
                 activityCompleteCallback: undefined,
                 activityStopCallback: undefined,
             };
@@ -37,8 +38,8 @@ export async function storeIdleActivityQueueElements(
 
 export async function getIdleActivityQueueElements(
     redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
-    userId: number
-): Promise<IdleActivityQueueElement[]> {
+    userId: string
+): Promise<IdleActivityIntervalElement[]> {
     const redisKey = `user:${userId}:idleActivityQueueElements`;
 
     try {
@@ -46,11 +47,11 @@ export async function getIdleActivityQueueElements(
         const activityJsons = await redisClient.lRange(redisKey, 0, -1);
 
         // Deserialize each JSON string into an IdleActivityQueueElement object
-        const activities: IdleActivityQueueElement[] = activityJsons.map((json) => {
-            const activity = JSON.parse(json) as IdleActivityQueueElement;
+        const activities: IdleActivityIntervalElement[] = activityJsons.map((json) => {
+            const activity = JSON.parse(json) as IdleActivityIntervalElement;
 
             // Reassign default placeholder functions for callbacks
-            activity.activityCompleteCallback = async () => { };
+            if (activity.activity !== 'combat') activity.activityCompleteCallback = async () => { };
 
             activity.activityStopCallback = async () => { };
 
@@ -67,7 +68,7 @@ export async function getIdleActivityQueueElements(
 
 export async function deleteAllIdleActivityQueueElements(
     redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
-    userId: number
+    userId: string
 ): Promise<void> {
     const redisKey = `user:${userId}:idleActivityQueueElements`;
 

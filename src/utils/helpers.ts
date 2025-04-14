@@ -1,15 +1,26 @@
-import { Rarity, TraitType } from "@prisma/client";
-import { GACHA_PULL_ODDS, HP_EXP_PER_EXP } from "./config";
+import { Combat, Prisma, Rarity, TraitType } from "@prisma/client";
+import { HP_EXP_PER_EXP } from "./config";
 import { SlimeWithTraits } from "../sql-services/slime";
+import { COMBAT_UPDATE_EVENT, USER_UPDATE_EVENT } from "../socket/events";
+import { FullUserData, UserDataEquipped } from "../sql-services/user-service";
+import { Socket } from "socket.io";
+import { DefaultEventsMap } from "socket.io/dist/typed-events"
+import { logger } from "./logger";
+
 
 // Helper function to calculate experience needed for the next level
 export function calculateExpForNextLevel(nextLevel: number): number {
-    return Math.floor((1 / 4) * (nextLevel - 1 + 300 * Math.pow(2, (nextLevel - 1) / 7)));
+    const a = 450;
+    const b = 1.15;
+    const c = 120;
+    const d = 1.87;
+
+    return Math.floor(a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d));
 }
 
 // Helper function to calculate HP experience gained for given EXP gained
 export function calculateHpExpGained(exp: number): number {
-    return Math.round(exp * HP_EXP_PER_EXP);
+    return Math.floor(exp * HP_EXP_PER_EXP);
 }
 
 export const rarities: Rarity[] = ['D', 'C', 'B', 'A', 'S'];
@@ -110,3 +121,115 @@ export function getColourHexByRarity(rarity: Rarity): string {
     }
     return colourHex;
 }
+
+import { Decimal } from "@prisma/client/runtime/library"; // or from "decimal.js"
+
+export function calculateCombatPower(c: Combat): Decimal {
+    const maxMeleeDmg = new Decimal(c.maxMeleeDmg);
+    const maxRangedDmg = new Decimal(c.maxRangedDmg);
+    const maxMagicDmg = new Decimal(c.maxMagicDmg);
+
+    const atkSpd = new Decimal(c.atkSpd);
+    const critChance = new Decimal(c.critChance);
+    const critMultiplier = new Decimal(c.critMultiplier);
+    const acc = new Decimal(c.acc);
+    const eva = new Decimal(c.eva);
+    const dmgReduction = new Decimal(c.dmgReduction);
+    const magicDmgReduction = new Decimal(c.magicDmgReduction);
+    const hpRegenRate = new Decimal(c.hpRegenRate);
+    const hpRegenAmount = new Decimal(c.hpRegenAmount);
+    const maxHp = new Decimal(c.maxHp);
+
+    const relevantMaxDmg =
+        c.attackType === "Melee" ? maxMeleeDmg :
+            c.attackType === "Ranged" ? maxRangedDmg :
+                c.attackType === "Magic" ? maxMagicDmg :
+                    new Decimal(0);
+
+    const critBonus = critChance.mul(critMultiplier.minus(1));
+    const offenseScore = relevantMaxDmg
+        .mul(new Decimal(1).plus(critBonus))
+        .mul(new Decimal(1).plus(atkSpd.div(10)));
+
+    const accuracyScore = acc.sqrt();
+    const evasionScore = eva.sqrt();
+    const defenseScore = dmgReduction.plus(magicDmgReduction);
+    const sustainScore = hpRegenRate.mul(hpRegenAmount).mul(0.1);
+    const hpScore = maxHp.sqrt();
+
+    const totalScore = offenseScore.mul(12)
+        .plus(accuracyScore.mul(5))
+        .plus(evasionScore.mul(5))
+        .plus(defenseScore.mul(4))
+        .plus(sustainScore.mul(2))
+        .plus(hpScore.mul(1.5));
+
+    return totalScore.round(); // return as Decimal
+}
+
+export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, userId: string, res: Partial<FullUserData> | UserDataEquipped | Prisma.UserGetPayload<{ include: { combat: true } }>) {
+    socket.emit(USER_UPDATE_EVENT, {
+        userId: userId,
+        payload: {
+            str: res.str,
+            def: res.def,
+            dex: res.dex,
+            luk: res.luk,
+            magic: res.magic,
+            hpLevel: res.hpLevel,
+            expHp: res.expHp,
+            expToNextHpLevel: res.expToNextHpLevel,
+            maxHp: res.maxHp,
+            atkSpd: res.atkSpd,
+            acc: res.acc,
+            eva: res.eva,
+            maxMeleeDmg: res.maxMeleeDmg,
+            maxRangedDmg: res.maxRangedDmg,
+            maxMagicDmg: res.maxMagicDmg,
+            critChance: res.critChance,
+            critMultiplier: res.critMultiplier,
+            dmgReduction: res.dmgReduction,
+            magicDmgReduction: res.magicDmgReduction,
+            hpRegenRate: res.hpRegenRate,
+            hpRegenAmount: res.hpRegenAmount,
+            outstandingSkillPoints: res.outstandingSkillPoints,
+            doubleResourceOdds: res.doubleResourceOdds,
+            skillIntervalReductionMultiplier: res.skillIntervalReductionMultiplier,
+        }
+    });
+
+    if (res.combat) {
+        socket.emit(COMBAT_UPDATE_EVENT, {
+            userId: userId,
+            payload: {
+                attackType: res.combat.attackType,
+                cp: res.combat.cp,
+                hp: res.combat.hp,
+                maxHp: res.combat.maxHp,
+                atkSpd: res.combat.atkSpd,
+                acc: res.combat.acc,
+                eva: res.combat.eva,
+                maxMeleeDmg: res.combat.maxMeleeDmg,
+                maxRangedDmg: res.combat.maxRangedDmg,
+                maxMagicDmg: res.combat.maxMagicDmg,
+                critChance: res.combat.critChance,
+                critMultiplier: res.combat.critMultiplier,
+                dmgReduction: res.combat.dmgReduction,
+                magicDmgReduction: res.combat.magicDmgReduction,
+                hpRegenRate: res.combat.hpRegenRate,
+                hpRegenAmount: res.combat.hpRegenAmount,
+                meleeFactor: res.combat.meleeFactor,
+                rangeFactor: res.combat.rangeFactor,
+                magicFactor: res.combat.magicFactor,
+                reinforceAir: res.combat.reinforceAir,
+                reinforceWater: res.combat.reinforceWater,
+                reinforceEarth: res.combat.reinforceEarth,
+                reinforceFire: res.combat.reinforceFire
+            }
+        });
+    }
+}
+
+export function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }

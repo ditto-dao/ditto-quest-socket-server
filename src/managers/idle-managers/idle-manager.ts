@@ -1,179 +1,239 @@
 import { logger } from '../../utils/logger';
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis';
-import { MAX_CONCURRENT_IDLE_ACTIVITIES } from '../../utils/config';
+import { MAX_CONCURRENT_IDLE_ACTIVITIES, MAX_OFFLINE_IDLE_PROGRESS_S } from '../../utils/config';
 import { deleteAllIdleActivityQueueElements, getIdleActivityQueueElements, storeIdleActivityQueueElements } from '../../redis/idle-activity-redis';
 import { IdleFarmingManager } from './farming-idle-manager';
 import { SocketManager } from '../../socket/socket-manager';
 import { IdleCraftingManager } from './crafting-idle-manager';
 import { IdleBreedingManager } from './breeding-idle-manager';
-
-export type IdleActivityLabel = 'crafting' | 'breeding' | 'farming' | 'combat';
-
-export interface ProgressUpdate {
-    type: IdleActivityLabel;
-    update: {
-        equipment?: {
-            equipmentId: number;
-            equipmentName: string;
-            quantity: number;
-        }[];
-        items?: {
-            itemId: number;
-            itemName: string;
-            quantity: number;
-        }[];
-        expGained?: number;
-        slimes?: {
-            slimeId: number;
-        }[];
-        farmingExpGained?: number;
-        farmingLevelsGained?: number;
-        craftingExpGained?: number;
-        craftingLevelsGained?: number;
-    };
-}
-
-export interface IdleActivityQueueElement {
-    userId: number;
-    activity: IdleActivityLabel;
-    startTimestamp: number;
-    durationS: number;
-    nextTriggerTimestamp: number;
-    activityCompleteCallback: () => Promise<void>;
-    activityStopCallback: () => Promise<void>;
-    equipmentId?: number;
-    itemId?: number;
-    sireId?: number;
-    dameId?: number;
-    name?: string;
-    logoutTimestamp?: number;
-}
+import { IdleActivityIntervalElement, ProgressUpdate, TimerHandle } from './idle-manager-types';
+import { CurrentCombat, OfflineCombatManager } from './combat/offline-combat-manager';
+import { Socket as DittoLedgerSocket } from "socket.io-client";
 
 export class IdleManager {
     private socketManager: SocketManager;
+    private dittoLedgerSocket: DittoLedgerSocket;
     private redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>;
 
-    private idleActivitiesQueueElementByUser: Record<number, IdleActivityQueueElement[]> = {};
-
-    private globalTimeout: NodeJS.Timeout | null = null;
-    private idleActivityQueue: IdleActivityQueueElement[] = [];
+    private idleActivitiesQueueElementByUser: Record<string, IdleActivityIntervalElement[]> = {};
 
     constructor(
         redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
-        socketManager: SocketManager
+        socketManager: SocketManager,
+        dittoLedgerSocket: DittoLedgerSocket,
     ) {
         this.redisClient = redisClient;
         this.socketManager = socketManager;
-    }
-
-    // Append to queue
-    queueIdleActivityElement(element: IdleActivityQueueElement) {
-        try {
-            if (this.idleActivityQueue.length === 0) {
-                this.idleActivityQueue.push(element);
-                this.setNextTimeout();
-            } else {
-                for (let i = 0; i < this.idleActivityQueue.length; i++) {
-                    if (element.nextTriggerTimestamp < this.idleActivityQueue[i].nextTriggerTimestamp) {
-
-                        // Insert the element at the current position
-                        this.idleActivityQueue.splice(i, 0, element);
-
-                        if (i === 0) {
-                            this.clearGlobalTimeout();
-                            this.setNextTimeout();
-                        }
-
-                        return; // Exit the function after inserting
-                    }
-                }
-
-                // If no element with a higher timestamp is found, add it to the end
-                this.idleActivityQueue.push(element);
-
-                logger.info(`Successfully pushed idle activity to queue: ${JSON.stringify(this.idleActivityQueue, null, 2)}`);
-            }
-        } catch (err) {
-            logger.error(`Error queueing idle activity element: ${err}`);
-        }
+        this.dittoLedgerSocket = dittoLedgerSocket;
     }
 
     // Append to user list
-    appendIdleActivityByUser(userId: number, element: IdleActivityQueueElement) {
+    async appendIdleActivityByUser(userId: string, element: IdleActivityIntervalElement) {
         try {
-            const list = (this.idleActivitiesQueueElementByUser[userId]) ? this.idleActivitiesQueueElementByUser[userId] : [];
-            if (list.length >= MAX_CONCURRENT_IDLE_ACTIVITIES) {
-                const removedElement = list.shift();    // remove index 0 from user list
-                if (removedElement) {
-                    const keys = this.getPrimaryKeysFromIdleActivity(removedElement);
-                    this.removeIdleActivityElementFromQueue(userId, removedElement!.activity, keys.primaryKey0, keys.primaryKey1);
-                }
+            let queueLength = this.idleActivitiesQueueElementByUser[userId]?.length ?? 0;
+
+            while (queueLength >= MAX_CONCURRENT_IDLE_ACTIVITIES) {
+                logger.info(`Popping because queue is too long... current length: ${queueLength}`);
+                await this.popIdleActivityByUser(userId);
+                queueLength = this.idleActivitiesQueueElementByUser[userId]?.length ?? 0;
             }
+
+            const list = this.idleActivitiesQueueElementByUser[userId] ||= [];
             list.push(element);
 
-            this.idleActivitiesQueueElementByUser[userId] = list;
+            logger.info(`Appended. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
         } catch (err) {
             logger.error(`Error appending idle activity for user ${userId}: ${err}`);
-        }
-    }
-
-    // Remove element from queue
-    removeIdleActivityElementFromQueue(
-        userId: number,
-        activity: IdleActivityLabel,
-        primaryKey0?: number,
-        primaryKey1?: number
-    ): void {
-        try {
-            const indices = this.findAllIndicesByActivity(this.idleActivityQueue, userId, activity, primaryKey0, primaryKey1);
-
-            // Sort indices in descending order to safely remove from the list
-            indices.sort((a, b) => b - a);
-
-            for (const index of indices) {
-                this.idleActivityQueue[index].activityStopCallback();
-                this.removeElementFromListByIndex(this.idleActivityQueue, index, 'queue');
-            }
-
-            if (this.idleActivityQueue.length === 0) this.clearGlobalTimeout();
-        } catch (err) {
-            logger.error(`Error removing ${activity} idle activity from queue for user ${userId}: ${err}`);
+            if (element.activity !== 'combat') IdleManager.clearCustomInterval(element.activityInterval);
         }
     }
 
     // Remove element from user list
-    removeIdleActivityByUser(
-        userId: number,
-        activity: IdleActivityLabel,
-        primaryKey0?: number,
-        primaryKey1?: number
-    ): void {
-        try {
-            if (!this.idleActivitiesQueueElementByUser[userId]) {
-                throw new Error('User has no idle activities.');
-            }
+    async popIdleActivityByUser(userId: string): Promise<void> {
+        const queue = this.idleActivitiesQueueElementByUser[userId];
 
-            const indices = this.findAllIndicesByActivity(
-                this.idleActivitiesQueueElementByUser[userId],
-                userId,
-                activity,
-                primaryKey0,
-                primaryKey1
-            );
-
-            // Sort indices in descending order to safely remove from the list
-            indices.sort((a, b) => b - a);
-
-            for (const index of indices) {
-                this.removeElementFromListByIndex(this.idleActivitiesQueueElementByUser[userId], index, `user list for userId ${userId}`);
-            }
-
-        } catch (err) {
-            logger.error(`Error removing ${activity} idle activity for user ${userId}: ${err}`);
+        if (!queue || queue.length === 0) {
+            logger.warn(`No idle activity found for user ${userId}`);
+            return;
         }
+
+        const lastActivity = queue.pop();
+
+        if (lastActivity) {
+            if (lastActivity.activity !== 'combat') IdleManager.clearCustomInterval(lastActivity.activityInterval);
+
+            try {
+                await lastActivity.activityStopCallback();
+                logger.info(`Stopped ${lastActivity.activity} idle activity for user ${userId}`);
+            } catch (err) {
+                logger.error(`Error while stopping idle activity for user ${userId}:`, err);
+            }
+        }
+
+        if (queue.length === 0) {
+            delete this.idleActivitiesQueueElementByUser[userId];
+        }
+
+        logger.info(`Popped. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
     }
 
-    async saveAllIdleActivitiesOnLogout(userId: number): Promise<void> {
+    // Removes a specific farming interval element by userId and itemId
+    async removeFarmingActivity(userId: string, itemId: number): Promise<void> {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list) return;
+
+        const index = list.findIndex(
+            (el) => el.activity === 'farming' && el.item.id === itemId
+        );
+
+        if (index !== -1) {
+            const [removed] = list.splice(index, 1);
+
+            if (removed.activity !== 'farming') throw new Error(`Tried to remove an unexpected idle activity !== farming.`);
+
+            IdleManager.clearCustomInterval(removed.activityInterval);
+
+            await removed.activityStopCallback().catch((err) =>
+                logger.error(`Error stopping farming activity for user ${userId}:`, err)
+            );
+
+            if (list.length === 0) {
+                delete this.idleActivitiesQueueElementByUser[userId];
+            }
+        }
+
+        logger.info(`Removed idle farming activity. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
+    }
+
+    // Removes a specific crafting interval element by userId and equipmentId
+    async removeCraftingActivity(userId: string, equipmentId: number): Promise<void> {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list) return;
+
+        const index = list.findIndex(
+            (el) => el.activity === 'crafting' && el.equipment.id === equipmentId
+        );
+
+        if (index !== -1) {
+            const [removed] = list.splice(index, 1);
+
+            if (removed.activity !== 'crafting') throw new Error(`Tried to remove an unexpected idle activity !== crafting.`);
+
+            IdleManager.clearCustomInterval(removed.activityInterval);
+
+            await removed.activityStopCallback().catch((err) =>
+                logger.error(`Error stopping crafting activity for user ${userId}:`, err)
+            );
+
+            if (list.length === 0) {
+                delete this.idleActivitiesQueueElementByUser[userId];
+            }
+        }
+
+        logger.info(`Removed idle crafting activity. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
+    }
+
+    // Removes a specific breeding interval element by userId, sireId, and dameId
+    async removeBreedingActivity(userId: string, sireId: number, dameId: number): Promise<void> {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list) return;
+
+        const index = list.findIndex(
+            (el) =>
+                el.activity === 'breeding' &&
+                el.sire.id === sireId &&
+                el.dame.id === dameId
+        );
+
+        if (index !== -1) {
+            const [removed] = list.splice(index, 1);
+
+            if (removed.activity !== 'breeding') throw new Error(`Tried to remove an unexpected idle activity !== breeding.`);
+
+            IdleManager.clearCustomInterval(removed.activityInterval);
+
+            await removed.activityStopCallback().catch((err) =>
+                logger.error(`Error stopping breeding activity for user ${userId}:`, err)
+            );
+
+            if (list.length === 0) {
+                delete this.idleActivitiesQueueElementByUser[userId];
+            }
+        }
+
+        logger.info(`Removed idle breeding activity. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
+    }
+
+    // Removes all breeding activities for a user that involve a specific sire or dame
+    async removeBreedingActivitiesBySlimeId(userId: string, slimeId: number): Promise<void> {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list) return;
+
+        const remaining: IdleActivityIntervalElement[] = [];
+
+        for (const el of list) {
+            if (
+                el.activity === 'breeding' &&
+                (el.sire.id === slimeId || el.dame.id === slimeId)
+            ) {
+                IdleManager.clearCustomInterval(el.activityInterval);
+                await el.activityStopCallback().catch((err) =>
+                    logger.error(`Error stopping breeding activity (slimeId=${slimeId}) for user ${userId}:`, err)
+                );
+            } else {
+                remaining.push(el);
+            }
+        }
+
+        if (remaining.length > 0) {
+            this.idleActivitiesQueueElementByUser[userId] = remaining;
+        } else {
+            delete this.idleActivitiesQueueElementByUser[userId];
+        }
+
+        logger.info(`Removed breeding activities involving slimeId=${slimeId}. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
+    }
+
+    async removeAllCombatActivities(userId: string): Promise<void> {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list || list.length === 0) return;
+
+        const filtered: IdleActivityIntervalElement[] = [];
+
+        for (const activity of list) {
+            if (activity.activity === 'combat') {
+                try {
+                    await activity.activityStopCallback();
+                } catch (err) {
+                    logger.error(`Error stopping combat activity for user ${userId}: ${err}`);
+                    filtered.push(activity);
+                }
+            } else {
+                filtered.push(activity);
+            }
+        }
+
+        if (filtered.length > 0) {
+            this.idleActivitiesQueueElementByUser[userId] = filtered;
+        } else {
+            delete this.idleActivitiesQueueElementByUser[userId];
+        }
+
+        logger.info(`Removed all combat activities for user ${userId}. Active interval count: ${Object.values(this.idleActivitiesQueueElementByUser).flat().length}`);
+    }
+
+    updateCombatActivity(userId: string, updates: Partial<IdleActivityIntervalElement>) {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list) return;
+
+        const activity = list.find((el) => el.activity === 'combat');
+        if (!activity) return;
+
+        Object.assign(activity, updates);
+        logger.info(`Updated combat activity for user ${userId} with: ${JSON.stringify(updates)}`);
+    }
+
+    async saveAllIdleActivitiesOnLogout(userId: string): Promise<void> {
         try {
             // Retrieve all activities for the user from memory
             const userActivities = this.idleActivitiesQueueElementByUser[userId] || [];
@@ -192,180 +252,166 @@ export class IdleManager {
             await storeIdleActivityQueueElements(this.redisClient, userId, userActivities);
 
             // Clear all activities from the queue and user list
-            for (const activity of userActivities) {
-                const keys = this.getPrimaryKeysFromIdleActivity(activity);
-                this.removeIdleActivityElementFromQueue(userId, activity.activity, keys.primaryKey0, keys.primaryKey1);
+            const queue = this.idleActivitiesQueueElementByUser[userId];
+            if (queue) {
+                while (queue.length > 0) {
+                    await this.popIdleActivityByUser(userId);
+                }
             }
 
             // Remove the user's activities from the in-memory list
-            delete this.idleActivitiesQueueElementByUser[userId];
-
             logger.info(`Saved and cleared ${userActivities.length} idle activities for user ${userId}.`);
         } catch (error) {
             logger.error(`Error saving all idle activities for user ${userId}: ${error}`);
         }
     }
 
-    async loadIdleActivitiesOnLogin(userId: number): Promise<void> {
+    async loadIdleActivitiesOnLogin(userId: string): Promise<CurrentCombat | undefined> {
         try {
             const activities = await getIdleActivityQueueElements(this.redisClient, userId);
             await deleteAllIdleActivityQueueElements(this.redisClient, userId);
 
-            if (activities.length <= 0) return;
+            if (activities.length <= 0) {
+                this.socketManager.emitEvent(userId, "idle-progress-update", {
+                    userId: userId,
+                    payload: {
+                    },
+                });
+            };
 
-            const progressUpdates = await Promise.all(
-                activities.map(async (activity) => {
-                    if (activity.activity === 'farming') {
-                        return IdleFarmingManager.handleLoadedFarmingActivity(this.socketManager, this, activity, userId);
-                    } else if (activity.activity === 'crafting') {
-                        return IdleCraftingManager.handleLoadedCraftingActivity(this.socketManager, this, activity, userId);
-                    } else if (activity.activity === 'breeding') {
-                        return IdleBreedingManager.handleLoadedBreedingActivity(this.socketManager, this, activity, userId);
-                    }
-                })
-            );
+            const progressUpdates: { update?: ProgressUpdate, currentCombat?: CurrentCombat }[] = [];
 
-            // Emit progress update
-            this.socketManager.emitEvent(userId, 'idle-progress-update', {
+            for (const activity of activities) {
+                if (activity.activity === 'farming') {
+                    const update = await IdleFarmingManager.handleLoadedFarmingActivity(this.socketManager, this, activity, userId);
+                    progressUpdates.push({ update });
+                } else if (activity.activity === 'crafting') {
+                    const update = await IdleCraftingManager.handleLoadedCraftingActivity(this.socketManager, this, activity, userId);
+                    progressUpdates.push({ update });
+                } else if (activity.activity === 'breeding') {
+                    const update = await IdleBreedingManager.handleLoadedBreedingActivity(this.socketManager, this, activity, userId);
+                    progressUpdates.push({ update });
+                } else if (activity.activity === 'combat') {
+                    const combatUpdate = await OfflineCombatManager.handleLoadedCombatActivity(this.dittoLedgerSocket, activity);
+                    progressUpdates.push({
+                        update: combatUpdate.combatUpdate,
+                        currentCombat: combatUpdate.currentCombat
+                    });
+                } else {
+                    throw new Error(`Unexpected offline activity.`);
+                }
+            }
+
+            const updatesOnly = progressUpdates
+                .map((entry) => entry.update)
+                .filter((u): u is ProgressUpdate => u !== undefined);
+
+            logger.info(`idle progress update: ${JSON.stringify(updatesOnly, null, 2)}`);
+
+            this.socketManager.emitEvent(userId, "idle-progress-update", {
                 userId: userId,
-                payload: progressUpdates
+                payload: {
+                    offlineProgressMs: Math.min(
+                        Date.now() - activities[0].logoutTimestamp!,
+                        MAX_OFFLINE_IDLE_PROGRESS_S * 1000
+                    ),
+                    updates: updatesOnly,
+                },
             });
 
-            logger.info(`Emitted idle-progress-update: ${JSON.stringify(progressUpdates, null, 2)}`);
+            return progressUpdates.find((entry) => entry.currentCombat !== undefined)?.currentCombat;
         } catch (err) {
-            logger.error(`Error loading idle activities on login  for user ${userId}: ${err}`);
+            logger.error(`Error loading idle activities on login for user ${userId}: ${err}`);
         }
     }
 
-    private findAllIndicesByActivity(
-        list: IdleActivityQueueElement[],
-        userId: number,
-        activity: IdleActivityLabel,
-        primaryKey0?: number,
-        primaryKey1?: number
-    ): number[] {
-        if (!primaryKey0 && (activity === 'farming' || activity === 'crafting')) {
-            throw new Error('Primary key not found.');
-        }
-        if ((!primaryKey0 || !primaryKey1) && activity === 'breeding') {
-            throw new Error('Primary key not found.');
+    async saveAllUsersIdleActivities(): Promise<void> {
+        const userIds = Object.keys(this.idleActivitiesQueueElementByUser);
+
+        if (userIds.length === 0) {
+            logger.info('No active idle activities to save before shutdown.');
+            return;
         }
 
-        return list
-            .map((element, index) => {
-                if (element.userId !== userId || element.activity !== activity) {
-                    return null;
-                }
+        logger.info(`Saving idle activities for ${userIds.length} user(s) before shutdown.`);
 
-                const isMatch = (() => {
-                    switch (activity) {
-                        case 'farming':
-                            return 'itemId' in element && element.itemId === primaryKey0;
-                        case 'crafting':
-                            return 'equipmentId' in element && element.equipmentId === primaryKey0;
-                        case 'breeding':
-                            return (
-                                'sireId' in element &&
-                                element.sireId === primaryKey0 &&
-                                'dameId' in element &&
-                                element.dameId === primaryKey1
-                            );
-                        case 'combat':
-                            throw new Error('Combat activity not supported yet.');
-                        default:
-                            throw new Error('Idle activity not recognized.');
-                    }
-                })();
+        const now = Date.now();
 
-                return isMatch ? index : null;
-            })
-            .filter((index) => index !== null) as number[];
+        for (const userId of userIds) {
+            const activities = this.idleActivitiesQueueElementByUser[userId];
+
+            if (!activities || activities.length === 0) continue;
+
+            for (const element of activities) {
+                element.logoutTimestamp = now;
+            }
+
+            try {
+                await storeIdleActivityQueueElements(this.redisClient, userId, activities);
+                logger.info(`Saved ${activities.length} idle activities for user ${userId}`);
+            } catch (err) {
+                logger.error(`Failed to save idle activities for user ${userId}: ${err}`);
+            }
+
+            delete this.idleActivitiesQueueElementByUser[userId];
+        }
+
+        logger.info('✅ Finished saving all cached idle activities.');
     }
 
-    private removeElementFromListByIndex(
-        list: IdleActivityQueueElement[],
-        index: number,
-        logContext: string
-    ): void {
-        if (index !== -1) {
-            list.splice(index, 1);
-            logger.info(`Removed idle activity from ${logContext} at index ${index}`);
-        } else {
-            throw new Error(`Failed to remove idle activity from ${logContext}. Idle activity not found.`);
-        }
+    static startCustomInterval(
+        firstDelay: number,
+        repeatDelay: number,
+        callback: () => Promise<void>
+    ): TimerHandle {
+        const handle: TimerHandle = {
+            timeout: undefined,
+            interval: undefined
+        };
+
+        let isRunning = false;
+
+        const intervalFn = async (source: "first" | "interval") => {
+            if (isRunning) {
+                logger.debug(`[${source}] interval already running, skipping tick.`);
+                return;
+            }
+
+            isRunning = true;
+            logger.info(`[${source}] interval executing callback.`);
+
+            try {
+                await callback();
+                logger.info(`[${source}] callback finished.`);
+            } catch (err) {
+                logger.error(`[${source}] error in interval callback: ${err}`);
+            } finally {
+                isRunning = false;
+            }
+        };
+
+        logger.info(`[first] interval scheduled to start in ${firstDelay}ms and repeat every ${repeatDelay}ms.`);
+
+        handle.timeout = setTimeout(async () => {
+            await intervalFn("first");
+            handle.interval = setInterval(() => intervalFn("interval"), repeatDelay);
+            logger.info(`[interval] repeating interval started.`);
+        }, firstDelay);
+
+        return handle;
     }
 
-    // Pop idle activity queue element at index 0, run callback, set next timeout, and requeue idle activity
-    private async popAndProcessIdleActivityQueue() {
-        this.clearGlobalTimeout();
-
-        if (this.idleActivityQueue.length <= 0) {
-            throw new Error(`There are no idle activities in the queue`);
+    static clearCustomInterval(handle: TimerHandle): void {
+        if (handle.timeout) {
+            clearTimeout(handle.timeout);
+            logger.info(`Cleared timeout`);
         }
 
-        const activity = this.idleActivityQueue.shift();
-        await activity!.activityCompleteCallback().catch(err => {
-            logger.error(`Failed to run activity complete callback: ${err}`);
-        });
-
-        this.setNextTimeout();
-
-        activity!.nextTriggerTimestamp = activity!.durationS * 1000 + Date.now();
-        this.queueIdleActivityElement(activity!);
-    }
-
-    private async clearGlobalTimeout() {
-        if (this.globalTimeout !== null) {
-            clearTimeout(this.globalTimeout);
-            this.globalTimeout = null; // Reset the reference
-        }
-    }
-
-    // Start next timeout for index 0 of the queue
-    private async setNextTimeout() {
-        if (this.idleActivityQueue.length > 0) {
-            this.globalTimeout = setTimeout(async () => {
-                await this.popAndProcessIdleActivityQueue();
-            }, Math.max(0, this.idleActivityQueue[0].nextTriggerTimestamp - Date.now()));
-        }
-    }
-
-    private getPrimaryKeysFromIdleActivity(
-        activity: IdleActivityQueueElement
-    ): { primaryKey0: number; primaryKey1: number | undefined } {
-        let primaryKey0: number | undefined = undefined;
-        let primaryKey1: number | undefined = undefined;
-
-        switch (activity.activity) {
-            case 'crafting':
-                if ('equipmentId' in activity) {
-                    primaryKey0 = activity.equipmentId;
-                }
-                break;
-
-            case 'farming':
-                if ('itemId' in activity) {
-                    primaryKey0 = activity.itemId;
-                }
-                break;
-
-            case 'breeding':
-                if ('sireId' in activity && 'dameId' in activity) {
-                    primaryKey0 = activity.sireId;
-                    primaryKey1 = activity.dameId;
-                }
-                break;
-
-            case 'combat':
-                throw new Error('Not supported yet.');
-
-            default:
-                throw new Error(`Unrecognized activity type: ${activity.activity}`);
+        if (handle.interval) {
+            clearInterval(handle.interval);
+            logger.info(`Cleared interval`);
         }
 
-        if (!primaryKey0) throw new Error(`Primary key 1 not found for ${activity.activity} idle activity.`)
-
-        return { primaryKey0, primaryKey1 };
+        logger.info(`Cleared: timeout=${!!handle.timeout}, interval=${!!handle.interval}`);
     }
-
 }

@@ -12,7 +12,8 @@
             },
             "error_file": "./logs/pm2_error.log",
             "out_file": "./logs/pm2_out.log",
-            "merge_logs": true
+            "merge_logs": true,
+            "log_compress": false
         }
     ]
 }

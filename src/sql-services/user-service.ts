@@ -1,7 +1,9 @@
 import { logger } from '../utils/logger';
-import { calculateExpForNextLevel } from '../utils/helpers';
+import { calculateCombatPower, calculateExpForNextLevel, calculateHpExpGained } from '../utils/helpers';
 import { prisma } from './client';
-import { EquipmentType, User, Prisma } from '@prisma/client';
+import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
+import { ABILITY_POINTS_PER_LEVEL } from '../utils/config';
+import { getBaseMaxHpFromHpLvl, getBaseAtkSpdFromDex, getBaseAccFromDex, getBaseEvaFromDex, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseHpRegenRateFromHpLvl, getBaseHpRegenAmtFromHpLvl } from '../managers/idle-managers/combat/combat-helpers';
 
 // Interface for user input
 interface CreateUserInput {
@@ -9,8 +11,256 @@ interface CreateUserInput {
     username?: string;
 }
 
+export type FullUserData = Prisma.UserGetPayload<{
+    include: {
+        combat: true;
+        lastBattleEndTimestamp: true;
+        inventory: {
+            select: {
+                id: true;
+                itemId: true;
+                equipmentId: true;
+                quantity: true;
+                order: true;
+                createdAt: true;
+                item: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        hat: {
+            select: {
+                id: true;
+                equipmentId: true;
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                quantity: true;
+                order: true;
+                createdAt: true;
+            };
+        };
+        armour: {
+            select: {
+                id: true;
+                equipmentId: true;
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                quantity: true;
+                order: true;
+                createdAt: true;
+            };
+        };
+        weapon: {
+            select: {
+                id: true;
+                equipmentId: true;
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                quantity: true;
+                order: true;
+                createdAt: true;
+            };
+        };
+        shield: {
+            select: {
+                id: true;
+                equipmentId: true;
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                quantity: true;
+                order: true;
+                createdAt: true;
+            };
+        };
+        cape: {
+            select: {
+                id: true;
+                equipmentId: true;
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                quantity: true;
+                order: true;
+                createdAt: true;
+            };
+        };
+        necklace: {
+            select: {
+                id: true;
+                equipmentId: true;
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                quantity: true;
+                order: true;
+                createdAt: true;
+            };
+        };
+        equippedSlime: {
+            include: {
+                BodyDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                BodyHidden1: true;
+                BodyHidden2: true;
+                BodyHidden3: true;
+                PatternDominant:
+                {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                PatternHidden1: true;
+                PatternHidden2: true;
+                PatternHidden3: true;
+                PrimaryColourDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                PrimaryColourHidden1: true;
+                PrimaryColourHidden2: true;
+                PrimaryColourHidden3: true;
+                AccentDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                AccentHidden1: true;
+                AccentHidden2: true;
+                AccentHidden3: true;
+                DetailDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                DetailHidden1: true;
+                DetailHidden2: true;
+                DetailHidden3: true;
+                EyeColourDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                EyeColourHidden1: true;
+                EyeColourHidden2: true;
+                EyeColourHidden3: true;
+                EyeShapeDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                EyeShapeHidden1: true;
+                EyeShapeHidden2: true;
+                EyeShapeHidden3: true;
+                MouthDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                MouthHidden1: true;
+                MouthHidden2: true;
+                MouthHidden3: true;
+            };
+        };
+        slimes: {
+            include: {
+                BodyDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                BodyHidden1: true;
+                BodyHidden2: true;
+                BodyHidden3: true;
+                PatternDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                PatternHidden1: true;
+                PatternHidden2: true;
+                PatternHidden3: true;
+                PrimaryColourDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                PrimaryColourHidden1: true;
+                PrimaryColourHidden2: true;
+                PrimaryColourHidden3: true;
+                AccentDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                AccentHidden1: true;
+                AccentHidden2: true;
+                AccentHidden3: true;
+                DetailDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                DetailHidden1: true;
+                DetailHidden2: true;
+                DetailHidden3: true;
+                EyeColourDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                EyeColourHidden1: true;
+                EyeColourHidden2: true;
+                EyeColourHidden3: true;
+                EyeShapeDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                EyeShapeHidden1: true;
+                EyeShapeHidden2: true;
+                EyeShapeHidden3: true;
+                MouthDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                MouthHidden1: true;
+                MouthHidden2: true;
+                MouthHidden3: true;
+            };
+        };
+    };
+}>;
+
 // Function to create a user
-export async function createUser(input: CreateUserInput): Promise<User> {
+export async function createUser(input: CreateUserInput): Promise<FullUserData> {
     try {
         // Create a new user in the database
         const user = await prisma.user.create({
@@ -18,7 +268,7 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                 telegramId: input.telegramId,
                 username: input.username,
                 combat: {
-                    create: {}, // No need to specify defaults; Prisma handles this from the schema
+                    create: {}, // Always create combat for new user
                 },
             },
             include: {
@@ -26,7 +276,11 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                     select: {
                         id: true,
                         equipmentId: true,
-                        equipment: true,
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                         quantity: true,
                         order: true,
                         createdAt: true,
@@ -36,7 +290,11 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                     select: {
                         id: true,
                         equipmentId: true,
-                        equipment: true,
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                         quantity: true,
                         order: true,
                         createdAt: true,
@@ -46,7 +304,11 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                     select: {
                         id: true,
                         equipmentId: true,
-                        equipment: true,
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                         quantity: true,
                         order: true,
                         createdAt: true,
@@ -56,7 +318,11 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                     select: {
                         id: true,
                         equipmentId: true,
-                        equipment: true,
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                         quantity: true,
                         order: true,
                         createdAt: true,
@@ -66,7 +332,11 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                     select: {
                         id: true,
                         equipmentId: true,
-                        equipment: true,
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                         quantity: true,
                         order: true,
                         createdAt: true,
@@ -76,27 +346,11 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                     select: {
                         id: true,
                         equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                pet: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                spellbook: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                         quantity: true,
                         order: true,
                         createdAt: true,
@@ -110,81 +364,86 @@ export async function createUser(input: CreateUserInput): Promise<User> {
                         quantity: true,
                         order: true,
                         createdAt: true,
-                        item: true,       // Includes all fields of Item
-                        equipment: true,  // Includes all fields of Equipment
+                        item: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
+                        equipment: {
+                            include: {
+                                statEffect: true,
+                            },
+                        },
                     }
                 },
-                combat: true, // Include combat stats if needed
-                // Include equipped slime with full trait details
+                combat: true,
                 equippedSlime: {
                     include: {
-                        BodyDominant: true,
+                        BodyDominant: { include: { statEffect: true } },
                         BodyHidden1: true,
                         BodyHidden2: true,
                         BodyHidden3: true,
-                        PatternDominant: true,
+                        PatternDominant: { include: { statEffect: true } },
                         PatternHidden1: true,
                         PatternHidden2: true,
                         PatternHidden3: true,
-                        PrimaryColourDominant: true,
+                        PrimaryColourDominant: { include: { statEffect: true } },
                         PrimaryColourHidden1: true,
                         PrimaryColourHidden2: true,
                         PrimaryColourHidden3: true,
-                        AccentDominant: true,
+                        AccentDominant: { include: { statEffect: true } },
                         AccentHidden1: true,
                         AccentHidden2: true,
                         AccentHidden3: true,
-                        DetailDominant: true,
+                        DetailDominant: { include: { statEffect: true } },
                         DetailHidden1: true,
                         DetailHidden2: true,
                         DetailHidden3: true,
-                        EyeColourDominant: true,
+                        EyeColourDominant: { include: { statEffect: true } },
                         EyeColourHidden1: true,
                         EyeColourHidden2: true,
                         EyeColourHidden3: true,
-                        EyeShapeDominant: true,
+                        EyeShapeDominant: { include: { statEffect: true } },
                         EyeShapeHidden1: true,
                         EyeShapeHidden2: true,
                         EyeShapeHidden3: true,
-                        MouthDominant: true,
+                        MouthDominant: { include: { statEffect: true } },
                         MouthHidden1: true,
                         MouthHidden2: true,
                         MouthHidden3: true,
                     },
                 },
-
-                // Include all owned slimes with full trait details
                 slimes: {
                     include: {
-                        BodyDominant: true,
+                        BodyDominant: { include: { statEffect: true } },
                         BodyHidden1: true,
                         BodyHidden2: true,
                         BodyHidden3: true,
-                        PatternDominant: true,
+                        PatternDominant: { include: { statEffect: true } },
                         PatternHidden1: true,
                         PatternHidden2: true,
                         PatternHidden3: true,
-                        PrimaryColourDominant: true,
+                        PrimaryColourDominant: { include: { statEffect: true } },
                         PrimaryColourHidden1: true,
                         PrimaryColourHidden2: true,
                         PrimaryColourHidden3: true,
-                        AccentDominant: true,
+                        AccentDominant: { include: { statEffect: true } },
                         AccentHidden1: true,
                         AccentHidden2: true,
                         AccentHidden3: true,
-                        DetailDominant: true,
+                        DetailDominant: { include: { statEffect: true } },
                         DetailHidden1: true,
                         DetailHidden2: true,
                         DetailHidden3: true,
-                        EyeColourDominant: true,
+                        EyeColourDominant: { include: { statEffect: true } },
                         EyeColourHidden1: true,
                         EyeColourHidden2: true,
                         EyeColourHidden3: true,
-                        EyeShapeDominant: true,
+                        EyeShapeDominant: { include: { statEffect: true } },
                         EyeShapeHidden1: true,
                         EyeShapeHidden2: true,
                         EyeShapeHidden3: true,
-                        MouthDominant: true,
+                        MouthDominant: { include: { statEffect: true } },
                         MouthHidden1: true,
                         MouthHidden2: true,
                         MouthHidden3: true,
@@ -201,6 +460,7 @@ export async function createUser(input: CreateUserInput): Promise<User> {
     }
 }
 
+
 // Function to check if a user exists by their telegramId
 export async function userExists(telegramId: string): Promise<boolean> {
     try {
@@ -215,92 +475,13 @@ export async function userExists(telegramId: string): Promise<boolean> {
     }
 }
 
-// Function to retrieve a user by their telegramId
-export async function getUserData(telegramId: string): Promise<User | null> {
+
+export async function getUserData(telegramId: string): Promise<FullUserData | null> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
             include: {
-                hat: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                armour: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                weapon: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                shield: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                cape: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                necklace: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                pet: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                spellbook: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
+                combat: true,
                 inventory: {
                     select: {
                         id: true,
@@ -309,88 +490,179 @@ export async function getUserData(telegramId: string): Promise<User | null> {
                         quantity: true,
                         order: true,
                         createdAt: true,
-                        item: true,       // Includes all fields of Item
-                        equipment: true,  // Includes all fields of Equipment
+                        item: {
+                            include: {
+                                statEffect: true
+                            }
+                        },
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
                     }
                 },
-                combat: true, // Include combat stats if needed
-
-                // Include equipped slime with full trait details
+                hat: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                armour: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                weapon: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                shield: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                cape: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                necklace: {
+                    select: {
+                        id: true,
+                        equipmentId: true,
+                        quantity: true,
+                        order: true,
+                        createdAt: true,
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
                 equippedSlime: {
                     include: {
-                        BodyDominant: true,
+                        BodyDominant: { include: { statEffect: true } },
+                        PatternDominant: { include: { statEffect: true } },
+                        PrimaryColourDominant: { include: { statEffect: true } },
+                        AccentDominant: { include: { statEffect: true } },
+                        DetailDominant: { include: { statEffect: true } },
+                        EyeColourDominant: { include: { statEffect: true } },
+                        EyeShapeDominant: { include: { statEffect: true } },
+                        MouthDominant: { include: { statEffect: true } },
+
+                        // Hidden traits: keep them without statEffects
                         BodyHidden1: true,
                         BodyHidden2: true,
                         BodyHidden3: true,
-                        PatternDominant: true,
                         PatternHidden1: true,
                         PatternHidden2: true,
                         PatternHidden3: true,
-                        PrimaryColourDominant: true,
                         PrimaryColourHidden1: true,
                         PrimaryColourHidden2: true,
                         PrimaryColourHidden3: true,
-                        AccentDominant: true,
                         AccentHidden1: true,
                         AccentHidden2: true,
                         AccentHidden3: true,
-                        DetailDominant: true,
                         DetailHidden1: true,
                         DetailHidden2: true,
                         DetailHidden3: true,
-                        EyeColourDominant: true,
                         EyeColourHidden1: true,
                         EyeColourHidden2: true,
                         EyeColourHidden3: true,
-                        EyeShapeDominant: true,
                         EyeShapeHidden1: true,
                         EyeShapeHidden2: true,
                         EyeShapeHidden3: true,
-                        MouthDominant: true,
                         MouthHidden1: true,
                         MouthHidden2: true,
-                        MouthHidden3: true,
-                    },
+                        MouthHidden3: true
+                    }
                 },
-
-                // Include all owned slimes with full trait details
                 slimes: {
                     include: {
-                        BodyDominant: true,
+                        BodyDominant: { include: { statEffect: true } },
+                        PatternDominant: { include: { statEffect: true } },
+                        PrimaryColourDominant: { include: { statEffect: true } },
+                        AccentDominant: { include: { statEffect: true } },
+                        DetailDominant: { include: { statEffect: true } },
+                        EyeColourDominant: { include: { statEffect: true } },
+                        EyeShapeDominant: { include: { statEffect: true } },
+                        MouthDominant: { include: { statEffect: true } },
+
+                        // Hidden traits excluded from statEffect
                         BodyHidden1: true,
                         BodyHidden2: true,
                         BodyHidden3: true,
-                        PatternDominant: true,
                         PatternHidden1: true,
                         PatternHidden2: true,
                         PatternHidden3: true,
-                        PrimaryColourDominant: true,
                         PrimaryColourHidden1: true,
                         PrimaryColourHidden2: true,
                         PrimaryColourHidden3: true,
-                        AccentDominant: true,
                         AccentHidden1: true,
                         AccentHidden2: true,
                         AccentHidden3: true,
-                        DetailDominant: true,
                         DetailHidden1: true,
                         DetailHidden2: true,
                         DetailHidden3: true,
-                        EyeColourDominant: true,
                         EyeColourHidden1: true,
                         EyeColourHidden2: true,
                         EyeColourHidden3: true,
-                        EyeShapeDominant: true,
                         EyeShapeHidden1: true,
                         EyeShapeHidden2: true,
                         EyeShapeHidden3: true,
-                        MouthDominant: true,
                         MouthHidden1: true,
                         MouthHidden2: true,
-                        MouthHidden3: true,
-                    },
-                },
-            },
+                        MouthHidden3: true
+                    }
+                }
+            }
         });
 
         if (user) {
@@ -406,6 +678,235 @@ export async function getUserData(telegramId: string): Promise<User | null> {
     }
 }
 
+export async function getSimpleUserData(
+    telegramId: string
+): Promise<Prisma.UserGetPayload<{ include: { combat: true } }> | null> {
+    return await prisma.user.findUnique({
+        where: { telegramId },
+        include: {
+            combat: true,
+        },
+    });
+}
+
+export async function getBaseUserData(
+    telegramId: string
+): Promise<User | null> {
+    return await prisma.user.findUnique({
+        where: { telegramId }
+    });
+}
+
+export async function updateUserPartial(
+    telegramId: string,
+    data: Prisma.UserUpdateInput
+): Promise<User> {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { telegramId },
+            data,
+        });
+
+        return updatedUser;
+    } catch (err) {
+        throw new Error(`Failed to update user ${telegramId}: ${err}`);
+    }
+}
+
+export type UserDataEquipped = Prisma.UserGetPayload<{
+    include: {
+        combat: true;
+        hat: {
+            select: {
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        armour: {
+            select: {
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        weapon: {
+            select: {
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        shield: {
+            select: {
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        cape: {
+            select: {
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        necklace: {
+            select: {
+                equipment: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+        equippedSlime: {
+            include: {
+                BodyDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                PatternDominant:
+                {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                PrimaryColourDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                AccentDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                DetailDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                EyeColourDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                EyeShapeDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+                MouthDominant: {
+                    include: {
+                        statEffect: true;
+                    }
+                };
+            };
+        };
+    };
+}>;
+
+export async function getUserEquippedData(
+    telegramId: string
+): Promise<UserDataEquipped | null> {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { telegramId },
+            include: {
+                combat: true,
+                hat: {
+                    select: {
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                armour: {
+                    select: {
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                weapon: {
+                    select: {
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                shield: {
+                    select: {
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                cape: {
+                    select: {
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                necklace: {
+                    select: {
+                        equipment: {
+                            include: {
+                                statEffect: true
+                            }
+                        }
+                    }
+                },
+                equippedSlime: {
+                    include: {
+                        BodyDominant: { include: { statEffect: true } },
+                        PatternDominant: { include: { statEffect: true } },
+                        PrimaryColourDominant: { include: { statEffect: true } },
+                        AccentDominant: { include: { statEffect: true } },
+                        DetailDominant: { include: { statEffect: true } },
+                        EyeColourDominant: { include: { statEffect: true } },
+                        EyeShapeDominant: { include: { statEffect: true } },
+                        MouthDominant: { include: { statEffect: true } }
+                    }
+                }
+            }
+        });
+
+        if (!user) {
+            logger.warn(`No equipped user found with telegramId: ${telegramId}`);
+            return null;
+        }
+
+        return user;
+    } catch (error) {
+        logger.error(`Failed to get equipped user data for ${telegramId}: ${error}`);
+        throw error;
+    }
+}
+
 export async function getNextInventoryOrder(telegramId: string): Promise<number> {
     const maxOrder = await prisma.inventory.aggregate({
         where: { userId: telegramId },
@@ -414,366 +915,295 @@ export async function getNextInventoryOrder(telegramId: string): Promise<number>
     return (maxOrder._max.order ?? -1) + 1; // Start from 0 if no records exist
 }
 
-// Function to update a user's gold balance
-export async function updateUserGoldBalance(telegramId: string, increment: number): Promise<number> {
+// Function to update a user's gold balance (prevents negative values)
+export async function incrementUserGoldBalance(telegramId: string, increment: number): Promise<number> {
     try {
-        const user = await prisma.user.update({
+        // Fetch the user's current balance
+        const user = await prisma.user.findUnique({
+            where: { telegramId },
+            select: { goldBalance: true }
+        });
+
+        if (!user) {
+            throw new Error(`User with Telegram ID ${telegramId} not found.`);
+        }
+
+        const newBalance = user.goldBalance + increment;
+
+        // Ensure balance does not go negative
+        if (newBalance < 0) {
+            throw new Error(`Insufficient gold balance (Balance: ${user.goldBalance} < ${increment})`);
+        }
+
+        // Update the user's balance
+        const updatedUser = await prisma.user.update({
             where: { telegramId },
             data: {
-                goldBalance: {
-                    increment: increment // Use 'increment' to adjust the balance by a positive or negative amount
-                }
+                goldBalance: newBalance
             }
         });
-        logger.info(`User gold balance updated successfully: new balance is ${user.goldBalance}`);
-        return user.goldBalance;
+
+        logger.info(`User gold balance updated successfully: new balance is ${updatedUser.goldBalance}`);
+        return updatedUser.goldBalance;
     } catch (error) {
         logger.error(`Error updating user's gold balance: ${error}`);
         throw error;
     }
 }
 
-interface IncrementMaxHpExpResponse {
-    hpLevelUp: boolean,
-    hpLevel: number,
-    hpExp: number,
-    expToNextHpLevel: number
+interface IncrementExpAndHpExpResponse {
+    simpleUser: Partial<FullUserData> | null
+
+    levelUp: boolean;
+    level: number;
+    exp: number;
+    expToNextLevel: number;
+    outstandingSkillPoints: number;
+
+    hpLevelUp: boolean;
+    hpLevel: number;
+    hpExp: number;
+    expToNextHpLevel: number;
 }
 
-// Function to increment experience for maxHp and check for maxHp level-up, return true if level up
-export async function incrementMaxHpExp(telegramId: string, hpExpToAdd: number): Promise<IncrementMaxHpExpResponse> {
+export async function incrementExpAndHpExpAndCheckLevelUp(
+    telegramId: string,
+    expToAdd: number
+): Promise<IncrementExpAndHpExpResponse> {
     try {
         const user = await prisma.user.findUnique({
             where: { telegramId },
-            select: {
-                hpLevel: true,
-                expToNextHpLevel: true,
-                expHp: true
-            }
+            include: { combat: true }
         });
 
-        if (!user) {
-            logger.info(`No user found with telegramId: ${telegramId}`);
-            throw new Error(`Invalid telegram ID`);
+        if (!user) throw new Error("User not found.");
+        if (!user.combat) throw new Error("User combat data not found.");
+
+        // Level Logic
+        let newExp = user.exp + expToAdd;
+        let currLevel = user.level;
+        let outstandingSkillPoints = user.outstandingSkillPoints;
+        let expToNextLevel = user.expToNextLevel;
+        let levelUp = false;
+
+        while (newExp >= calculateExpForNextLevel(currLevel + 1)) {
+            newExp -= calculateExpForNextLevel(currLevel + 1);
+            currLevel++;
+            outstandingSkillPoints += ABILITY_POINTS_PER_LEVEL;
+            levelUp = true;
         }
 
+        expToNextLevel = calculateExpForNextLevel(currLevel + 1); // only update once at end
+
+        // HP Exp Logic
+        let newHpExp = user.expHp + calculateHpExpGained(expToAdd);
+        let currHpLevel = user.hpLevel;
+        let expToNextHpLevel = user.expToNextHpLevel;
         let hpLevelUp = false;
-        let newHpExp = user.expHp + hpExpToAdd;
-        let newHpLevel = user.hpLevel;
 
-        // Check if the user's hp experience exceeds the threshold for maxHp level-up
-        while (newHpExp >= user.expToNextHpLevel) {
+        while (newHpExp >= calculateExpForNextLevel(currHpLevel + 1)) {
+            newHpExp -= calculateExpForNextLevel(currHpLevel + 1);
+            currHpLevel++;
             hpLevelUp = true;
-            newHpExp -= user.expToNextHpLevel; // Reduce expToNextHpLevel from the accumulated hp exp
-            newHpLevel++; // Increment maxHp by 10 (10 HP per level)
-            user.expToNextHpLevel = calculateExpForNextLevel(newHpLevel + 1); // Update exp required for next hp level
         }
 
-        // Update the user's maxHp and expToNextHpLevel
+        expToNextHpLevel = calculateExpForNextLevel(currHpLevel + 1); // update after loop
+
+        // Update database
         await prisma.user.update({
             where: { telegramId },
             data: {
-                hpLevel: newHpLevel,
-                expToNextHpLevel: user.expToNextHpLevel,
-            }
-        });
-
-        logger.info(`User's hpLevel updated successfully to ${newHpLevel}. Remaining expToNextHpLevel: ${user.expToNextHpLevel}`);
-
-        return {
-            hpLevelUp: hpLevelUp,
-            hpLevel: newHpLevel,
-            hpExp: newHpExp,
-            expToNextHpLevel: user.expToNextHpLevel
-        };
-    } catch (error) {
-        logger.error(`Error incrementing maxHp experience: ${error}`);
-        throw error;
-    }
-}
-
-interface IncrementUserExpResponse {
-    exp: number;
-}
-
-// Function to increment a user's experience points
-export async function incrementUserExp(telegramId: string, expToAdd: number): Promise<IncrementUserExpResponse> {
-    try {
-        let user = await prisma.user.update({
-            where: { telegramId },
-            data: {
-                exp: {
-                    increment: expToAdd
-                }
-            },
-            include: { combat: true }
-        });
-
-        logger.info(`Experience added successfully. New experience: ${user.exp}`);
-
-        return {
-            exp: user.exp,
-        };
-    } catch (error) {
-        logger.error(`Error incrementing user's experience: ${error}`);
-        throw error;
-    }
-}
-
-interface CheckAndHandleLevelUpUserResponse {
-    exp: number,
-    expToNextLevel: number,
-    outstandingSkillPoints: number,
-    hp: number
-}
-
-// Function to handle the leveling up process if necesssary
-export async function checkAndHandleLevelUp(telegramId: string): Promise<CheckAndHandleLevelUpUserResponse | null> {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
-            include: { combat: true }
-        });
-
-        if (!user) {
-            throw new Error("User not found.");
-        }
-        if (!user.combat) {
-            throw new Error("User combat data not found.");
-        }
-
-        // Check if the user has enough experience to level up
-        if (user.exp >= user.expToNextLevel) {
-            const newLevel = user.level + 1;
-            const expToNextLevel = calculateExpForNextLevel(newLevel + 1);
-            const newExp = user.exp - user.expToNextLevel;
-            const regenHp = user.combat.hpLevel * 10; // Regen HP to 10 times the hpLevel
-
-            // Update user data in the database
-            await prisma.user.update({
-                where: { telegramId },
-                data: {
-                    level: newLevel,
-                    exp: newExp,
-                    expToNextLevel: expToNextLevel,
-                    combat: {
-                        update: {
-                            hp: regenHp
-                        }
-                    }
-                }
-            });
-
-            return {
+                level: currLevel,
                 exp: newExp,
                 expToNextLevel,
-                outstandingSkillPoints: user.outstandingSkillPoints,
-                hp: regenHp
-            };
-        } else {
-            // Return null if the user does not have enough exp to level up
-            return null;
-        }
-    } catch (error) {
-        logger.error(`Error in checkAndHandleLevelUp: ${error}`);
-        throw error;
-    }
-}
-
-interface UseSPToUpgradeSkillResponse {
-    outstandingSkillPoints: number;
-    skillUpdated: 'str' | 'def' | 'dex' | 'magic' | 'hp' | 'maxHp';
-    incrementAmount: number;
-}
-
-// Function to use skill points to increase skill
-export async function useSkillPointsToUpgradeSkill(telegramId: string, pointsToUse: number, skill: 'str' | 'def' | 'dex' | 'magic' | 'hp' | 'maxHp'): Promise<UseSPToUpgradeSkillResponse> {
-    try {
-        // Fetch user data with all skill fields to ensure TypeScript recognizes the properties correctly
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
-            select: {
-                outstandingSkillPoints: true,
-                str: true,  // Select all possible skill fields
-                def: true,
-                dex: true,
-                magic: true,
-                hpLevel: true
+                outstandingSkillPoints,
+                hpLevel: currHpLevel,
+                expHp: newHpExp,
+                expToNextHpLevel,
             }
         });
 
-        if (!user) {
-            throw new Error(`Unable to find user.`);
+        let hpLevelUpdatedUser;
+        if (hpLevelUp) {
+            hpLevelUpdatedUser = await recalculateAndUpdateUserBaseStats(telegramId);
         }
 
-        // Check if the user has enough outstanding skill points
-        if (user.outstandingSkillPoints >= pointsToUse) {
-            // Update the specific skill and decrement the outstanding skill points
-            await prisma.user.update({
-                where: { telegramId },
-                data: {
-                    [skill]: {
-                        increment: pointsToUse
-                    },
-                    outstandingSkillPoints: {
-                        decrement: pointsToUse
-                    }
-                }
-            });
-            logger.info(`Skill ${skill} incremented by ${pointsToUse}. Remaining outstanding skill points: ${user.outstandingSkillPoints - pointsToUse}`);
+        logger.info(
+            `User ${telegramId} → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
+        );
 
-            return {
-                outstandingSkillPoints: user.outstandingSkillPoints - pointsToUse,
-                skillUpdated: skill,
-                incrementAmount: pointsToUse
-            }
-        } else {
-            throw new Error(`Not enough skill points.`);
-        }
+        return {
+            simpleUser: (hpLevelUp && hpLevelUpdatedUser) ? hpLevelUpdatedUser : null,
+            levelUp,
+            level: currLevel,
+            exp: newExp,
+            expToNextLevel,
+            outstandingSkillPoints,
+            hpLevelUp,
+            hpLevel: currHpLevel,
+            hpExp: newHpExp,
+            expToNextHpLevel
+        };
     } catch (error) {
-        logger.error(`Error using skill points to upgrade ${skill}: ${error}`);
+        logger.error(`Error in incrementExpAndHpExpAndCheckLevelUp: ${error}`);
         throw error;
     }
+}
+
+export interface SkillUpgradeInput {
+    str?: number;
+    def?: number;
+    dex?: number;
+    luk?: number;
+    magic?: number;
+    hpLevel?: number;
+};
+
+export interface SkillUpgradeInput {
+    str?: number;
+    def?: number;
+    dex?: number;
+    luk?: number;
+    magic?: number;
+    hpLevel?: number;
+}
+
+export async function applySkillUpgradesOnly(
+    userId: string,
+    upgrades: SkillUpgradeInput,
+) {
+    const entries = Object.entries(upgrades).filter(([_, v]) => v !== undefined);
+
+    if (entries.length === 0) {
+        throw new Error(`No skill upgrades provided for user ${userId}`);
+    }
+
+    let totalPointsNeeded = 0;
+    const updateData: Record<string, { increment: number }> = {};
+
+    const validKeys = ["str", "def", "dex", "luk", "magic", "hpLevel"] as const;
+
+    let isHpUpgrade = false;
+    let hpLevelToAdd = 0;
+
+    for (const [key, value] of entries) {
+        if (!validKeys.includes(key as any)) {
+            throw new Error(`Invalid skill key: "${key}"`);
+        }
+
+        if (typeof value !== "number" || value <= 0 || !Number.isInteger(value)) {
+            throw new Error(
+                `Invalid skill upgrade value for "${key}": must be a positive integer`
+            );
+        }
+
+        updateData[key] = { increment: value };
+        totalPointsNeeded += value;
+
+        if (key === "hpLevel") {
+            isHpUpgrade = true;
+            hpLevelToAdd = value;
+        }
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { telegramId: userId },
+        select: {
+            outstandingSkillPoints: true,
+            hpLevel: true,
+        },
+    });
+
+    if (!user) {
+        throw new Error(`User not found: ${userId}`);
+    }
+
+    if (user.outstandingSkillPoints < totalPointsNeeded) {
+        throw new Error(
+            `User ${userId} has ${user.outstandingSkillPoints} skill points, but tried to use ${totalPointsNeeded}`
+        );
+    }
+
+    const additionalHpFields = isHpUpgrade
+        ? {
+            expHp: 0,
+            expToNextHpLevel: calculateExpForNextLevel(user.hpLevel + hpLevelToAdd),
+        }
+        : {};
+
+    await prisma.user.update({
+        where: { telegramId: userId },
+        data: {
+            ...updateData,
+            ...additionalHpFields,
+            outstandingSkillPoints: { decrement: totalPointsNeeded },
+        },
+    });
+
+    logger.info(
+        `✅ Applied raw skill upgrades to user ${userId} — used ${totalPointsNeeded} points`
+    );
+
+    return { totalPointsUsed: totalPointsNeeded };
 }
 
 /* USER SPECIFIC EQUIPMENT FUNCTIONS */
 
-// Function to get equipped item from user by equipment type
+const EQUIPPED_SELECT = {
+    id: true,
+    equipmentId: true,
+    equipment: true,
+    quantity: true,
+    order: true,
+    createdAt: true,
+} as const;
+
+export type EquippedInventory = Prisma.InventoryGetPayload<{
+    include: { equipment: true };
+}>;
+
+function buildUserIncludeObject<T extends EquipmentType>(type: T) {
+    return {
+        [type]: {
+            select: EQUIPPED_SELECT,
+        },
+    } as const;
+}
+
 export async function getEquippedByEquipmentType(
     telegramId: string,
     equipmentType: EquipmentType
-): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }> | null> {
+): Promise<EquippedInventory | null> {
     try {
-        // Fetch the user's equipped item for the given equipment type
+        const include = buildUserIncludeObject(equipmentType);
+
         const user = await prisma.user.findUnique({
             where: { telegramId },
-            include: {
-                hat: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                armour: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                weapon: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                shield: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                cape: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                necklace: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                pet: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-                spellbook: {
-                    select: {
-                        id: true,
-                        equipmentId: true,
-                        equipment: true,
-                        quantity: true,
-                        order: true,
-                        createdAt: true,
-                    }
-                },
-            },
+            include,
         });
 
         if (!user) {
             throw new Error(`User with telegramId ${telegramId} not found.`);
         }
 
-        // Dynamically extract the equipped item based on the equipment type
-        const equippedInventory = user[equipmentType] as Prisma.InventoryGetPayload<{
-            include: {
-                id: true,
-                equipmentId: true,
-                equipment: true,
-                quantity: true,
-                order: true,
-                createdAt: true,
-            }
-        }> | null;
-
-        return equippedInventory;
+        const equipped = user[equipmentType];
+        if (equipped && "equipment" in equipped) {
+            return equipped as unknown as EquippedInventory;
+        }
+        return null;
     } catch (error) {
-        console.error(`Error fetching equipped item for user ${telegramId}: ${error}`);
+        console.error(`Error fetching equipped item for user ${telegramId}:`, error);
         throw error;
     }
 }
 
-// Function to equip equipment by inventory ID
+// Function to equip equipment
 export async function equipEquipmentForUser(
     telegramId: string,
-    inventoryId: number
-): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }>> {
+    equipmentInventory: Prisma.InventoryGetPayload<{ include: { equipment: true } }>
+): Promise<UserDataEquipped> {
     try {
-        // Fetch the equipment from the user's inventory
-        const equipmentInventory = await prisma.inventory.findUnique({
-            where: { id: inventoryId },
-            include: { equipment: true }, // Include equipment details
-        });
-
-        // Check if the equipment exists and belongs to the user
-        if (!equipmentInventory || equipmentInventory.userId.toString() !== telegramId) {
-            throw new Error(`Inventory ID ${inventoryId} not found in inventory for user ${telegramId}`);
-        }
-
-        if (!equipmentInventory.equipment) {
-            throw new Error(`Inventory object is not an equipment`);
-        }
+        if (!equipmentInventory.equipment) throw new Error(`Equip equipment failed. Input inventory element is not an equipment.`)
 
         const equipmentType = equipmentInventory.equipment.type;
         const equipField = `${equipmentType}InventoryId`; // Dynamically construct the inventory ID field name
@@ -782,21 +1212,24 @@ export async function equipEquipmentForUser(
         const updatedUser = await prisma.user.update({
             where: { telegramId },
             data: {
-                [equipField]: inventoryId, // Update the specific inventory field for the equipment type
+                [equipField]: equipmentInventory.id,
             },
             include: {
                 [equipmentType]: { include: { equipment: true } }, // Include the updated relation details
             },
         });
 
+        if (equipmentInventory.equipment.requiredLvl > updatedUser.level) throw new Error(`User does not meet level requirements`);
+
         logger.info(
             `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`
         );
 
-        return equipmentInventory; // Return the equipment inventory details
+        return await recalculateAndUpdateUserStats(telegramId);
+
     } catch (error) {
         logger.error(
-            `Failed to equip equipment ${inventoryId} for user ${telegramId}: ${error}`
+            `Failed to equip equipment ${JSON.stringify(equipmentInventory, null, 2)} for user ${telegramId}: ${error}`
         );
         throw error;
     }
@@ -806,7 +1239,7 @@ export async function equipEquipmentForUser(
 export async function unequipEquipmentForUser(
     telegramId: string,
     equipmentType: EquipmentType
-): Promise<boolean> {
+): Promise<UserDataEquipped | undefined> {
     try {
         // Dynamically construct the inventory ID field name
         const equipField = `${equipmentType}InventoryId`;
@@ -826,11 +1259,11 @@ export async function unequipEquipmentForUser(
             logger.info(
                 `User ${telegramId} already has nothing equipped in the ${equipmentType} slot.`
             );
-            return false; // No update needed
+            return;
         }
 
         // Perform the unequip operation
-        const updatedUser = await prisma.user.update({
+        await prisma.user.update({
             where: { telegramId },
             data: {
                 [equipField]: null, // Clear the field for the equipment type
@@ -844,7 +1277,7 @@ export async function unequipEquipmentForUser(
             `User ${telegramId} unequipped equipment of type ${equipmentType}.`
         );
 
-        return !!updatedUser;
+        return await recalculateAndUpdateUserStats(telegramId);
     } catch (error) {
         logger.error(
             `Failed to unequip equipment of type ${equipmentType} for user ${telegramId}: ${error}`
@@ -855,26 +1288,26 @@ export async function unequipEquipmentForUser(
 
 /* USER SPECIFIC FARMING FUNCTIONS */
 
-export async function getUserFarmingLevel(telegramId: number): Promise<number> {
-  try {
-    // Fetch the user farming level
-    const user = await prisma.user.findUnique({
-      where: { telegramId: telegramId.toString() },
-      select: { farmingLevel: true }, // Select only the farming level
-    });
+export async function getUserFarmingLevel(telegramId: string): Promise<number> {
+    try {
+        // Fetch the user farming level
+        const user = await prisma.user.findUnique({
+            where: { telegramId: telegramId },
+            select: { farmingLevel: true }, // Select only the farming level
+        });
 
-    if (!user) {
-      throw new Error(`User with telegramId ${telegramId} not found.`);
+        if (!user) {
+            throw new Error(`User with telegramId ${telegramId} not found.`);
+        }
+
+        return user.farmingLevel;
+    } catch (error) {
+        console.error(`Error fetching user farming level: ${error}`);
+        throw error; // Re-throw the error for further handling
     }
-
-    return user.farmingLevel;
-  } catch (error) {
-    console.error(`Error fetching user farming level: ${error}`);
-    throw error; // Re-throw the error for further handling
-  }
 }
 
-export async function addFarmingExp(userId: number, expToAdd: number) {
+export async function addFarmingExp(userId: string, expToAdd: number) {
     const user = await prisma.user.findUnique({ where: { telegramId: userId.toString() } });
 
     if (!user) {
@@ -911,26 +1344,26 @@ export async function addFarmingExp(userId: number, expToAdd: number) {
 
 /* USER SPECIFIC CRAFTING FUNCTIONS */
 
-export async function getUserCraftingLevel(telegramId: number): Promise<number> {
+export async function getUserCraftingLevel(telegramId: string): Promise<number> {
     try {
-      // Fetch the user farming level
-      const user = await prisma.user.findUnique({
-        where: { telegramId: telegramId.toString() },
-        select: { craftingLevel: true }, // Select only the farming level
-      });
-  
-      if (!user) {
-        throw new Error(`User with telegramId ${telegramId} not found.`);
-      }
-  
-      return user.craftingLevel;
-    } catch (error) {
-      console.error(`Error fetching user crafting level: ${error}`);
-      throw error; // Re-throw the error for further handling
-    }
-  }
+        // Fetch the user farming level
+        const user = await prisma.user.findUnique({
+            where: { telegramId: telegramId },
+            select: { craftingLevel: true }, // Select only the farming level
+        });
 
-export async function addCraftingExp(userId: number, expToAdd: number) {
+        if (!user) {
+            throw new Error(`User with telegramId ${telegramId} not found.`);
+        }
+
+        return user.craftingLevel;
+    } catch (error) {
+        console.error(`Error fetching user crafting level: ${error}`);
+        throw error; // Re-throw the error for further handling
+    }
+}
+
+export async function addCraftingExp(userId: string, expToAdd: number) {
     const user = await prisma.user.findUnique({ where: { telegramId: userId.toString() } });
 
     if (!user) {
@@ -963,3 +1396,314 @@ export async function addCraftingExp(userId: number, expToAdd: number) {
 
     return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
 }
+
+export async function recalculateAndUpdateUserStats(
+    telegramId: string
+): Promise<UserDataEquipped> {
+    const user = await getUserEquippedData(telegramId);
+
+    if (!user || !user.combat) throw new Error(`User or combat not found for ${telegramId}`);
+
+    logger.info(`combat before recalculate: ${JSON.stringify(user.combat, null, 2)}`);
+
+    const userCombat: Combat = {
+        ...user.combat,
+        hp: user.maxHp,
+        maxHp: user.maxHp,
+        atkSpd: user.atkSpd,
+        acc: user.acc,
+        eva: user.eva,
+        maxMeleeDmg: user.maxMeleeDmg,
+        maxRangedDmg: user.maxRangedDmg,
+        maxMagicDmg: user.maxMagicDmg,
+        critChance: user.critChance,
+        critMultiplier: user.critMultiplier,
+        dmgReduction: user.dmgReduction,
+        magicDmgReduction: user.magicDmgReduction,
+        hpRegenRate: user.hpRegenRate,
+        hpRegenAmount: user.hpRegenAmount,
+
+        // Leave existing multipliers and reinforcements as-is or reset if needed
+        meleeFactor: 0,
+        rangeFactor: 0,
+        magicFactor: 0,
+        reinforceAir: 0,
+        reinforceWater: 0,
+        reinforceEarth: 0,
+        reinforceFire: 0,
+    };
+
+    const statEffects: StatEffect[] = [];
+
+    const equippedItems = [
+        user.hat,
+        user.armour,
+        user.weapon,
+        user.shield,
+        user.cape,
+        user.necklace,
+    ];
+
+    let updatedAttackType = false;
+
+    for (const item of equippedItems) {
+        const effect = item?.equipment?.statEffect;
+        if (effect) {
+            statEffects.push(effect);
+        } else if (item?.equipment) {
+            logger.error(`Equipment "${item.equipment.name}" (ID: ${item.equipment.id}) has no statEffect.`);
+        }
+
+        if (item?.equipment?.attackType && !updatedAttackType) {
+            userCombat.attackType = item.equipment.attackType;
+            updatedAttackType = true;
+        }
+    }
+
+    if (!updatedAttackType) {
+        userCombat.attackType = 'Melee';
+    }
+
+    // Add only Dominant traits
+    if (user.equippedSlime) {
+        const {
+            BodyDominant,
+            PatternDominant,
+            PrimaryColourDominant,
+            AccentDominant,
+            DetailDominant,
+            EyeColourDominant,
+            EyeShapeDominant,
+            MouthDominant,
+        } = user.equippedSlime;
+
+        const dominantTraits = [
+            BodyDominant,
+            PatternDominant,
+            PrimaryColourDominant,
+            AccentDominant,
+            DetailDominant,
+            EyeColourDominant,
+            EyeShapeDominant,
+            MouthDominant,
+        ];
+
+        for (const trait of dominantTraits) {
+            if (trait?.statEffect) statEffects.push(trait.statEffect);
+        }
+    }
+
+    const delta = calculateNetStatDelta(user, statEffects);
+    applyDelta(user, userCombat, delta);
+
+    const cp = calculateCombatPower(userCombat);
+    userCombat.cp = cp;
+
+    await prisma.$transaction([
+        prisma.user.update({
+            where: { telegramId },
+            data: {
+                doubleResourceOdds: user.doubleResourceOdds,
+                skillIntervalReductionMultiplier: user.skillIntervalReductionMultiplier,
+            },
+        }),
+        prisma.combat.update({
+            where: { id: userCombat.id },
+            data: userCombat,
+        }),
+    ]);
+
+    logger.info(`Stats updated for user ${telegramId}`);
+
+    logger.info(`combat after recalculate: ${JSON.stringify(userCombat, null, 2)}`);
+
+    return {
+        ...user,
+        combat: userCombat,
+    };
+
+    // === Local Helpers ===
+
+    function calculateNetStatDelta(user: User, effects: StatEffect[]) {
+        const base = {
+            maxHp: user.maxHp, atkSpd: user.atkSpd, acc: user.acc, eva: user.eva,
+            maxMeleeDmg: user.maxMeleeDmg, maxRangedDmg: user.maxRangedDmg, maxMagicDmg: user.maxMagicDmg,
+            critChance: user.critChance, critMultiplier: user.critMultiplier,
+            dmgReduction: user.dmgReduction, magicDmgReduction: user.magicDmgReduction,
+            hpRegenRate: user.hpRegenRate, hpRegenAmount: user.hpRegenAmount,
+        };
+
+        const result = {
+            maxHp: 0, atkSpd: 0, acc: 0, eva: 0, maxMeleeDmg: 0, maxRangedDmg: 0, maxMagicDmg: 0,
+            critChance: 0, critMultiplier: 0, dmgReduction: 0, magicDmgReduction: 0,
+            hpRegenRate: 0, hpRegenAmount: 0, meleeFactor: 0, rangeFactor: 0, magicFactor: 0,
+            reinforceAir: 0, reinforceWater: 0, reinforceEarth: 0, reinforceFire: 0,
+            doubleResourceOdds: 0, skillIntervalReductionMultiplier: 0,
+        };
+
+        const additive = {} as Record<keyof typeof base, number>;
+        const multiplicative = {} as Record<keyof typeof base, number[]>;
+
+        // Init base keys
+        for (const key of Object.keys(base) as (keyof typeof base)[]) {
+            additive[key] = 0;
+            multiplicative[key] = [];
+        }
+
+        const apply = (mod: number | null | undefined, effect: 'add' | 'mul' | null | undefined, key: keyof typeof base) => {
+            if (mod == null || effect == null) return;
+            if (effect === 'add') additive[key] += mod;
+            else multiplicative[key].push(mod); // expects full multiplier value like 0.9 or 1.1
+        };
+
+        for (const e of effects) {
+            apply(e.maxHpMod, e.maxHpEffect, 'maxHp');
+            apply(e.atkSpdMod, e.atkSpdEffect, 'atkSpd');
+            apply(e.accMod, e.accEffect, 'acc');
+            apply(e.evaMod, e.evaEffect, 'eva');
+            apply(e.maxMeleeDmgMod, e.maxMeleeDmgEffect, 'maxMeleeDmg');
+            apply(e.maxRangedDmgMod, e.maxRangedDmgEffect, 'maxRangedDmg');
+            apply(e.maxMagicDmgMod, e.maxMagicDmgEffect, 'maxMagicDmg');
+            apply(e.critChanceMod, e.critChanceEffect, 'critChance');
+            apply(e.critMultiplierMod, e.critMultiplierEffect, 'critMultiplier');
+            apply(e.dmgReductionMod, e.dmgReductionEffect, 'dmgReduction');
+            apply(e.magicDmgReductionMod, e.magicDmgReductionEffect, 'magicDmgReduction');
+            apply(e.hpRegenRateMod, e.hpRegenRateEffect, 'hpRegenRate');
+            apply(e.hpRegenAmountMod, e.hpRegenAmountEffect, 'hpRegenAmount');
+
+            // Simple additive values
+            result.meleeFactor += e.meleeFactor ?? 0;
+            result.rangeFactor += e.rangeFactor ?? 0;
+            result.magicFactor += e.magicFactor ?? 0;
+            result.reinforceAir += e.reinforceAir ?? 0;
+            result.reinforceWater += e.reinforceWater ?? 0;
+            result.reinforceEarth += e.reinforceEarth ?? 0;
+            result.reinforceFire += e.reinforceFire ?? 0;
+
+            result.doubleResourceOdds += e.doubleResourceOddsMod ?? 0;
+            result.skillIntervalReductionMultiplier += e.skillIntervalReductionMultiplierMod ?? 0;
+        }
+
+        // Apply all stats with additive then multiplicative chaining
+        for (const key of Object.keys(base) as (keyof typeof base)[]) {
+            const baseVal = base[key];
+            const add = additive[key];
+            const mulChain = multiplicative[key].reduce((acc, val) => acc * val, 1);
+            result[key] = (baseVal + add) * mulChain - baseVal;
+        }
+
+        return result;
+    }
+
+    function applyDelta(user: User, combat: Combat, delta: ReturnType<typeof calculateNetStatDelta>) {
+        user.doubleResourceOdds += delta.doubleResourceOdds;
+        user.skillIntervalReductionMultiplier += delta.skillIntervalReductionMultiplier;
+
+        combat.maxHp = Math.round(combat.maxHp + delta.maxHp);
+        combat.atkSpd = Math.round(combat.atkSpd + delta.atkSpd);
+        combat.acc = Math.round(combat.acc + delta.acc);
+        combat.eva = Math.round(combat.eva + delta.eva);
+        combat.maxMeleeDmg = Math.round(combat.maxMeleeDmg + delta.maxMeleeDmg);
+        combat.maxRangedDmg = Math.round(combat.maxRangedDmg + delta.maxRangedDmg);
+        combat.maxMagicDmg = Math.round(combat.maxMagicDmg + delta.maxMagicDmg);
+        combat.critChance += delta.critChance;
+        const bonusCrit = Math.max(combat.critMultiplier - 1, 0.29);
+        combat.critMultiplier = 1 + bonusCrit * (1 + delta.critMultiplier);
+        combat.dmgReduction = Math.round(combat.dmgReduction + delta.dmgReduction);
+        combat.magicDmgReduction = Math.round(combat.magicDmgReduction + delta.magicDmgReduction);
+        combat.hpRegenRate += delta.hpRegenRate;
+        combat.hpRegenAmount = Math.round(combat.hpRegenAmount + delta.hpRegenAmount);
+        combat.meleeFactor = Math.round(combat.meleeFactor + delta.meleeFactor);
+        combat.rangeFactor = Math.round(combat.rangeFactor + delta.rangeFactor);
+        combat.magicFactor = Math.round(combat.magicFactor + delta.magicFactor);
+        combat.reinforceAir = Math.round(combat.reinforceAir + delta.reinforceAir);
+        combat.reinforceWater = Math.round(combat.reinforceWater + delta.reinforceWater);
+        combat.reinforceEarth = Math.round(combat.reinforceEarth + delta.reinforceEarth);
+        combat.reinforceFire = Math.round(combat.reinforceFire + delta.reinforceFire);
+    }
+}
+
+export async function recalculateAndUpdateUserBaseStats(
+    telegramId: string
+): Promise<Partial<FullUserData>> {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { telegramId }
+        });
+
+        if (!user) throw new Error(`User not found for ${telegramId}`);
+
+        const { str, def, dex, luk, magic, hpLevel } = user;
+
+        const newBaseStats = {
+            maxHp: getBaseMaxHpFromHpLvl(hpLevel),
+            atkSpd: getBaseAtkSpdFromDex(dex),
+            acc: getBaseAccFromDex(dex),
+            eva: getBaseEvaFromDex(dex),
+            maxMeleeDmg: getBaseMaxDmg(str),
+            maxRangedDmg: getBaseMaxDmg(dex),
+            maxMagicDmg: getBaseMaxDmg(magic),
+            critChance: getBaseCritChanceFromLuk(luk),
+            critMultiplier: getBaseCritMulFromLuk(luk),
+            dmgReduction: getBaseDmgReductionFromDef(def),
+            magicDmgReduction: getBaseMagicDmgReductionFromDefAndMagic(def, magic),
+            hpRegenRate: getBaseHpRegenRateFromHpLvl(hpLevel),
+            hpRegenAmount: getBaseHpRegenAmtFromHpLvl(hpLevel, str)
+        };
+
+        await prisma.user.update({
+            where: { telegramId },
+            data: newBaseStats
+        });
+
+        const userDataEquipped = await recalculateAndUpdateUserStats(telegramId);
+
+        logger.info(`✅ Recalculated base stats for user ${telegramId}`);
+
+        return {
+            ...newBaseStats,
+            outstandingSkillPoints: user.outstandingSkillPoints,
+            hpLevel: user.hpLevel,
+            expToNextHpLevel: user.expToNextHpLevel,
+            expHp: user.expHp,
+            str: user.str,
+            def: user.def,
+            dex: user.dex,
+            luk: user.luk,
+            magic: user.magic,
+            combat: userDataEquipped.combat
+        };
+    } catch (err) {
+        logger.error(`❌ Failed to recalculate base stats for ${telegramId}: ${err}`);
+        throw err;
+    }
+}
+
+// inventory
+export async function getEquipmentOrItemFromInventory(
+    telegramId: string,
+    inventoryId: number
+): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }> | undefined> {
+    try {
+        // Fetch the equipment from the user's inventory
+        const equipmentInventory = await prisma.inventory.findUnique({
+            where: { id: inventoryId },
+            include: { equipment: true }, // Include equipment details
+        });
+
+        // Check if the equipment exists and belongs to the user
+        if (!equipmentInventory || equipmentInventory.userId.toString() !== telegramId) {
+            throw new Error(`Inventory ID ${inventoryId} not found in inventory for user ${telegramId}`);
+        }
+
+        if (!equipmentInventory.equipment) {
+            throw new Error(`Inventory object is not an equipment`);
+        }
+
+        return equipmentInventory;
+    } catch (err) {
+        console.error(`Error fetching equipment or item from user ${telegramId}'s inventory: ${err}`);
+        throw err; // Re-throw the error for further handling
+    }
+}
+

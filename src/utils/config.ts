@@ -7,11 +7,23 @@ export const SOCKET_ORIGIN = process.env.SOCKET_ORIGIN || ""
 
 export const SOCKET_PATH = process.env.SOCKET_PATH || ""
 
+export const SOCKET_ORIGIN_DITTO_LEDGER = process.env.SOCKET_ORIGIN_DITTO_LEDGER || ""
+
+export const SOCKET_PATH_DITTO_LEDGER = process.env.SOCKET_PATH_DITTO_LEDGER || ""
+
+export const DEVELOPMENT_FUNDS_KEY  = process.env.DEVELOPMENT_FUNDS_KEY || ""
+
+export const LEVERAGE_POOL_KEY  = process.env.LEVERAGE_POOL_KEY || ""
+
+export const DITTO_DECIMALS = (process.env.DITTO_DECIMALS !== undefined && !isNaN(parseInt(process.env.DITTO_DECIMALS))) ? parseInt(process.env.DITTO_DECIMALS) : 9;
+
 export const BOT_TOKEN = process.env.BOT_TOKEN || ""
 
-export const BOT_TOKEN_DEV = process.env.BOT_TOKEN_DEV || ""
+export const LOGIN_TIMEOUT_MS = (process.env.LOGIN_TIMEOUT_MS !== undefined && !isNaN(parseInt(process.env.LOGIN_TIMEOUT_MS))) ? parseInt(process.env.LOGIN_TIMEOUT_MS) : 5000
 
 export const HP_EXP_PER_EXP = (process.env.HP_EXP_PER_EXP !== undefined && !isNaN(parseFloat(process.env.HP_EXP_PER_EXP))) ? parseFloat(process.env.HP_EXP_PER_EXP) : 1
+
+export const ABILITY_POINTS_PER_LEVEL = (process.env.ABILITY_POINTS_PER_LEVEL !== undefined && !isNaN(parseInt(process.env.ABILITY_POINTS_PER_LEVEL))) ? parseInt(process.env.ABILITY_POINTS_PER_LEVEL) : 3
 
 export const GACHA_PULL_ODDS = process.env.GACHA_PULL_ODDS ? process.env.GACHA_PULL_ODDS.split(' ').map(prob => parseFloat(prob)) : []
 

@@ -1,31 +1,46 @@
-import { prisma } from '../sql-services/client';
-import { logger } from '../utils/logger';
+import { prisma } from "../sql-services/client";
+import { logger } from "../utils/logger";
 
-async function purgeUserRelatedData() {
+async function resetAutoIncrement(table: string) {
+  await prisma.$executeRawUnsafe(`ALTER TABLE ${table} AUTO_INCREMENT = 1`);
+}
+
+async function purgeUserData() {
   try {
-    // Delete from related tables first to avoid foreign key constraints
-    await prisma.inventory.deleteMany({});
-    await prisma.slime.deleteMany({});
-    await prisma.combat.deleteMany({});
+    logger.info("🚀 Starting user data purge...");
 
-    // Finally delete users
-    await prisma.user.deleteMany({});
+    // DELETE USER INVENTORY
+    await prisma.inventory.deleteMany();
+    logger.info("🗑️ Deleted all user inventory.");
+    await resetAutoIncrement("Inventory");
 
-    // Reset auto-increment counters for each table
-    await prisma.$executeRaw`ALTER TABLE Inventory AUTO_INCREMENT = 1`;
-    await prisma.$executeRaw`ALTER TABLE Slime AUTO_INCREMENT = 1`;
-    await prisma.$executeRaw`ALTER TABLE Combat AUTO_INCREMENT = 1`;
-    await prisma.$executeRaw`ALTER TABLE User AUTO_INCREMENT = 1`;
+    // DELETE USER-OWNED SLIMES
+    await prisma.slime.deleteMany();
+    logger.info("🗑️ Deleted all user-owned slimes.");
+    await resetAutoIncrement("Slime");
 
-    logger.info('All user-related tables have been purged and auto-increment values reset.');
+    // DELETE USERS FIRST (to break FK links to combat)
+    await prisma.user.deleteMany();
+    logger.info("🗑️ Deleted all user accounts.");
+    await resetAutoIncrement("User");
+
+    // DELETE COMBAT RECORDS no longer referenced by monsters or users
+    await prisma.combat.deleteMany({
+      where: {
+        user: { some: {} },   // was previously linked to users
+        Monster: { none: {} } // not used by monsters
+      }
+    });
+    logger.info("🗑️ Deleted all user-only combat records.");
+    await resetAutoIncrement("Combat");
+
+    logger.info("✅ Successfully purged all user data while keeping global data intact.");
   } catch (error) {
-    logger.error(`Error purging user-related tables: ${error}`);
+    logger.error(`❌ Error during user data purge: ${error}`);
     throw error;
   } finally {
     await prisma.$disconnect();
   }
 }
 
-purgeUserRelatedData().catch((error) => {
-  console.error('Failed to purge user-related tables:', error);
-});
+purgeUserData();

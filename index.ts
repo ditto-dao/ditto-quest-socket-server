@@ -5,10 +5,13 @@ import { RedisClientType, RedisFunctions, RedisModules, RedisScripts, createClie
 import { DefaultEventsMap, Server } from "socket.io"
 import { setupSocketHandlers } from "./src/socket/socket-handlers"
 import { setupGlobalErrorHandlers } from "./src/utils/global-error-handler"
-import { PORT, SOCKET_ORIGIN, SOCKET_PATH } from "./src/utils/config"
+import { PORT, SOCKET_ORIGIN, SOCKET_ORIGIN_DITTO_LEDGER, SOCKET_PATH, SOCKET_PATH_DITTO_LEDGER } from "./src/utils/config"
 import { SocketManager } from "./src/socket/socket-manager"
 import { IdleManager } from "./src/managers/idle-managers/idle-manager"
+import { io } from 'socket.io-client'
 import "@aws-sdk/crc64-nvme-crt";
+import { ValidateLoginManager } from "./src/managers/validate-login/validate-login-manager"
+import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -16,7 +19,7 @@ async function main() {
     // Socket
     const app = express()
     const httpServer = createServer(app)
-    const io = new Server(httpServer, {
+    const dqIo = new Server(httpServer, {
         cors: {
             origin: SOCKET_ORIGIN.split(" "),
             methods: ["GET", "POST"],
@@ -28,6 +31,16 @@ async function main() {
     logger.info(`SOCKET_ORIGIN: ${SOCKET_ORIGIN}`)
     logger.info(`SOCKET_PATH: ${SOCKET_PATH}`)
 
+    // Connection to the ditto ledger socket server
+    const dittoLedgerSocket = io(SOCKET_ORIGIN_DITTO_LEDGER, {
+        path: SOCKET_PATH_DITTO_LEDGER,
+        transports: ['websocket', 'polling'],
+    });
+
+    dittoLedgerSocket.on('connect', () => {
+        logger.info('Connected to ditto ledger socket server')
+    })
+
     // Redis
     const redisClient = createClient({
         url: 'redis://localhost:6379'
@@ -38,13 +51,16 @@ async function main() {
     })
 
     // Socket manager
-    const socketManager = new SocketManager(io)
+    const socketManager = new SocketManager(dqIo)
 
     // Idle manager
-    //const idleManager = new IdleManager(socketManager)
-    const idleManager = new IdleManager(redisClient, socketManager);
+    const combatManager = new IdleCombatManager(socketManager, dittoLedgerSocket)
+    const idleManager = new IdleManager(redisClient, socketManager, dittoLedgerSocket);
 
-    await setupSocketHandlers(io, socketManager, idleManager)
+    // Validate login manager
+    const validateLoginManager = new ValidateLoginManager(dittoLedgerSocket, socketManager, idleManager, combatManager)
+
+    await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager)
 
     setupGlobalErrorHandlers()
 
@@ -56,19 +72,25 @@ async function main() {
         logger.error(`Server error: ${error}`)
     })
 
-    process.on('SIGINT', () => gracefulShutdown(io))
-    process.on('SIGTERM', () => gracefulShutdown(io))
+    process.on('SIGINT', () => gracefulShutdown(dqIo, redisClient, idleManager, socketManager))
+    process.on('SIGTERM', () => gracefulShutdown(dqIo, redisClient, idleManager, socketManager))
 }
 
 async function gracefulShutdown(
     io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-    //redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>, 
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
+    idleManager: IdleManager,
+    socketManager: SocketManager
 ) {
+    await idleManager.saveAllUsersIdleActivities();
+
+    socketManager.disconnectAllUsers();
+
     io.close(() => {
         logger.info('Socket server closed.')
     })
 
-    //await redisClient.quit()
+    await redisClient.quit()
     process.exit(0)
 }
 

@@ -1,45 +1,56 @@
-import { Rarity, Slime, SlimeTrait, TraitType, User } from '@prisma/client';
+import { Prisma, Rarity, Slime, SlimeTrait, StatEffect, TraitType, User } from '@prisma/client';
 import { prisma } from './client';
 import { logger } from '../utils/logger';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
 import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
 import { DOMINANT_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits, HIDDEN_TRAITS_GACHA_SPECS } from '../utils/gacha-odds';
 import { GACHA_PULL_ODDS } from '../utils/config';
+import { recalculateAndUpdateUserStats, UserDataEquipped } from './user-service';
+
 
 export type SlimeWithTraits = Slime & {
   owner: Pick<User, 'telegramId'>;
-  BodyDominant: SlimeTrait;
-  BodyHidden1: SlimeTrait;
-  BodyHidden2: SlimeTrait;
-  BodyHidden3: SlimeTrait;
-  PatternDominant: SlimeTrait;
-  PatternHidden1: SlimeTrait;
-  PatternHidden2: SlimeTrait;
-  PatternHidden3: SlimeTrait;
-  PrimaryColourDominant: SlimeTrait;
-  PrimaryColourHidden1: SlimeTrait;
-  PrimaryColourHidden2: SlimeTrait;
-  PrimaryColourHidden3: SlimeTrait;
-  AccentDominant: SlimeTrait;
-  AccentHidden1: SlimeTrait;
-  AccentHidden2: SlimeTrait;
-  AccentHidden3: SlimeTrait;
-  DetailDominant: SlimeTrait;
-  DetailHidden1: SlimeTrait;
-  DetailHidden2: SlimeTrait;
-  DetailHidden3: SlimeTrait;
-  EyeColourDominant: SlimeTrait;
-  EyeColourHidden1: SlimeTrait;
-  EyeColourHidden2: SlimeTrait;
-  EyeColourHidden3: SlimeTrait;
-  EyeShapeDominant: SlimeTrait;
-  EyeShapeHidden1: SlimeTrait;
-  EyeShapeHidden2: SlimeTrait;
-  EyeShapeHidden3: SlimeTrait;
-  MouthDominant: SlimeTrait;
-  MouthHidden1: SlimeTrait;
-  MouthHidden2: SlimeTrait;
-  MouthHidden3: SlimeTrait;
+  imageUri: string;
+
+  BodyDominant: SlimeTrait & { statEffect: StatEffect | null };
+  BodyHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  BodyHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  BodyHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  PatternDominant: SlimeTrait & { statEffect: StatEffect | null };
+  PatternHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  PatternHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  PatternHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  PrimaryColourDominant: SlimeTrait & { statEffect: StatEffect | null };
+  PrimaryColourHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  PrimaryColourHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  PrimaryColourHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  AccentDominant: SlimeTrait & { statEffect: StatEffect | null };
+  AccentHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  AccentHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  AccentHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  DetailDominant: SlimeTrait & { statEffect: StatEffect | null };
+  DetailHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  DetailHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  DetailHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  EyeColourDominant: SlimeTrait & { statEffect: StatEffect | null };
+  EyeColourHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  EyeColourHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  EyeColourHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  EyeShapeDominant: SlimeTrait & { statEffect: StatEffect | null };
+  EyeShapeHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  EyeShapeHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  EyeShapeHidden3: SlimeTrait & { statEffect: StatEffect | null };
+
+  MouthDominant: SlimeTrait & { statEffect: StatEffect | null };
+  MouthHidden1: SlimeTrait & { statEffect: StatEffect | null };
+  MouthHidden2: SlimeTrait & { statEffect: StatEffect | null };
+  MouthHidden3: SlimeTrait & { statEffect: StatEffect | null };
 };
 
 export async function fetchSlimeObjectWithTraits(slimeId: number): Promise<SlimeWithTraits> {
@@ -48,38 +59,46 @@ export async function fetchSlimeObjectWithTraits(slimeId: number): Promise<Slime
       where: { id: slimeId },
       include: {
         owner: { select: { telegramId: true } },
-        BodyDominant: true,
-        BodyHidden1: true,
-        BodyHidden2: true,
-        BodyHidden3: true,
-        PatternDominant: true,
-        PatternHidden1: true,
-        PatternHidden2: true,
-        PatternHidden3: true,
-        PrimaryColourDominant: true,
-        PrimaryColourHidden1: true,
-        PrimaryColourHidden2: true,
-        PrimaryColourHidden3: true,
-        AccentDominant: true,
-        AccentHidden1: true,
-        AccentHidden2: true,
-        AccentHidden3: true,
-        DetailDominant: true,
-        DetailHidden1: true,
-        DetailHidden2: true,
-        DetailHidden3: true,
-        EyeColourDominant: true,
-        EyeColourHidden1: true,
-        EyeColourHidden2: true,
-        EyeColourHidden3: true,
-        EyeShapeDominant: true,
-        EyeShapeHidden1: true,
-        EyeShapeHidden2: true,
-        EyeShapeHidden3: true,
-        MouthDominant: true,
-        MouthHidden1: true,
-        MouthHidden2: true,
-        MouthHidden3: true,
+
+        BodyDominant: { include: { statEffect: true } },
+        BodyHidden1: { include: { statEffect: true } },
+        BodyHidden2: { include: { statEffect: true } },
+        BodyHidden3: { include: { statEffect: true } },
+
+        PatternDominant: { include: { statEffect: true } },
+        PatternHidden1: { include: { statEffect: true } },
+        PatternHidden2: { include: { statEffect: true } },
+        PatternHidden3: { include: { statEffect: true } },
+
+        PrimaryColourDominant: { include: { statEffect: true } },
+        PrimaryColourHidden1: { include: { statEffect: true } },
+        PrimaryColourHidden2: { include: { statEffect: true } },
+        PrimaryColourHidden3: { include: { statEffect: true } },
+
+        AccentDominant: { include: { statEffect: true } },
+        AccentHidden1: { include: { statEffect: true } },
+        AccentHidden2: { include: { statEffect: true } },
+        AccentHidden3: { include: { statEffect: true } },
+
+        DetailDominant: { include: { statEffect: true } },
+        DetailHidden1: { include: { statEffect: true } },
+        DetailHidden2: { include: { statEffect: true } },
+        DetailHidden3: { include: { statEffect: true } },
+
+        EyeColourDominant: { include: { statEffect: true } },
+        EyeColourHidden1: { include: { statEffect: true } },
+        EyeColourHidden2: { include: { statEffect: true } },
+        EyeColourHidden3: { include: { statEffect: true } },
+
+        EyeShapeDominant: { include: { statEffect: true } },
+        EyeShapeHidden1: { include: { statEffect: true } },
+        EyeShapeHidden2: { include: { statEffect: true } },
+        EyeShapeHidden3: { include: { statEffect: true } },
+
+        MouthDominant: { include: { statEffect: true } },
+        MouthHidden1: { include: { statEffect: true } },
+        MouthHidden2: { include: { statEffect: true } },
+        MouthHidden3: { include: { statEffect: true } },
       },
     });
 
@@ -88,7 +107,7 @@ export async function fetchSlimeObjectWithTraits(slimeId: number): Promise<Slime
     return slime;
   } catch (error) {
     logger.error(`Failed to fetch slime object: ${error}`);
-    throw error
+    throw error;
   }
 }
 
@@ -173,13 +192,36 @@ export async function getRandomSlimeTraitId(traitType: TraitType, probabilities:
   }
 }
 
+export async function getSlimeTraitById(traitId: number): Promise<Prisma.SlimeTraitGetPayload<{
+  include: { statEffect: true };
+}> | null> {
+  try {
+    const trait = await prisma.slimeTrait.findUnique({
+      where: { id: traitId },
+      include: {
+        statEffect: true, // Include related StatEffect
+      }
+    });
+
+    if (!trait) {
+      logger.warn(`No SlimeTrait found with ID: ${traitId}`);
+      return null;
+    }
+
+    return trait;
+  } catch (error) {
+    logger.error(`Error fetching SlimeTrait ID ${traitId}: ${error}`);
+    throw error;
+  }
+}
+
 interface GachaPullRes {
   slime: Slime,
   rankPull: string,
   slimeNoBg: Buffer
 }
 
-export async function slimeGachaPull(ownerId: number): Promise<GachaPullRes> {
+export async function slimeGachaPull(ownerId: string): Promise<GachaPullRes> {
   try {
     const rankPull = getGachaPullRarity();
 
@@ -284,38 +326,46 @@ export async function slimeGachaPull(ownerId: number): Promise<GachaPullRes> {
       },
       include: {
         owner: { select: { telegramId: true } },
-        BodyDominant: true,
-        BodyHidden1: true,
-        BodyHidden2: true,
-        BodyHidden3: true,
-        PatternDominant: true,
-        PatternHidden1: true,
-        PatternHidden2: true,
-        PatternHidden3: true,
-        PrimaryColourDominant: true,
-        PrimaryColourHidden1: true,
-        PrimaryColourHidden2: true,
-        PrimaryColourHidden3: true,
-        AccentDominant: true,
-        AccentHidden1: true,
-        AccentHidden2: true,
-        AccentHidden3: true,
-        DetailDominant: true,
-        DetailHidden1: true,
-        DetailHidden2: true,
-        DetailHidden3: true,
-        EyeColourDominant: true,
-        EyeColourHidden1: true,
-        EyeColourHidden2: true,
-        EyeColourHidden3: true,
-        EyeShapeDominant: true,
-        EyeShapeHidden1: true,
-        EyeShapeHidden2: true,
-        EyeShapeHidden3: true,
-        MouthDominant: true,
-        MouthHidden1: true,
-        MouthHidden2: true,
-        MouthHidden3: true,
+
+        BodyDominant: { include: { statEffect: true } },
+        BodyHidden1: { include: { statEffect: true } },
+        BodyHidden2: { include: { statEffect: true } },
+        BodyHidden3: { include: { statEffect: true } },
+
+        PatternDominant: { include: { statEffect: true } },
+        PatternHidden1: { include: { statEffect: true } },
+        PatternHidden2: { include: { statEffect: true } },
+        PatternHidden3: { include: { statEffect: true } },
+
+        PrimaryColourDominant: { include: { statEffect: true } },
+        PrimaryColourHidden1: { include: { statEffect: true } },
+        PrimaryColourHidden2: { include: { statEffect: true } },
+        PrimaryColourHidden3: { include: { statEffect: true } },
+
+        AccentDominant: { include: { statEffect: true } },
+        AccentHidden1: { include: { statEffect: true } },
+        AccentHidden2: { include: { statEffect: true } },
+        AccentHidden3: { include: { statEffect: true } },
+
+        DetailDominant: { include: { statEffect: true } },
+        DetailHidden1: { include: { statEffect: true } },
+        DetailHidden2: { include: { statEffect: true } },
+        DetailHidden3: { include: { statEffect: true } },
+
+        EyeColourDominant: { include: { statEffect: true } },
+        EyeColourHidden1: { include: { statEffect: true } },
+        EyeColourHidden2: { include: { statEffect: true } },
+        EyeColourHidden3: { include: { statEffect: true } },
+
+        EyeShapeDominant: { include: { statEffect: true } },
+        EyeShapeHidden1: { include: { statEffect: true } },
+        EyeShapeHidden2: { include: { statEffect: true } },
+        EyeShapeHidden3: { include: { statEffect: true } },
+
+        MouthDominant: { include: { statEffect: true } },
+        MouthHidden1: { include: { statEffect: true } },
+        MouthHidden2: { include: { statEffect: true } },
+        MouthHidden3: { include: { statEffect: true } },
       },
     });
 
@@ -343,7 +393,7 @@ export async function slimeGachaPull(ownerId: number): Promise<GachaPullRes> {
   }
 }
 
-export async function breedSlimes(sireId: number, dameId: number): Promise<Slime> {
+export async function breedSlimes(sireId: number, dameId: number): Promise<SlimeWithTraits> {
   try {
     const sire: SlimeWithTraits = await fetchSlimeObjectWithTraits(sireId);
     const dame: SlimeWithTraits = await fetchSlimeObjectWithTraits(dameId);
@@ -491,38 +541,46 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
       },
       include: {
         owner: { select: { telegramId: true } },
-        BodyDominant: true,
-        BodyHidden1: true,
-        BodyHidden2: true,
-        BodyHidden3: true,
-        PatternDominant: true,
-        PatternHidden1: true,
-        PatternHidden2: true,
-        PatternHidden3: true,
-        PrimaryColourDominant: true,
-        PrimaryColourHidden1: true,
-        PrimaryColourHidden2: true,
-        PrimaryColourHidden3: true,
-        AccentDominant: true,
-        AccentHidden1: true,
-        AccentHidden2: true,
-        AccentHidden3: true,
-        DetailDominant: true,
-        DetailHidden1: true,
-        DetailHidden2: true,
-        DetailHidden3: true,
-        EyeColourDominant: true,
-        EyeColourHidden1: true,
-        EyeColourHidden2: true,
-        EyeColourHidden3: true,
-        EyeShapeDominant: true,
-        EyeShapeHidden1: true,
-        EyeShapeHidden2: true,
-        EyeShapeHidden3: true,
-        MouthDominant: true,
-        MouthHidden1: true,
-        MouthHidden2: true,
-        MouthHidden3: true,
+
+        BodyDominant: { include: { statEffect: true } },
+        BodyHidden1: { include: { statEffect: true } },
+        BodyHidden2: { include: { statEffect: true } },
+        BodyHidden3: { include: { statEffect: true } },
+
+        PatternDominant: { include: { statEffect: true } },
+        PatternHidden1: { include: { statEffect: true } },
+        PatternHidden2: { include: { statEffect: true } },
+        PatternHidden3: { include: { statEffect: true } },
+
+        PrimaryColourDominant: { include: { statEffect: true } },
+        PrimaryColourHidden1: { include: { statEffect: true } },
+        PrimaryColourHidden2: { include: { statEffect: true } },
+        PrimaryColourHidden3: { include: { statEffect: true } },
+
+        AccentDominant: { include: { statEffect: true } },
+        AccentHidden1: { include: { statEffect: true } },
+        AccentHidden2: { include: { statEffect: true } },
+        AccentHidden3: { include: { statEffect: true } },
+
+        DetailDominant: { include: { statEffect: true } },
+        DetailHidden1: { include: { statEffect: true } },
+        DetailHidden2: { include: { statEffect: true } },
+        DetailHidden3: { include: { statEffect: true } },
+
+        EyeColourDominant: { include: { statEffect: true } },
+        EyeColourHidden1: { include: { statEffect: true } },
+        EyeColourHidden2: { include: { statEffect: true } },
+        EyeColourHidden3: { include: { statEffect: true } },
+
+        EyeShapeDominant: { include: { statEffect: true } },
+        EyeShapeHidden1: { include: { statEffect: true } },
+        EyeShapeHidden2: { include: { statEffect: true } },
+        EyeShapeHidden3: { include: { statEffect: true } },
+
+        MouthDominant: { include: { statEffect: true } },
+        MouthHidden1: { include: { statEffect: true } },
+        MouthHidden2: { include: { statEffect: true } },
+        MouthHidden3: { include: { statEffect: true } },
       },
     });
 
@@ -537,7 +595,152 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
   }
 }
 
-export async function getEquippedSlimeId(telegramId: number): Promise<number | null> {
+export async function equipSlimeForUser(
+  telegramId: string,
+  slime: SlimeWithTraits
+): Promise<UserDataEquipped> {
+  try {
+    await prisma.user.update({
+      where: { telegramId },
+      data: {
+        equippedSlimeId: slime.id
+      }
+    });
+
+    return await recalculateAndUpdateUserStats(telegramId);
+  } catch (err) {
+    throw new Error(`Failed to equip slime ${slime.id} for user ${telegramId}: ${err}`);
+  }
+}
+
+export async function unequipSlimeForUser(
+  telegramId: string
+): Promise<UserDataEquipped> {
+  try {
+    await prisma.user.update({
+      where: { telegramId },
+      data: {
+        equippedSlimeId: null
+      }
+    });
+
+    return await recalculateAndUpdateUserStats(telegramId);
+  } catch (err) {
+    throw new Error(`Failed to unequip slime for user ${telegramId}: ${err}`);
+  }
+}
+
+export async function getEquippedSlimeWithTraits(telegramId: string): Promise<SlimeWithTraits | null> {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { telegramId },
+      include: {
+        equippedSlime: {
+          include: {
+            owner: { select: { telegramId: true } },
+            BodyDominant: { include: { statEffect: true } },
+            BodyHidden1: { include: { statEffect: true } },
+            BodyHidden2: { include: { statEffect: true } },
+            BodyHidden3: { include: { statEffect: true } },
+            PatternDominant: { include: { statEffect: true } },
+            PatternHidden1: { include: { statEffect: true } },
+            PatternHidden2: { include: { statEffect: true } },
+            PatternHidden3: { include: { statEffect: true } },
+            PrimaryColourDominant: { include: { statEffect: true } },
+            PrimaryColourHidden1: { include: { statEffect: true } },
+            PrimaryColourHidden2: { include: { statEffect: true } },
+            PrimaryColourHidden3: { include: { statEffect: true } },
+            AccentDominant: { include: { statEffect: true } },
+            AccentHidden1: { include: { statEffect: true } },
+            AccentHidden2: { include: { statEffect: true } },
+            AccentHidden3: { include: { statEffect: true } },
+            DetailDominant: { include: { statEffect: true } },
+            DetailHidden1: { include: { statEffect: true } },
+            DetailHidden2: { include: { statEffect: true } },
+            DetailHidden3: { include: { statEffect: true } },
+            EyeColourDominant: { include: { statEffect: true } },
+            EyeColourHidden1: { include: { statEffect: true } },
+            EyeColourHidden2: { include: { statEffect: true } },
+            EyeColourHidden3: { include: { statEffect: true } },
+            EyeShapeDominant: { include: { statEffect: true } },
+            EyeShapeHidden1: { include: { statEffect: true } },
+            EyeShapeHidden2: { include: { statEffect: true } },
+            EyeShapeHidden3: { include: { statEffect: true } },
+            MouthDominant: { include: { statEffect: true } },
+            MouthHidden1: { include: { statEffect: true } },
+            MouthHidden2: { include: { statEffect: true } },
+            MouthHidden3: { include: { statEffect: true } }
+          }
+        }
+      }
+    });
+
+    return user?.equippedSlime ?? null;
+  } catch (error) {
+    console.error(`Failed to fetch equipped slime with traits for user ${telegramId}:`, error);
+    throw error;
+  }
+}
+
+export async function getSlimeWithTraitsById(slimeId: number): Promise<SlimeWithTraits | null> {
+  try {
+    const slime = await prisma.slime.findUnique({
+      where: { id: slimeId },
+      include: {
+        owner: {
+          select: { telegramId: true },
+        },
+
+        BodyDominant: { include: { statEffect: true } },
+        BodyHidden1: { include: { statEffect: true } },
+        BodyHidden2: { include: { statEffect: true } },
+        BodyHidden3: { include: { statEffect: true } },
+
+        PatternDominant: { include: { statEffect: true } },
+        PatternHidden1: { include: { statEffect: true } },
+        PatternHidden2: { include: { statEffect: true } },
+        PatternHidden3: { include: { statEffect: true } },
+
+        PrimaryColourDominant: { include: { statEffect: true } },
+        PrimaryColourHidden1: { include: { statEffect: true } },
+        PrimaryColourHidden2: { include: { statEffect: true } },
+        PrimaryColourHidden3: { include: { statEffect: true } },
+
+        AccentDominant: { include: { statEffect: true } },
+        AccentHidden1: { include: { statEffect: true } },
+        AccentHidden2: { include: { statEffect: true } },
+        AccentHidden3: { include: { statEffect: true } },
+
+        DetailDominant: { include: { statEffect: true } },
+        DetailHidden1: { include: { statEffect: true } },
+        DetailHidden2: { include: { statEffect: true } },
+        DetailHidden3: { include: { statEffect: true } },
+
+        EyeColourDominant: { include: { statEffect: true } },
+        EyeColourHidden1: { include: { statEffect: true } },
+        EyeColourHidden2: { include: { statEffect: true } },
+        EyeColourHidden3: { include: { statEffect: true } },
+
+        EyeShapeDominant: { include: { statEffect: true } },
+        EyeShapeHidden1: { include: { statEffect: true } },
+        EyeShapeHidden2: { include: { statEffect: true } },
+        EyeShapeHidden3: { include: { statEffect: true } },
+
+        MouthDominant: { include: { statEffect: true } },
+        MouthHidden1: { include: { statEffect: true } },
+        MouthHidden2: { include: { statEffect: true } },
+        MouthHidden3: { include: { statEffect: true } },
+      },
+    });
+
+    return slime ?? null;
+  } catch (error) {
+    console.error(`❌ Failed to fetch SlimeWithTraits for slimeId ${slimeId}:`, error);
+    throw error;
+  }
+}
+
+export async function getEquippedSlimeId(telegramId: string): Promise<number | null> {
   try {
     // Fetch the user with the equipped slime relation
     const user = await prisma.user.findUnique({

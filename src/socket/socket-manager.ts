@@ -1,16 +1,17 @@
 import { logger } from '../utils/logger'
 import { Server as SocketServer } from "socket.io"
+import { DISCONNECT_USER_EVENT } from './events'
 
 export class SocketManager {
     private io: SocketServer
-    private socketIdByUser: Record<number, string> = {}
-    private botIds: number[] = []
+    private socketIdByUser: Record<string, string> = {}
+    private botIds: string[] = []
 
     constructor(io: SocketServer) {
         this.io = io
     }
 
-    isUserSocketCached(userId: number) {
+    isUserSocketCached(userId: string) {
         if (userId in this.socketIdByUser) {
             return true
         } else {
@@ -18,14 +19,30 @@ export class SocketManager {
         }
     }
 
-    cacheSocketIdForBot(userId: number, socketId: string) {
+    getSocketByUserId(userId: string) {
+        const socketId = this.socketIdByUser[userId];
+        if (!socketId) {
+            logger.warn(`No socket ID cached for user ${userId}`);
+            return null;
+        }
+
+        const socket = this.io.sockets.sockets.get(socketId);
+        if (!socket) {
+            logger.warn(`Socket not found for user ${userId} (socketId: ${socketId})`);
+            return null;
+        }
+
+        return socket;
+    }
+
+    cacheSocketIdForBot(userId: string, socketId: string) {
         this.socketIdByUser[userId] = socketId
         this.botIds.push(userId)
         logger.info(`Cached socket ID for bot ${userId}.`)
         logger.info(`Total bots: ${this.botIds.length}`)
     }
 
-    cacheSocketIdForUser(userId: number, socketId: string) {
+    cacheSocketIdForUser(userId: string, socketId: string) {
         this.socketIdByUser[userId] = socketId
         logger.info(`Cached socket ID for user ${userId}.`)
         //logger.info(`Cached sockets: ${JSON.stringify(this.socketIdByUser, null, 2)}`)
@@ -45,14 +62,21 @@ export class SocketManager {
         logger.info(`Cleared all bot IDs and their associated socket IDs.`);
     }
 
-    removeSocketIdCacheForUser(userId: number) {
+    removeSocketIdCacheForUser(userId: string) {
         if (this.socketIdByUser[userId]) {
             delete this.socketIdByUser[userId]
             logger.info(`Deleted cache of socket ID for user ${userId}.`)
         }
     }
 
-    emitEvent(userId: number, name: string, params: any) {
+    disconnectAllUsers() {
+        for (const userId of Object.keys(this.socketIdByUser)) {
+            this.emitEvent(userId, DISCONNECT_USER_EVENT, userId);
+            this.removeSocketIdCacheForUser(userId);
+        }
+    }
+
+    emitEvent(userId: string, name: string, params: any) {
         try {
             if (this.isUserSocketCached(userId)) {
                 this.io.to(this.socketIdByUser[userId]).emit(name, params)

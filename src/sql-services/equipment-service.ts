@@ -1,4 +1,4 @@
-import { Equipment, Rarity, EquipmentType } from "@prisma/client";
+import { Equipment, Rarity, EquipmentType, Prisma } from "@prisma/client";
 import { prisma } from "./client";
 import { logger } from "../utils/logger";
 
@@ -14,11 +14,13 @@ export async function getAllEquipment(): Promise<Equipment[]> {
 }
 
 // Get equipment by ID
-export async function getEquipmentById(equipmentId: number): Promise<Equipment | null> {
+export async function getEquipmentById(equipmentId: number): Promise<Prisma.EquipmentGetPayload<{
+    include: { statEffect: true, CraftingRecipe: true };
+}> | null> {
     try {
         const equipment = await prisma.equipment.findUnique({
             where: { id: equipmentId },
-            include: { CraftingRecipe: true }  // Include related crafting recipe if applicable
+            include: { CraftingRecipe: true, statEffect: true }  // Include related crafting recipe if applicable
         });
         return equipment;
     } catch (error) {

@@ -1,6 +1,5 @@
 import { Server as SocketServer } from "socket.io"
 import { logger } from "../utils/logger"
-//import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "redis"
 import { setupValidateLoginSocketHandlers } from "./handlers/validate-login-socket-handlers"
 import { SocketManager } from "./socket-manager"
 import { setupItemsSocketHandlers } from "./handlers/items-socket-handlers"
@@ -8,24 +7,34 @@ import { setupCraftingSocketHandlers } from "./handlers/crafting-handlers"
 import { setupSlimeSocketHandlers } from "./handlers/slime-handlers"
 import { IdleManager } from "../managers/idle-managers/idle-manager"
 import { setupUserSocketHandlers } from "./handlers/user-socket-handlers"
+import { Socket } from "socket.io-client"
+import { setupDittoLedgerSocketServerHandlers, setupDittoLedgerUserSocketHandlers } from "./handlers/ditto-ledger-socket-handlers"
+import { ValidateLoginManager } from "../managers/validate-login/validate-login-manager"
+import { IdleCombatManager } from "../managers/idle-managers/combat/combat-idle-manager"
+import { setupCombatSocketHandlers } from "./handlers/combat-handlers"
 
 export interface EventPayloadWithUserId {
-    userId: number,
+    userId: string,
     payload: any
 }
 
 export async function setupSocketHandlers(
     io: SocketServer, 
+    dittoLedgerSocket: Socket,
     socketManager: SocketManager,
-    idleManager: IdleManager
+    idleManager: IdleManager,
+    combatManager: IdleCombatManager,
+    validateLoginManager: ValidateLoginManager
 ): Promise<void> {
+
+    setupDittoLedgerSocketServerHandlers(dittoLedgerSocket, validateLoginManager, socketManager)
 
     io.on("connection", async (socket) => {
         logger.info("An adapter has connected")
 
-        setupValidateLoginSocketHandlers(socket, socketManager, idleManager)
+        setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager)
 
-        setupUserSocketHandlers(socket)
+        setupUserSocketHandlers(socket, idleManager, combatManager)
 
         setupItemsSocketHandlers(socket, socketManager, idleManager)
 
@@ -33,9 +42,9 @@ export async function setupSocketHandlers(
 
         setupSlimeSocketHandlers(socket, socketManager, idleManager)
 
-        socket.on("disconnect", async (socket) => {
-            logger.info("An adapter has disconnected")
-        })
+        setupCombatSocketHandlers(socket, socketManager, idleManager, combatManager)
+
+        setupDittoLedgerUserSocketHandlers(socket, dittoLedgerSocket)
     })
 
     io.on('error', err => {

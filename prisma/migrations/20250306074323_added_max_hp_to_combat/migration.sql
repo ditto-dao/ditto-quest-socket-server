@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Combat` ADD COLUMN `maxHp` DECIMAL(65, 30) NOT NULL DEFAULT 10;

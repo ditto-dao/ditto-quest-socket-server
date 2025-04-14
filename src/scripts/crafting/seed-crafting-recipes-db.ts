@@ -10,8 +10,7 @@ async function seedCraftingRecipes() {
         const recipeData = JSON.parse(fs.readFileSync(recipePath, 'utf-8'));
 
         // Loop through the recipes and seed them into the database
-        for (const recipeObj of recipeData) {
-            const { craftingRecipe } = recipeObj;
+        for (const craftingRecipe of recipeData) {
 
             // Insert the crafting recipe, Prisma will auto-handle the auto-increment IDs
             const createdRecipe = await prisma.craftingRecipe.create({

@@ -16,7 +16,7 @@ export async function getItemById(itemId: number): Promise<Item | null> {
     try {
         const item = await prisma.item.findUnique({
             where: { id: itemId },
-            include: { consumable: true }  // Include related consumable if applicable
+            include: { statEffect: true }  // Include related consumable if applicable
         });
         return item;
     } catch (error) {

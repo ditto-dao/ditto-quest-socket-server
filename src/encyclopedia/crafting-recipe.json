@@ -1,30 +1,1842 @@
 [
-    {
-        "craftingRecipe": {
-            "equipmentId": 1,
-            "durationS": 30,
-            "craftingLevelRequired": 1,
-            "craftingExp": 5,
-            "CraftingRecipeItems": [
-                {
-                    "itemId": 30,
-                    "quantity": 10
-                }
-            ]
-        }
-    },
-    {
-        "craftingRecipe": {
-            "equipmentId": 2,
-            "durationS": 60,
-            "craftingLevelRequired": 1,
-            "craftingExp": 5,
-            "CraftingRecipeItems": [
-                {
-                    "itemId": 30,
-                    "quantity": 10
-                }
-            ]
-        }
-    }
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 30,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 2,
+        "quantity": 40
+      },
+      {
+        "itemId": 30,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 30
+      },
+      {
+        "itemId": 2,
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 50
+      },
+      {
+        "itemId": 30,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 4,
+        "quantity": 70
+      },
+      {
+        "itemId": 30,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 5,
+        "quantity": 90
+      },
+      {
+        "itemId": 30,
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 16,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 17,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 6,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 26,
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 19,
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 20,
+        "quantity": 110
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 10,
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 11,
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 12,
+        "quantity": 120
+      },
+      {
+        "itemId": 18,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 13,
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 14,
+        "quantity": 150
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 15,
+        "quantity": 180
+      },
+      {
+        "itemId": 25,
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 400,
+    "craftingLevelRequired": 200,
+    "craftingExp": 3200,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 27,
+        "quantity": 200
+      },
+      {
+        "itemId": 25,
+        "quantity": 100
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 30,
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 2,
+        "quantity": 40
+      },
+      {
+        "itemId": 30,
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 30
+      },
+      {
+        "itemId": 2,
+        "quantity": 30
+      },
+      {
+        "itemId": 30,
+        "quantity": 20
+      },
+      {
+        "itemId": 31,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 50
+      },
+      {
+        "itemId": 30,
+        "quantity": 30
+      },
+      {
+        "itemId": 31,
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 4,
+        "quantity": 70
+      },
+      {
+        "itemId": 30,
+        "quantity": 30
+      },
+      {
+        "itemId": 31,
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 5,
+        "quantity": 90
+      },
+      {
+        "itemId": 30,
+        "quantity": 40
+      },
+      {
+        "itemId": 31,
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 16,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 17,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 6,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      },
+      {
+        "itemId": 33,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 26,
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      },
+      {
+        "itemId": 33,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 19,
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 20,
+        "quantity": 110
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      },
+      {
+        "itemId": 33,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 10,
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      },
+      {
+        "itemId": 33,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 11,
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      },
+      {
+        "itemId": 33,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 12,
+        "quantity": 120
+      },
+      {
+        "itemId": 18,
+        "quantity": 70
+      },
+      {
+        "itemId": 32,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 13,
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      },
+      {
+        "itemId": 32,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 14,
+        "quantity": 150
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      },
+      {
+        "itemId": 32,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 15,
+        "quantity": 180
+      },
+      {
+        "itemId": 25,
+        "quantity": 90
+      },
+      {
+        "itemId": 32,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 30,
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 27
+      },
+      {
+        "itemId": 30,
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 2,
+        "quantity": 36
+      },
+      {
+        "itemId": 30,
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 27
+      },
+      {
+        "itemId": 2,
+        "quantity": 27
+      },
+      {
+        "itemId": 30,
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 45
+      },
+      {
+        "itemId": 30,
+        "quantity": 27
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 4,
+        "quantity": 63
+      },
+      {
+        "itemId": 30,
+        "quantity": 27
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 5,
+        "quantity": 81
+      },
+      {
+        "itemId": 30,
+        "quantity": 36
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 16,
+        "quantity": 72
+      },
+      {
+        "itemId": 25,
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 17,
+        "quantity": 72
+      },
+      {
+        "itemId": 25,
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 6,
+        "quantity": 72
+      },
+      {
+        "itemId": 25,
+        "quantity": 45
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 26,
+        "quantity": 81
+      },
+      {
+        "itemId": 25,
+        "quantity": 45
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 19,
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 20,
+        "quantity": 99
+      },
+      {
+        "itemId": 25,
+        "quantity": 54
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 10,
+        "quantity": 108
+      },
+      {
+        "itemId": 25,
+        "quantity": 63
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 11,
+        "quantity": 126
+      },
+      {
+        "itemId": 25,
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 12,
+        "quantity": 108
+      },
+      {
+        "itemId": 18,
+        "quantity": 63
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 13,
+        "quantity": 117
+      },
+      {
+        "itemId": 25,
+        "quantity": 63
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 14,
+        "quantity": 135
+      },
+      {
+        "itemId": 25,
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 15,
+        "quantity": 162
+      },
+      {
+        "itemId": 25,
+        "quantity": 81
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 64
+      },
+      {
+        "itemId": 25,
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 7,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 48
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 7,
+        "quantity": 96
+      },
+      {
+        "itemId": 25,
+        "quantity": 56
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 8,
+        "quantity": 112
+      },
+      {
+        "itemId": 25,
+        "quantity": 64
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 8,
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 9,
+        "quantity": 104
+      },
+      {
+        "itemId": 25,
+        "quantity": 56
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 21,
+        "quantity": 128
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 22,
+        "quantity": 120
+      },
+      {
+        "itemId": 16,
+        "quantity": 72
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 23,
+        "quantity": 136
+      },
+      {
+        "itemId": 25,
+        "quantity": 88
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 24,
+        "quantity": 144
+      },
+      {
+        "itemId": 17,
+        "quantity": 96
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 7,
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 7,
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 8,
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 8,
+        "quantity": 150
+      },
+      {
+        "itemId": 25,
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 9,
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 21,
+        "quantity": 160
+      },
+      {
+        "itemId": 25,
+        "quantity": 100
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 22,
+        "quantity": 150
+      },
+      {
+        "itemId": 16,
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 23,
+        "quantity": 170
+      },
+      {
+        "itemId": 25,
+        "quantity": 110
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 24,
+        "quantity": 180
+      },
+      {
+        "itemId": 17,
+        "quantity": 120
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 30,
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 25
+      },
+      {
+        "itemId": 30,
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 2,
+        "quantity": 35
+      },
+      {
+        "itemId": 30,
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 25
+      },
+      {
+        "itemId": 2,
+        "quantity": 25
+      },
+      {
+        "itemId": 30,
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 40
+      },
+      {
+        "itemId": 30,
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 4,
+        "quantity": 60
+      },
+      {
+        "itemId": 30,
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 5,
+        "quantity": 80
+      },
+      {
+        "itemId": 30,
+        "quantity": 30
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 16,
+        "quantity": 70
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 17,
+        "quantity": 70
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 6,
+        "quantity": 70
+      },
+      {
+        "itemId": 25,
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 150,
+    "craftingLevelRequired": 100,
+    "craftingExp": 666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 26,
+        "quantity": 80
+      },
+      {
+        "itemId": 25,
+        "quantity": 40
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 170,
+    "craftingLevelRequired": 110,
+    "craftingExp": 720,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 19,
+        "quantity": 90
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 190,
+    "craftingLevelRequired": 120,
+    "craftingExp": 840,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 20,
+        "quantity": 100
+      },
+      {
+        "itemId": 25,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 210,
+    "craftingLevelRequired": 130,
+    "craftingExp": 1050,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 10,
+        "quantity": 110
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 240,
+    "craftingLevelRequired": 140,
+    "craftingExp": 1666,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 11,
+        "quantity": 130
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 260,
+    "craftingLevelRequired": 150,
+    "craftingExp": 1600,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 12,
+        "quantity": 110
+      },
+      {
+        "itemId": 18,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 290,
+    "craftingLevelRequired": 160,
+    "craftingExp": 1900,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 13,
+        "quantity": 120
+      },
+      {
+        "itemId": 25,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 320,
+    "craftingLevelRequired": 170,
+    "craftingExp": 2200,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 14,
+        "quantity": 140
+      },
+      {
+        "itemId": 25,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 350,
+    "craftingLevelRequired": 185,
+    "craftingExp": 2500,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 15,
+        "quantity": 160
+      },
+      {
+        "itemId": 25,
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 400,
+    "craftingLevelRequired": 200,
+    "craftingExp": 3200,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 27,
+        "quantity": 180
+      },
+      {
+        "itemId": 25,
+        "quantity": 90
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 60,
+    "craftingLevelRequired": 1,
+    "craftingExp": 100,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 29,
+        "quantity": 150
+      },
+      {
+        "itemId": 28,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 65,
+    "craftingLevelRequired": 10,
+    "craftingExp": 125,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 1,
+        "quantity": 20
+      },
+      {
+        "itemId": 29,
+        "quantity": 200
+      },
+      {
+        "itemId": 28,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 70,
+    "craftingLevelRequired": 20,
+    "craftingExp": 150,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 2,
+        "quantity": 30
+      },
+      {
+        "itemId": 29,
+        "quantity": 200
+      },
+      {
+        "itemId": 28,
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 75,
+    "craftingLevelRequired": 30,
+    "craftingExp": 180,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 3,
+        "quantity": 40
+      },
+      {
+        "itemId": 29,
+        "quantity": 250
+      },
+      {
+        "itemId": 28,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 80,
+    "craftingLevelRequired": 40,
+    "craftingExp": 225,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 4,
+        "quantity": 50
+      },
+      {
+        "itemId": 29,
+        "quantity": 300
+      },
+      {
+        "itemId": 28,
+        "quantity": 60
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 90,
+    "craftingLevelRequired": 50,
+    "craftingExp": 280,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 5,
+        "quantity": 60
+      },
+      {
+        "itemId": 29,
+        "quantity": 350
+      },
+      {
+        "itemId": 28,
+        "quantity": 70
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 100,
+    "craftingLevelRequired": 60,
+    "craftingExp": 333,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 16,
+        "quantity": 60
+      },
+      {
+        "itemId": 25,
+        "quantity": 40
+      },
+      {
+        "itemId": 29,
+        "quantity": 400
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 110,
+    "craftingLevelRequired": 70,
+    "craftingExp": 380,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 17,
+        "quantity": 60
+      },
+      {
+        "itemId": 25,
+        "quantity": 40
+      },
+      {
+        "itemId": 29,
+        "quantity": 400
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 120,
+    "craftingLevelRequired": 80,
+    "craftingExp": 450,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 13,
+        "quantity": 70
+      },
+      {
+        "itemId": 29,
+        "quantity": 500
+      },
+      {
+        "itemId": 28,
+        "quantity": 80
+      }
+    ]
+  },
+  {
+    "equipmentId": null,
+    "durationS": 130,
+    "craftingLevelRequired": 90,
+    "craftingExp": 520,
+    "CraftingRecipeItems": [
+      {
+        "itemId": 27,
+        "quantity": 100
+      },
+      {
+        "itemId": 29,
+        "quantity": 500
+      },
+      {
+        "itemId": 28,
+        "quantity": 100
+      }
+    ]
+  }
 ]

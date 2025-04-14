@@ -1,0 +1,672 @@
+Monster_ID,Domain_ID,Name,Description,Image Src,Encounter Chance,OLD EXP,EXP,Min Gold Drop,Max Gold Drop,Min DITTO Drop,Max DITTO Drop,Item Drops (Details),Item Drops,Equipment Drops (Details),Equipment Drops,Level,Max Stat Points,Stat Points,STR,DEF,DEX,LUK,MAGIC,HP LEVEL,Slime Traits,Trait Rarity,Equipped,Attack Type
+1,1,Glooplet,Barely sentient but eager to play (and eat).,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/067_A.png,32.5%,30,12.5,-5,25,0,10,"Bronze Ore*1*0.002
+Iron Ore*1*0.002
+String*1*0.002
+Wool*1*0.002
+Wood*1*0.002","1*1*0.002
+2*1*0.002
+28*1*0.002
+29*1*0.002
+30*1*0.002",,"1*1*0.0004
+2*1*0.0004
+59*1*0.0004
+60*1*0.0004
+69*1*0.0004
+70*1*0.0004
+79*1*0.0004
+80*1*0.0004
+99*1*0.0004
+100*1*0.0004",1,5,5,1,1,1,1,1,1,"3, 35",2D,,Melee
+2,1,Oozeling Wriggler,Slips through cracks to surprise its prey.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/070_A.png,22.5%,40,25,20,50,0,10,"Bronze Ore*1*0.004
+Iron Ore*1*0.004
+String*1*0.004
+Wool*1*0.004
+Wood*1*0.004","1*1*0.004
+2*1*0.004
+28*1*0.004
+29*1*0.004
+30*1*0.004",,"21*1*0.0007
+22*1*0.0007
+59*1*0.0007
+60*1*0.0007
+69*1*0.0007
+70*1*0.0007
+79*1*0.0007
+80*1*0.0007
+99*1*0.0007
+100*1*0.0007",2,10,10,2,2,2,2,2,1,"3, 35, 53",3D,,Ranged
+3,1,Slorbb,Bounces happily—but digests slowly.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/068_A.png,22.5%,50,25,20,50,0,10,"Bronze Ore*1*0.006
+Iron Ore*1*0.006
+String*1*0.006
+Wool*1*0.006
+Wood*1*0.006","1*1*0.006
+2*1*0.006
+28*1*0.006
+29*1*0.006
+30*1*0.006",,"40*1*0.0011
+41*1*0.0011
+59*1*0.0011
+60*1*0.0011
+69*1*0.0011
+70*1*0.0011
+79*1*0.0011
+80*1*0.0011
+99*1*0.0011
+100*1*0.0011",2,10,10,2,2,2,2,2,1,"4, 24, 42",3D,,Magic
+4,1,Miremelt,Leaves acidic puddles wherever it goes.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/071_A.png,10.0%,70,37.5,45,75,0,10,"Bronze Ore*1*0.008
+Iron Ore*1*0.008
+String*1*0.008
+Wool*1*0.008
+Wood*1*0.008","1*1*0.008
+2*1*0.008
+28*1*0.008
+29*1*0.008
+30*1*0.008","Sticky Sword*1*0.0014
+Slime Bronze Sword*1*0.0014
+Blight Helm*1*0.0014
+Void Helm*1*0.0014
+Blight Plate*1*0.0014
+Void Plate*1*0.0014
+Sticky Shield*1*0.0014
+Slime Bronze Shield*1*0.0014
+Sticky Mantle*1*0.0014
+Bronze Warden Cape*1*0.0014","1*1*0.0014
+2*1*0.0014
+59*1*0.0014
+60*1*0.0014
+69*1*0.0014
+70*1*0.0014
+79*1*0.0014
+80*1*0.0014
+99*1*0.0014
+100*1*0.0014",3,15,15,5,3,2,3,2,2,"4, 18, 24",3D,,Melee
+5,1,Squelchoid,"Squishy, sticky, and slightly sinister.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/069_A.png,7.5%,110,50,70,100,0,10,"Bronze Ore*1*0.01
+Iron Ore*1*0.01
+String*1*0.01
+Wool*1*0.01
+Wood*1*0.01","1*1*0.01
+2*1*0.01
+28*1*0.01
+29*1*0.01
+30*1*0.01","Sticky Longbow*1*0.0018
+Slime Bronze Longbow*1*0.0018
+Blight Helm*1*0.0018
+Void Helm*1*0.0018
+Blight Plate*1*0.0018
+Void Plate*1*0.0018
+Sticky Shield*1*0.0018
+Slime Bronze Shield*1*0.0018
+Sticky Mantle*1*0.0018
+Bronze Warden Cape*1*0.0018","21*1*0.0018
+22*1*0.0018
+59*1*0.0018
+60*1*0.0018
+69*1*0.0018
+70*1*0.0018
+79*1*0.0018
+80*1*0.0018
+99*1*0.0018
+100*1*0.0018",4,20,20,3,4,6,4,3,2,"3, 15, 35, 45",4D,,Ranged
+6,1,The Gelatinator,The final form of slime evolution.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/073_B.png,5.0%,180,62.5,95,125,0,10,"Bronze Ore*1*0.01
+Iron Ore*1*0.01
+String*1*0.01
+Wool*1*0.01
+Wood*1*0.01","1*1*0.01
+2*1*0.01
+28*1*0.01
+29*1*0.01
+30*1*0.01","Sticky Staff*1*0.0021
+Slime Bronze Staff*1*0.0021
+Blight Helm*1*0.0021
+Void Helm*1*0.0021
+Blight Plate*1*0.0021
+Void Plate*1*0.0021
+Sticky Shield*1*0.0021
+Slime Bronze Shield*1*0.0021
+Sticky Mantle*1*0.0021
+Bronze Warden Cape*1*0.0021","40*1*0.0021
+41*1*0.0021
+59*1*0.0021
+60*1*0.0021
+69*1*0.0021
+70*1*0.0021
+79*1*0.0021
+80*1*0.0021
+99*1*0.0021
+100*1*0.0021",5,25,25,4,5,4,5,7,3,"4, 9, 29, 50",4D,,Magic
+7,2,Rosemaw,A bloom with teeth and a taste for blood.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/015_A.png,32.5%,70,45,50,90,0,20,"Shadow Ore*1*0.0017
+Mystical Ore*1*0.0017
+Ice Crystal*1*0.0017
+Fire Crystal*1*0.0017
+Ooze Shards*1*0.0017
+Dacron*1*0.0017","3*1*0.0017
+4*1*0.0017
+16*1*0.0017
+17*1*0.0017
+25*1*0.0017
+31*1*0.0017","Sticky Sword*1*0.0004
+Slime Bronze Sword*1*0.0004
+Blight Helm*1*0.0004
+Void Helm*1*0.0004
+Blight Plate*1*0.0004
+Void Plate*1*0.0004
+Sticky Shield*1*0.0004
+Slime Bronze Shield*1*0.0004
+Sticky Mantle*1*0.0004
+Bronze Warden Cape*1*0.0004","3*1*0.0007
+61*1*0.0007
+71*1*0.0007
+81*1*0.0007
+101*1*0.0007",5,25,25,5,5,5,5,5,3,"53, 3,
+30",2D 1C,,Melee
+8,2,Petalguard,A flowery sentinel who blocks the path.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/023_A.png,22.5%,80,63,86,126,0,20,"Shadow Ore*1*0.0033
+Mystical Ore*1*0.0033
+Ice Crystal*1*0.0033
+Fire Crystal*1*0.0033
+Ooze Shards*1*0.0033
+Dacron*1*0.0033","3*1*0.0033
+4*1*0.0033
+16*1*0.0033
+17*1*0.0033
+25*1*0.0033
+31*1*0.0033","Sticky Longbow*1*0.0007
+Slime Bronze Longbow*1*0.0007
+Blight Helm*1*0.0007
+Void Helm*1*0.0007
+Blight Plate*1*0.0007
+Void Plate*1*0.0007
+Sticky Shield*1*0.0007
+Slime Bronze Shield*1*0.0007
+Sticky Mantle*1*0.0007
+Bronze Warden Cape*1*0.0007","23*1*0.0014
+61*1*0.0014
+71*1*0.0014
+81*1*0.0014
+101*1*0.0014",7,35,35,7,7,7,7,7,4,"50, 4,
+10, 36",2D 2C,,Ranged
+9,2,Thornkin Bulb,It grows thorns sharper than blades.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/013_A.png,22.5%,90,63,86,126,0,20,"Shadow Ore*1*0.005
+Mystical Ore*1*0.005
+Ice Crystal*1*0.005
+Fire Crystal*1*0.005
+Ooze Shards*1*0.005
+Dacron*1*0.005","3*1*0.005
+4*1*0.005
+16*1*0.005
+17*1*0.005
+25*1*0.005
+31*1*0.005","Sticky Staff*1*0.0011
+Slime Bronze Staff*1*0.0011
+Blight Helm*1*0.0011
+Void Helm*1*0.0011
+Blight Plate*1*0.0011
+Void Plate*1*0.0011
+Sticky Shield*1*0.0011
+Slime Bronze Shield*1*0.0011
+Sticky Mantle*1*0.0011
+Bronze Warden Cape*1*0.0011","42*1*0.0021
+61*1*0.0021
+71*1*0.0021
+81*1*0.0021
+101*1*0.0021",7,35,35,7,7,7,7,7,4,"45, 9
+17, 25",2D 2C,,Magic
+10,2,Bloomshroud,Veils itself in blossoms to ambush prey.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/021_A.png,10.0%,110,99,158,198,0,20,"Shadow Ore*1*0.0067
+Mystical Ore*1*0.0067
+Ice Crystal*1*0.0067
+Fire Crystal*1*0.0067
+Ooze Shards*1*0.0067
+Dacron*1*0.0067","3*1*0.0067
+4*1*0.0067
+16*1*0.0067
+17*1*0.0067
+25*1*0.0067
+31*1*0.0067","Hardened Sword*1*0.0029
+Voidheart Helm*1*0.0029
+Voidheart Plate*1*0.0029
+Hardened Shield*1*0.0029
+Ironclad Wrap*1*0.0029","3*1*0.0029
+61*1*0.0029
+71*1*0.0029
+81*1*0.0029
+101*1*0.0029",11,55,55,11,11,11,11,11,6,"42, 15
+51, 11, 1",2D 3C,,Melee
+11,2,Lilylurker,"Silent as roots, deadly as poison.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/014_A.png,7.5%,150,117,194,234,0,20,"Shadow Ore*1*0.0083
+Mystical Ore*1*0.0083
+Ice Crystal*1*0.0083
+Fire Crystal*1*0.0083
+Ooze Shards*1*0.0083
+Dacron*1*0.0083","3*1*0.0083
+4*1*0.0083
+16*1*0.0083
+17*1*0.0083
+25*1*0.0083
+31*1*0.0083","Hardened Longbow*1*0.0036
+Voidheart Helm*1*0.0036
+Voidheart Plate*1*0.0036
+Hardened Shield*1*0.0036
+Ironclad Wrap*1*0.0036","23*1*0.0036
+61*1*0.0036
+71*1*0.0036
+81*1*0.0036
+101*1*0.0036",13,65,65,13,13,13,13,13,7,"35, 18
+10, 17, 34, 43",2D 4C,,Ranged
+12,2,Verdant Snapper,Lunges from vines with snapping jaws.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/017_A.png,5.0%,220,135,230,270,0,20,"Shadow Ore*1*0.0083
+Mystical Ore*1*0.0083
+Ice Crystal*1*0.0083
+Fire Crystal*1*0.0083
+Ooze Shards*1*0.0083
+Dacron*1*0.0083","3*1*0.0083
+4*1*0.0083
+16*1*0.0083
+17*1*0.0083
+25*1*0.0083
+31*1*0.0083","Hardened Staff*1*0.0043
+Voidheart Helm*1*0.0043
+Voidheart Plate*1*0.0043
+Hardened Shield*1*0.0043
+Ironclad Wrap*1*0.0043","42*1*0.0043
+61*1*0.0043
+71*1*0.0043
+81*1*0.0043
+101*1*0.0043",15,75,75,15,15,15,15,15,8,"29, 24
+52
+31",2D 1C 1B,,Magic
+13,3,Murkmancer,Croaks warnings before it strikes.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/080_A.png,32.5%,150,120,300,360,0,30,"Adamant Ore*1*0.002
+Relic Ore*1*0.002
+Ice Ooze Crystal*1*0.002
+Magma Shards*1*0.002
+Dyneema*1*0.002","5*1*0.002
+6*1*0.002
+18*1*0.002
+26*1*0.002
+32*1*0.002","Hardened Sword*1*0.0007
+Voidheart Helm*1*0.0007
+Voidheart Plate*1*0.0007
+Hardened Shield*1*0.0007
+Ironclad Wrap*1*0.0007","4*1*0.0007
+62*1*0.0007
+72*1*0.0007
+82*1*0.0007
+102*1*0.0007",15,75,75,15,15,15,15,15,8,"34, 37
+7, 21","2C, 2B",,Melee
+14,3,Murkbeast,"Camouflaged in mud, it waits still.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/078_A.png,22.5%,160,144,372,432,0,30,"Adamant Ore*1*0.004
+Relic Ore*1*0.004
+Ice Ooze Crystal*1*0.004
+Magma Shards*1*0.004
+Dyneema*1*0.004","5*1*0.004
+6*1*0.004
+18*1*0.004
+26*1*0.004
+32*1*0.004","Hardened Longbow*1*0.0014
+Voidheart Helm*1*0.0014
+Voidheart Plate*1*0.0014
+Hardened Shield*1*0.0014
+Ironclad Wrap*1*0.0014","24*1*0.0014
+62*1*0.0014
+72*1*0.0014
+82*1*0.0014
+102*1*0.0014",18,90,90,18,18,18,18,18,9,"1, 11, 51
+12, 19","3C, 2B",,Ranged
+15,3,Murkling,Its skin secretes toxic slime.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/053_A.png,22.5%,170,144,372,432,0,30,"Adamant Ore*1*0.006
+Relic Ore*1*0.006
+Ice Ooze Crystal*1*0.006
+Magma Shards*1*0.006
+Dyneema*1*0.006","5*1*0.006
+6*1*0.006
+18*1*0.006
+26*1*0.006
+32*1*0.006","Hardened Staff*1*0.0021
+Voidheart Helm*1*0.0021
+Voidheart Plate*1*0.0021
+Hardened Shield*1*0.0021
+Ironclad Wrap*1*0.0021","43*1*0.0021
+62*1*0.0021
+72*1*0.0021
+82*1*0.0021
+102*1*0.0021",18,90,90,18,18,18,18,18,9,"16, 43, 51
+31, 48","3C, 2B",,Magic
+16,3,Sludgething,Slithers along the fog-laced surface.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/022_A.png,10.0%,190,168,444,504,0,30,"Adamant Ore*1*0.008
+Relic Ore*1*0.008
+Ice Ooze Crystal*1*0.008
+Magma Shards*1*0.008
+Dyneema*1*0.008","5*1*0.008
+6*1*0.008
+18*1*0.008
+26*1*0.008
+32*1*0.008","Alloy Sword*1*0.0029
+Protector Helm*1*0.0029
+Protector Plate*1*0.0029
+Alloy Shield*1*0.0029
+Shroud of Shadows*1*0.0029","4*1*0.0029
+62*1*0.0029
+72*1*0.0029
+82*1*0.0029
+102*1*0.0029",21,105,105,21,21,21,21,21,11,"11, 34, 44
+48, 56, 7","3C, 3B",,Melee
+17,3,Swampling,Lures prey with bubbling mimicry.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/027_A.png,7.5%,230,192,516,576,0,30,"Adamant Ore*1*0.01
+Relic Ore*1*0.01
+Ice Ooze Crystal*1*0.01
+Magma Shards*1*0.01
+Dyneema*1*0.01","5*1*0.01
+6*1*0.01
+18*1*0.01
+26*1*0.01
+32*1*0.01","Alloy Longbow*1*0.0036
+Protector Helm*1*0.0036
+Protector Plate*1*0.0036
+Alloy Shield*1*0.0036
+Shroud of Shadows*1*0.0036","24*1*0.0036
+62*1*0.0036
+72*1*0.0036
+82*1*0.0036
+102*1*0.0036",24,120,120,24,24,24,24,24,12,"2, 16, 30
+5, 12, 21, 31","3C, 4B",,Ranged
+18,3,Murklord,Covered in fungus and forgotten bones.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/046_A.png,5.0%,300,240,660,720,0,30,"Adamant Ore*1*0.01
+Relic Ore*1*0.01
+Ice Ooze Crystal*1*0.01
+Magma Shards*1*0.01
+Dyneema*1*0.01","5*1*0.01
+6*1*0.01
+18*1*0.01
+26*1*0.01
+32*1*0.01","Alloy Staff*1*0.0043
+Protector Helm*1*0.0043
+Protector Plate*1*0.0043
+Alloy Shield*1*0.0043
+Shroud of Shadows*1*0.0043","43*1*0.0043
+62*1*0.0043
+72*1*0.0043
+82*1*0.0043
+102*1*0.0043",30,150,150,30,30,30,30,30,15,"6, 32, 49",3A,,Magic
+19,4,Slithling,Strikes before you're sure it's real.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/019_A.png,32.5%,270,210,550,630,0,50,"Voidium Ore*1*0.002
+Vorloran Ore*1*0.002
+Corundum Crystal*1*0.002
+Augite Crystal*1*0.002
+Spectra*1*0.002","7*1*0.002
+8*1*0.002
+19*1*0.002
+20*1*0.002
+33*1*0.002","Alloy Sword*1*0.0007
+Protector Helm*1*0.0007
+Protector Plate*1*0.0007
+Alloy Shield*1*0.0007
+Shroud of Shadows*1*0.0007","5*1*0.0007
+63*1*0.0007
+73*1*0.0007
+83*1*0.0007
+103*1*0.0007",30,150,150,30,30,30,30,30,15,"5, 31, 55
+6, 46","3B, 2A",,Melee
+20,4,Scalelord,Tongue splits and sings to stone.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/077_A.png,22.5%,280,245,655,735,0,50,"Voidium Ore*1*0.004
+Vorloran Ore*1*0.004
+Corundum Crystal*1*0.004
+Augite Crystal*1*0.004
+Spectra*1*0.004","7*1*0.004
+8*1*0.004
+19*1*0.004
+20*1*0.004
+33*1*0.004","Alloy Longbow*1*0.0014
+Protector Helm*1*0.0014
+Protector Plate*1*0.0014
+Alloy Shield*1*0.0014
+Shroud of Shadows*1*0.0014","25*1*0.0014
+63*1*0.0014
+73*1*0.0014
+83*1*0.0014
+103*1*0.0014",35,175,175,35,35,35,35,35,18,"7, 21, 48
+27, 47, 57","3B, 3A",,Ranged
+21,4,Scalething,Its hiss echoes through underground halls.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/079_A.png,22.5%,290,245,655,735,0,50,"Voidium Ore*1*0.006
+Vorloran Ore*1*0.006
+Corundum Crystal*1*0.006
+Augite Crystal*1*0.006
+Spectra*1*0.006","7*1*0.006
+8*1*0.006
+19*1*0.006
+20*1*0.006
+33*1*0.006","Alloy Staff*1*0.0021
+Protector Helm*1*0.0021
+Protector Plate*1*0.0021
+Alloy Shield*1*0.0021
+Shroud of Shadows*1*0.0021","44*1*0.0021
+63*1*0.0021
+73*1*0.0021
+83*1*0.0021
+103*1*0.0021",35,175,175,35,35,35,35,35,18,"12, 26, 56
+13, 32, 27","3B, 3A",,Magic
+22,4,Venomthing,Poisons pool where it slithers.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/086_A.png,10.0%,310,280,760,840,0,50,"Voidium Ore*1*0.008
+Vorloran Ore*1*0.008
+Corundum Crystal*1*0.008
+Augite Crystal*1*0.008
+Spectra*1*0.008","7*1*0.008
+8*1*0.008
+19*1*0.008
+20*1*0.008
+33*1*0.008","Veil Sword*1*0.0029
+Watcher Helm*1*0.0029
+Watcher Plate*1*0.0029
+Veil Shield*1*0.0029
+Verdant Aegis Cloak*1*0.0029","5*1*0.0029
+63*1*0.0029
+73*1*0.0029
+83*1*0.0029
+103*1*0.0029",40,200,200,40,40,40,40,40,20,"12, 21, 31, 40
+20, 27, 46, 47","4B, 4A",,Melee
+23,4,Hissthing,Worshipped as a god by lesser snakes.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/061_A.png,7.5%,350,315,865,945,0,50,"Voidium Ore*1*0.01
+Vorloran Ore*1*0.01
+Corundum Crystal*1*0.01
+Augite Crystal*1*0.01
+Spectra*1*0.01","7*1*0.01
+8*1*0.01
+19*1*0.01
+20*1*0.01
+33*1*0.01","Veil Longbow*1*0.0036
+Watcher Helm*1*0.0036
+Watcher Plate*1*0.0036
+Veil Shield*1*0.0036
+Verdant Aegis Cloak*1*0.0036","25*1*0.0036
+63*1*0.0036
+73*1*0.0036
+83*1*0.0036
+103*1*0.0036",45,225,225,45,45,45,45,45,23,"5, 7, 12, 19
+13, 27, 38, 46, 57","4B, 5A",,Ranged
+24,4,Hisslord,Eyes shimmer with ancient cunning.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/042_A.png,5.0%,420,350,970,1050,0,50,"Voidium Ore*1*0.01
+Vorloran Ore*1*0.01
+Corundum Crystal*1*0.01
+Augite Crystal*1*0.01
+Spectra*1*0.01","7*1*0.01
+8*1*0.01
+19*1*0.01
+20*1*0.01
+33*1*0.01","Veil Staff*1*0.0043
+Watcher Helm*1*0.0043
+Watcher Plate*1*0.0043
+Veil Shield*1*0.0043
+Verdant Aegis Cloak*1*0.0043","44*1*0.0043
+63*1*0.0043
+73*1*0.0043
+83*1*0.0043
+103*1*0.0043",50,250,250,50,50,50,50,50,25,"21, 26, 31, 56
+6, 20, 32, 39, 47, 57","4B, 6A",,Magic
+25,5,Oathbreaker Fenlord,Bears the scars of countless battles.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/063_A.png,32.5%,430,300,1080,1200,0,80,"Eldritch Ore*1*0.0025
+Sanctum Ore*1*0.0025
+Aeris Crystal*1*0.0025
+Glacia Crystal*1*0.0025","9*1*0.0025
+10*1*0.0025
+21*1*0.0025
+22*1*0.0025","Veil Sword*1*0.0007
+Watcher Helm*1*0.0007
+Watcher Plate*1*0.0007
+Veil Shield*1*0.0007
+Verdant Aegis Cloak*1*0.0007","6*1*0.0007
+64*1*0.0007
+74*1*0.0007
+84*1*0.0007
+104*1*0.0007",50,250,250,50,50,50,50,50,25,"13, 32, 38, 39, 46",5A,,Melee
+26,5,Gnashfang Duelist,Roars before charging with wild glee.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/076_A.png,22.5%,440,330,1200,1320,0,80,"Eldritch Ore*1*0.005
+Sanctum Ore*1*0.005
+Aeris Crystal*1*0.005
+Glacia Crystal*1*0.005","9*1*0.005
+10*1*0.005
+21*1*0.005
+22*1*0.005","Veil Longbow*1*0.0014
+Watcher Helm*1*0.0014
+Watcher Plate*1*0.0014
+Veil Shield*1*0.0014
+Verdant Aegis Cloak*1*0.0014","26*1*0.0014
+64*1*0.0014
+74*1*0.0014
+84*1*0.0014
+104*1*0.0014",55,275,275,55,55,55,55,55,28,"20, 27, 39, 46, 57,
+41","5A, 1S",,Ranged
+27,5,Ironhide Outcast,Keeps trophies on a blood-soaked belt.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/060_A.png,22.5%,450,330,1200,1320,0,80,"Eldritch Ore*1*0.0075
+Sanctum Ore*1*0.0075
+Aeris Crystal*1*0.0075
+Glacia Crystal*1*0.0075","9*1*0.0075
+10*1*0.0075
+21*1*0.0075
+22*1*0.0075","Veil Staff*1*0.0021
+Watcher Helm*1*0.0021
+Watcher Plate*1*0.0021
+Veil Shield*1*0.0021
+Verdant Aegis Cloak*1*0.0021","45*1*0.0021
+64*1*0.0021
+74*1*0.0021
+84*1*0.0021
+104*1*0.0021",55,275,275,55,55,55,55,55,28,"13, 27, 39, 47, 57,
+41","5A, 1S",,Magic
+28,5,Gorefang Raider,Only respects strength and savagery.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/062_A.png,10.0%,470,360,1320,1440,0,80,"Eldritch Ore*1*0.01
+Sanctum Ore*1*0.01
+Aeris Crystal*1*0.01
+Glacia Crystal*1*0.01","9*1*0.01
+10*1*0.01
+21*1*0.01
+22*1*0.01","Muck Sword*1*0.0029
+Eldritch Hood*1*0.0029
+Eldritch Robes*1*0.0029
+Muck Shield*1*0.0029
+Luminous Veil*1*0.0029","6*1*0.0029
+64*1*0.0029
+74*1*0.0029
+84*1*0.0029
+104*1*0.0029",60,300,300,60,60,60,60,60,30,"6, 27, 32, 47, 57,
+28, 58","5A, 2S",,Melee
+29,5,Bloodtrail Marauder,Its laughter sends chills down spines.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/090_A.png,7.5%,510,420,1560,1680,0,80,"Eldritch Ore*1*0.0125
+Sanctum Ore*1*0.0125
+Aeris Crystal*1*0.0125
+Glacia Crystal*1*0.0125","9*1*0.0125
+10*1*0.0125
+21*1*0.0125
+22*1*0.0125","Muck Longbow*1*0.0036
+Eldritch Hood*1*0.0036
+Eldritch Robes*1*0.0036
+Muck Shield*1*0.0036
+Luminous Veil*1*0.0036","26*1*0.0036
+64*1*0.0036
+74*1*0.0036
+84*1*0.0036
+104*1*0.0036",70,350,350,70,70,70,70,70,35,"6, 13, 32, 39, 47, 57,
+23, 33",6A 2S,,Ranged
+30,5,Blighthorn Warchief,Fueled by fury and raw instinct.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/087_A.png,5.0%,580,480,1800,1920,0,80,"Eldritch Ore*1*0.0125
+Sanctum Ore*1*0.0125
+Aeris Crystal*1*0.0125
+Glacia Crystal*1*0.0125","9*1*0.0125
+10*1*0.0125
+21*1*0.0125
+22*1*0.0125","Muck Staff*1*0.0043
+Eldritch Hood*1*0.0043
+Eldritch Robes*1*0.0043
+Muck Shield*1*0.0043
+Luminous Veil*1*0.0043","45*1*0.0043
+64*1*0.0043
+74*1*0.0043
+84*1*0.0043
+104*1*0.0043",80,400,400,80,80,80,80,80,40,"13, 27, 32, 39, 47, 57,
+14, 49, 58",6A 3S,,Magic
+31,6,Charbeast,A relic of fire given cruel sentience.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/016_A.png,32.5%,670,400,1420,1600,0,130,"Abyssium Ore*1*0.0025
+Brumite Ore*1*0.0025
+Terran Ore*1*0.0025
+Ragnar Crystal*1*0.0025","11*1*0.0025
+12*1*0.0025
+23*1*0.0025
+24*1*0.0025","Muck Sword*1*0.0007
+Eldritch Hood*1*0.0007
+Eldritch Robes*1*0.0007
+Muck Shield*1*0.0007
+Luminous Veil*1*0.0007","7*1*0.0007
+65*1*0.0007
+75*1*0.0007
+85*1*0.0007
+105*1*0.0007",80,400,400,80,80,80,80,80,40,"6, 13, 27, 32, 38, 39, 46. 47, 57",9A,,Melee
+32,6,Cindermancer,Smolders long after it's struck down.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/028_A.png,22.5%,680,425,1520,1700,0,130,"Abyssium Ore*1*0.005
+Brumite Ore*1*0.005
+Terran Ore*1*0.005
+Ragnar Crystal*1*0.005","11*1*0.005
+12*1*0.005
+23*1*0.005
+24*1*0.005","Muck Longbow*1*0.0014
+Eldritch Hood*1*0.0014
+Eldritch Robes*1*0.0014
+Muck Shield*1*0.0014
+Luminous Veil*1*0.0014","27*1*0.0014
+65*1*0.0014
+75*1*0.0014
+85*1*0.0014
+105*1*0.0014",85,425,425,85,85,85,85,85,43,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57",10A,,Ranged
+33,6,Charthing,Its steps leave scorched imprints.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/084_A.png,22.5%,690,425,1520,1700,0,130,"Abyssium Ore*1*0.0075
+Brumite Ore*1*0.0075
+Terran Ore*1*0.0075
+Ragnar Crystal*1*0.0075","11*1*0.0075
+12*1*0.0075
+23*1*0.0075
+24*1*0.0075","Muck Staff*1*0.0021
+Eldritch Hood*1*0.0021
+Eldritch Robes*1*0.0021
+Muck Shield*1*0.0021
+Luminous Veil*1*0.0021","46*1*0.0021
+65*1*0.0021
+75*1*0.0021
+85*1*0.0021
+105*1*0.0021",85,425,425,85,85,85,85,85,43,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57",10A,,Magic
+34,6,Charspawn,Coughs up embers when provoked.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/055_A.png,10.0%,710,450,1620,1800,0,130,"Abyssium Ore*1*0.01
+Brumite Ore*1*0.01
+Terran Ore*1*0.01
+Ragnar Crystal*1*0.01","11*1*0.01
+12*1*0.01
+23*1*0.01
+24*1*0.01","Glow Sword*1*0.0029
+Zephyr Crown*1*0.0029
+Zephyr Godplate*1*0.0029
+Glow Shield*1*0.0029
+Cryo Cloak*1*0.0029","7*1*0.0029
+65*1*0.0029
+75*1*0.0029
+85*1*0.0029
+105*1*0.0029",90,450,450,90,90,90,90,90,45,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57,, 28",10A 1S,,Melee
+35,6,Cinderbeast,Hollow and burning from the inside.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/064_A.png,7.5%,750,500,1820,2000,0,130,"Abyssium Ore*1*0.0125
+Brumite Ore*1*0.0125
+Terran Ore*1*0.0125
+Ragnar Crystal*1*0.0125","11*1*0.0125
+12*1*0.0125
+23*1*0.0125
+24*1*0.0125","Glow Longbow*1*0.0036
+Zephyr Crown*1*0.0036
+Zephyr Godplate*1*0.0036
+Glow Shield*1*0.0036
+Cryo Cloak*1*0.0036","27*1*0.0036
+65*1*0.0036
+75*1*0.0036
+85*1*0.0036
+105*1*0.0036",100,500,500,100,100,100,100,100,50,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57,, 23, 33",10A 2S,,Ranged
+36,6,Charmancer,Ash leaks from its eye sockets.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/006_A.png,5.0%,820,550,2020,2200,0,130,"Abyssium Ore*1*0.0125
+Brumite Ore*1*0.0125
+Terran Ore*1*0.0125
+Ragnar Crystal*1*0.0125","11*1*0.0125
+12*1*0.0125
+23*1*0.0125
+24*1*0.0125","Glow Staff*1*0.0043
+Zephyr Crown*1*0.0043
+Zephyr Godplate*1*0.0043
+Glow Shield*1*0.0043
+Cryo Cloak*1*0.0043","46*1*0.0043
+65*1*0.0043
+75*1*0.0043
+85*1*0.0043
+105*1*0.0043",110,550,550,110,110,110,110,110,55,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57, 22, 41, 8",10A 3S,,Magic

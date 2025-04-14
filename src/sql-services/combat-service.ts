@@ -1,126 +1,210 @@
-import { Combat } from '@prisma/client';
-import { logger } from '../utils/logger';
-import { prisma } from './client';
+import { Combat, Domain, DomainMonster, Equipment, Item, Monster, MonsterDrop, StatEffect } from "@prisma/client";
+import { logger } from "../utils/logger";
+import { prisma } from "./client";
 
-// Function to get user combat
-export async function getUserCombat(userId: string): Promise<Combat> {
+/**
+ * Type representing a full Monster with all its nested data.
+ */
+export type FullMonster = Monster & {
+    combat: Combat;
+    statEffects: StatEffect[];
+    drops: (MonsterDrop & {
+        item: Item | null;
+        equipment: Equipment | null;
+    })[];
+};
+
+/**
+ * Fetch a monster by ID, including its combat stats.
+ * @param {number} monsterId - The ID of the monster to fetch.
+ * @returns {Promise<Monster>} - The monster with its combat stats and drop objects.
+ */
+export async function fetchMonsterById(monsterId: number): Promise<FullMonster | null> {
     try {
-        // Fetch the combat record for the given userId
-        const combat = await prisma.combat.findUnique({
-            where: { userId }
+        logger.info(`Fetching monster with ID: ${monsterId}`);
+
+        const monster = await prisma.monster.findUnique({
+            where: { id: monsterId },
+            include: {
+                combat: true, // Include combat stats
+                statEffects: true,
+                drops: {
+                    include: {
+                        item: true,
+                        equipment: true,
+                    }
+                }
+            },
         });
 
-        if (!combat) {
-            throw new Error(`Combat record not found.`)
+        if (!monster) {
+            logger.warn(`Monster with ID ${monsterId} not found.`);
+            return null;
         }
 
-        // Return the combat record
-        console.log(`Fetched combat stats for user ID ${userId}: ${JSON.stringify(combat)}`);
-
-        return combat;
+        logger.info(`Retrieved monster: ${monster.name}`);
+        return monster;
     } catch (error) {
-        console.error(`Error fetching combat stats for user ${userId}: ${error}`);
+        logger.error(`Error fetching monster with ID ${monsterId}: ${error}`);
         throw error;
     }
 }
 
-// Function to increment/decrement hp
-export async function incrementHp(userId: string, amount: number): Promise<number> {
-    try {
-        // Fetch the current hp and hpLevel from the Combat record
-        const combat = await prisma.combat.findUnique({
-            where: { userId }
-        });
+/**
+ * Type representing a Domain with all nested monsters and their data.
+ */
+export type DomainWithMonsters = Domain & {
+    monsters: (DomainMonster & {
+        monster: Monster & {
+            combat: Combat;
+            statEffects: StatEffect[];
+            drops: (MonsterDrop & {
+                item: Item | null;
+                equipment: Equipment | null;
+            })[];
+        };
+    })[];
+};
 
-        if (!combat) {
-            throw new Error(`Combat record not found.`)
+/**
+ * Fetches a domain by its ID, including nested monster data.
+ *
+ * This function returns a full `DomainWithMonsters` object from the database, along with:
+ * - All `DomainMonster` entries related to it
+ * - Each associated `Monster`'s data
+ * - Each `Monster`'s `combat` stats
+ * - Each `Monster`'s attached `statEffects`
+ * - Each `Monster`'s `drops`, including nested `item` or `equipment`
+ *
+ * @param domainId - The ID of the domain to fetch
+ * @returns A `DomainWithMonsters` object or `null` if not found
+ */
+export async function getDomainById(domainId: number): Promise<DomainWithMonsters | null> {
+    return await prisma.domain.findUnique({
+        where: { id: domainId },
+        include: {
+            monsters: {
+                include: {
+                    monster: {
+                        include: {
+                            combat: true,
+                            statEffects: true,
+                            drops: {
+                                include: {
+                                    item: true,
+                                    equipment: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+/**
+ * Increment or decrement a user's base stats.
+ * @param {string} userId - The Telegram ID of the user.
+ * @param {Partial<{ str: number; def: number; dex: number; luk: number; magic: number; hpLevel: number }>} changes - The stat changes.
+ * @returns {Promise<void>}
+ */
+export async function updateUserStats(
+    userId: string,
+    changes: Partial<{ str: number; def: number; dex: number; luk: number; magic: number; hpLevel: number }>
+) {
+    try {
+        logger.info(`Updating stats for user: ${userId}`);
+
+        // Ensure at least one change is provided
+        if (Object.keys(changes).length === 0) {
+            throw new Error("No stat changes provided.");
         }
 
-        // Calculate the maximum allowed hp based on hpLevel
-        const maxHp = combat.hpLevel * 10;
-
-        // Calculate the new hp, ensuring it does not drop below 0 or exceed maxHp
-        const newHp = Math.min(maxHp, Math.max(0, combat.hp + amount));
-
-        // Update the Combat record with the new hp value
-        await prisma.combat.update({
-            where: { userId },
-            data: { hp: newHp }
+        // Update the user stats dynamically
+        await prisma.user.update({
+            where: { telegramId: userId },
+            data: {
+                str: { increment: changes.str ?? 0 },
+                def: { increment: changes.def ?? 0 },
+                dex: { increment: changes.dex ?? 0 },
+                luk: { increment: changes.luk ?? 0 },
+                magic: { increment: changes.magic ?? 0 },
+                hpLevel: { increment: changes.hpLevel ?? 0 },
+            },
         });
 
-        console.log(`HP incremented by ${amount} for user ID ${userId}. New HP: ${newHp}`);
-
-        return newHp;
+        logger.info(`Successfully updated stats for user: ${userId}`);
     } catch (error) {
-        console.error(`Error incrementing HP for user ${userId}: ${error}`);
+        logger.error(`Error updating user stats: ${error}`);
         throw error;
     }
 }
 
-// Function to update user's combat stats based on equipped items
-export async function updateCombatStats(telegramId: string): Promise<Combat> {
+/**
+ * Updates a user's combat HP by telegramId using a nested update.
+ *
+ * This avoids fetching the combatId manually by using Prisma's relational updates.
+ *
+ * @param telegramId - The user's Telegram ID
+ * @param newHp - The new HP value to set
+ * @returns The updated Combat object
+ */
+export async function setUserCombatHpByTelegramId(telegramId: string, newHp: number) {
     try {
-        // Fetch the user's equipment inventory (only equipped items)
+        // First, get the user's combat maxHp
         const user = await prisma.user.findUnique({
             where: { telegramId },
-            include: {
-                hat: { include: { equipment: true } },
-                armour: { include: { equipment: true } },
-                weapon: { include: { equipment: true } },
-                shield: { include: { equipment: true } },
-                cape: { include: { equipment: true } },
-                necklace: { include: { equipment: true } },
-                pet: { include: { equipment: true } },
-                spellbook: { include: { equipment: true } },
-            }
+            select: {
+                combat: { select: { maxHp: true } },
+            },
         });
 
-        if (!user) {
-            throw new Error(`User with telegramId ${telegramId} not found.`);
+        if (!user || !user.combat) {
+            throw new Error(`User or combat record not found for telegramId ${telegramId}`);
         }
 
-        // Initialize the total stats based on the base user stats
-        let totalStr = user.str;
-        let totalDef = user.def;
-        let totalDex = user.dex;
-        let totalMagic = user.magic;
-        let hpLevel = user.hpLevel;
+        const clampedHp = Math.max(0, Math.min(newHp, user.combat.maxHp));
 
-        // List of all equipment slots to iterate over
-        const equipmentSlots = ['hat', 'armour', 'weapon', 'shield', 'cape', 'necklace', 'pet', 'spellbook'];
-
-        // Iterate through each equipment slot and add its stats to the total
-        for (const slot of equipmentSlots) {
-            const equipmentInventory = user[slot as keyof typeof user] as any; // Cast dynamically
-            if (equipmentInventory && equipmentInventory.equipment) {
-                const equipment = equipmentInventory.equipment;
-                totalStr += equipment.str;
-                totalDef += equipment.def;
-                totalDex += equipment.dex;
-                totalMagic += equipment.magic;
-                hpLevel += equipment.hp;
-            }
-        }
-
-        // Update the user's combat stats with the calculated totals
-        const updatedCombat = await prisma.combat.update({
-            where: { userId: telegramId },
+        // Now perform nested update
+        return await prisma.user.update({
+            where: { telegramId },
             data: {
-                str: totalStr,
-                def: totalDef,
-                dex: totalDex,
-                magic: totalMagic,
-                hpLevel: hpLevel,
-            }
+                combat: {
+                    update: {
+                        hp: clampedHp,
+                    },
+                },
+            },
+            select: {
+                combat: true,
+            },
         });
-
-        logger.info(`Updated combat stats for user ${telegramId}: STR: ${totalStr}, DEF: ${totalDef}, DEX: ${totalDex}, MAGIC: ${totalMagic}, HP_LEVEL: ${hpLevel}`);
-
-        return updatedCombat
-
     } catch (error) {
-        logger.error(`Failed to update combat stats for user ${telegramId}: ${error}`);
+        console.error(`Error setting user combat HP for user ${telegramId}: ${error}`);
         throw error;
     }
 }
 
+/**
+ * Updates the lastBattleEndTimestamp for a user by their userId.
+ *
+ * @param userId - The telegramId of the user
+ * @param timestamp - The Date to set as the last battle end time
+ * @returns The updated user object
+ */
+export async function setLastBattleEndTimestamp(userId: string, timestamp: Date) {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { telegramId: userId },
+            data: {
+                lastBattleEndTimestamp: timestamp,
+            },
+        });
+
+        return updatedUser;
+    } catch (error) {
+        console.error(`Error updating lastBattleEndTimestamp for user ${userId}: ${error}`);
+        throw error;
+    }
+}

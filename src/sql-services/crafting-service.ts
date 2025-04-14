@@ -11,6 +11,7 @@ export interface CraftingRecipeRes {
     itemId: number;
     itemName: string;
     quantity: number;
+    imgsrc: string;
   }[];
 }
 
@@ -28,7 +29,8 @@ export async function getCraftingRecipeForEquipment(equipmentId: number): Promis
           include: {
             item: {
               select: {
-                name: true
+                name: true,
+                imgsrc: true
               }
             }
           }
@@ -49,7 +51,8 @@ export async function getCraftingRecipeForEquipment(equipmentId: number): Promis
       requiredItems: recipe.CraftingRecipeItems.map((recipeItem) => ({
         itemId: recipeItem.itemId,
         itemName: recipeItem.item.name,
-        quantity: recipeItem.quantity
+        quantity: recipeItem.quantity,
+        imgsrc: recipeItem.item.imgsrc
       }))
     };
 

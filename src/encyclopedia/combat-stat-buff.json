@@ -1,0 +1,80 @@
+{
+    "MAX_HP": {
+        "minFlat": 100,
+        "maxFlat": 10000,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.75
+    },
+    "ATK_SPD": {
+        "minFlat": 1,
+        "maxFlat": 1000,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "ACC": {
+        "minFlat": 10,
+        "maxFlat": 20000,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.3
+    },
+    "EVA": {
+        "minFlat": 10,
+        "maxFlat": 15000,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.3
+    },
+    "MAX_MELEE_DMG": {
+        "minFlat": 2,
+        "maxFlat": 500,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "MAX_RANGE_DMG": {
+        "minFlat": 2,
+        "maxFlat": 500,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "MAX_MAGIC_DMG": {
+        "minFlat": 2,
+        "maxFlat": 500,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "CRIT_CHANCE": {
+        "minFlat": 0.001,
+        "maxFlat": 0.1,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "CRIT_MULTIPLIER": {
+        "minFlat": 0.02,
+        "maxFlat": 0.25,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "DMG_REDUCTION": {
+        "minFlat": 10,
+        "maxFlat": 2500,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "MAGIC_DMG_REDUCTION": {
+        "minFlat": 10,
+        "maxFlat": 2500,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.5
+    },
+    "HP_REGEN_RATE": {
+        "minFlat": 0,
+        "maxFlat": 0,
+        "minMultiplier": 0.95,
+        "maxMultiplier": 0.75
+    },
+    "HP_REGEN_AMOUNT": {
+        "minFlat": 2,
+        "maxFlat": 120,
+        "minMultiplier": 1.02,
+        "maxMultiplier": 1.3
+    }
+}

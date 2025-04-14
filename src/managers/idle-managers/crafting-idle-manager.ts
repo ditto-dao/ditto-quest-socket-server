@@ -1,19 +1,30 @@
+import { Equipment, Prisma } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
-import { getCraftingRecipeForEquipment } from "../../sql-services/crafting-service";
+import { CraftingRecipeRes } from "../../sql-services/crafting-service";
 import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 import { deleteItemsFromUserInventory, doesUserOwnItems } from "../../sql-services/item-inventory-service";
 import { addCraftingExp, getUserCraftingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { IdleActivityQueueElement, IdleManager, ProgressUpdate } from "./idle-manager";
+import { IdleManager } from "./idle-manager";
+import { CraftingUpdate, IdleCraftingIntervalElement, TimerHandle } from "./idle-manager-types";
 
 export class IdleCraftingManager {
 
     constructor() { }
 
-    static async startCrafting(socketManager: SocketManager, idleManager: IdleManager, userId: number, equipmentId: number, startTimestamp: number) {
+    static async startCrafting(
+        socketManager: SocketManager, 
+        idleManager: IdleManager, 
+        userId: string, 
+        equipment: Equipment, 
+        recipe: CraftingRecipeRes, 
+        startTimestamp: number
+    ) {
+        let timerHandle: TimerHandle | undefined;
+
         try {
-            const recipe = await getCraftingRecipeForEquipment(equipmentId);
+            await idleManager.removeCraftingActivity(userId, recipe.equipmentId); // no duplicates
 
             if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
                 throw new Error(`Unable to start idle crafting. User does not have all the required items.`);
@@ -23,51 +34,62 @@ export class IdleCraftingManager {
 
             if ((await getUserCraftingLevel(userId) < recipe.craftingLevelRequired)) throw new Error('Insufficient crafting level');
 
-            const idleCraftingActivity: IdleActivityQueueElement = {
+
+            const completeCallback = async () => {
+                try {
+                    await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, recipe);
+                } catch (err) {
+                    logger.error(`Crafting callback failed for user ${userId}, equipment ${recipe.equipmentId}: ${err}`);
+                    await idleManager.removeCraftingActivity(userId, recipe.equipmentId);
+                }
+            };
+            timerHandle = IdleManager.startCustomInterval((startTimestamp + (recipe.durationS * 1000)) - Date.now(), recipe.durationS * 1000, completeCallback);
+
+            const idleCraftingActivity: IdleCraftingIntervalElement = {
                 userId: userId,
                 activity: 'crafting',
-                equipmentId: recipe.equipmentId,
-                name: recipe.equipmentName,
+                equipment: equipment,
+                recipe: recipe,
                 startTimestamp: startTimestamp,
                 durationS: recipe.durationS,
-                nextTriggerTimestamp: startTimestamp + recipe.durationS * 1000,
-                activityCompleteCallback: async () => await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, equipmentId),
-                activityStopCallback: async () => await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipmentId)
+                activityCompleteCallback: completeCallback,
+                activityStopCallback: async () => await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipment.id),
+                activityInterval: timerHandle
             };
 
-            idleManager.appendIdleActivityByUser(userId, idleCraftingActivity);
-            idleManager.queueIdleActivityElement(idleCraftingActivity);
+            await idleManager.appendIdleActivityByUser(userId, idleCraftingActivity);
 
-            logger.info(`Started idle crafting for user ${userId} for equipmentId: ${equipmentId}.`);
-            logger.info(JSON.stringify(idleCraftingActivity, null, 2));
+            logger.info(`Started idle crafting for user ${userId} for equipmentId: ${equipment.id}.`);
         } catch (error) {
             logger.error(`Error starting crafting ${userId}: ${error}`);
+
+            if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
+
             socketManager.emitEvent(userId, 'crafting-stop', {
                 userId: userId,
                 payload: {
-                    equipmentId: equipmentId,
+                    equipmentId: equipment.id,
                 }
             });
         }
     }
 
-    static stopCrafting(idleManager: IdleManager, userId: number, equipmentId: number) {
-        idleManager.removeIdleActivityByUser(userId, 'crafting', equipmentId);
-        idleManager.removeIdleActivityElementFromQueue(userId, 'crafting', equipmentId);
+    static stopCrafting(idleManager: IdleManager, userId: string, equipmentId: number) {
+        idleManager.removeCraftingActivity(userId, equipmentId);
     }
 
     static async handleLoadedCraftingActivity(
         socketManager: SocketManager,
         idleManager: IdleManager,
-        crafting: IdleActivityQueueElement,
-        userId: number
-    ): Promise<ProgressUpdate> {
+        crafting: IdleCraftingIntervalElement,
+        userId: string
+    ): Promise<CraftingUpdate | undefined> {
         if (crafting.activity !== "crafting") {
             throw new Error("Invalid activity type. Expected crafting activity.");
         }
 
-        if (!crafting.equipmentId) {
-            throw new Error("Equipment id not found in crafting activity.");
+        if (!crafting.equipment) {
+            throw new Error("Equipment not found in crafting activity.");
         }
 
         if (!crafting.logoutTimestamp) {
@@ -75,8 +97,6 @@ export class IdleCraftingManager {
         }
 
         logger.info(`Crafting activity loaded: ${JSON.stringify(crafting, null, 2)}`);
-
-        const recipe = await getCraftingRecipeForEquipment(crafting.equipmentId);
 
         const now = Date.now();
         const maxProgressEndTimestamp = crafting.logoutTimestamp + MAX_OFFLINE_IDLE_PROGRESS_S * 1000;
@@ -96,7 +116,7 @@ export class IdleCraftingManager {
             timestamp += crafting.durationS * 1000; // Add duration to timestamp
 
             if (timestamp <= now) {
-                if ((await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions + 1)))) {
+                if ((await doesUserOwnItems(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions + 1)))) {
                     repetitions++
                 } else {
                     startCurrentRepetition = false;
@@ -113,62 +133,62 @@ export class IdleCraftingManager {
             currentRepetitionStart = progressEndTimestamp - elapsedWithinCurrentRepetition;
         }
 
-        logger.info(`Crafting rpetitions completed after logout: ${repetitions}`);
+        logger.info(`Crafting repetition completed after logout: ${repetitions}`);
         logger.info(`Current repetition start timestamp: ${currentRepetitionStart}`);
 
         // Start current repetition
         if (startCurrentRepetition) {
-            IdleCraftingManager.startCrafting(socketManager, idleManager, userId, recipe.equipmentId, currentRepetitionStart);
+            IdleCraftingManager.startCrafting(socketManager, idleManager, userId, crafting.equipment, crafting.recipe, currentRepetitionStart);
             socketManager.emitEvent(userId, 'crafting-start', {
                 userId: userId,
                 payload: {
-                    equipmentId: recipe.equipmentId,
+                    equipmentId: crafting.equipment.id,
                     startTimestamp: currentRepetitionStart,
-                    durationS: recipe.durationS
+                    durationS: crafting.recipe.durationS
                 }
             });
         }
 
-        let expRes; 
+        let expRes;
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
-            await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity * repetitions));
+            await deleteItemsFromUserInventory(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions));
 
-            await mintEquipmentToUser(userId.toString(), recipe.equipmentId, repetitions);
+            await mintEquipmentToUser(userId.toString(), crafting.equipment.id, repetitions);
 
-            expRes = await addCraftingExp(userId, recipe.craftingExp * repetitions);
+            expRes = await addCraftingExp(userId, crafting.recipe.craftingExp * repetitions);
+
+            return {
+                type: 'crafting',
+                update: {
+                    items: crafting.recipe.requiredItems.map(item => ({
+                        itemId: item.itemId,
+                        itemName: item.itemName,
+                        quantity: item.quantity * repetitions * -1,
+                        uri: item.imgsrc
+                    })),
+                    equipment: [{
+                        equipmentId: crafting.equipment.id,
+                        equipmentName: crafting.recipe.equipmentName,
+                        quantity: repetitions,
+                        uri: crafting.equipment.imgsrc
+                    }],
+                    craftingExpGained: (repetitions > 0) ? crafting.recipe.craftingExp * repetitions : undefined,
+                    craftingLevelsGained: expRes?.craftingLevelsGained
+                },
+            };
         }
-
-        return {
-            type: 'crafting',
-            update: {
-                items: recipe.requiredItems.map(item => ({
-                    itemId: item.itemId,
-                    itemName: item.itemName,
-                    quantity: item.quantity * repetitions * -1,
-                })),
-                equipment: [{
-                    equipmentId: recipe.equipmentId,
-                    equipmentName: recipe.equipmentName,
-                    quantity: repetitions
-                }],
-                craftingExpGained: (repetitions > 0) ? recipe.craftingExp * repetitions : undefined,
-                craftingLevelsGained: expRes?.craftingLevelsGained
-            },
-        };
     }
 
     static async craftingCompleteCallback(
         socketManager: SocketManager,
-        userId: number,
-        equipmentId: number,
+        userId: string,
+        recipe: CraftingRecipeRes,
     ): Promise<void> {
         try {
-            const recipe = await getCraftingRecipeForEquipment(equipmentId);
-
             const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
-            const updatedEquipmentInv = await mintEquipmentToUser(userId.toString(), equipmentId);
-            
+            const updatedEquipmentInv = await mintEquipmentToUser(userId.toString(), recipe.equipmentId);
+
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,
                 payload: [...updatedItemsInv, updatedEquipmentInv]
@@ -190,15 +210,16 @@ export class IdleCraftingManager {
             socketManager.emitEvent(userId, 'crafting-stop', {
                 userId: userId,
                 payload: {
-                    equipmentId: equipmentId,
+                    equipmentId: recipe.equipmentId,
                 }
             });
+            throw error;
         }
     }
 
     static async craftingStopCallback(
         socketManager: SocketManager,
-        userId: number,
+        userId: string,
         equipmentId: number,
     ): Promise<void> {
         try {

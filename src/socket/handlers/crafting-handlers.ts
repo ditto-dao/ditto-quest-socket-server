@@ -4,9 +4,11 @@ import { logger } from "../../utils/logger"
 import { IdleCraftingManager } from "../../managers/idle-managers/crafting-idle-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import { SocketManager } from "../socket-manager";
+import { getCraftingRecipeForEquipment } from "../../sql-services/crafting-service";
+import { getEquipmentById } from "../../sql-services/equipment-service";
 
 interface CraftEquipmentPayload {
-    userId: number;
+    userId: string;
     equipmentId: number
 }
 
@@ -19,7 +21,13 @@ export async function setupCraftingSocketHandlers(
         try {
             logger.info(`Received craft-equipment event from user ${data.userId}`)
 
-            IdleCraftingManager.startCrafting(socketManager, idleManager, data.userId, data.equipmentId, Date.now());
+            const equipment = await getEquipmentById(data.equipmentId);
+
+            if (!equipment) throw new Error(`Equipment of ID ${data.equipmentId} not found.`)
+
+            const recipe = await getCraftingRecipeForEquipment(data.equipmentId);
+
+            IdleCraftingManager.startCrafting(socketManager, idleManager, data.userId, equipment, recipe, Date.now());
 
         } catch (error) {
             logger.error(`Error processing craft-equipment: ${error}`)

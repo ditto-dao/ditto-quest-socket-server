@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Monster` ADD COLUMN `maxDittoDrop` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `minDittoDrop` INTEGER NOT NULL DEFAULT 0;
