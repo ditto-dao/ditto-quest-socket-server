@@ -1,7 +1,7 @@
 {
     "apps": [
         {
-            "name": "Ditto Quest Dev Socket Server",
+            "name": "Ditto Quest Socket Server",
             "script": "dist/index.js",
             "interpreter": "/home/ubuntu/.nvm/versions/node/v22.4.0/bin/node",
             "node_args": "-r dotenv/config",

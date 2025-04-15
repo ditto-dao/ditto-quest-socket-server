@@ -147,14 +147,9 @@ export class ValidateLoginManager {
             user = await getUserData(data.loginPayload.userData.id.toString());
         }
 
-        if (!user) throw new Error(`Error processing login. User data not fetched or created.`)
+        if (!user) throw new Error(`Error processing login. User data not fetched or created.`);
 
         data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
-
-        data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
-            userId: data.loginPayload.userData.id,
-            payload: user
-        });
 
         const currentCombat = await this.idleManager.loadIdleActivitiesOnLogin(data.loginPayload.userData.id.toString());
         if (currentCombat) {
@@ -162,6 +157,11 @@ export class ValidateLoginManager {
             if (!domain) throw new Error(`Unable to find domain to load offline combat`);
             if (currentCombat.combatType === 'Domain') await this.combatManager.startDomainCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, domain, currentCombat.startTimestamp, currentCombat.monsterToStartWith);
         }
+
+        data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
+            userId: data.loginPayload.userData.id,
+            payload: await getUserData(data.loginPayload.userData.id.toString())
+        });
 
         this.cleanUpQueueAndTimer(data.loginPayload.userData.id.toString());
     }
