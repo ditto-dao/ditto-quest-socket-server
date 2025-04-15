@@ -27,7 +27,7 @@ export class IdleBreedingManager {
 
             const completeCallback = async () => {
                 try {
-                    await IdleBreedingManager.breedingCompleteCallback(socketManager, userId, sire, dame);
+                    await IdleBreedingManager.breedingCompleteCallback(socketManager, idleManager, userId, sire, dame);
                 } catch (err) {
                     logger.error(`Breeding callback failed for user ${userId}, sire: ${sire.id}, dame: ${dame.id}: ${err}`);
                     await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
@@ -156,6 +156,7 @@ export class IdleBreedingManager {
 
     static async breedingCompleteCallback(
         socketManager: SocketManager,
+        idleManager: IdleManager,
         userId: string,
         sire: SlimeWithTraits,
         dame: SlimeWithTraits,
@@ -170,6 +171,11 @@ export class IdleBreedingManager {
 
         } catch (error) {
             logger.error(`Error during breeding complete callback for user ${userId}: ${error}`);
+
+            await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
+            await idleManager.removeBreedingActivitiesBySlimeId(userId, sire.id);
+            await idleManager.removeBreedingActivitiesBySlimeId(userId, dame.id);
+
             socketManager.emitEvent(userId, 'breeding-stop', {
                 userId: userId,
                 payload: {

@@ -23,7 +23,7 @@ export class IdleFarmingManager {
 
             const completeCallback = async () => {
                 try {
-                    await IdleFarmingManager.farmingCompleteCallback(socketManager, userId, item.id);
+                    await IdleFarmingManager.farmingCompleteCallback(socketManager, idleManager, userId, item.id);
                 } catch (err) {
                     logger.error(`Farming callback failed for user ${userId}, item ${item.id}: ${err}`);
                     await idleManager.removeFarmingActivity(userId, item.id);
@@ -155,6 +155,7 @@ export class IdleFarmingManager {
 
     static async farmingCompleteCallback(
         socketManager: SocketManager,
+        idleManager: IdleManager,
         userId: string,
         itemId: number,
     ): Promise<void> {
@@ -174,6 +175,9 @@ export class IdleFarmingManager {
 
         } catch (error) {
             logger.error(`Error during farming complete callback for user ${userId}: ${error}`);
+
+            await idleManager.removeFarmingActivity(userId, itemId);
+
             socketManager.emitEvent(userId, 'farming-stop', {
                 userId: userId,
                 payload: {

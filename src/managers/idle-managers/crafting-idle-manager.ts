@@ -37,7 +37,7 @@ export class IdleCraftingManager {
 
             const completeCallback = async () => {
                 try {
-                    await IdleCraftingManager.craftingCompleteCallback(socketManager, userId, recipe);
+                    await IdleCraftingManager.craftingCompleteCallback(socketManager, idleManager, userId, recipe);
                 } catch (err) {
                     logger.error(`Crafting callback failed for user ${userId}, equipment ${recipe.equipmentId}: ${err}`);
                     await idleManager.removeCraftingActivity(userId, recipe.equipmentId);
@@ -182,6 +182,7 @@ export class IdleCraftingManager {
 
     static async craftingCompleteCallback(
         socketManager: SocketManager,
+        idleManager: IdleManager,
         userId: string,
         recipe: CraftingRecipeRes,
     ): Promise<void> {
@@ -207,12 +208,16 @@ export class IdleCraftingManager {
 
         } catch (error) {
             logger.error(`Error during crafting complete callback for user ${userId}: ${error}`);
+
+            await idleManager.removeCraftingActivity(userId, recipe.equipmentId);
+
             socketManager.emitEvent(userId, 'crafting-stop', {
                 userId: userId,
                 payload: {
                     equipmentId: recipe.equipmentId,
                 }
             });
+
             throw error;
         }
     }
