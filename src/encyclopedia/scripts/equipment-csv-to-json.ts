@@ -256,7 +256,7 @@ const parseCsvToJson = async () => {
 
                     if (row['Crafting Materials\n(qty x item id)'].length > 0) {
                         const recipe = {
-                            equipmentId: parseInt(row["ID"]),
+                            equipmentId: parseInt(row["Equipment_ID"]),
                             durationS: parseInt(row['Crafting Interval (S)'], 10),
                             craftingLevelRequired: parseInt(row['Crafting Level Req'], 10),
                             craftingExp: parseInt(row['Crafting XP'], 10),
