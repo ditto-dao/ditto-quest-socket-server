@@ -1,6 +1,6 @@
 [
   {
-    "equipmentId": null,
+    "equipmentId": 1,
     "equipmentName": "Sticky Sword",
     "type": "weapon",
     "durationS": 60,
@@ -17,7 +17,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 2,
     "equipmentName": "Slime Bronze Sword",
     "type": "weapon",
     "durationS": 65,
@@ -40,7 +40,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 3,
     "equipmentName": "Hardened Sword",
     "type": "weapon",
     "durationS": 70,
@@ -63,7 +63,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 4,
     "equipmentName": "Alloy Sword",
     "type": "weapon",
     "durationS": 75,
@@ -92,7 +92,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 5,
     "equipmentName": "Veil Sword",
     "type": "weapon",
     "durationS": 80,
@@ -115,7 +115,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 6,
     "equipmentName": "Muck Sword",
     "type": "weapon",
     "durationS": 90,
@@ -138,7 +138,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 7,
     "equipmentName": "Glow Sword",
     "type": "weapon",
     "durationS": 100,
@@ -161,7 +161,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 8,
     "equipmentName": "Frost Sword",
     "type": "weapon",
     "durationS": 110,
@@ -184,7 +184,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 9,
     "equipmentName": "Ember Sword",
     "type": "weapon",
     "durationS": 120,
@@ -207,7 +207,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 10,
     "equipmentName": "Relic Sword",
     "type": "weapon",
     "durationS": 130,
@@ -230,7 +230,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 11,
     "equipmentName": "Fracture Sword",
     "type": "weapon",
     "durationS": 150,
@@ -253,7 +253,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 12,
     "equipmentName": "Gleam Sword",
     "type": "weapon",
     "durationS": 170,
@@ -276,7 +276,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 13,
     "equipmentName": "Verdant Sword",
     "type": "weapon",
     "durationS": 190,
@@ -299,7 +299,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 14,
     "equipmentName": "Sanctum Sword",
     "type": "weapon",
     "durationS": 210,
@@ -322,7 +322,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 15,
     "equipmentName": "Abyss Sword",
     "type": "weapon",
     "durationS": 240,
@@ -345,7 +345,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 16,
     "equipmentName": "Wisp Sword",
     "type": "weapon",
     "durationS": 260,
@@ -368,7 +368,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 17,
     "equipmentName": "Dusk Sword",
     "type": "weapon",
     "durationS": 290,
@@ -391,7 +391,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 18,
     "equipmentName": "Siphon Sword",
     "type": "weapon",
     "durationS": 320,
@@ -414,7 +414,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 19,
     "equipmentName": "Rift Sword",
     "type": "weapon",
     "durationS": 350,
@@ -437,7 +437,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 20,
     "equipmentName": "Eternal Slime Core",
     "type": "weapon",
     "durationS": 400,
@@ -460,7 +460,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 21,
     "equipmentName": "Sticky Longbow",
     "type": "weapon",
     "durationS": 60,
@@ -483,7 +483,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 22,
     "equipmentName": "Slime Bronze Longbow",
     "type": "weapon",
     "durationS": 65,
@@ -512,7 +512,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 23,
     "equipmentName": "Hardened Longbow",
     "type": "weapon",
     "durationS": 70,
@@ -541,7 +541,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 24,
     "equipmentName": "Alloy Longbow",
     "type": "weapon",
     "durationS": 75,
@@ -576,7 +576,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 25,
     "equipmentName": "Veil Longbow",
     "type": "weapon",
     "durationS": 80,
@@ -605,7 +605,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 26,
     "equipmentName": "Muck Longbow",
     "type": "weapon",
     "durationS": 90,
@@ -634,7 +634,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 27,
     "equipmentName": "Glow Longbow",
     "type": "weapon",
     "durationS": 100,
@@ -663,7 +663,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 28,
     "equipmentName": "Frost Longbow",
     "type": "weapon",
     "durationS": 110,
@@ -692,7 +692,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 29,
     "equipmentName": "Ember Longbow",
     "type": "weapon",
     "durationS": 120,
@@ -721,7 +721,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 30,
     "equipmentName": "Relic Longbow",
     "type": "weapon",
     "durationS": 130,
@@ -750,7 +750,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 31,
     "equipmentName": "Fracture Longbow",
     "type": "weapon",
     "durationS": 150,
@@ -779,7 +779,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 32,
     "equipmentName": "Gleam Longbow",
     "type": "weapon",
     "durationS": 170,
@@ -808,7 +808,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 33,
     "equipmentName": "Verdant Longbow",
     "type": "weapon",
     "durationS": 190,
@@ -837,7 +837,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 34,
     "equipmentName": "Sanctum Longbow",
     "type": "weapon",
     "durationS": 210,
@@ -866,7 +866,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 35,
     "equipmentName": "Abyss Longbow",
     "type": "weapon",
     "durationS": 240,
@@ -895,7 +895,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 36,
     "equipmentName": "Wisp Longbow",
     "type": "weapon",
     "durationS": 260,
@@ -924,7 +924,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 37,
     "equipmentName": "Dusk Longbow",
     "type": "weapon",
     "durationS": 290,
@@ -953,7 +953,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 38,
     "equipmentName": "Siphon Longbow",
     "type": "weapon",
     "durationS": 320,
@@ -982,7 +982,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 39,
     "equipmentName": "Rift Longbow",
     "type": "weapon",
     "durationS": 350,
@@ -1011,7 +1011,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 40,
     "equipmentName": "Sticky Staff",
     "type": "weapon",
     "durationS": 60,
@@ -1028,7 +1028,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 41,
     "equipmentName": "Slime Bronze Staff",
     "type": "weapon",
     "durationS": 65,
@@ -1051,7 +1051,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 42,
     "equipmentName": "Hardened Staff",
     "type": "weapon",
     "durationS": 70,
@@ -1074,7 +1074,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 43,
     "equipmentName": "Alloy Staff",
     "type": "weapon",
     "durationS": 75,
@@ -1103,7 +1103,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 44,
     "equipmentName": "Veil Staff",
     "type": "weapon",
     "durationS": 80,
@@ -1126,7 +1126,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 45,
     "equipmentName": "Muck Staff",
     "type": "weapon",
     "durationS": 90,
@@ -1149,7 +1149,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 46,
     "equipmentName": "Glow Staff",
     "type": "weapon",
     "durationS": 100,
@@ -1172,7 +1172,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 47,
     "equipmentName": "Frost Staff",
     "type": "weapon",
     "durationS": 110,
@@ -1195,7 +1195,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 48,
     "equipmentName": "Ember Staff",
     "type": "weapon",
     "durationS": 120,
@@ -1218,7 +1218,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 49,
     "equipmentName": "Relic Staff",
     "type": "weapon",
     "durationS": 130,
@@ -1241,7 +1241,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 50,
     "equipmentName": "Fracture Staff",
     "type": "weapon",
     "durationS": 150,
@@ -1264,7 +1264,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 51,
     "equipmentName": "Gleam Staff",
     "type": "weapon",
     "durationS": 170,
@@ -1287,7 +1287,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 52,
     "equipmentName": "Verdant Staff",
     "type": "weapon",
     "durationS": 190,
@@ -1310,7 +1310,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 53,
     "equipmentName": "Sanctum Staff",
     "type": "weapon",
     "durationS": 210,
@@ -1333,7 +1333,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 54,
     "equipmentName": "Abyss Staff",
     "type": "weapon",
     "durationS": 240,
@@ -1356,7 +1356,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 55,
     "equipmentName": "Wisp Staff",
     "type": "weapon",
     "durationS": 260,
@@ -1379,7 +1379,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 56,
     "equipmentName": "Dusk Staff",
     "type": "weapon",
     "durationS": 290,
@@ -1402,7 +1402,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 57,
     "equipmentName": "Siphon Staff",
     "type": "weapon",
     "durationS": 320,
@@ -1425,7 +1425,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 58,
     "equipmentName": "Rift Staff",
     "type": "weapon",
     "durationS": 350,
@@ -1448,7 +1448,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 59,
     "equipmentName": "Blight Helm",
     "type": "hat",
     "durationS": 60,
@@ -1471,7 +1471,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 60,
     "equipmentName": "Void Helm",
     "type": "hat",
     "durationS": 65,
@@ -1494,7 +1494,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 61,
     "equipmentName": "Voidheart Helm",
     "type": "hat",
     "durationS": 70,
@@ -1517,7 +1517,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 62,
     "equipmentName": "Protector Helm",
     "type": "hat",
     "durationS": 75,
@@ -1540,7 +1540,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 63,
     "equipmentName": "Watcher Helm",
     "type": "hat",
     "durationS": 80,
@@ -1563,7 +1563,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 64,
     "equipmentName": "Eldritch Hood",
     "type": "hat",
     "durationS": 90,
@@ -1586,7 +1586,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 65,
     "equipmentName": "Zephyr Crown",
     "type": "hat",
     "durationS": 100,
@@ -1609,7 +1609,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 66,
     "equipmentName": "Glacier Crown",
     "type": "hat",
     "durationS": 110,
@@ -1632,7 +1632,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 67,
     "equipmentName": "Terra Crown",
     "type": "hat",
     "durationS": 120,
@@ -1655,7 +1655,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 68,
     "equipmentName": "Inferno Crown",
     "type": "hat",
     "durationS": 130,
@@ -1678,7 +1678,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 69,
     "equipmentName": "Blight Plate",
     "type": "armour",
     "durationS": 60,
@@ -1701,7 +1701,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 70,
     "equipmentName": "Void Plate",
     "type": "armour",
     "durationS": 65,
@@ -1724,7 +1724,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 71,
     "equipmentName": "Voidheart Plate",
     "type": "armour",
     "durationS": 70,
@@ -1747,7 +1747,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 72,
     "equipmentName": "Protector Plate",
     "type": "armour",
     "durationS": 75,
@@ -1770,7 +1770,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 73,
     "equipmentName": "Watcher Plate",
     "type": "armour",
     "durationS": 80,
@@ -1793,7 +1793,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 74,
     "equipmentName": "Eldritch Robes",
     "type": "armour",
     "durationS": 90,
@@ -1816,7 +1816,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 75,
     "equipmentName": "Zephyr Godplate",
     "type": "armour",
     "durationS": 100,
@@ -1839,7 +1839,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 76,
     "equipmentName": "Glacier Godplate",
     "type": "armour",
     "durationS": 110,
@@ -1862,7 +1862,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 77,
     "equipmentName": "Terra Godplate",
     "type": "armour",
     "durationS": 120,
@@ -1885,7 +1885,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 78,
     "equipmentName": "Inferno Godplate",
     "type": "armour",
     "durationS": 130,
@@ -1908,7 +1908,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 79,
     "equipmentName": "Sticky Shield",
     "type": "shield",
     "durationS": 60,
@@ -1925,7 +1925,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 80,
     "equipmentName": "Slime Bronze Shield",
     "type": "shield",
     "durationS": 65,
@@ -1948,7 +1948,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 81,
     "equipmentName": "Hardened Shield",
     "type": "shield",
     "durationS": 70,
@@ -1971,7 +1971,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 82,
     "equipmentName": "Alloy Shield",
     "type": "shield",
     "durationS": 75,
@@ -2000,7 +2000,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 83,
     "equipmentName": "Veil Shield",
     "type": "shield",
     "durationS": 80,
@@ -2023,7 +2023,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 84,
     "equipmentName": "Muck Shield",
     "type": "shield",
     "durationS": 90,
@@ -2046,7 +2046,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 85,
     "equipmentName": "Glow Shield",
     "type": "shield",
     "durationS": 100,
@@ -2069,7 +2069,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 86,
     "equipmentName": "Frost Shield",
     "type": "shield",
     "durationS": 110,
@@ -2092,7 +2092,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 87,
     "equipmentName": "Ember Shield",
     "type": "shield",
     "durationS": 120,
@@ -2115,7 +2115,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 88,
     "equipmentName": "Relic Shield",
     "type": "shield",
     "durationS": 130,
@@ -2138,7 +2138,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 89,
     "equipmentName": "Fracture Shield",
     "type": "shield",
     "durationS": 150,
@@ -2161,7 +2161,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 90,
     "equipmentName": "Gleam Shield",
     "type": "shield",
     "durationS": 170,
@@ -2184,7 +2184,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 91,
     "equipmentName": "Verdant Shield",
     "type": "shield",
     "durationS": 190,
@@ -2207,7 +2207,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 92,
     "equipmentName": "Sanctum Shield",
     "type": "shield",
     "durationS": 210,
@@ -2230,7 +2230,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 93,
     "equipmentName": "Abyss Shield",
     "type": "shield",
     "durationS": 240,
@@ -2253,7 +2253,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 94,
     "equipmentName": "Wisp Shield",
     "type": "shield",
     "durationS": 260,
@@ -2276,7 +2276,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 95,
     "equipmentName": "Dusk Shield",
     "type": "shield",
     "durationS": 290,
@@ -2299,7 +2299,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 96,
     "equipmentName": "Siphon Shield",
     "type": "shield",
     "durationS": 320,
@@ -2322,7 +2322,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 97,
     "equipmentName": "Rift Shield",
     "type": "shield",
     "durationS": 350,
@@ -2345,7 +2345,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 98,
     "equipmentName": "Eternal Barrier",
     "type": "shield",
     "durationS": 400,
@@ -2368,7 +2368,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 99,
     "equipmentName": "Sticky Mantle",
     "type": "cape",
     "durationS": 60,
@@ -2391,7 +2391,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 100,
     "equipmentName": "Bronze Warden Cape",
     "type": "cape",
     "durationS": 65,
@@ -2420,7 +2420,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 101,
     "equipmentName": "Ironclad Wrap",
     "type": "cape",
     "durationS": 70,
@@ -2449,7 +2449,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 102,
     "equipmentName": "Shroud of Shadows",
     "type": "cape",
     "durationS": 75,
@@ -2478,7 +2478,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 103,
     "equipmentName": "Verdant Aegis Cloak",
     "type": "cape",
     "durationS": 80,
@@ -2507,7 +2507,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 104,
     "equipmentName": "Luminous Veil",
     "type": "cape",
     "durationS": 90,
@@ -2536,7 +2536,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 105,
     "equipmentName": "Cryo Cloak",
     "type": "cape",
     "durationS": 100,
@@ -2565,7 +2565,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 106,
     "equipmentName": "Infernal Drape",
     "type": "cape",
     "durationS": 110,
@@ -2594,7 +2594,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 107,
     "equipmentName": "Wispweave Cape",
     "type": "cape",
     "durationS": 120,
@@ -2623,7 +2623,7 @@
     ]
   },
   {
-    "equipmentId": null,
+    "equipmentId": 108,
     "equipmentName": "Mantle of Eternity",
     "type": "cape",
     "durationS": 130,

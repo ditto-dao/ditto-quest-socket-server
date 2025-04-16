@@ -225,7 +225,7 @@ const parseCsvToJson = async () => {
 
                     // **Parse Equipment**
                     const equipment: Equipment = {
-                        id: parseInt(row["ID"]),
+                        id: parseInt(row["Equipment_ID"]),
                         name: row["Item Name"],
                         description: row["Description"],
                         requiredLvl: row["Required Lvl"] ? parseInt(row["Required Lvl"]) : 1,
@@ -264,7 +264,7 @@ const parseCsvToJson = async () => {
                         }
 
                         const recipeFrontEnd = {
-                            equipmentId: parseInt(row["ID"]),
+                            equipmentId: parseInt(row["Equipment_ID"]),
                             equipmentName: equipment.name,
                             type: equipment.type,
                             durationS: recipe.durationS,
