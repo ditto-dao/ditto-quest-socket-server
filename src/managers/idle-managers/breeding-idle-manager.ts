@@ -4,59 +4,93 @@ import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { getBreedingTimesByGeneration } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
-import { BreedingUpdate, IdleBreedingIntervalElement, TimerHandle } from "./idle-manager-types";
+import { BreedingUpdate, IdleActivityIntervalElement, IdleBreedingIntervalElement, TimerHandle } from "./idle-manager-types";
 
 export class IdleBreedingManager {
 
     constructor() { }
 
-    static async startBreeding(socketManager: SocketManager, idleManager: IdleManager, userId: string, sire: SlimeWithTraits, dame: SlimeWithTraits, startTimestamp: number) {
+    static async startBreeding(
+        socketManager: SocketManager,
+        idleManager: IdleManager,
+        userId: string,
+        sire: SlimeWithTraits,
+        dame: SlimeWithTraits,
+        startTimestamp: number
+    ) {
         let timerHandle: TimerHandle | undefined;
-        
+
         try {
-            await idleManager.removeBreedingActivitiesBySlimeId(userId, sire.id); // no duplicates
-            await idleManager.removeBreedingActivitiesBySlimeId(userId, dame.id); // no duplicates
+            // Remove existing activities for the same slimes
+            await idleManager.removeBreedingActivitiesBySlimeId(userId, sire.id);
+            await idleManager.removeBreedingActivitiesBySlimeId(userId, dame.id);
 
             const equippedSlimeId = await getEquippedSlimeId(userId);
-            const breedingDurationS = getBreedingTimesByGeneration(sire.generation) + getBreedingTimesByGeneration(dame.generation);
+            const breedingDurationS =
+                getBreedingTimesByGeneration(sire.generation) +
+                getBreedingTimesByGeneration(dame.generation);
 
-            if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
-            if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");
+            // Validation
+            if (!sire || !dame) throw new Error("One or both slimes not found.");
+            if (sire.ownerId !== dame.ownerId) throw new Error("Slimes must have same owner.");
             if (sire.ownerId !== userId.toString()) throw new Error("User does not own slimes.");
-            if (sire.ownerId === equippedSlimeId?.toString() || dame.ownerId === equippedSlimeId?.toString()) throw new Error("Cannot breed equipped slime.");
+            if (
+                sire.id === equippedSlimeId ||
+                dame.id === equippedSlimeId
+            ) throw new Error("Cannot breed equipped slime.");
 
+            // Define callbacks
             const completeCallback = async () => {
                 try {
                     await IdleBreedingManager.breedingCompleteCallback(socketManager, idleManager, userId, sire, dame);
                 } catch (err) {
-                    logger.error(`Breeding callback failed for user ${userId}, sire: ${sire.id}, dame: ${dame.id}: ${err}`);
+                    logger.error(`Breeding callback failed for user ${userId}, sire ${sire.id}, dame ${dame.id}: ${err}`);
                     await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
+                    IdleManager.clearCustomInterval(timerHandle!);
                 }
             };
-            timerHandle = IdleManager.startCustomInterval((startTimestamp + (breedingDurationS * 1000)) - Date.now(), breedingDurationS * 1000, completeCallback);
 
-            const idleBreedingActivity: IdleBreedingIntervalElement = {
-                userId: userId,
+            const stopCallback = async () => {
+                await IdleBreedingManager.breedingStopCallback(socketManager, userId, sire.id, dame.id);
+            };
+
+            // Append first without interval
+            const activity: Omit<IdleBreedingIntervalElement, "activityInterval"> = {
+                userId,
                 activity: 'breeding',
-                sire: sire,
-                dame: dame,
-                startTimestamp: startTimestamp,
+                sire,
+                dame,
+                startTimestamp,
                 durationS: breedingDurationS,
                 activityCompleteCallback: completeCallback,
-                activityStopCallback: async () => await IdleBreedingManager.breedingStopCallback(socketManager, userId, sire.id, dame.id),
-                activityInterval: timerHandle
-            }
+                activityStopCallback: stopCallback
+            };
 
-            await idleManager.appendIdleActivityByUser(userId, idleBreedingActivity);
+            await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
-            logger.info(`Started idle breeding for user ${userId} for sireId: ${sire.id} and dameId: ${dame.id}.`);
+            // Now start interval and patch
+            timerHandle = IdleManager.startCustomInterval(
+                (startTimestamp + breedingDurationS * 1000) - Date.now(),
+                breedingDurationS * 1000,
+                completeCallback
+            );
+
+            idleManager.patchIntervalActivity(
+                userId,
+                'breeding',
+                (el) => el.activity === 'breeding' && el.sire.id === sire.id && el.dame.id === dame.id,
+                timerHandle
+            );
+
+            logger.info(`Started idle breeding for user ${userId} with sire ${sire.id} and dame ${dame.id}.`);
         } catch (error) {
-            logger.error(`Error starting breeding ${userId}: ${error}`);
+            logger.error(`Error starting breeding for user ${userId}: ${error}`);
 
             if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
+            await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
 
             socketManager.emitEvent(userId, 'breeding-stop', {
-                userId: userId,
+                userId,
                 payload: {
                     sireId: sire.id,
                     dameId: dame.id,

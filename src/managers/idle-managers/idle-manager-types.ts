@@ -74,6 +74,8 @@ export interface IdleCombatActivityElement {
 
 export type IdleActivityIntervalElement = IdleFarmingIntervalElement | IdleCraftingIntervalElement | IdleBreedingIntervalElement | IdleCombatActivityElement;
 
+export type IntervalActivity = Exclude<IdleActivityIntervalElement, IdleCombatActivityElement>;
+
 export interface FarmingUpdate {
     type: 'farming';
     update: {

@@ -5,55 +5,94 @@ import { addFarmingExp, getUserFarmingLevel } from "../../sql-services/user-serv
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
-import { FarmingUpdate, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
+import { FarmingUpdate, IdleActivityIntervalElement, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
 
 export class IdleFarmingManager {
 
     constructor() { }
 
-    static async startFarming(socketManager: SocketManager, idleManager: IdleManager, userId: string, item: Item, startTimestamp: number) {
+    static async startFarming(
+        socketManager: SocketManager,
+        idleManager: IdleManager,
+        userId: string,
+        item: Item,
+        startTimestamp: number
+    ) {
         let timerHandle: TimerHandle | undefined;
 
         try {
-            await idleManager.removeFarmingActivity(userId, item.id); // no duplicates
+            await idleManager.removeFarmingActivity(userId, item.id); // remove duplicate if any
 
-            if (!item.farmingDurationS || !item.farmingExp || !item.farmingLevelRequired) throw new Error('Item cannot be farmed');
+            if (!item.farmingDurationS || !item.farmingExp || !item.farmingLevelRequired) {
+                throw new Error('Item cannot be farmed');
+            }
 
-            if ((await getUserFarmingLevel(userId)) < item.farmingLevelRequired) throw new Error("Insufficient farming level");
+            const currentFarmingLevel = await getUserFarmingLevel(userId);
+            if (currentFarmingLevel < item.farmingLevelRequired) {
+                throw new Error("Insufficient farming level");
+            }
 
+            // Define callbacks
             const completeCallback = async () => {
                 try {
                     await IdleFarmingManager.farmingCompleteCallback(socketManager, idleManager, userId, item.id);
                 } catch (err) {
                     logger.error(`Farming callback failed for user ${userId}, item ${item.id}: ${err}`);
                     await idleManager.removeFarmingActivity(userId, item.id);
+                    IdleManager.clearCustomInterval(timerHandle!);
                 }
             };
 
-            timerHandle = IdleManager.startCustomInterval((startTimestamp + (item.farmingDurationS * 1000)) - Date.now(), item.farmingDurationS * 1000, completeCallback);
+            const stopCallback = async () => {
+                await IdleFarmingManager.farmingStopCallback(socketManager, userId, item.id);
+            };
 
-            const idleFarmingActivity: IdleFarmingIntervalElement = {
-                userId: userId,
+            // Create and append activity with placeholder interval
+            const activity: Omit<IdleFarmingIntervalElement, "activityInterval"> = {
+                userId,
                 activity: 'farming',
-                item: item,
-                startTimestamp: startTimestamp,
+                item,
+                startTimestamp,
                 durationS: item.farmingDurationS,
                 activityCompleteCallback: completeCallback,
-                activityStopCallback: async () => await IdleFarmingManager.farmingStopCallback(socketManager, userId, item.id),
-                activityInterval: timerHandle
+                activityStopCallback: stopCallback
             };
 
-            await idleManager.appendIdleActivityByUser(userId, idleFarmingActivity);
-        } catch (error) {
-            logger.error(`Error starting farming ${userId}: ${error}`);
+            await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
-            if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
+            // Start timer and patch
+            timerHandle = IdleManager.startCustomInterval(
+                (startTimestamp + item.farmingDurationS * 1000) - Date.now(),
+                item.farmingDurationS * 1000,
+                completeCallback
+            );
 
-            socketManager.emitEvent(userId, 'farming-stop', {
-                userId: userId,
+            idleManager.patchIntervalActivity(
+                userId,
+                'farming',
+                (el) => el.activity === 'farming' && el.item.id === item.id,
+                timerHandle
+            );
+
+            // Emit to client
+            socketManager.emitEvent(userId, 'farming-start', {
+                userId,
                 payload: {
                     itemId: item.id,
+                    startTimestamp,
+                    durationS: item.farmingDurationS
                 }
+            });
+
+        } catch (error) {
+            logger.error(`Error starting farming for user ${userId}: ${error}`);
+
+            if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
+            await idleManager.removeFarmingActivity(userId, item.id);
+
+            socketManager.emitEvent(userId, 'farming-stop', {
+                userId,
+                payload: { itemId: item.id }
             });
         }
     }

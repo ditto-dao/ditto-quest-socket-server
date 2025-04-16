@@ -6,7 +6,7 @@ import { IdleFarmingManager } from './farming-idle-manager';
 import { SocketManager } from '../../socket/socket-manager';
 import { IdleCraftingManager } from './crafting-idle-manager';
 import { IdleBreedingManager } from './breeding-idle-manager';
-import { IdleActivityIntervalElement, ProgressUpdate, TimerHandle } from './idle-manager-types';
+import { IdleActivityIntervalElement, IntervalActivity, ProgressUpdate, TimerHandle } from './idle-manager-types';
 import { CurrentCombat, OfflineCombatManager } from './combat/offline-combat-manager';
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 
@@ -419,5 +419,23 @@ export class IdleManager {
         }
 
         logger.info(`Cleared: timeout=${!!handle.timeout}, interval=${!!handle.interval}`);
+    }
+
+    patchIntervalActivity(
+        userId: string,
+        activityType: IntervalActivity["activity"],
+        matchFn: (el: IntervalActivity) => boolean,
+        interval: TimerHandle
+    ) {
+        const list = this.idleActivitiesQueueElementByUser[userId];
+        if (!list) return;
+
+        for (const el of list) {
+            if (el.activity === activityType && matchFn(el as IntervalActivity)) {
+                (el as IntervalActivity).activityInterval = interval;
+                logger.info(`🛠 Patched interval on ${activityType} for user ${userId}`);
+                break;
+            }
+        }
     }
 }

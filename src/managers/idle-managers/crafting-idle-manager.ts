@@ -7,18 +7,18 @@ import { addCraftingExp, getUserCraftingLevel } from "../../sql-services/user-se
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
-import { CraftingUpdate, IdleCraftingIntervalElement, TimerHandle } from "./idle-manager-types";
+import { CraftingUpdate, IdleActivityIntervalElement, IdleCraftingIntervalElement, TimerHandle } from "./idle-manager-types";
 
 export class IdleCraftingManager {
 
     constructor() { }
 
     static async startCrafting(
-        socketManager: SocketManager, 
-        idleManager: IdleManager, 
-        userId: string, 
-        equipment: Equipment, 
-        recipe: CraftingRecipeRes, 
+        socketManager: SocketManager,
+        idleManager: IdleManager,
+        userId: string,
+        equipment: Equipment,
+        recipe: CraftingRecipeRes,
         startTimestamp: number
     ) {
         let timerHandle: TimerHandle | undefined;
@@ -26,47 +26,68 @@ export class IdleCraftingManager {
         try {
             await idleManager.removeCraftingActivity(userId, recipe.equipmentId); // no duplicates
 
-            if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
-                throw new Error(`Unable to start idle crafting. User does not have all the required items.`);
+            if (!recipe) throw new Error('Crafting recipe not found');
+            if ((await getUserCraftingLevel(userId)) < recipe.craftingLevelRequired) {
+                throw new Error('Insufficient crafting level');
             }
 
-            if (!recipe) throw new Error('Crafting recipe not found');
+            const requiredItemIds = recipe.requiredItems.map(item => item.itemId);
+            const requiredItemQuantities = recipe.requiredItems.map(item => item.quantity);
+            const hasItems = await doesUserOwnItems(userId.toString(), requiredItemIds, requiredItemQuantities);
+            if (!hasItems) throw new Error(`User does not have all required items`);
 
-            if ((await getUserCraftingLevel(userId) < recipe.craftingLevelRequired)) throw new Error('Insufficient crafting level');
-
-
+            // Define callbacks
             const completeCallback = async () => {
                 try {
                     await IdleCraftingManager.craftingCompleteCallback(socketManager, idleManager, userId, recipe);
                 } catch (err) {
                     logger.error(`Crafting callback failed for user ${userId}, equipment ${recipe.equipmentId}: ${err}`);
                     await idleManager.removeCraftingActivity(userId, recipe.equipmentId);
+                    IdleManager.clearCustomInterval(timerHandle!);
                 }
             };
-            timerHandle = IdleManager.startCustomInterval((startTimestamp + (recipe.durationS * 1000)) - Date.now(), recipe.durationS * 1000, completeCallback);
 
-            const idleCraftingActivity: IdleCraftingIntervalElement = {
-                userId: userId,
-                activity: 'crafting',
-                equipment: equipment,
-                recipe: recipe,
-                startTimestamp: startTimestamp,
-                durationS: recipe.durationS,
-                activityCompleteCallback: completeCallback,
-                activityStopCallback: async () => await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipment.id),
-                activityInterval: timerHandle
+            const stopCallback = async () => {
+                await IdleCraftingManager.craftingStopCallback(socketManager, userId, equipment.id);
             };
 
-            await idleManager.appendIdleActivityByUser(userId, idleCraftingActivity);
+            // Build activity without interval first
+            const activity: Omit<IdleCraftingIntervalElement, "activityInterval"> = {
+                userId,
+                activity: 'crafting',
+                equipment,
+                recipe,
+                startTimestamp,
+                durationS: recipe.durationS,
+                activityCompleteCallback: completeCallback,
+                activityStopCallback: stopCallback
+            };
+
+            await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
+
+            // Start and patch interval
+            timerHandle = IdleManager.startCustomInterval(
+                (startTimestamp + recipe.durationS * 1000) - Date.now(),
+                recipe.durationS * 1000,
+                completeCallback
+            );
+
+            idleManager.patchIntervalActivity(
+                userId,
+                'crafting',
+                (el) => el.activity === 'crafting' && el.equipment.id === equipment.id,
+                timerHandle
+            );
 
             logger.info(`Started idle crafting for user ${userId} for equipmentId: ${equipment.id}.`);
         } catch (error) {
-            logger.error(`Error starting crafting ${userId}: ${error}`);
+            logger.error(`Error starting crafting for user ${userId}: ${error}`);
 
             if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
+            await idleManager.removeCraftingActivity(userId, equipment.id);
 
             socketManager.emitEvent(userId, 'crafting-stop', {
-                userId: userId,
+                userId,
                 payload: {
                     equipmentId: equipment.id,
                 }
