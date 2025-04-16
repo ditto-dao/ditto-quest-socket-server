@@ -57,7 +57,7 @@ export class IdleManager {
             return;
         }
 
-        const lastActivity = queue.pop();
+        const lastActivity = queue.shift();
 
         if (lastActivity) {
             if (lastActivity.activity !== 'combat') IdleManager.clearCustomInterval(lastActivity.activityInterval);
