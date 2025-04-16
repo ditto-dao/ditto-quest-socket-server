@@ -140,7 +140,9 @@ export class ValidateLoginManager {
     }
 
     private async processLogin(data: LoginQueueData) {
-        this.socketManager.cacheSocketIdForUser(data.loginPayload.userData.id.toString(), data.socket.id)
+        this.socketManager.cacheSocketIdForUser(data.loginPayload.userData.id.toString(), data.socket.id);
+
+        data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
 
         let user;
         if (!(await userExists(data.loginPayload.userData.id.toString()))) {
@@ -164,8 +166,6 @@ export class ValidateLoginManager {
         }
 
         if (!user) throw new Error(`Error processing login. User data not fetched or created.`);
-
-        data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
 
         const currentCombat = await this.idleManager.loadIdleActivitiesOnLogin(data.loginPayload.userData.id.toString());
         if (currentCombat) {
