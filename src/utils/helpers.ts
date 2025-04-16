@@ -5,8 +5,7 @@ import { COMBAT_UPDATE_EVENT, USER_UPDATE_EVENT } from "../socket/events";
 import { FullUserData, UserDataEquipped } from "../sql-services/user-service";
 import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
-import { logger } from "./logger";
-
+import { Decimal } from "@prisma/client/runtime/library";
 
 // Helper function to calculate experience needed for the next level
 export function calculateExpForNextLevel(nextLevel: number): number {
@@ -121,8 +120,6 @@ export function getColourHexByRarity(rarity: Rarity): string {
     }
     return colourHex;
 }
-
-import { Decimal } from "@prisma/client/runtime/library"; // or from "decimal.js"
 
 export function calculateCombatPower(c: Combat): Decimal {
     const maxMeleeDmg = new Decimal(c.maxMeleeDmg);
