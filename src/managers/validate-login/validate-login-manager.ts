@@ -5,10 +5,12 @@ import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { createUser, getUserData, userExists } from "../../sql-services/user-service";
-import { DISCONNECT_USER_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
+import { DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
 import { getDomainById } from "../../sql-services/combat-service";
+import { slimeGachaPull } from "../../sql-services/slime";
+import { mintItemToUser } from "../../sql-services/item-inventory-service";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -143,6 +145,20 @@ export class ValidateLoginManager {
         let user;
         if (!(await userExists(data.loginPayload.userData.id.toString()))) {
             user = await createUser({ telegramId: data.loginPayload.userData.id.toString(), username: data.loginPayload.userData.username });
+            
+            // Free on first login
+            const firstFreeSlime = await slimeGachaPull(user.telegramId);
+            const secondFreeSlime = await slimeGachaPull(user.telegramId);
+            const mintWood = await mintItemToUser(user.telegramId, 30, 30);
+
+            data.socket.emit(FIRST_LOGIN_EVENT, {
+                userId: data.loginPayload.userData.id,
+                payload: {
+                    freeSlimes: [firstFreeSlime, secondFreeSlime],
+                    freeItems: [mintWood]
+                }
+            });
+            
         } else {
             user = await getUserData(data.loginPayload.userData.id.toString());
         }
