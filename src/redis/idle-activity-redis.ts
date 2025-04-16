@@ -1,6 +1,7 @@
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "redis";
 import { logger } from "../utils/logger";
 import { IdleActivityIntervalElement } from "../managers/idle-managers/idle-manager-types";
+import { MAX_CONCURRENT_IDLE_ACTIVITIES } from "../utils/config";
 
 export async function storeIdleActivityQueueElements(
     redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
@@ -83,6 +84,88 @@ export async function deleteAllIdleActivityQueueElements(
         }
     } catch (error) {
         logger.error(`Error deleting idle activity queue elements for user ${userId}:`, error);
+        throw error;
+    }
+}
+
+export async function deleteAllIdleActivityQueueElementsForAllUsers(
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
+): Promise<void> {
+    try {
+        const pattern = "user:*:idleActivityQueueElements";
+        const keys: string[] = [];
+
+        // Use SCAN to avoid blocking Redis on large datasets
+        let cursor = 0;
+        do {
+            const reply = await redisClient.scan(cursor, { MATCH: pattern, COUNT: 100 });
+            cursor = Number(reply.cursor);
+            keys.push(...reply.keys);
+        } while (cursor !== 0);
+
+        if (keys.length === 0) {
+            logger.info("No idle activity queue elements found to delete.");
+            return;
+        }
+
+        // Delete all found keys
+        const deletedCount = await redisClient.del(keys);
+
+        logger.info(`Deleted ${deletedCount} idle activity queue keys for all users.`);
+    } catch (error) {
+        logger.error("Error deleting idle activity queue elements for all users:", error);
+        throw error;
+    }
+}
+
+export async function trimIdleActivitiesForAllUsers(
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
+): Promise<void> {
+    try {
+        const pattern = "user:*:idleActivityQueueElements";
+        const keys: string[] = [];
+
+        // Use SCAN to avoid blocking Redis
+        let cursor = 0;
+        do {
+            const reply = await redisClient.scan(cursor, {
+                MATCH: pattern,
+                COUNT: 100,
+            });
+            cursor = Number(reply.cursor);
+            keys.push(...reply.keys);
+        } while (cursor !== 0);
+
+        if (keys.length === 0) {
+            logger.info("No idle activity keys found to trim.");
+            return;
+        }
+
+        let totalTrimmed = 0;
+
+        for (const key of keys) {
+            const userIdMatch = key.match(/^user:(\d+):idleActivityQueueElements$/);
+            if (!userIdMatch) continue;
+
+            const userId = userIdMatch[1];
+            const activities: IdleActivityIntervalElement[] = await getIdleActivityQueueElements(
+                redisClient,
+                userId
+            );
+
+            if (activities.length > MAX_CONCURRENT_IDLE_ACTIVITIES) {
+                const trimmed = activities.slice(-MAX_CONCURRENT_IDLE_ACTIVITIES);
+                await storeIdleActivityQueueElements(redisClient, userId, trimmed);
+                logger.info(
+                    `Trimmed idle activities for user ${userId}: kept ${trimmed.length}, removed ${activities.length - trimmed.length}`
+                );
+                totalTrimmed++;
+            }
+        }
+
+        logger.info(`✅ Trimmed idle activities for ${totalTrimmed} user(s).`);
+    } catch (error) {
+        logger.error("❌ Error trimming idle activities for all users:", error);
         throw error;
     }
 }
