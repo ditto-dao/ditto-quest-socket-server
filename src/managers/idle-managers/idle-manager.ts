@@ -371,7 +371,7 @@ export class IdleManager {
 
         let isRunning = false;
 
-        const intervalFn = async (source: "first" | "interval") => {
+        const intervalFn = async (source: "first" | "interval", rethrowError = false) => {
             if (isRunning) {
                 logger.debug(`[${source}] interval already running, skipping tick.`);
                 return;
@@ -385,6 +385,7 @@ export class IdleManager {
                 logger.info(`[${source}] callback finished.`);
             } catch (err) {
                 logger.error(`[${source}] error in interval callback: ${err}`);
+                if (rethrowError) throw err;
             } finally {
                 isRunning = false;
             }
@@ -394,13 +395,12 @@ export class IdleManager {
 
         handle.timeout = setTimeout(async () => {
             try {
-                await intervalFn("first");
+                await intervalFn("first", true); // will throw if callback fails
                 handle.interval = setInterval(() => intervalFn("interval"), repeatDelay);
                 logger.info(`[interval] repeating interval started.`);
             } catch (err) {
                 logger.error(`[first] error in first callback, not starting interval: ${err}`);
-                
-                IdleManager.clearCustomInterval(handle); // Redundant safety
+                IdleManager.clearCustomInterval(handle);
             }
         }, firstDelay);
 
