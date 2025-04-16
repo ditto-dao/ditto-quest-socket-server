@@ -42,7 +42,7 @@ export async function setupCraftingSocketHandlers(
         try {
             logger.info(`Received stop-craft-equipment event from user ${data.userId}`)
             
-            IdleCraftingManager.stopCrafting(idleManager, data.userId, data.equipmentId);
+            IdleCraftingManager.stopCrafting(idleManager, data.userId);
 
         } catch (error) {
             logger.error(`Error processing stop-craft-equipment: ${error}`)

@@ -21,7 +21,7 @@ export class IdleFarmingManager {
         let timerHandle: TimerHandle | undefined;
 
         try {
-            await idleManager.removeFarmingActivity(userId, item.id); // remove duplicate if any
+            await idleManager.removeFarmingActivity(userId); // remove duplicate if any
 
             if (!item.farmingDurationS || !item.farmingExp || !item.farmingLevelRequired) {
                 throw new Error('Item cannot be farmed');
@@ -38,7 +38,7 @@ export class IdleFarmingManager {
                     await IdleFarmingManager.farmingCompleteCallback(socketManager, idleManager, userId, item.id);
                 } catch (err) {
                     logger.error(`Farming callback failed for user ${userId}, item ${item.id}: ${err}`);
-                    await idleManager.removeFarmingActivity(userId, item.id);
+                    await idleManager.removeFarmingActivity(userId);
                     IdleManager.clearCustomInterval(timerHandle!);
                 }
             };
@@ -88,7 +88,7 @@ export class IdleFarmingManager {
             logger.error(`Error starting farming for user ${userId}: ${error}`);
 
             if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
-            await idleManager.removeFarmingActivity(userId, item.id);
+            await idleManager.removeFarmingActivity(userId);
 
             socketManager.emitEvent(userId, 'farming-stop', {
                 userId,
@@ -97,8 +97,8 @@ export class IdleFarmingManager {
         }
     }
 
-    static stopFarming(idleManager: IdleManager, userId: string, itemId: number) {
-        idleManager.removeFarmingActivity(userId, itemId);
+    static stopFarming(idleManager: IdleManager, userId: string) {
+        idleManager.removeFarmingActivity(userId);
     }
 
     static async handleLoadedFarmingActivity(
@@ -215,7 +215,7 @@ export class IdleFarmingManager {
         } catch (error) {
             logger.error(`Error during farming complete callback for user ${userId}: ${error}`);
 
-            await idleManager.removeFarmingActivity(userId, itemId);
+            await idleManager.removeFarmingActivity(userId);
 
             socketManager.emitEvent(userId, 'farming-stop', {
                 userId: userId,

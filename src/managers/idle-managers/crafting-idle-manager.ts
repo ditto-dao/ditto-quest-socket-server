@@ -24,7 +24,7 @@ export class IdleCraftingManager {
         let timerHandle: TimerHandle | undefined;
 
         try {
-            await idleManager.removeCraftingActivity(userId, recipe.equipmentId); // no duplicates
+            await idleManager.removeCraftingActivity(userId); // no duplicates
 
             if (!recipe) throw new Error('Crafting recipe not found');
             if ((await getUserCraftingLevel(userId)) < recipe.craftingLevelRequired) {
@@ -42,7 +42,7 @@ export class IdleCraftingManager {
                     await IdleCraftingManager.craftingCompleteCallback(socketManager, idleManager, userId, recipe);
                 } catch (err) {
                     logger.error(`Crafting callback failed for user ${userId}, equipment ${recipe.equipmentId}: ${err}`);
-                    await idleManager.removeCraftingActivity(userId, recipe.equipmentId);
+                    await idleManager.removeCraftingActivity(userId);
                     IdleManager.clearCustomInterval(timerHandle!);
                 }
             };
@@ -84,7 +84,7 @@ export class IdleCraftingManager {
             logger.error(`Error starting crafting for user ${userId}: ${error}`);
 
             if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
-            await idleManager.removeCraftingActivity(userId, equipment.id);
+            await idleManager.removeCraftingActivity(userId);
 
             socketManager.emitEvent(userId, 'crafting-stop', {
                 userId,
@@ -95,8 +95,8 @@ export class IdleCraftingManager {
         }
     }
 
-    static stopCrafting(idleManager: IdleManager, userId: string, equipmentId: number) {
-        idleManager.removeCraftingActivity(userId, equipmentId);
+    static stopCrafting(idleManager: IdleManager, userId: string) {
+        idleManager.removeCraftingActivity(userId);
     }
 
     static async handleLoadedCraftingActivity(
@@ -230,7 +230,7 @@ export class IdleCraftingManager {
         } catch (error) {
             logger.error(`Error during crafting complete callback for user ${userId}: ${error}`);
 
-            await idleManager.removeCraftingActivity(userId, recipe.equipmentId);
+            await idleManager.removeCraftingActivity(userId);
 
             socketManager.emitEvent(userId, 'crafting-stop', {
                 userId: userId,

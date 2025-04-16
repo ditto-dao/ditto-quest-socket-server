@@ -65,7 +65,7 @@ export async function setupItemsSocketHandlers(
         try {
             logger.info(`Received stop-farm-item event from user ${data.userId}`)
 
-            IdleFarmingManager.stopFarming(idleManager, data.userId, data.itemId);
+            IdleFarmingManager.stopFarming(idleManager, data.userId);
 
         } catch (error) {
             logger.error(`Error processing stop-craft-equipment: ${error}`)

@@ -28,6 +28,8 @@ export class Battle {
   onNextBattle?: () => Promise<void>;
 
   battleEnded: boolean = false;
+  battleStopRequested: boolean = false;
+
   tickFlags = {
     userAttack: false,
     monsterAttack: false,
@@ -109,7 +111,7 @@ export class Battle {
   }
 
   private async tickUserAttackLoop(delay: number) {
-    while (!this.battleEnded && this.tickFlags.userAttack && this.userCombat.hp > 0) {
+    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.userAttack && this.userCombat.hp > 0) {
       await sleep(delay);
       if (this.battleEnded || this.userCombat.hp <= 0) break;
       try {
@@ -121,7 +123,7 @@ export class Battle {
   }
 
   private async tickMonsterAttackLoop(delay: number) {
-    while (!this.battleEnded && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
+    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
       await sleep(delay);
       if (this.battleEnded || this.monster.combat.hp <= 0) break;
       try {
@@ -133,7 +135,7 @@ export class Battle {
   }
 
   private async tickUserRegenLoop(delay: number) {
-    while (!this.battleEnded && this.tickFlags.userRegen) {
+    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.userAttack && this.userCombat.hp > 0) {
       await sleep(delay);
       if (this.battleEnded) break;
       try {
@@ -145,7 +147,7 @@ export class Battle {
   }
 
   private async tickMonsterRegenLoop(delay: number) {
-    while (!this.battleEnded && this.tickFlags.monsterRegen) {
+    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
       await sleep(delay);
       if (this.battleEnded) break;
       try {
@@ -159,7 +161,8 @@ export class Battle {
   async endBattle() {
     logger.info(`Calling endBattle for user ${this.user.telegramId}. battleEnded = ${this.battleEnded}`);
 
-    if (this.battleEnded) return;
+    if (this.battleEnded || this.battleStopRequested) return;
+    this.battleStopRequested = true;
 
     await sleep(800);
 
@@ -238,7 +241,7 @@ export class Battle {
    * Handles attack logic between combatants.
    */
   async attack(attackerType: "user" | "monster") {
-    if (this.battleEnded) return;
+    if (this.battleEnded || this.battleStopRequested) return;
 
     const attacker = (attackerType === 'user') ? this.userCombat : this.monster.combat;
     const defender = (attackerType === 'user') ? this.monster.combat : this.userCombat;

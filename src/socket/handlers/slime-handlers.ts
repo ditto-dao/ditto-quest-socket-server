@@ -107,7 +107,7 @@ export async function setupSlimeSocketHandlers(
         try {
             logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
 
-            IdleBreedingManager.stopBreeding(idleManager, data.userId, data.sireId, data.dameId);
+            IdleBreedingManager.stopBreeding(idleManager, data.userId);
         } catch (error) {
             logger.error(`Error processing breed-slime: ${error}`)
             socket.emit('error', {

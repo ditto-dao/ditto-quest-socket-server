@@ -21,9 +21,7 @@ export class IdleBreedingManager {
         let timerHandle: TimerHandle | undefined;
 
         try {
-            // Remove existing activities for the same slimes
-            await idleManager.removeBreedingActivitiesBySlimeId(userId, sire.id);
-            await idleManager.removeBreedingActivitiesBySlimeId(userId, dame.id);
+            await idleManager.removeBreedingActivity(userId);
 
             const equippedSlimeId = await getEquippedSlimeId(userId);
             const breedingDurationS =
@@ -45,7 +43,7 @@ export class IdleBreedingManager {
                     await IdleBreedingManager.breedingCompleteCallback(socketManager, idleManager, userId, sire, dame);
                 } catch (err) {
                     logger.error(`Breeding callback failed for user ${userId}, sire ${sire.id}, dame ${dame.id}: ${err}`);
-                    await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
+                    await idleManager.removeBreedingActivity(userId);
                     IdleManager.clearCustomInterval(timerHandle!);
                 }
             };
@@ -87,7 +85,7 @@ export class IdleBreedingManager {
             logger.error(`Error starting breeding for user ${userId}: ${error}`);
 
             if (timerHandle) IdleManager.clearCustomInterval(timerHandle);
-            await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
+            await idleManager.removeBreedingActivity(userId);
 
             socketManager.emitEvent(userId, 'breeding-stop', {
                 userId,
@@ -99,8 +97,8 @@ export class IdleBreedingManager {
         }
     }
 
-    static stopBreeding(idleManager: IdleManager, userId: string, sireId: number, dameId: number) {
-        idleManager.removeBreedingActivity(userId, sireId, dameId);
+    static stopBreeding(idleManager: IdleManager, userId: string) {
+        idleManager.removeBreedingActivity(userId);
     }
 
     static async handleLoadedBreedingActivity(
@@ -206,9 +204,7 @@ export class IdleBreedingManager {
         } catch (error) {
             logger.error(`Error during breeding complete callback for user ${userId}: ${error}`);
 
-            await idleManager.removeBreedingActivity(userId, sire.id, dame.id);
-            await idleManager.removeBreedingActivitiesBySlimeId(userId, sire.id);
-            await idleManager.removeBreedingActivitiesBySlimeId(userId, dame.id);
+            await idleManager.removeBreedingActivity(userId);
 
             socketManager.emitEvent(userId, 'breeding-stop', {
                 userId: userId,
