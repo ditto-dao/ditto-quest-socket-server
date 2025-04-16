@@ -179,7 +179,7 @@ export class IdleCombatManager {
             }
         };
 
-        idleManager.appendIdleActivityByUser(userId, {
+        await idleManager.appendIdleActivityByUser(userId, {
             userId: userId,
             activity: 'combat',
             activityStopCallback: completeCallback,
