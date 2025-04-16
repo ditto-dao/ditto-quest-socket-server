@@ -43,4 +43,44 @@ async function purgeUserData() {
   }
 }
 
+async function purgeSpecificUserData(userId: string) {
+  try {
+    logger.info(`🚀 Starting data purge for user ${userId}...`);
+
+    // Delete user's inventory
+    await prisma.inventory.deleteMany({
+      where: { userId },
+    });
+    logger.info(`🗑️ Deleted inventory for user ${userId}.`);
+
+    // Delete user's slimes
+    await prisma.slime.deleteMany({
+      where: { ownerId: userId },
+    });
+    logger.info(`🗑️ Deleted slimes for user ${userId}.`);
+
+    // Delete user record (must come before deleting combat if there's a FK)
+    await prisma.user.delete({
+      where: { telegramId: userId },
+    });
+    logger.info(`🗑️ Deleted user account ${userId}.`);
+
+    // Delete orphaned combat records no longer referenced by any monster or user
+    await prisma.combat.deleteMany({
+      where: {
+        user: { none: {} },
+        Monster: { none: {} }
+      }
+    });
+    logger.info("🗑️ Cleaned up unused combat records.");
+
+    logger.info(`✅ Successfully purged data for user ${userId}.`);
+  } catch (error) {
+    logger.error(`❌ Error purging data for user ${userId}: ${error}`);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 purgeUserData();
