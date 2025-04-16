@@ -365,55 +365,78 @@ export class IdleManager {
         logger.info('✅ Finished saving all cached idle activities.');
     }
 
-    static startCustomInterval(
+    async startCustomInterval(
+        userId: string,
         firstDelay: number,
         repeatDelay: number,
         callback: () => Promise<void>
-    ): TimerHandle {
-        const handle: TimerHandle = {
-            timeout: undefined,
-            interval: undefined
-        };
+    ): Promise<TimerHandle> {
+        return await this.lock.acquire(userId, async () => {
+            let cancelled = false;
 
-        let isRunning = false;
+            const handle: TimerHandle = {
+                timeout: undefined,
+                interval: undefined,
+                cancel: () => {
+                    cancelled = true;
+                }
+            };
 
-        const intervalFn = async (source: "first" | "interval", rethrowError = false) => {
-            if (isRunning) {
-                logger.debug(`[${source}] interval already running, skipping tick.`);
-                return;
-            }
+            let isRunning = false;
 
-            isRunning = true;
-            logger.info(`[${source}] interval executing callback.`);
+            const intervalFn = async (source: "first" | "interval", rethrowError = false) => {
+                if (isRunning) {
+                    logger.debug(`[${source}] interval already running, skipping tick.`);
+                    return;
+                }
 
-            try {
-                await callback();
-                logger.info(`[${source}] callback finished.`);
-            } catch (err) {
-                logger.error(`[${source}] error in interval callback: ${err}`);
-                if (rethrowError) throw err;
-            } finally {
-                isRunning = false;
-            }
-        };
+                isRunning = true;
+                logger.info(`[${source}] interval executing callback.`);
 
-        logger.info(`[first] interval scheduled to start in ${firstDelay}ms and repeat every ${repeatDelay}ms.`);
+                try {
+                    await callback();
+                    logger.info(`[${source}] callback finished.`);
+                } catch (err) {
+                    logger.error(`[${source}] error in interval callback: ${err}`);
+                    if (rethrowError) throw err;
+                } finally {
+                    isRunning = false;
+                }
+            };
 
-        handle.timeout = setTimeout(async () => {
-            try {
-                await intervalFn("first", true); // will throw if callback fails
-                handle.interval = setInterval(() => intervalFn("interval"), repeatDelay);
-                logger.info(`[interval] repeating interval started.`);
-            } catch (err) {
-                logger.error(`[first] error in first callback, not starting interval: ${err}`);
-                IdleManager.clearCustomInterval(handle);
-            }
-        }, firstDelay);
+            logger.info(`[first] interval scheduled to start in ${firstDelay}ms and repeat every ${repeatDelay}ms.`);
 
-        return handle;
+            handle.timeout = setTimeout(async () => {
+                if (cancelled) {
+                    logger.warn(`[first] interval setup skipped because handle was cancelled early`);
+                    return;
+                }
+
+                try {
+                    await intervalFn("first", true);
+
+                    if (cancelled) {
+                        logger.warn(`[first] interval not started — cancelled after first tick`);
+                        return;
+                    }
+
+                    handle.interval = setInterval(() => intervalFn("interval"), repeatDelay);
+                    logger.info(`[interval] repeating interval started.`);
+                } catch (err) {
+                    logger.error(`[first] error in first callback, not starting interval: ${err}`);
+                    IdleManager.clearCustomInterval(handle);
+                }
+            }, firstDelay);
+
+            return handle;
+        });
     }
 
     static clearCustomInterval(handle: TimerHandle): void {
+        if (!handle) return;
+
+        if (handle.cancel) handle.cancel(); // cancel flag
+
         if (handle.timeout) {
             clearTimeout(handle.timeout);
             logger.info(`Cleared timeout`);

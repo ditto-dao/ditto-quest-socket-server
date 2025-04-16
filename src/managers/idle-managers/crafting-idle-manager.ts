@@ -66,7 +66,8 @@ export class IdleCraftingManager {
             await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
             // Start and patch interval
-            timerHandle = IdleManager.startCustomInterval(
+            timerHandle = await idleManager.startCustomInterval(
+                userId,
                 (startTimestamp + recipe.durationS * 1000) - Date.now(),
                 recipe.durationS * 1000,
                 completeCallback

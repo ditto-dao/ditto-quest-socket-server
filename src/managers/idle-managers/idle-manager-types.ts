@@ -3,7 +3,11 @@ import { CraftingRecipeRes } from '../../sql-services/crafting-service';
 import { SlimeWithTraits } from '../../sql-services/slime';
 import { FullMonster } from '../../sql-services/combat-service';
 
-export type TimerHandle = { timeout?: NodeJS.Timeout; interval?: NodeJS.Timeout };
+export interface TimerHandle {
+    timeout?: NodeJS.Timeout;
+    interval?: NodeJS.Timeout;
+    cancel?: () => void; // new
+}
 
 export interface IdleFarmingIntervalElement {
     userId: string;

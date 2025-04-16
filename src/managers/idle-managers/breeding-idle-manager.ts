@@ -67,7 +67,8 @@ export class IdleBreedingManager {
             await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
             // Now start interval and patch
-            timerHandle = IdleManager.startCustomInterval(
+            timerHandle = await idleManager.startCustomInterval(
+                userId,
                 (startTimestamp + breedingDurationS * 1000) - Date.now(),
                 breedingDurationS * 1000,
                 completeCallback

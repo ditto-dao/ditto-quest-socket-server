@@ -61,7 +61,8 @@ export class IdleFarmingManager {
             await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
             // Start timer and patch
-            timerHandle = IdleManager.startCustomInterval(
+            timerHandle = await idleManager.startCustomInterval(
+                userId,
                 (startTimestamp + item.farmingDurationS * 1000) - Date.now(),
                 item.farmingDurationS * 1000,
                 completeCallback
