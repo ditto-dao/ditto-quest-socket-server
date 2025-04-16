@@ -393,9 +393,15 @@ export class IdleManager {
         logger.info(`[first] interval scheduled to start in ${firstDelay}ms and repeat every ${repeatDelay}ms.`);
 
         handle.timeout = setTimeout(async () => {
-            await intervalFn("first");
-            handle.interval = setInterval(() => intervalFn("interval"), repeatDelay);
-            logger.info(`[interval] repeating interval started.`);
+            try {
+                await intervalFn("first");
+                handle.interval = setInterval(() => intervalFn("interval"), repeatDelay);
+                logger.info(`[interval] repeating interval started.`);
+            } catch (err) {
+                logger.error(`[first] error in first callback, not starting interval: ${err}`);
+                
+                IdleManager.clearCustomInterval(handle); // Redundant safety
+            }
         }, firstDelay);
 
         return handle;
