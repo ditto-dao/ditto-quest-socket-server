@@ -1,7 +1,7 @@
 [
   {
     "equipmentId": 1,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -13,7 +13,7 @@
   },
   {
     "equipmentId": 2,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -29,7 +29,7 @@
   },
   {
     "equipmentId": 3,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -45,7 +45,7 @@
   },
   {
     "equipmentId": 4,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -65,7 +65,7 @@
   },
   {
     "equipmentId": 5,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -81,7 +81,7 @@
   },
   {
     "equipmentId": 6,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -97,7 +97,7 @@
   },
   {
     "equipmentId": 7,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -113,7 +113,7 @@
   },
   {
     "equipmentId": 8,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -129,7 +129,7 @@
   },
   {
     "equipmentId": 9,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -145,7 +145,7 @@
   },
   {
     "equipmentId": 10,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
@@ -161,7 +161,7 @@
   },
   {
     "equipmentId": 11,
-    "durationS": 150,
+    "durationS": 105,
     "craftingLevelRequired": 100,
     "craftingExp": 666,
     "CraftingRecipeItems": [
@@ -177,7 +177,7 @@
   },
   {
     "equipmentId": 12,
-    "durationS": 170,
+    "durationS": 119,
     "craftingLevelRequired": 110,
     "craftingExp": 720,
     "CraftingRecipeItems": [
@@ -193,7 +193,7 @@
   },
   {
     "equipmentId": 13,
-    "durationS": 190,
+    "durationS": 133,
     "craftingLevelRequired": 120,
     "craftingExp": 840,
     "CraftingRecipeItems": [
@@ -209,7 +209,7 @@
   },
   {
     "equipmentId": 14,
-    "durationS": 210,
+    "durationS": 147,
     "craftingLevelRequired": 130,
     "craftingExp": 1050,
     "CraftingRecipeItems": [
@@ -225,7 +225,7 @@
   },
   {
     "equipmentId": 15,
-    "durationS": 240,
+    "durationS": 168,
     "craftingLevelRequired": 140,
     "craftingExp": 1666,
     "CraftingRecipeItems": [
@@ -241,7 +241,7 @@
   },
   {
     "equipmentId": 16,
-    "durationS": 260,
+    "durationS": 182,
     "craftingLevelRequired": 150,
     "craftingExp": 1600,
     "CraftingRecipeItems": [
@@ -257,7 +257,7 @@
   },
   {
     "equipmentId": 17,
-    "durationS": 290,
+    "durationS": 203,
     "craftingLevelRequired": 160,
     "craftingExp": 1900,
     "CraftingRecipeItems": [
@@ -273,7 +273,7 @@
   },
   {
     "equipmentId": 18,
-    "durationS": 320,
+    "durationS": 224,
     "craftingLevelRequired": 170,
     "craftingExp": 2200,
     "CraftingRecipeItems": [
@@ -289,7 +289,7 @@
   },
   {
     "equipmentId": 19,
-    "durationS": 350,
+    "durationS": 245,
     "craftingLevelRequired": 185,
     "craftingExp": 2500,
     "CraftingRecipeItems": [
@@ -305,7 +305,7 @@
   },
   {
     "equipmentId": 20,
-    "durationS": 400,
+    "durationS": 280,
     "craftingLevelRequired": 200,
     "craftingExp": 3200,
     "CraftingRecipeItems": [
@@ -321,7 +321,7 @@
   },
   {
     "equipmentId": 21,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -337,7 +337,7 @@
   },
   {
     "equipmentId": 22,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -357,7 +357,7 @@
   },
   {
     "equipmentId": 23,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -377,7 +377,7 @@
   },
   {
     "equipmentId": 24,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -401,7 +401,7 @@
   },
   {
     "equipmentId": 25,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -421,7 +421,7 @@
   },
   {
     "equipmentId": 26,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -441,7 +441,7 @@
   },
   {
     "equipmentId": 27,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -461,7 +461,7 @@
   },
   {
     "equipmentId": 28,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -481,7 +481,7 @@
   },
   {
     "equipmentId": 29,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -501,7 +501,7 @@
   },
   {
     "equipmentId": 30,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
@@ -521,7 +521,7 @@
   },
   {
     "equipmentId": 31,
-    "durationS": 150,
+    "durationS": 105,
     "craftingLevelRequired": 100,
     "craftingExp": 666,
     "CraftingRecipeItems": [
@@ -541,7 +541,7 @@
   },
   {
     "equipmentId": 32,
-    "durationS": 170,
+    "durationS": 119,
     "craftingLevelRequired": 110,
     "craftingExp": 720,
     "CraftingRecipeItems": [
@@ -561,7 +561,7 @@
   },
   {
     "equipmentId": 33,
-    "durationS": 190,
+    "durationS": 133,
     "craftingLevelRequired": 120,
     "craftingExp": 840,
     "CraftingRecipeItems": [
@@ -581,7 +581,7 @@
   },
   {
     "equipmentId": 34,
-    "durationS": 210,
+    "durationS": 147,
     "craftingLevelRequired": 130,
     "craftingExp": 1050,
     "CraftingRecipeItems": [
@@ -601,7 +601,7 @@
   },
   {
     "equipmentId": 35,
-    "durationS": 240,
+    "durationS": 168,
     "craftingLevelRequired": 140,
     "craftingExp": 1666,
     "CraftingRecipeItems": [
@@ -621,7 +621,7 @@
   },
   {
     "equipmentId": 36,
-    "durationS": 260,
+    "durationS": 182,
     "craftingLevelRequired": 150,
     "craftingExp": 1600,
     "CraftingRecipeItems": [
@@ -641,7 +641,7 @@
   },
   {
     "equipmentId": 37,
-    "durationS": 290,
+    "durationS": 203,
     "craftingLevelRequired": 160,
     "craftingExp": 1900,
     "CraftingRecipeItems": [
@@ -661,7 +661,7 @@
   },
   {
     "equipmentId": 38,
-    "durationS": 320,
+    "durationS": 224,
     "craftingLevelRequired": 170,
     "craftingExp": 2200,
     "CraftingRecipeItems": [
@@ -681,7 +681,7 @@
   },
   {
     "equipmentId": 39,
-    "durationS": 350,
+    "durationS": 245,
     "craftingLevelRequired": 185,
     "craftingExp": 2500,
     "CraftingRecipeItems": [
@@ -701,7 +701,7 @@
   },
   {
     "equipmentId": 40,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -713,7 +713,7 @@
   },
   {
     "equipmentId": 41,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -729,7 +729,7 @@
   },
   {
     "equipmentId": 42,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -745,7 +745,7 @@
   },
   {
     "equipmentId": 43,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -765,7 +765,7 @@
   },
   {
     "equipmentId": 44,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -781,7 +781,7 @@
   },
   {
     "equipmentId": 45,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -797,7 +797,7 @@
   },
   {
     "equipmentId": 46,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -813,7 +813,7 @@
   },
   {
     "equipmentId": 47,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -829,7 +829,7 @@
   },
   {
     "equipmentId": 48,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -845,7 +845,7 @@
   },
   {
     "equipmentId": 49,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
@@ -861,7 +861,7 @@
   },
   {
     "equipmentId": 50,
-    "durationS": 150,
+    "durationS": 105,
     "craftingLevelRequired": 100,
     "craftingExp": 666,
     "CraftingRecipeItems": [
@@ -877,7 +877,7 @@
   },
   {
     "equipmentId": 51,
-    "durationS": 170,
+    "durationS": 119,
     "craftingLevelRequired": 110,
     "craftingExp": 720,
     "CraftingRecipeItems": [
@@ -893,7 +893,7 @@
   },
   {
     "equipmentId": 52,
-    "durationS": 190,
+    "durationS": 133,
     "craftingLevelRequired": 120,
     "craftingExp": 840,
     "CraftingRecipeItems": [
@@ -909,7 +909,7 @@
   },
   {
     "equipmentId": 53,
-    "durationS": 210,
+    "durationS": 147,
     "craftingLevelRequired": 130,
     "craftingExp": 1050,
     "CraftingRecipeItems": [
@@ -925,7 +925,7 @@
   },
   {
     "equipmentId": 54,
-    "durationS": 240,
+    "durationS": 168,
     "craftingLevelRequired": 140,
     "craftingExp": 1666,
     "CraftingRecipeItems": [
@@ -941,7 +941,7 @@
   },
   {
     "equipmentId": 55,
-    "durationS": 260,
+    "durationS": 182,
     "craftingLevelRequired": 150,
     "craftingExp": 1600,
     "CraftingRecipeItems": [
@@ -957,7 +957,7 @@
   },
   {
     "equipmentId": 56,
-    "durationS": 290,
+    "durationS": 203,
     "craftingLevelRequired": 160,
     "craftingExp": 1900,
     "CraftingRecipeItems": [
@@ -973,7 +973,7 @@
   },
   {
     "equipmentId": 57,
-    "durationS": 320,
+    "durationS": 224,
     "craftingLevelRequired": 170,
     "craftingExp": 2200,
     "CraftingRecipeItems": [
@@ -989,7 +989,7 @@
   },
   {
     "equipmentId": 58,
-    "durationS": 350,
+    "durationS": 245,
     "craftingLevelRequired": 185,
     "craftingExp": 2500,
     "CraftingRecipeItems": [
@@ -1005,7 +1005,7 @@
   },
   {
     "equipmentId": 59,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -1021,7 +1021,7 @@
   },
   {
     "equipmentId": 60,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -1037,7 +1037,7 @@
   },
   {
     "equipmentId": 61,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -1053,7 +1053,7 @@
   },
   {
     "equipmentId": 62,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -1069,7 +1069,7 @@
   },
   {
     "equipmentId": 63,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -1085,7 +1085,7 @@
   },
   {
     "equipmentId": 64,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -1101,7 +1101,7 @@
   },
   {
     "equipmentId": 65,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -1117,7 +1117,7 @@
   },
   {
     "equipmentId": 66,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -1133,7 +1133,7 @@
   },
   {
     "equipmentId": 67,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -1149,7 +1149,7 @@
   },
   {
     "equipmentId": 68,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
@@ -1165,7 +1165,7 @@
   },
   {
     "equipmentId": 69,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -1181,7 +1181,7 @@
   },
   {
     "equipmentId": 70,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -1197,7 +1197,7 @@
   },
   {
     "equipmentId": 71,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -1213,7 +1213,7 @@
   },
   {
     "equipmentId": 72,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -1229,7 +1229,7 @@
   },
   {
     "equipmentId": 73,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -1245,7 +1245,7 @@
   },
   {
     "equipmentId": 74,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -1261,7 +1261,7 @@
   },
   {
     "equipmentId": 75,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -1277,7 +1277,7 @@
   },
   {
     "equipmentId": 76,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -1293,7 +1293,7 @@
   },
   {
     "equipmentId": 77,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -1309,7 +1309,7 @@
   },
   {
     "equipmentId": 78,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
@@ -1325,7 +1325,7 @@
   },
   {
     "equipmentId": 79,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -1337,7 +1337,7 @@
   },
   {
     "equipmentId": 80,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -1353,7 +1353,7 @@
   },
   {
     "equipmentId": 81,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -1369,7 +1369,7 @@
   },
   {
     "equipmentId": 82,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -1389,7 +1389,7 @@
   },
   {
     "equipmentId": 83,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -1405,7 +1405,7 @@
   },
   {
     "equipmentId": 84,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -1421,7 +1421,7 @@
   },
   {
     "equipmentId": 85,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -1437,7 +1437,7 @@
   },
   {
     "equipmentId": 86,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -1453,7 +1453,7 @@
   },
   {
     "equipmentId": 87,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -1469,7 +1469,7 @@
   },
   {
     "equipmentId": 88,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
@@ -1485,7 +1485,7 @@
   },
   {
     "equipmentId": 89,
-    "durationS": 150,
+    "durationS": 105,
     "craftingLevelRequired": 100,
     "craftingExp": 666,
     "CraftingRecipeItems": [
@@ -1501,7 +1501,7 @@
   },
   {
     "equipmentId": 90,
-    "durationS": 170,
+    "durationS": 119,
     "craftingLevelRequired": 110,
     "craftingExp": 720,
     "CraftingRecipeItems": [
@@ -1517,7 +1517,7 @@
   },
   {
     "equipmentId": 91,
-    "durationS": 190,
+    "durationS": 133,
     "craftingLevelRequired": 120,
     "craftingExp": 840,
     "CraftingRecipeItems": [
@@ -1533,7 +1533,7 @@
   },
   {
     "equipmentId": 92,
-    "durationS": 210,
+    "durationS": 147,
     "craftingLevelRequired": 130,
     "craftingExp": 1050,
     "CraftingRecipeItems": [
@@ -1549,7 +1549,7 @@
   },
   {
     "equipmentId": 93,
-    "durationS": 240,
+    "durationS": 168,
     "craftingLevelRequired": 140,
     "craftingExp": 1666,
     "CraftingRecipeItems": [
@@ -1565,7 +1565,7 @@
   },
   {
     "equipmentId": 94,
-    "durationS": 260,
+    "durationS": 182,
     "craftingLevelRequired": 150,
     "craftingExp": 1600,
     "CraftingRecipeItems": [
@@ -1581,7 +1581,7 @@
   },
   {
     "equipmentId": 95,
-    "durationS": 290,
+    "durationS": 203,
     "craftingLevelRequired": 160,
     "craftingExp": 1900,
     "CraftingRecipeItems": [
@@ -1597,7 +1597,7 @@
   },
   {
     "equipmentId": 96,
-    "durationS": 320,
+    "durationS": 224,
     "craftingLevelRequired": 170,
     "craftingExp": 2200,
     "CraftingRecipeItems": [
@@ -1613,7 +1613,7 @@
   },
   {
     "equipmentId": 97,
-    "durationS": 350,
+    "durationS": 245,
     "craftingLevelRequired": 185,
     "craftingExp": 2500,
     "CraftingRecipeItems": [
@@ -1629,7 +1629,7 @@
   },
   {
     "equipmentId": 98,
-    "durationS": 400,
+    "durationS": 280,
     "craftingLevelRequired": 200,
     "craftingExp": 3200,
     "CraftingRecipeItems": [
@@ -1645,7 +1645,7 @@
   },
   {
     "equipmentId": 99,
-    "durationS": 60,
+    "durationS": 42,
     "craftingLevelRequired": 1,
     "craftingExp": 100,
     "CraftingRecipeItems": [
@@ -1661,7 +1661,7 @@
   },
   {
     "equipmentId": 100,
-    "durationS": 65,
+    "durationS": 46,
     "craftingLevelRequired": 10,
     "craftingExp": 125,
     "CraftingRecipeItems": [
@@ -1681,7 +1681,7 @@
   },
   {
     "equipmentId": 101,
-    "durationS": 70,
+    "durationS": 49,
     "craftingLevelRequired": 20,
     "craftingExp": 150,
     "CraftingRecipeItems": [
@@ -1701,7 +1701,7 @@
   },
   {
     "equipmentId": 102,
-    "durationS": 75,
+    "durationS": 53,
     "craftingLevelRequired": 30,
     "craftingExp": 180,
     "CraftingRecipeItems": [
@@ -1721,7 +1721,7 @@
   },
   {
     "equipmentId": 103,
-    "durationS": 80,
+    "durationS": 56,
     "craftingLevelRequired": 40,
     "craftingExp": 225,
     "CraftingRecipeItems": [
@@ -1741,7 +1741,7 @@
   },
   {
     "equipmentId": 104,
-    "durationS": 90,
+    "durationS": 63,
     "craftingLevelRequired": 50,
     "craftingExp": 280,
     "CraftingRecipeItems": [
@@ -1761,7 +1761,7 @@
   },
   {
     "equipmentId": 105,
-    "durationS": 100,
+    "durationS": 70,
     "craftingLevelRequired": 60,
     "craftingExp": 333,
     "CraftingRecipeItems": [
@@ -1781,7 +1781,7 @@
   },
   {
     "equipmentId": 106,
-    "durationS": 110,
+    "durationS": 77,
     "craftingLevelRequired": 70,
     "craftingExp": 380,
     "CraftingRecipeItems": [
@@ -1801,7 +1801,7 @@
   },
   {
     "equipmentId": 107,
-    "durationS": 120,
+    "durationS": 84,
     "craftingLevelRequired": 80,
     "craftingExp": 450,
     "CraftingRecipeItems": [
@@ -1821,7 +1821,7 @@
   },
   {
     "equipmentId": 108,
-    "durationS": 130,
+    "durationS": 91,
     "craftingLevelRequired": 90,
     "craftingExp": 520,
     "CraftingRecipeItems": [
