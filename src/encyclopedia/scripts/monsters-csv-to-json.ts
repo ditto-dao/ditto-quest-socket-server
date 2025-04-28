@@ -419,7 +419,7 @@ const parseCsvToJson = async () => {
                     monsters.push(monster);
                     logger.info(`Parsed monster: ${monster.name} (ID: ${monster.id})`);
                 } catch (err) {
-                    logger.error(`Failed to parse monster at row ${i + 1}:`, err);
+                    logger.error(`Failed to parse monster at row ${i + 1}: ${err}`);
                 }
             }
 
