@@ -75,16 +75,6 @@ export class IdleFarmingManager {
                 timerHandle
             );
 
-            // Emit to client
-            socketManager.emitEvent(userId, 'farming-start', {
-                userId,
-                payload: {
-                    itemId: item.id,
-                    startTimestamp,
-                    durationS: item.farmingDurationS
-                }
-            });
-
         } catch (error) {
             logger.error(`Error starting farming for user ${userId}: ${error}`);
 
@@ -166,6 +156,8 @@ export class IdleFarmingManager {
             userId: userId,
             payload: {
                 itemId: farming.item.id,
+                name: farming.item.name,
+                imgsrc: farming.item.imgsrc,
                 startTimestamp: currentRepetitionStart,
                 durationS: farming.durationS
             }

@@ -165,6 +165,8 @@ export class IdleCraftingManager {
                 userId: userId,
                 payload: {
                     equipmentId: crafting.equipment.id,
+                    name: crafting.equipment.name,
+                    imgsrc: crafting.equipment.imgsrc,
                     startTimestamp: currentRepetitionStart,
                     durationS: crafting.recipe.durationS
                 }
