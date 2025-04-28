@@ -169,3 +169,46 @@ export async function trimIdleActivitiesForAllUsers(
         throw error;
     }
 }
+
+export async function printAllIdleActivities(
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
+  ): Promise<void> {
+    try {
+      const pattern = "user:*:idleActivityQueueElements";
+      const keys: string[] = [];
+  
+      // Use SCAN to gather all matching keys
+      let cursor = 0;
+      do {
+        const reply = await redisClient.scan(cursor, {
+          MATCH: pattern,
+          COUNT: 100,
+        });
+        cursor = Number(reply.cursor);
+        keys.push(...reply.keys);
+      } while (cursor !== 0);
+  
+      if (keys.length === 0) {
+        logger.info("No idle activity keys found.");
+        return;
+      }
+  
+      for (const key of keys) {
+        const userIdMatch = key.match(/^user:(\d+):idleActivityQueueElements$/);
+        if (!userIdMatch) continue;
+  
+        const userId = userIdMatch[1];
+        const activities = await getIdleActivityQueueElements(redisClient, userId);
+  
+        logger.info(`🧾 User ${userId} has ${activities.length} idle activity(ies):`);
+        for (const [i, activity] of activities.entries()) {
+          logger.info(`  ${i + 1}. [${activity.activity}] Started at ${new Date(activity.startTimestamp).toISOString()}`);
+        }
+        logger.info(`🧾 Total Users: ${keys.length}`);
+
+      }
+    } catch (error) {
+      logger.error("❌ Error printing all idle activities:", error);
+      throw error;
+    }
+  }
