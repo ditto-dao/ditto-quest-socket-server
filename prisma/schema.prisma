@@ -113,6 +113,8 @@ model User {
   CombatActivityLog CombatActivityLog[]
 
   AccomplishmentProgress AccomplishmentProgress[]
+
+  UserDeviceFingerprint UserDeviceFingerprint[]
 }
 
 model Combat {
@@ -772,4 +774,18 @@ model AccomplishmentProgress {
   user           User           @relation(fields: [userId], references: [telegramId])
 
   @@unique([accomplishmentId, userId])
+}
+
+model UserDeviceFingerprint {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  fingerprint String
+  ipAddress   String
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [telegramId])
+
+  @@index([fingerprint])
+  @@index([ipAddress])
+  @@index([userId])
 }

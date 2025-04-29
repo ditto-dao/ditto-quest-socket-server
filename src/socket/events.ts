@@ -20,6 +20,8 @@ export const FIRST_LOGIN_EVENT = 'user-first-login';
 
 export const USER_UPDATE_EVENT = 'user-update';
 
+export const STORE_FINGERPRINT_EVENT = 'store-user-fingerprint';
+
 // Combat
 
 export const START_COMBAT_DOMAIN_EVENT = 'start-combat-domain';
