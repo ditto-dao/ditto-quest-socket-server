@@ -103,6 +103,16 @@ model User {
   equippedSlime   Slime? @relation("EquippedSlime", fields: [equippedSlimeId], references: [id])
 
   DungeonLeaderboard DungeonLeaderboard[]
+
+  BreedingActivityLog BreedingActivityLog[]
+
+  FarmingActivityLog FarmingActivityLog[]
+
+  CraftingActivityLog CraftingActivityLog[]
+
+  CombatActivityLog CombatActivityLog[]
+
+  AccomplishmentProgress AccomplishmentProgress[]
 }
 
 model Combat {
@@ -651,4 +661,115 @@ model DungeonLeaderboard {
 
   @@index([dungeonId, score])
   @@index([userId, dungeonId])
+}
+
+// Activity Logs
+model FarmingActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  timestamp DateTime @default(now())
+  itemId    Int
+  quantity  Int
+
+  user User @relation(fields: [userId], references: [telegramId])
+
+  @@index([userId, timestamp])
+}
+
+model CraftingActivityLog {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  timestamp     DateTime @default(now())
+  equipmentIdIn Int // Final crafted equipment id
+  quantityIn    Int // Usually 1, but flexible if you allow batch crafting
+
+  consumedItems CraftingConsumedItem[]
+
+  user User @relation(fields: [userId], references: [telegramId])
+
+  @@index([userId, timestamp])
+}
+
+model CraftingConsumedItem {
+  id                 Int @id @default(autoincrement())
+  craftingActivityId Int
+  itemId             Int
+  quantity           Int
+
+  craftingActivity CraftingActivityLog @relation(fields: [craftingActivityId], references: [id])
+
+  @@index([craftingActivityId])
+}
+
+model BreedingActivityLog {
+  id              Int      @id @default(autoincrement())
+  userId          String
+  timestamp       DateTime @default(now())
+  dameId          Int
+  dameGeneration  Int
+  dameRarity      Rarity
+  sireId          Int
+  sireGeneration  Int
+  sireRarity      Rarity
+  childId         Int
+  childGeneration Int
+  childRarity     Rarity
+
+  user User @relation(fields: [userId], references: [telegramId])
+
+  @@index([userId, timestamp])
+}
+
+model CombatActivityLog {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  timestamp   DateTime @default(now())
+  monsterId   Int
+  expGained   Int
+  dittoEarned Decimal? @db.Decimal(65, 0) // wei
+  goldEarned  Int?
+
+  user  User         @relation(fields: [userId], references: [telegramId])
+  drops CombatDrop[]
+
+  @@index([userId, timestamp])
+}
+
+model CombatDrop {
+  id                  Int  @id @default(autoincrement())
+  combatActivityLogId Int
+  itemId              Int?
+  equipmentId         Int?
+  quantity            Int
+
+  combatActivityLog CombatActivityLog @relation(fields: [combatActivityLogId], references: [id])
+
+  @@index([combatActivityLogId])
+}
+
+model Accomplishment {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  maxUsers    Int?
+
+  // JSON field to store flexible requirements
+  requirements Json
+
+  usersCompleted AccomplishmentProgress[]
+
+  @@index([name])
+}
+
+model AccomplishmentProgress {
+  id               Int      @id @default(autoincrement())
+  accomplishmentId Int
+  userId           String
+  timestamp        DateTime @default(now())
+
+  accomplishment Accomplishment @relation(fields: [accomplishmentId], references: [id])
+  user           User           @relation(fields: [userId], references: [telegramId])
+
+  @@unique([accomplishmentId, userId])
 }

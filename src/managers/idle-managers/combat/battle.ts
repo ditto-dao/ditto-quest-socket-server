@@ -1,4 +1,4 @@
-import { User, Combat, AttackType } from "@prisma/client";
+import { User, Combat, AttackType, CombatDrop } from "@prisma/client";
 import { getAtkCooldownFromAtkSpd, getBaseHpRegenRateFromHpLvl, getPercentageDmgReduct } from "./combat-helpers";
 import { logger } from "../../../utils/logger";
 import { SocketManager } from "../../../socket/socket-manager";
@@ -11,6 +11,7 @@ import { randomBytes } from "crypto";
 import { mintItemToUser } from "../../../sql-services/item-inventory-service";
 import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
+import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -274,9 +275,20 @@ export class Battle {
         logger.info(`⚔️  User ${this.user.telegramId} has defeated ${this.monster.name}`);
 
         await this.handleExpGain();
-        await this.handleGoldDrop();
-        this.handleDittoDrop();
-        await this.handleItemAndEquipmentDrop();
+        const goldDrop = await this.handleGoldDrop();
+        const dittoDrop = this.handleDittoDrop();
+        const drops = await this.handleItemAndEquipmentDrop();
+
+        if (this.monster && drops) {
+          await logCombatActivity({
+            userId: this.user.telegramId,
+            monsterId: this.monster.id,
+            expGained: this.monster.exp,
+            goldEarned: (goldDrop && goldDrop > 0) ? goldDrop : undefined,
+            dittoEarned: (dittoDrop && dittoDrop > 0n) ? dittoDrop.toString() : undefined,
+            drops: drops,
+          });
+        }
 
         await this.endBattle();
 
@@ -508,7 +520,7 @@ export class Battle {
     }
   }
 
-  async handleGoldDrop() {
+  async handleGoldDrop(): Promise<number | undefined> {
     try {
       if (this.battleEnded) return;
 
@@ -522,12 +534,14 @@ export class Battle {
           }
         });
       }
+
+      return Number(goldDrop);
     } catch (err) {
       logger.error(`Failed to handle gold drop in battle.`)
     }
   }
 
-  handleDittoDrop() {
+  handleDittoDrop(): bigint | undefined {
     try {
       if (this.battleEnded) return;
 
@@ -550,13 +564,15 @@ export class Battle {
             }
           ]
         })
+
+        return dittoDrop;
       }
     } catch (err) {
       logger.error(`Failed to handle ditto drop in battle.`)
     }
   }
 
-  async handleItemAndEquipmentDrop() {
+  async handleItemAndEquipmentDrop(): Promise<CombatDropInput[] | undefined> {
     if (this.battleEnded) return;
 
     const res = [];
@@ -586,6 +602,13 @@ export class Battle {
         userId: this.user.telegramId,
         payload: res,
       });
+
+      return res.map(entry => ({
+        itemId: entry.itemId ?? undefined,
+        equipmentId: entry.equipmentId ?? undefined,
+        quantity: entry.quantity,
+      }));
+
     } catch (err) {
       logger.error(`Failed to handle item/equipment drops for user ${this.user.telegramId}: ${err}`);
     }

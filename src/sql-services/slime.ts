@@ -840,6 +840,7 @@ export async function updateSlimeImageUri(slimeId: number, imageUri: string): Pr
 
 function getGachaPullRarity(): string {
   const random = Math.random();
+  logger.info(`Gacha random number: ${random}`);
   let cumulative = 0;
 
   // Iterate through probabilities to find the corresponding rarity

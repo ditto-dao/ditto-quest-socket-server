@@ -6,6 +6,7 @@ import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { FarmingUpdate, IdleActivityIntervalElement, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
+import { logFarmingActivity } from "../../sql-services/user-activity-log";
 
 export class IdleFarmingManager {
 
@@ -167,6 +168,9 @@ export class IdleFarmingManager {
         if (repetitions > 0) {
             await mintItemToUser(userId.toString(), farming.item.id, repetitions);
             expRes = await addFarmingExp(userId, farming.item.farmingExp * repetitions);
+
+            await logFarmingActivity(userId, farming.item.id, repetitions);
+
             return {
                 type: 'farming',
                 update: {
@@ -204,6 +208,8 @@ export class IdleFarmingManager {
                 userId: userId,
                 payload: expRes,
             });
+
+            await logFarmingActivity(userId, itemId, 1);
 
         } catch (error) {
             logger.error(`Error during farming complete callback for user ${userId}: ${error}`);

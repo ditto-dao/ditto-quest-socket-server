@@ -8,6 +8,7 @@ import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { CraftingUpdate, IdleActivityIntervalElement, IdleCraftingIntervalElement, TimerHandle } from "./idle-manager-types";
+import { logCraftingActivity } from "../../sql-services/user-activity-log";
 
 export class IdleCraftingManager {
 
@@ -182,6 +183,16 @@ export class IdleCraftingManager {
 
             expRes = await addCraftingExp(userId, crafting.recipe.craftingExp * repetitions);
 
+            await logCraftingActivity(
+                userId,
+                crafting.equipment.id,
+                repetitions,
+                crafting.recipe.requiredItems.map(item => ({
+                    itemId: item.itemId,
+                    quantity: item.quantity * repetitions,
+                }))
+            );
+
             return {
                 type: 'crafting',
                 update: {
@@ -225,6 +236,16 @@ export class IdleCraftingManager {
                 userId: userId,
                 payload: expRes,
             });
+
+            await logCraftingActivity(
+                userId,
+                recipe.equipmentId,
+                1,
+                recipe.requiredItems.map(item => ({
+                    itemId: item.itemId,
+                    quantity: item.quantity,
+                }))
+            );
 
             if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
                 throw new Error(`User does not have all the required items for subsequent iteration.`);

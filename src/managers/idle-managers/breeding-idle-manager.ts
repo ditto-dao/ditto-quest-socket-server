@@ -1,7 +1,8 @@
 import { SocketManager } from "../../socket/socket-manager";
 import { breedSlimes, getEquippedSlimeId, SlimeWithTraits } from "../../sql-services/slime";
+import { logBreedingActivity } from "../../sql-services/user-activity-log";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
-import { getBreedingTimesByGeneration } from "../../utils/helpers";
+import { getBreedingTimesByGeneration, getHighestDominantTraitRarity } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { BreedingUpdate, IdleActivityIntervalElement, IdleBreedingIntervalElement, TimerHandle } from "./idle-manager-types";
@@ -175,7 +176,20 @@ export class IdleBreedingManager {
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
             for (let i = 0; i < repetitions; i++) {
-                mintedSlimes.push((await breedSlimes(breeding.sire.id, breeding.dame.id)));
+                const slime = await breedSlimes(breeding.sire.id, breeding.dame.id);
+                mintedSlimes.push(slime);
+                await logBreedingActivity({
+                    userId: userId,
+                    dameId: breeding.dame.id,
+                    dameGeneration: breeding.dame.generation,
+                    dameRarity: getHighestDominantTraitRarity(breeding.dame),
+                    sireId: breeding.sire.id,
+                    sireGeneration: breeding.sire.generation,
+                    sireRarity: getHighestDominantTraitRarity(breeding.sire),
+                    childId: slime.id,
+                    childGeneration: slime.generation,
+                    childRarity: getHighestDominantTraitRarity(slime),
+                });
             }
 
             return {
@@ -200,6 +214,19 @@ export class IdleBreedingManager {
             socketManager.emitEvent(userId, 'update-slime-inventory', {
                 userId: userId,
                 payload: slime,
+            });
+
+            await logBreedingActivity({
+                userId: userId,
+                dameId: dame.id,
+                dameGeneration: dame.generation,
+                dameRarity: getHighestDominantTraitRarity(dame),
+                sireId: sire.id,
+                sireGeneration: sire.generation,
+                sireRarity: getHighestDominantTraitRarity(sire),
+                childId: slime.id,
+                childGeneration: slime.generation,
+                childRarity: getHighestDominantTraitRarity(slime),
             });
 
         } catch (error) {

@@ -12,6 +12,7 @@ import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
 import { mintItemToUser } from "../../../sql-services/item-inventory-service";
 import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { calculateHpExpGained } from "../../../utils/helpers";
+import { logCombatActivity } from "../../../sql-services/user-activity-log";
 
 export type CurrentCombat = CurrentDomainCombat;
 
@@ -133,17 +134,19 @@ export class OfflineCombatManager {
 
           // Record gains
           const exp = Math.floor(monster.exp * OfflineCombatManager.EXP_NERF_MULTIPLIER);
-          totalExp += exp
-          totalHpExp += calculateHpExpGained(exp);
-          totalGold += Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * OfflineCombatManager.DROP_NERF_MULTIPLIER);
-          totalDitto += Battle.roundWeiTo1DecimalPlace(
+          const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * OfflineCombatManager.DROP_NERF_MULTIPLIER);
+          const dittoGained = Battle.roundWeiTo1DecimalPlace(
             OfflineCombatManager.scaleBigInt(
               Battle.getAmountDrop(BigInt(monster.minDittoDrop.toString()), BigInt(monster.maxDittoDrop.toString())),
               OfflineCombatManager.DROP_NERF_MULTIPLIER
             )
-
-          
           );
+          const currDrops: { itemId?: number; equipmentId?: number; quantity: number }[] = [];
+
+          totalExp += exp
+          totalHpExp += calculateHpExpGained(exp);
+          totalGold += goldGained;
+          totalDitto += dittoGained;
 
           for (const drop of monster.drops) {
             if (Math.random() <= drop.dropRate * OfflineCombatManager.DROP_NERF_MULTIPLIER) {
@@ -154,6 +157,11 @@ export class OfflineCombatManager {
                 } else {
                   itemDrops.push({ item: drop.item!, quantity: drop.quantity });
                 }
+
+                currDrops.push({
+                  itemId: drop.itemId,
+                  quantity: drop.quantity,
+                });
               } else if (drop.equipmentId) {
                 const existing = equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
                 if (existing) {
@@ -161,9 +169,24 @@ export class OfflineCombatManager {
                 } else {
                   equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
                 }
+
+                currDrops.push({
+                  equipmentId: drop.equipmentId,
+                  quantity: drop.quantity,
+                });
               }
             }
           }
+
+          // inside monster defeated block
+          await logCombatActivity({
+            userId: activity.userId,
+            monsterId: monster.id,
+            expGained: exp,
+            goldEarned: goldGained,
+            dittoEarned: dittoGained.toString(),
+            drops: currDrops
+          });
 
           // Replace monster
           monster = DomainManager.getRandomMonsterFromDomain(domain)!;
