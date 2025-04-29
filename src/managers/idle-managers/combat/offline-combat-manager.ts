@@ -12,7 +12,7 @@ import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
 import { mintItemToUser } from "../../../sql-services/item-inventory-service";
 import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { calculateHpExpGained } from "../../../utils/helpers";
-import { logCombatActivity } from "../../../sql-services/user-activity-log";
+import { CombatActivityInput, logCombatActivities } from "../../../sql-services/user-activity-log";
 
 export type CurrentCombat = CurrentDomainCombat;
 
@@ -111,6 +111,7 @@ export class OfflineCombatManager {
     const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
+    const combatActivities: CombatActivityInput[] = [];
 
     for (let t = 0; t < totalTicks; t++) {
       // User attacks
@@ -179,7 +180,7 @@ export class OfflineCombatManager {
           }
 
           // inside monster defeated block
-          await logCombatActivity({
+          combatActivities.push({
             userId: activity.userId,
             monsterId: monster.id,
             expGained: exp,
@@ -239,6 +240,8 @@ export class OfflineCombatManager {
     for (const equipmentDrop of equipmentDrops) {
       await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
     }
+
+    await logCombatActivities(combatActivities);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
 

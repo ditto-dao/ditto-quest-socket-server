@@ -126,3 +126,57 @@ export async function logCombatActivity(input: CombatActivityInput) {
         throw error;
     }
 }
+
+export async function logCombatActivities(inputs: CombatActivityInput[]) {
+    if (inputs.length === 0) return;
+
+    try {
+        // Step 1: Insert CombatActivityLogs inside transaction to get IDs
+        const createdLogs = await prisma.$transaction(
+            inputs.map((input) =>
+                prisma.combatActivityLog.create({
+                    data: {
+                        userId: input.userId,
+                        monsterId: input.monsterId,
+                        expGained: input.expGained,
+                        dittoEarned: input.dittoEarned ? input.dittoEarned : undefined,
+                        goldEarned: input.goldEarned,
+                    },
+                })
+            )
+        );
+
+        // Step 2: Flatten all drops and attach their corresponding activityLogId
+        const dropsToInsert = [];
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            const log = createdLogs[i];
+
+            if (!input.drops || input.drops.length === 0) continue;
+
+            for (const drop of input.drops) {
+                dropsToInsert.push({
+                    combatActivityLogId: log.id,
+                    itemId: drop.itemId ?? undefined,
+                    equipmentId: drop.equipmentId ?? undefined,
+                    quantity: drop.quantity,
+                });
+            }
+        }
+
+        // Step 3: Insert all drops
+        if (dropsToInsert.length > 0) {
+            await prisma.combatDrop.createMany({
+                data: dropsToInsert,
+                skipDuplicates: true,
+            });
+            logger.info(`📦 Logged ${dropsToInsert.length} combat drops.`);
+        }
+
+        logger.info(`✅ Batch logged ${inputs.length} combat activities.`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch log combat activities:`, error);
+        throw error;
+    }
+}
