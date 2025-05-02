@@ -12,10 +12,10 @@
     "magic": 1,
     "hpLevel": 1,
     "exp": 13,
-    "minGoldDrop": -4,
+    "minGoldDrop": 0,
     "maxGoldDrop": 26,
     "minDittoDrop": "0",
-    "maxDittoDrop": "10000000000",
+    "maxDittoDrop": "2000000000",
     "drops": [
       {
         "drop": {
@@ -28,7 +28,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 10,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -48,7 +48,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 14,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 28,
+          "farmingDurationS": 18,
           "farmingLevelRequired": 6,
           "farmingExp": 70,
           "statEffect": null
@@ -68,7 +68,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -88,7 +88,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -108,7 +108,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -128,7 +128,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -155,7 +155,7 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -222,7 +222,7 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -289,7 +289,7 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -393,7 +393,7 @@
     "minGoldDrop": 20,
     "maxGoldDrop": 50,
     "minDittoDrop": "0",
-    "maxDittoDrop": "10000000000",
+    "maxDittoDrop": "2000000000",
     "drops": [
       {
         "drop": {
@@ -406,7 +406,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 10,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -426,7 +426,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 14,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 28,
+          "farmingDurationS": 18,
           "farmingLevelRequired": 6,
           "farmingExp": 70,
           "statEffect": null
@@ -446,7 +446,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -466,7 +466,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -486,7 +486,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -506,7 +506,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -533,7 +533,7 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -600,7 +600,7 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -667,7 +667,7 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -771,7 +771,7 @@
     "minGoldDrop": 20,
     "maxGoldDrop": 50,
     "minDittoDrop": "0",
-    "maxDittoDrop": "10000000000",
+    "maxDittoDrop": "2000000000",
     "drops": [
       {
         "drop": {
@@ -784,7 +784,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 10,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -804,7 +804,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 14,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 28,
+          "farmingDurationS": 18,
           "farmingLevelRequired": 6,
           "farmingExp": 70,
           "statEffect": null
@@ -824,7 +824,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -844,7 +844,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -864,7 +864,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -884,7 +884,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -911,7 +911,7 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -978,7 +978,7 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -1045,7 +1045,7 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -1149,7 +1149,7 @@
     "minGoldDrop": 46,
     "maxGoldDrop": 76,
     "minDittoDrop": "0",
-    "maxDittoDrop": "10000000000",
+    "maxDittoDrop": "2000000000",
     "drops": [
       {
         "drop": {
@@ -1162,7 +1162,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 10,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1182,7 +1182,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 14,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 28,
+          "farmingDurationS": 18,
           "farmingLevelRequired": 6,
           "farmingExp": 70,
           "statEffect": null
@@ -1202,7 +1202,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1222,7 +1222,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1242,7 +1242,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1262,7 +1262,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -1289,7 +1289,7 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -1356,7 +1356,7 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -1423,7 +1423,7 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 42,
+              "durationS": 30,
               "craftingLevelRequired": 1,
               "craftingExp": 100
             }
@@ -1527,7 +1527,7 @@
     "minGoldDrop": 70,
     "maxGoldDrop": 100,
     "minDittoDrop": "0",
-    "maxDittoDrop": "10000000000",
+    "maxDittoDrop": "2000000000",
     "drops": [
       {
         "drop": {
@@ -1540,7 +1540,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 10,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1560,7 +1560,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 14,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 28,
+          "farmingDurationS": 18,
           "farmingLevelRequired": 6,
           "farmingExp": 70,
           "statEffect": null
@@ -1580,7 +1580,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1600,7 +1600,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1620,7 +1620,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1640,7 +1640,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -1667,7 +1667,7 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -1734,7 +1734,7 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -1801,7 +1801,7 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -1905,7 +1905,7 @@
     "minGoldDrop": 96,
     "maxGoldDrop": 126,
     "minDittoDrop": "0",
-    "maxDittoDrop": "10000000000",
+    "maxDittoDrop": "2000000000",
     "drops": [
       {
         "drop": {
@@ -1918,7 +1918,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 10,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1938,7 +1938,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 14,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 28,
+          "farmingDurationS": 18,
           "farmingLevelRequired": 6,
           "farmingExp": 70,
           "statEffect": null
@@ -1958,7 +1958,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1978,7 +1978,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -1998,7 +1998,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 30,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 24,
+          "farmingDurationS": 15,
           "farmingLevelRequired": 1,
           "farmingExp": 50,
           "statEffect": null
@@ -2018,7 +2018,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -2045,7 +2045,7 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2112,7 +2112,7 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2179,7 +2179,7 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2283,7 +2283,7 @@
     "minGoldDrop": 50,
     "maxGoldDrop": 90,
     "minDittoDrop": "0",
-    "maxDittoDrop": "20000000000",
+    "maxDittoDrop": "4000000000",
     "drops": [
       {
         "drop": {
@@ -2296,7 +2296,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -2316,7 +2316,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -2336,7 +2336,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -2356,7 +2356,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -2376,7 +2376,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -2396,7 +2396,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 50,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 100,
           "statEffect": null
@@ -2423,7 +2423,7 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2490,7 +2490,7 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2557,7 +2557,7 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2661,7 +2661,7 @@
     "minGoldDrop": 86,
     "maxGoldDrop": 126,
     "minDittoDrop": "0",
-    "maxDittoDrop": "20000000000",
+    "maxDittoDrop": "4000000000",
     "drops": [
       {
         "drop": {
@@ -2674,7 +2674,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -2694,7 +2694,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -2714,7 +2714,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -2734,7 +2734,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -2754,7 +2754,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -2774,7 +2774,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 50,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 100,
           "statEffect": null
@@ -2801,7 +2801,7 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2868,7 +2868,7 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -2935,7 +2935,7 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3039,7 +3039,7 @@
     "minGoldDrop": 86,
     "maxGoldDrop": 126,
     "minDittoDrop": "0",
-    "maxDittoDrop": "20000000000",
+    "maxDittoDrop": "4000000000",
     "drops": [
       {
         "drop": {
@@ -3052,7 +3052,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -3072,7 +3072,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -3092,7 +3092,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -3112,7 +3112,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -3132,7 +3132,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -3152,7 +3152,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 50,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 100,
           "statEffect": null
@@ -3179,7 +3179,7 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3246,7 +3246,7 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3313,7 +3313,7 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3417,7 +3417,7 @@
     "minGoldDrop": 158,
     "maxGoldDrop": 198,
     "minDittoDrop": "0",
-    "maxDittoDrop": "20000000000",
+    "maxDittoDrop": "4000000000",
     "drops": [
       {
         "drop": {
@@ -3430,7 +3430,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -3450,7 +3450,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -3470,7 +3470,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -3490,7 +3490,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -3510,7 +3510,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -3530,7 +3530,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 50,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 100,
           "statEffect": null
@@ -3557,7 +3557,7 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3624,7 +3624,7 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3691,7 +3691,7 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 46,
+              "durationS": 33,
               "craftingLevelRequired": 10,
               "craftingExp": 125
             }
@@ -3795,7 +3795,7 @@
     "minGoldDrop": 194,
     "maxGoldDrop": 234,
     "minDittoDrop": "0",
-    "maxDittoDrop": "20000000000",
+    "maxDittoDrop": "4000000000",
     "drops": [
       {
         "drop": {
@@ -3808,7 +3808,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -3828,7 +3828,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -3848,7 +3848,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -3868,7 +3868,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -3888,7 +3888,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -3908,7 +3908,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 50,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 100,
           "statEffect": null
@@ -3935,7 +3935,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4002,7 +4002,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4069,7 +4069,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4173,7 +4173,7 @@
     "minGoldDrop": 230,
     "maxGoldDrop": 270,
     "minDittoDrop": "0",
-    "maxDittoDrop": "20000000000",
+    "maxDittoDrop": "4000000000",
     "drops": [
       {
         "drop": {
@@ -4186,7 +4186,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -4206,7 +4206,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -4226,7 +4226,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 20,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 90,
           "statEffect": null
@@ -4246,7 +4246,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 33,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 36,
+          "farmingDurationS": 23,
           "farmingLevelRequired": 16,
           "farmingExp": 110,
           "statEffect": null
@@ -4266,7 +4266,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -4286,7 +4286,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 50,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 11,
           "farmingExp": 100,
           "statEffect": null
@@ -4313,7 +4313,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4380,7 +4380,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4447,7 +4447,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4551,7 +4551,7 @@
     "minGoldDrop": 300,
     "maxGoldDrop": 360,
     "minDittoDrop": "0",
-    "maxDittoDrop": "30000000000",
+    "maxDittoDrop": "6000000000",
     "drops": [
       {
         "drop": {
@@ -4564,7 +4564,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 28,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 150,
           "statEffect": null
@@ -4584,7 +4584,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 36,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 44,
+          "farmingDurationS": 28,
           "farmingLevelRequired": 26,
           "farmingExp": 180,
           "statEffect": null
@@ -4604,7 +4604,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 250,
           "statEffect": null
@@ -4624,7 +4624,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 68,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 35,
+          "farmingDurationS": 22,
           "farmingLevelRequired": 21,
           "farmingExp": 168,
           "statEffect": null
@@ -4644,7 +4644,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 90,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 175,
           "statEffect": null
@@ -4664,7 +4664,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -4691,7 +4691,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4758,7 +4758,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4825,7 +4825,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4929,7 +4929,7 @@
     "minGoldDrop": 372,
     "maxGoldDrop": 432,
     "minDittoDrop": "0",
-    "maxDittoDrop": "30000000000",
+    "maxDittoDrop": "6000000000",
     "drops": [
       {
         "drop": {
@@ -4942,7 +4942,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 28,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 150,
           "statEffect": null
@@ -4962,7 +4962,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 36,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 44,
+          "farmingDurationS": 28,
           "farmingLevelRequired": 26,
           "farmingExp": 180,
           "statEffect": null
@@ -4982,7 +4982,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 250,
           "statEffect": null
@@ -5002,7 +5002,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 68,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 35,
+          "farmingDurationS": 22,
           "farmingLevelRequired": 21,
           "farmingExp": 168,
           "statEffect": null
@@ -5022,7 +5022,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 90,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 175,
           "statEffect": null
@@ -5042,7 +5042,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -5069,7 +5069,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5136,7 +5136,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5203,7 +5203,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5307,7 +5307,7 @@
     "minGoldDrop": 372,
     "maxGoldDrop": 432,
     "minDittoDrop": "0",
-    "maxDittoDrop": "30000000000",
+    "maxDittoDrop": "6000000000",
     "drops": [
       {
         "drop": {
@@ -5320,7 +5320,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 28,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 150,
           "statEffect": null
@@ -5340,7 +5340,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 36,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 44,
+          "farmingDurationS": 28,
           "farmingLevelRequired": 26,
           "farmingExp": 180,
           "statEffect": null
@@ -5360,7 +5360,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 250,
           "statEffect": null
@@ -5380,7 +5380,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 68,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 35,
+          "farmingDurationS": 22,
           "farmingLevelRequired": 21,
           "farmingExp": 168,
           "statEffect": null
@@ -5400,7 +5400,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 90,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 175,
           "statEffect": null
@@ -5420,7 +5420,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -5447,7 +5447,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5514,7 +5514,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5581,7 +5581,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5685,7 +5685,7 @@
     "minGoldDrop": 444,
     "maxGoldDrop": 504,
     "minDittoDrop": "0",
-    "maxDittoDrop": "30000000000",
+    "maxDittoDrop": "6000000000",
     "drops": [
       {
         "drop": {
@@ -5698,7 +5698,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 28,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 150,
           "statEffect": null
@@ -5718,7 +5718,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 36,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 44,
+          "farmingDurationS": 28,
           "farmingLevelRequired": 26,
           "farmingExp": 180,
           "statEffect": null
@@ -5738,7 +5738,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 250,
           "statEffect": null
@@ -5758,7 +5758,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 68,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 35,
+          "farmingDurationS": 22,
           "farmingLevelRequired": 21,
           "farmingExp": 168,
           "statEffect": null
@@ -5778,7 +5778,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 90,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 175,
           "statEffect": null
@@ -5798,7 +5798,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -5825,7 +5825,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5892,7 +5892,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5959,7 +5959,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 49,
+              "durationS": 35,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -6063,7 +6063,7 @@
     "minGoldDrop": 516,
     "maxGoldDrop": 576,
     "minDittoDrop": "0",
-    "maxDittoDrop": "30000000000",
+    "maxDittoDrop": "6000000000",
     "drops": [
       {
         "drop": {
@@ -6076,7 +6076,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 28,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 150,
           "statEffect": null
@@ -6096,7 +6096,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 36,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 44,
+          "farmingDurationS": 28,
           "farmingLevelRequired": 26,
           "farmingExp": 180,
           "statEffect": null
@@ -6116,7 +6116,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 250,
           "statEffect": null
@@ -6136,7 +6136,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 68,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 35,
+          "farmingDurationS": 22,
           "farmingLevelRequired": 21,
           "farmingExp": 168,
           "statEffect": null
@@ -6156,7 +6156,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 90,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 175,
           "statEffect": null
@@ -6176,7 +6176,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -6203,7 +6203,7 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -6270,7 +6270,7 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -6337,7 +6337,7 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -6441,7 +6441,7 @@
     "minGoldDrop": 660,
     "maxGoldDrop": 720,
     "minDittoDrop": "0",
-    "maxDittoDrop": "30000000000",
+    "maxDittoDrop": "6000000000",
     "drops": [
       {
         "drop": {
@@ -6454,7 +6454,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 28,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 150,
           "statEffect": null
@@ -6474,7 +6474,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 36,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 44,
+          "farmingDurationS": 28,
           "farmingLevelRequired": 26,
           "farmingExp": 180,
           "statEffect": null
@@ -6494,7 +6494,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 250,
           "statEffect": null
@@ -6514,7 +6514,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 68,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 35,
+          "farmingDurationS": 22,
           "farmingLevelRequired": 21,
           "farmingExp": 168,
           "statEffect": null
@@ -6534,7 +6534,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 90,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 40,
+          "farmingDurationS": 25,
           "farmingLevelRequired": 21,
           "farmingExp": 175,
           "statEffect": null
@@ -6554,7 +6554,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -6581,7 +6581,7 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -6648,7 +6648,7 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -6715,7 +6715,7 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -6819,7 +6819,7 @@
     "minGoldDrop": 550,
     "maxGoldDrop": 630,
     "minDittoDrop": "0",
-    "maxDittoDrop": "50000000000",
+    "maxDittoDrop": "8000000000",
     "drops": [
       {
         "drop": {
@@ -6832,7 +6832,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -6852,7 +6852,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -6872,7 +6872,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -6892,7 +6892,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -6912,7 +6912,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 140,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 270,
           "statEffect": null
@@ -6932,7 +6932,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -6959,7 +6959,7 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7026,7 +7026,7 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7093,7 +7093,7 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7197,7 +7197,7 @@
     "minGoldDrop": 655,
     "maxGoldDrop": 735,
     "minDittoDrop": "0",
-    "maxDittoDrop": "50000000000",
+    "maxDittoDrop": "8000000000",
     "drops": [
       {
         "drop": {
@@ -7210,7 +7210,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -7230,7 +7230,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -7250,7 +7250,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -7270,7 +7270,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -7290,7 +7290,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 140,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 270,
           "statEffect": null
@@ -7310,7 +7310,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -7337,7 +7337,7 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7404,7 +7404,7 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7471,7 +7471,7 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7575,7 +7575,7 @@
     "minGoldDrop": 655,
     "maxGoldDrop": 735,
     "minDittoDrop": "0",
-    "maxDittoDrop": "50000000000",
+    "maxDittoDrop": "8000000000",
     "drops": [
       {
         "drop": {
@@ -7588,7 +7588,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -7608,7 +7608,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -7628,7 +7628,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -7648,7 +7648,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -7668,7 +7668,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 140,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 270,
           "statEffect": null
@@ -7688,7 +7688,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -7715,7 +7715,7 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7782,7 +7782,7 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7849,7 +7849,7 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -7953,7 +7953,7 @@
     "minGoldDrop": 760,
     "maxGoldDrop": 840,
     "minDittoDrop": "0",
-    "maxDittoDrop": "50000000000",
+    "maxDittoDrop": "8000000000",
     "drops": [
       {
         "drop": {
@@ -7966,7 +7966,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -7986,7 +7986,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -8006,7 +8006,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -8026,7 +8026,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -8046,7 +8046,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 140,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 270,
           "statEffect": null
@@ -8066,7 +8066,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -8093,7 +8093,7 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -8160,7 +8160,7 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -8227,7 +8227,7 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 53,
+              "durationS": 38,
               "craftingLevelRequired": 30,
               "craftingExp": 180
             }
@@ -8331,7 +8331,7 @@
     "minGoldDrop": 865,
     "maxGoldDrop": 945,
     "minDittoDrop": "0",
-    "maxDittoDrop": "50000000000",
+    "maxDittoDrop": "8000000000",
     "drops": [
       {
         "drop": {
@@ -8344,7 +8344,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -8364,7 +8364,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -8384,7 +8384,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -8404,7 +8404,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -8424,7 +8424,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 140,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 270,
           "statEffect": null
@@ -8444,7 +8444,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -8471,7 +8471,7 @@
             {
               "id": 73,
               "equipmentId": 73,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -8538,7 +8538,7 @@
             {
               "id": 83,
               "equipmentId": 83,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -8605,7 +8605,7 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -8709,7 +8709,7 @@
     "minGoldDrop": 970,
     "maxGoldDrop": 1050,
     "minDittoDrop": "0",
-    "maxDittoDrop": "50000000000",
+    "maxDittoDrop": "8000000000",
     "drops": [
       {
         "drop": {
@@ -8722,7 +8722,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -8742,7 +8742,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -8762,7 +8762,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 43,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 210,
           "statEffect": null
@@ -8782,7 +8782,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 52,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 52,
+          "farmingDurationS": 33,
           "farmingLevelRequired": 36,
           "farmingExp": 250,
           "statEffect": null
@@ -8802,7 +8802,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 140,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 48,
+          "farmingDurationS": 30,
           "farmingLevelRequired": 31,
           "farmingExp": 270,
           "statEffect": null
@@ -8822,7 +8822,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -8849,7 +8849,7 @@
             {
               "id": 73,
               "equipmentId": 73,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -8916,7 +8916,7 @@
             {
               "id": 83,
               "equipmentId": 83,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -8983,7 +8983,7 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9087,7 +9087,7 @@
     "minGoldDrop": 1080,
     "maxGoldDrop": 1200,
     "minDittoDrop": "0",
-    "maxDittoDrop": "80000000000",
+    "maxDittoDrop": "10000000000",
     "drops": [
       {
         "drop": {
@@ -9100,7 +9100,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -9120,7 +9120,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -9140,7 +9140,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -9160,7 +9160,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -9180,7 +9180,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -9207,7 +9207,7 @@
             {
               "id": 73,
               "equipmentId": 73,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9274,7 +9274,7 @@
             {
               "id": 83,
               "equipmentId": 83,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9341,7 +9341,7 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9445,7 +9445,7 @@
     "minGoldDrop": 1200,
     "maxGoldDrop": 1320,
     "minDittoDrop": "0",
-    "maxDittoDrop": "80000000000",
+    "maxDittoDrop": "10000000000",
     "drops": [
       {
         "drop": {
@@ -9458,7 +9458,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -9478,7 +9478,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -9498,7 +9498,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -9518,7 +9518,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -9538,7 +9538,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -9565,7 +9565,7 @@
             {
               "id": 73,
               "equipmentId": 73,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9632,7 +9632,7 @@
             {
               "id": 83,
               "equipmentId": 83,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9699,7 +9699,7 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9803,7 +9803,7 @@
     "minGoldDrop": 1200,
     "maxGoldDrop": 1320,
     "minDittoDrop": "0",
-    "maxDittoDrop": "80000000000",
+    "maxDittoDrop": "10000000000",
     "drops": [
       {
         "drop": {
@@ -9816,7 +9816,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -9836,7 +9836,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -9856,7 +9856,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -9876,7 +9876,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -9896,7 +9896,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -9923,7 +9923,7 @@
             {
               "id": 73,
               "equipmentId": 73,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -9990,7 +9990,7 @@
             {
               "id": 83,
               "equipmentId": 83,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -10057,7 +10057,7 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -10161,7 +10161,7 @@
     "minGoldDrop": 1320,
     "maxGoldDrop": 1440,
     "minDittoDrop": "0",
-    "maxDittoDrop": "80000000000",
+    "maxDittoDrop": "10000000000",
     "drops": [
       {
         "drop": {
@@ -10174,7 +10174,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -10194,7 +10194,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -10214,7 +10214,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -10234,7 +10234,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -10254,7 +10254,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -10281,7 +10281,7 @@
             {
               "id": 73,
               "equipmentId": 73,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -10348,7 +10348,7 @@
             {
               "id": 83,
               "equipmentId": 83,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -10415,7 +10415,7 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 56,
+              "durationS": 40,
               "craftingLevelRequired": 40,
               "craftingExp": 225
             }
@@ -10519,7 +10519,7 @@
     "minGoldDrop": 1560,
     "maxGoldDrop": 1680,
     "minDittoDrop": "0",
-    "maxDittoDrop": "80000000000",
+    "maxDittoDrop": "10000000000",
     "drops": [
       {
         "drop": {
@@ -10532,7 +10532,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -10552,7 +10552,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -10572,7 +10572,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -10592,7 +10592,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -10612,7 +10612,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -10639,7 +10639,7 @@
             {
               "id": 74,
               "equipmentId": 74,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -10706,7 +10706,7 @@
             {
               "id": 84,
               "equipmentId": 84,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -10773,7 +10773,7 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -10877,7 +10877,7 @@
     "minGoldDrop": 1800,
     "maxGoldDrop": 1920,
     "minDittoDrop": "0",
-    "maxDittoDrop": "80000000000",
+    "maxDittoDrop": "10000000000",
     "drops": [
       {
         "drop": {
@@ -10890,7 +10890,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -10910,7 +10910,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -10930,7 +10930,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 60,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 56,
+          "farmingDurationS": 35,
           "farmingLevelRequired": 41,
           "farmingExp": 345,
           "statEffect": null
@@ -10950,7 +10950,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 120,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 60,
+          "farmingDurationS": 38,
           "farmingLevelRequired": 46,
           "farmingExp": 350,
           "statEffect": null
@@ -10970,7 +10970,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -10997,7 +10997,7 @@
             {
               "id": 74,
               "equipmentId": 74,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11064,7 +11064,7 @@
             {
               "id": 84,
               "equipmentId": 84,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11131,7 +11131,7 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11235,7 +11235,7 @@
     "minGoldDrop": 1420,
     "maxGoldDrop": 1600,
     "minDittoDrop": "0",
-    "maxDittoDrop": "130000000000",
+    "maxDittoDrop": "12000000000",
     "drops": [
       {
         "drop": {
@@ -11248,7 +11248,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -11268,7 +11268,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -11288,7 +11288,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -11308,7 +11308,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -11328,7 +11328,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -11355,7 +11355,7 @@
             {
               "id": 74,
               "equipmentId": 74,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11422,7 +11422,7 @@
             {
               "id": 84,
               "equipmentId": 84,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11489,7 +11489,7 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11593,7 +11593,7 @@
     "minGoldDrop": 1520,
     "maxGoldDrop": 1700,
     "minDittoDrop": "0",
-    "maxDittoDrop": "130000000000",
+    "maxDittoDrop": "12000000000",
     "drops": [
       {
         "drop": {
@@ -11606,7 +11606,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -11626,7 +11626,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -11646,7 +11646,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -11666,7 +11666,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -11686,7 +11686,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -11713,7 +11713,7 @@
             {
               "id": 74,
               "equipmentId": 74,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11780,7 +11780,7 @@
             {
               "id": 84,
               "equipmentId": 84,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11847,7 +11847,7 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -11951,7 +11951,7 @@
     "minGoldDrop": 1520,
     "maxGoldDrop": 1700,
     "minDittoDrop": "0",
-    "maxDittoDrop": "130000000000",
+    "maxDittoDrop": "12000000000",
     "drops": [
       {
         "drop": {
@@ -11964,7 +11964,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -11984,7 +11984,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -12004,7 +12004,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -12024,7 +12024,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -12044,7 +12044,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -12071,7 +12071,7 @@
             {
               "id": 74,
               "equipmentId": 74,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -12138,7 +12138,7 @@
             {
               "id": 84,
               "equipmentId": 84,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -12205,7 +12205,7 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -12309,7 +12309,7 @@
     "minGoldDrop": 1620,
     "maxGoldDrop": 1800,
     "minDittoDrop": "0",
-    "maxDittoDrop": "130000000000",
+    "maxDittoDrop": "12000000000",
     "drops": [
       {
         "drop": {
@@ -12322,7 +12322,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -12342,7 +12342,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -12362,7 +12362,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -12382,7 +12382,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -12402,7 +12402,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -12429,7 +12429,7 @@
             {
               "id": 74,
               "equipmentId": 74,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -12496,7 +12496,7 @@
             {
               "id": 84,
               "equipmentId": 84,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -12563,7 +12563,7 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 63,
+              "durationS": 45,
               "craftingLevelRequired": 50,
               "craftingExp": 280
             }
@@ -12667,7 +12667,7 @@
     "minGoldDrop": 1820,
     "maxGoldDrop": 2000,
     "minDittoDrop": "0",
-    "maxDittoDrop": "130000000000",
+    "maxDittoDrop": "12000000000",
     "drops": [
       {
         "drop": {
@@ -12680,7 +12680,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -12700,7 +12700,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -12720,7 +12720,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -12740,7 +12740,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -12760,7 +12760,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -12787,7 +12787,7 @@
             {
               "id": 75,
               "equipmentId": 75,
-              "durationS": 70,
+              "durationS": 50,
               "craftingLevelRequired": 60,
               "craftingExp": 333
             }
@@ -12854,7 +12854,7 @@
             {
               "id": 85,
               "equipmentId": 85,
-              "durationS": 70,
+              "durationS": 50,
               "craftingLevelRequired": 60,
               "craftingExp": 333
             }
@@ -12921,7 +12921,7 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 70,
+              "durationS": 50,
               "craftingLevelRequired": 60,
               "craftingExp": 333
             }
@@ -13025,7 +13025,7 @@
     "minGoldDrop": 2020,
     "maxGoldDrop": 2200,
     "minDittoDrop": "0",
-    "maxDittoDrop": "130000000000",
+    "maxDittoDrop": "12000000000",
     "drops": [
       {
         "drop": {
@@ -13038,7 +13038,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -13058,7 +13058,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -13078,7 +13078,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 86,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 64,
+          "farmingDurationS": 40,
           "farmingLevelRequired": 51,
           "farmingExp": 390,
           "statEffect": null
@@ -13098,7 +13098,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 108,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 68,
+          "farmingDurationS": 43,
           "farmingLevelRequired": 56,
           "farmingExp": 450,
           "statEffect": null
@@ -13118,7 +13118,7 @@
           "buyPriceGP": null,
           "sellPriceGP": 100,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 32,
+          "farmingDurationS": 20,
           "farmingLevelRequired": 16,
           "farmingExp": 300,
           "statEffect": null
@@ -13145,7 +13145,7 @@
             {
               "id": 75,
               "equipmentId": 75,
-              "durationS": 70,
+              "durationS": 50,
               "craftingLevelRequired": 60,
               "craftingExp": 333
             }
@@ -13212,7 +13212,7 @@
             {
               "id": 85,
               "equipmentId": 85,
-              "durationS": 70,
+              "durationS": 50,
               "craftingLevelRequired": 60,
               "craftingExp": 333
             }
@@ -13279,7 +13279,7 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 70,
+              "durationS": 50,
               "craftingLevelRequired": 60,
               "craftingExp": 333
             }
@@ -13366,5 +13366,2021 @@
     "magicDmgReduction": 1100,
     "hpRegenRate": 14.563758389261746,
     "hpRegenAmount": 70.5
+  },
+  {
+    "id": 37,
+    "name": "Shadow\nGlooplet",
+    "description": "The corrupted echo of its former self. Drifts mindlessly, compelled to consume memories.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/067_8Bit.png",
+    "level": 1,
+    "str": 2,
+    "def": 2,
+    "dex": 1,
+    "luk": 0,
+    "magic": 0,
+    "hpLevel": 1,
+    "exp": 1,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 129,
+      "maxHp": 129,
+      "attackType": "Melee",
+      "atkSpd": 11.899999999999999,
+      "acc": 114,
+      "eva": 122.99999999999999,
+      "maxMeleeDmg": 59.48613419594919,
+      "maxRangedDmg": 34.8,
+      "maxMagicDmg": 12.999999999999998,
+      "critChance": 0,
+      "critMultiplier": 1.26,
+      "dmgReduction": 23.000000000000004,
+      "magicDmgReduction": 9.36,
+      "hpRegenRate": 20,
+      "hpRegenAmount": 12.876000000000001,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 100,
+    "atkSpd": 10,
+    "acc": 100,
+    "eva": 100,
+    "maxMeleeDmg": 42.49009585424942,
+    "maxRangedDmg": 30,
+    "maxMagicDmg": 10,
+    "critChance": 0,
+    "critMultiplier": 1.2,
+    "dmgReduction": 20,
+    "magicDmgReduction": 8,
+    "hpRegenRate": 20,
+    "hpRegenAmount": 11.1
+  },
+  {
+    "id": 38,
+    "name": "Shadow\nOozeling Wriggler",
+    "description": "The corrupted echo of its former self. Seeps between stones, hunting with ghostlike intent.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/070_8Bit.png",
+    "level": 2,
+    "str": 1,
+    "def": 2,
+    "dex": 4,
+    "luk": 2,
+    "magic": 0,
+    "hpLevel": 1,
+    "exp": 3,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 129,
+      "maxHp": 129,
+      "attackType": "Ranged",
+      "atkSpd": 49.599999999999994,
+      "acc": 615.7023182784109,
+      "eva": 544.4609189684369,
+      "maxMeleeDmg": 48.00000000000001,
+      "maxRangedDmg": 76.59198604571723,
+      "maxMagicDmg": 13.299999999999999,
+      "critChance": 0.008492063492063492,
+      "critMultiplier": 1.4102931952366937,
+      "dmgReduction": 24.400000000000006,
+      "magicDmgReduction": 9.6,
+      "hpRegenRate": 15.4,
+      "hpRegenAmount": 13.500000000000004,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 100,
+    "atkSpd": 40,
+    "acc": 459.47934199881405,
+    "eva": 428.70938501451724,
+    "maxMeleeDmg": 30,
+    "maxRangedDmg": 62.78031643091577,
+    "maxMagicDmg": 10,
+    "critChance": 0.007936507936507936,
+    "critMultiplier": 1.3431363764158988,
+    "dmgReduction": 20,
+    "magicDmgReduction": 8,
+    "hpRegenRate": 20,
+    "hpRegenAmount": 10.8
+  },
+  {
+    "id": 39,
+    "name": "Shadow\nSlorbb",
+    "description": "The corrupted echo of its former self. Trembles unnaturally—joy twisted into hunger.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/068_8Bit.png",
+    "level": 3,
+    "str": 1,
+    "def": 3,
+    "dex": 2,
+    "luk": 4,
+    "magic": 6,
+    "hpLevel": 2,
+    "exp": 3,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 266,
+      "maxHp": 266,
+      "attackType": "Magic",
+      "atkSpd": 20,
+      "acc": 317.2449449107428,
+      "eva": 308.5089473047305,
+      "maxMeleeDmg": 36.9,
+      "maxRangedDmg": 56.936728444694225,
+      "maxMagicDmg": 103.33271742930557,
+      "critChance": 0.017480314960629923,
+      "critMultiplier": 1.5929508314699106,
+      "dmgReduction": 41.400000000000006,
+      "magicDmgReduction": 68.16000000000003,
+      "hpRegenRate": 19.899328859060404,
+      "hpRegenAmount": 15.255000000000003,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 200,
+    "atkSpd": 20,
+    "acc": 214.35469250725862,
+    "eva": 207.0529847682755,
+    "maxMeleeDmg": 30,
+    "maxRangedDmg": 42.49009585424942,
+    "maxMagicDmg": 80.10288172814386,
+    "critChance": 0.015748031496062992,
+    "critMultiplier": 1.4096910013008057,
+    "dmgReduction": 30,
+    "magicDmgReduction": 48,
+    "hpRegenRate": 19.899328859060404,
+    "hpRegenAmount": 11.3
+  },
+  {
+    "id": 40,
+    "name": "Shadow\nMiremelt",
+    "description": "The corrupted echo of its former self. Spills venomous ichor that scars the floor.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/071_8Bit.png",
+    "level": 4,
+    "str": 8,
+    "def": 6,
+    "dex": 4,
+    "luk": 1,
+    "magic": 1,
+    "hpLevel": 2,
+    "exp": 4,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 278,
+      "maxHp": 278,
+      "attackType": "Melee",
+      "atkSpd": 44,
+      "acc": 661.6502524782924,
+      "eva": 608.7673267206145,
+      "maxMeleeDmg": 128.29411518389063,
+      "maxRangedDmg": 83.49782085311797,
+      "maxMagicDmg": 44.4,
+      "critChance": 0.004143426294820717,
+      "critMultiplier": 1.367727538621146,
+      "dmgReduction": 68.40000000000002,
+      "magicDmgReduction": 49.8,
+      "hpRegenRate": 19.899328859060404,
+      "hpRegenAmount": 16.884,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 200,
+    "atkSpd": 40,
+    "acc": 459.47934199881405,
+    "eva": 428.70938501451724,
+    "maxMeleeDmg": 95.74187700290345,
+    "maxRangedDmg": 62.78031643091577,
+    "maxMagicDmg": 30,
+    "critChance": 0.00398406374501992,
+    "critMultiplier": 1.2903089986991942,
+    "dmgReduction": 60,
+    "magicDmgReduction": 30,
+    "hpRegenRate": 19.899328859060404,
+    "hpRegenAmount": 13.4
+  },
+  {
+    "id": 41,
+    "name": "Shadow\nSquelchoid",
+    "description": "The corrupted echo of its former self. Pulses with a sickly glow beneath a warped skin.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/069_8Bit.png",
+    "level": 5,
+    "str": 2,
+    "def": 5,
+    "dex": 10,
+    "luk": 6,
+    "magic": 1,
+    "hpLevel": 3,
+    "exp": 5,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 441,
+      "maxHp": 441,
+      "attackType": "Ranged",
+      "atkSpd": 124,
+      "acc": 1699.5493059221265,
+      "eva": 1649.3671278238862,
+      "maxMeleeDmg": 71.80826199368153,
+      "maxRangedDmg": 136.6944339395635,
+      "maxMagicDmg": 41.099999999999994,
+      "critChance": 0.026250000000000002,
+      "critMultiplier": 1.6134176473247475,
+      "dmgReduction": 77.5,
+      "magicDmgReduction": 33.8,
+      "hpRegenRate": 19.798657718120804,
+      "hpRegenAmount": 16.093000000000004,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 300,
+    "atkSpd": 100,
+    "acc": 1258.9254117941675,
+    "eva": 1122.0184543019634,
+    "maxMeleeDmg": 42.49009585424942,
+    "maxRangedDmg": 110.23744672545445,
+    "maxMagicDmg": 30,
+    "critChance": 0.0234375,
+    "critMultiplier": 1.453529412004277,
+    "dmgReduction": 50,
+    "magicDmgReduction": 26,
+    "hpRegenRate": 19.798657718120804,
+    "hpRegenAmount": 12.1
+  },
+  {
+    "id": 42,
+    "name": "Shadow\nThe Gelatinator",
+    "description": "The corrupted echo of its former self. A grotesque mockery of its perfected form.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/073_B.png",
+    "level": 6,
+    "str": 2,
+    "def": 6,
+    "dex": 3,
+    "luk": 8,
+    "magic": 12,
+    "hpLevel": 3,
+    "exp": 6,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 354,
+      "maxHp": 354,
+      "attackType": "Magic",
+      "atkSpd": 33.00000000000001,
+      "acc": 492.210319748952,
+      "eva": 494.4267004011837,
+      "maxMeleeDmg": 57.36162940323671,
+      "maxRangedDmg": 79.19854454324289,
+      "maxMagicDmg": 201.92842178103012,
+      "critChance": 0.03255813953488372,
+      "critMultiplier": 1.5308609354167513,
+      "dmgReduction": 83.40000000000002,
+      "magicDmgReduction": 145.92000000000002,
+      "hpRegenRate": 11.483221476510067,
+      "hpRegenAmount": 16.577,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 300,
+    "atkSpd": 30,
+    "acc": 334.8369522101714,
+    "eva": 316.9401925648613,
+    "maxMeleeDmg": 42.49009585424942,
+    "maxRangedDmg": 53.15338559949186,
+    "maxMagicDmg": 123.88246735032521,
+    "critChance": 0.031007751937984496,
+    "critMultiplier": 1.4862727528317974,
+    "dmgReduction": 60,
+    "magicDmgReduction": 96,
+    "hpRegenRate": 19.798657718120804,
+    "hpRegenAmount": 12.1
+  },
+  {
+    "id": 43,
+    "name": "Shadow\nRosemaw",
+    "description": "The corrupted echo of its former self. Petals bloom with blood where it bites.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/015_8Bit.png",
+    "level": 7,
+    "str": 14,
+    "def": 10,
+    "dex": 7,
+    "luk": 2,
+    "magic": 2,
+    "hpLevel": 4,
+    "exp": 5,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 624,
+      "maxHp": 624,
+      "attackType": "Melee",
+      "atkSpd": 73.5,
+      "acc": 1233.0362546996532,
+      "eva": 1049.2811002628337,
+      "maxMeleeDmg": 201.18201592455694,
+      "maxRangedDmg": 112.75593669434167,
+      "maxMagicDmg": 54.38732269343925,
+      "critChance": 0.00984126984126984,
+      "critMultiplier": 1.4371559227650117,
+      "dmgReduction": 132,
+      "magicDmgReduction": 72.28,
+      "hpRegenRate": 15.16744966442953,
+      "hpRegenAmount": 19.440000000000005,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 400,
+    "atkSpd": 70,
+    "acc": 850.3698308273471,
+    "eva": 771.5302207814954,
+    "maxMeleeDmg": 136.8585142343925,
+    "maxRangedDmg": 88.09057554245443,
+    "maxMagicDmg": 42.49009585424942,
+    "critChance": 0.007936507936507936,
+    "critMultiplier": 1.3431363764158988,
+    "dmgReduction": 100,
+    "magicDmgReduction": 52,
+    "hpRegenRate": 19.697986577181208,
+    "hpRegenAmount": 16.2
+  },
+  {
+    "id": 44,
+    "name": "Shadow\nPetalguard",
+    "description": "The corrupted echo of its former self. Thorns whisper warnings in long-dead tongues.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/023_8Bit.png",
+    "level": 8,
+    "str": 4,
+    "def": 8,
+    "dex": 16,
+    "luk": 10,
+    "magic": 2,
+    "hpLevel": 4,
+    "exp": 6,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 408,
+      "maxHp": 408,
+      "attackType": "Ranged",
+      "atkSpd": 249.60000000000002,
+      "acc": 3251.2674921444122,
+      "eva": 2940.6677887924097,
+      "maxMeleeDmg": 86.0090335103546,
+      "maxRangedDmg": 238.86094420380772,
+      "maxMagicDmg": 68.40905432534156,
+      "critChance": 0.04038461538461539,
+      "critMultiplier": 1.6031628738803156,
+      "dmgReduction": 128.8,
+      "magicDmgReduction": 72.60000000000001,
+      "hpRegenRate": 11.4248322147651,
+      "hpRegenAmount": 23.099999999999998,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 400,
+    "atkSpd": 160,
+    "acc": 2111.2126572366315,
+    "eva": 1837.9173679952562,
+    "maxMeleeDmg": 62.78031643091577,
+    "maxRangedDmg": 149.28809012737983,
+    "maxMagicDmg": 42.49009585424942,
+    "critChance": 0.038461538461538464,
+    "critMultiplier": 1.5124178055474675,
+    "dmgReduction": 80,
+    "magicDmgReduction": 44,
+    "hpRegenRate": 19.697986577181208,
+    "hpRegenAmount": 13.2
+  },
+  {
+    "id": 45,
+    "name": "Shadow\nThornkin Bulb",
+    "description": "The corrupted echo of its former self. Its barbs fester with spectral poison.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/013_8Bit.png",
+    "level": 9,
+    "str": 2,
+    "def": 9,
+    "dex": 4,
+    "luk": 11,
+    "magic": 18,
+    "hpLevel": 5,
+    "exp": 6,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 595,
+      "maxHp": 595,
+      "attackType": "Magic",
+      "atkSpd": 41.6,
+      "acc": 611.1075248584227,
+      "eva": 587.3318574698886,
+      "maxMeleeDmg": 70.95846007659652,
+      "maxRangedDmg": 86.63683667466375,
+      "maxMagicDmg": 196.73577789786006,
+      "critChance": 0.04593869731800767,
+      "critMultiplier": 1.8437427923152878,
+      "dmgReduction": 135.9,
+      "magicDmgReduction": 216,
+      "hpRegenRate": 15.285906040268458,
+      "hpRegenAmount": 17.816000000000003,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 500,
+    "atkSpd": 40,
+    "acc": 459.47934199881405,
+    "eva": 428.70938501451724,
+    "maxMeleeDmg": 42.49009585424942,
+    "maxRangedDmg": 62.78031643091577,
+    "maxMagicDmg": 161.2588343425082,
+    "critChance": 0.0421455938697318,
+    "critMultiplier": 1.5237543738142874,
+    "dmgReduction": 90,
+    "magicDmgReduction": 144,
+    "hpRegenRate": 19.59731543624161,
+    "hpRegenAmount": 13.1
+  },
+  {
+    "id": 46,
+    "name": "Shadow\nBloomshroud",
+    "description": "The corrupted echo of its former self. Shrouds itself in cursed blossoms to ensnare souls.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/021_8Bit.png",
+    "level": 10,
+    "str": 20,
+    "def": 15,
+    "dex": 10,
+    "luk": 2,
+    "magic": 2,
+    "hpLevel": 5,
+    "exp": 10,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 665,
+      "maxHp": 665,
+      "attackType": "Melee",
+      "atkSpd": 114,
+      "acc": 2064.6376753424347,
+      "eva": 1716.688235082004,
+      "maxMeleeDmg": 252.34087041755214,
+      "maxRangedDmg": 166.4585445554362,
+      "maxMagicDmg": 79.45647924744641,
+      "critChance": 0.008492063492063492,
+      "critMultiplier": 1.4371559227650117,
+      "dmgReduction": 289.5,
+      "magicDmgReduction": 82.80000000000001,
+      "hpRegenRate": 17.833557046979866,
+      "hpRegenAmount": 24.420000000000005,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 500,
+    "atkSpd": 100,
+    "acc": 1258.9254117941675,
+    "eva": 1122.0184543019634,
+    "maxMeleeDmg": 172.83621261476173,
+    "maxRangedDmg": 110.23744672545445,
+    "maxMagicDmg": 42.49009585424942,
+    "critChance": 0.007936507936507936,
+    "critMultiplier": 1.3431363764158988,
+    "dmgReduction": 150,
+    "magicDmgReduction": 72,
+    "hpRegenRate": 19.59731543624161,
+    "hpRegenAmount": 18.5
+  },
+  {
+    "id": 47,
+    "name": "Shadow\nLilylurker",
+    "description": "The corrupted echo of its former self. Its roots reach for warmth it no longer feels.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/014_8Bit.png",
+    "level": 11,
+    "str": 6,
+    "def": 11,
+    "dex": 22,
+    "luk": 14,
+    "magic": 3,
+    "hpLevel": 6,
+    "exp": 12,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 768,
+      "maxHp": 768,
+      "attackType": "Ranged",
+      "atkSpd": 393.80000000000007,
+      "acc": 4165.620952921348,
+      "eva": 3594.7761408570964,
+      "maxMeleeDmg": 183.4355991574494,
+      "maxRangedDmg": 263.22121360634753,
+      "maxMagicDmg": 113.21671132691766,
+      "critChance": 0.06787878787878789,
+      "critMultiplier": 2.375825887906558,
+      "dmgReduction": 150.7,
+      "magicDmgReduction": 141.36,
+      "hpRegenRate": 19.496644295302012,
+      "hpRegenAmount": 19.536000000000005,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 600,
+    "atkSpd": 220,
+    "acc": 2996.8496064182355,
+    "eva": 2567.697243469354,
+    "maxMeleeDmg": 80.10288172814386,
+    "maxRangedDmg": 184.07077874569754,
+    "maxMagicDmg": 53.15338559949186,
+    "critChance": 0.05303030303030303,
+    "critMultiplier": 1.5528273777167043,
+    "dmgReduction": 110,
+    "magicDmgReduction": 62,
+    "hpRegenRate": 19.496644295302012,
+    "hpRegenAmount": 14.8
+  },
+  {
+    "id": 48,
+    "name": "Shadow\nVerdant Snapper",
+    "description": "The corrupted echo of its former self. Snaps not to feed—but to silence.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/017_8Bit.png",
+    "level": 12,
+    "str": 3,
+    "def": 12,
+    "dex": 6,
+    "luk": 15,
+    "magic": 24,
+    "hpLevel": 6,
+    "exp": 14,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 882,
+      "maxHp": 882,
+      "attackType": "Magic",
+      "atkSpd": 60,
+      "acc": 976.1246582626737,
+      "eva": 853.1043672266253,
+      "maxMeleeDmg": 60.594859583420735,
+      "maxRangedDmg": 91.317285170084,
+      "maxMagicDmg": 271.05363348296953,
+      "critChance": 0.06169811320754717,
+      "critMultiplier": 1.7017472343284874,
+      "dmgReduction": 136.8,
+      "magicDmgReduction": 274.56000000000006,
+      "hpRegenRate": 19.496644295302012,
+      "hpRegenAmount": 15.012,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 600,
+    "atkSpd": 60,
+    "acc": 717.7387193107894,
+    "eva": 656.2341286358655,
+    "maxMeleeDmg": 53.15338559949186,
+    "maxRangedDmg": 80.10288172814386,
+    "maxMagicDmg": 195.0026140165248,
+    "critChance": 0.05660377358490566,
+    "critMultiplier": 1.5612359947967773,
+    "dmgReduction": 120,
+    "magicDmgReduction": 192,
+    "hpRegenRate": 19.496644295302012,
+    "hpRegenAmount": 13.9
+  },
+  {
+    "id": 49,
+    "name": "Shadow\nMurkmancer",
+    "description": "The corrupted echo of its former self. Its croak carries echoes from beyond.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/080_8Bit.png",
+    "level": 13,
+    "str": 26,
+    "def": 20,
+    "dex": 13,
+    "luk": 3,
+    "magic": 3,
+    "hpLevel": 9,
+    "exp": 12,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 1080,
+      "maxHp": 1080,
+      "attackType": "Melee",
+      "atkSpd": 219.70000000000002,
+      "acc": 2100.137358768852,
+      "eva": 2009.9230386086988,
+      "maxMeleeDmg": 283.8165759005319,
+      "maxRangedDmg": 169.5790647136241,
+      "maxMagicDmg": 78.13547683125303,
+      "critChance": 0.01600790513833992,
+      "critMultiplier": 1.6705477768520505,
+      "dmgReduction": 372,
+      "magicDmgReduction": 187.18,
+      "hpRegenRate": 19.19463087248322,
+      "hpRegenAmount": 31.443,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 900,
+    "atkSpd": 130,
+    "acc": 1680.1098870150818,
+    "eva": 1477.8845872122783,
+    "maxMeleeDmg": 205.66418543516806,
+    "maxRangedDmg": 130.44543439509545,
+    "maxMagicDmg": 53.15338559949186,
+    "critChance": 0.011857707509881422,
+    "critMultiplier": 1.3806179973983888,
+    "dmgReduction": 200,
+    "magicDmgReduction": 98,
+    "hpRegenRate": 19.19463087248322,
+    "hpRegenAmount": 22.3
+  },
+  {
+    "id": 50,
+    "name": "Shadow\nMurkbeast",
+    "description": "The corrupted echo of its former self. Disappears into the mist as if never born.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/078_8Bit.png",
+    "level": 14,
+    "str": 7,
+    "def": 14,
+    "dex": 28,
+    "luk": 18,
+    "magic": 4,
+    "hpLevel": 9,
+    "exp": 14,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 1323,
+      "maxHp": 1323,
+      "attackType": "Ranged",
+      "atkSpd": 498.40000000000003,
+      "acc": 6447.001610349172,
+      "eva": 4928.357472423109,
+      "maxMeleeDmg": 131.2549575582571,
+      "maxRangedDmg": 378.1439626477692,
+      "maxMagicDmg": 126.18843602614066,
+      "critChance": 0.06716417910447761,
+      "critMultiplier": 1.5836260802858486,
+      "dmgReduction": 233.79999999999995,
+      "magicDmgReduction": 104.80000000000001,
+      "hpRegenRate": 12.668456375838925,
+      "hpRegenAmount": 21.91200000000001,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 900,
+    "atkSpd": 280,
+    "acc": 3907.2737032419227,
+    "eva": 3307.622464713496,
+    "maxMeleeDmg": 88.09057554245443,
+    "maxRangedDmg": 216.08226437015384,
+    "maxMagicDmg": 62.78031643091577,
+    "critChance": 0.06716417910447761,
+    "critMultiplier": 1.5836260802858486,
+    "dmgReduction": 140,
+    "magicDmgReduction": 80,
+    "hpRegenRate": 19.19463087248322,
+    "hpRegenAmount": 16.6
+  },
+  {
+    "id": 51,
+    "name": "Shadow\nMurkling",
+    "description": "The corrupted echo of its former self. Its slime corrodes spirit and flesh alike.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/053_8Bit.png",
+    "level": 15,
+    "str": 4,
+    "def": 15,
+    "dex": 8,
+    "luk": 19,
+    "magic": 30,
+    "hpLevel": 10,
+    "exp": 14,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 1030,
+      "maxHp": 1030,
+      "attackType": "Magic",
+      "atkSpd": 114.4,
+      "acc": 1497.0716066274188,
+      "eva": 1278.2240318221577,
+      "maxMeleeDmg": 107.98214426117512,
+      "maxRangedDmg": 181.90956630551653,
+      "maxMagicDmg": 484.23761533557024,
+      "critChance": 0.09323420074349442,
+      "critMultiplier": 2.4649789479837514,
+      "dmgReduction": 235.5,
+      "magicDmgReduction": 420,
+      "hpRegenRate": 14.320469798657719,
+      "hpRegenAmount": 23.976000000000003,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1000,
+    "atkSpd": 80,
+    "acc": 984.9155306759333,
+    "eva": 887.655577654276,
+    "maxMeleeDmg": 62.78031643091577,
+    "maxRangedDmg": 95.74187700290345,
+    "maxMagicDmg": 226.2792595026029,
+    "critChance": 0.07063197026022305,
+    "critMultiplier": 1.5903089986991943,
+    "dmgReduction": 150,
+    "magicDmgReduction": 240,
+    "hpRegenRate": 19.093959731543624,
+    "hpRegenAmount": 16.2
+  },
+  {
+    "id": 52,
+    "name": "Shadow\nSludgething",
+    "description": "The corrupted echo of its former self. Glides across the mire without stirring it.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/022_8Bit.png",
+    "level": 16,
+    "str": 32,
+    "def": 24,
+    "dex": 16,
+    "luk": 4,
+    "magic": 4,
+    "hpLevel": 11,
+    "exp": 17,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 1573,
+      "maxHp": 1573,
+      "attackType": "Melee",
+      "atkSpd": 240,
+      "acc": 4074.6404284666987,
+      "eva": 3069.3220045520784,
+      "maxMeleeDmg": 451.28366466121776,
+      "maxRangedDmg": 280.6616094394741,
+      "maxMagicDmg": 140.00010564094217,
+      "critChance": 0.01968503937007874,
+      "critMultiplier": 1.748016841612999,
+      "dmgReduction": 398.40000000000003,
+      "magicDmgReduction": 276,
+      "hpRegenRate": 13.86510067114094,
+      "hpRegenAmount": 34.88900000000001,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1100,
+    "atkSpd": 160,
+    "acc": 2111.2126572366315,
+    "eva": 1837.9173679952562,
+    "maxMeleeDmg": 236.2741699796952,
+    "maxRangedDmg": 149.28809012737983,
+    "maxMagicDmg": 62.78031643091577,
+    "critChance": 0.015748031496062992,
+    "critMultiplier": 1.4096910013008057,
+    "dmgReduction": 240,
+    "magicDmgReduction": 120,
+    "hpRegenRate": 18.993288590604028,
+    "hpRegenAmount": 25.1
+  },
+  {
+    "id": 53,
+    "name": "Shadow\nSwampling",
+    "description": "The corrupted echo of its former self. Lures intruders with mimicry of their own voice.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/027_8Bit.png",
+    "level": 17,
+    "str": 8,
+    "def": 17,
+    "dex": 34,
+    "luk": 21,
+    "magic": 4,
+    "hpLevel": 11,
+    "exp": 19,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 2673,
+      "maxHp": 2673,
+      "attackType": "Ranged",
+      "atkSpd": 523.6,
+      "acc": 8997.870802153528,
+      "eva": 8030.046370177485,
+      "maxMeleeDmg": 225.95082972685216,
+      "maxRangedDmg": 509.3923977375803,
+      "maxMagicDmg": 135.60548349077803,
+      "critChance": 0.11391143911439114,
+      "critMultiplier": 2.003408505308327,
+      "dmgReduction": 486.2,
+      "magicDmgReduction": 230,
+      "hpRegenRate": 15.574496644295301,
+      "hpRegenAmount": 30.250999999999994,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1100,
+    "atkSpd": 340,
+    "acc": 4837.5649473943695,
+    "eva": 4055.578974837114,
+    "maxMeleeDmg": 95.74187700290345,
+    "maxRangedDmg": 246.08328393119825,
+    "maxMagicDmg": 62.78031643091577,
+    "critChance": 0.07749077490774908,
+    "critMultiplier": 1.6027268042466618,
+    "dmgReduction": 170,
+    "magicDmgReduction": 92,
+    "hpRegenRate": 18.993288590604028,
+    "hpRegenAmount": 17.9
+  },
+  {
+    "id": 54,
+    "name": "Shadow\nMurklord",
+    "description": "The corrupted echo of its former self. Fungus thrives where the dead once stood.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/046_8Bit.png",
+    "level": 18,
+    "str": 4,
+    "def": 18,
+    "dex": 9,
+    "luk": 22,
+    "magic": 36,
+    "hpLevel": 12,
+    "exp": 24,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 2472,
+      "maxHp": 2472,
+      "attackType": "Magic",
+      "atkSpd": 90,
+      "acc": 1524.7746700893938,
+      "eva": 1627.3075877414328,
+      "maxMeleeDmg": 92.91486831775535,
+      "maxRangedDmg": 197.9726101150494,
+      "maxMagicDmg": 421.93915719368533,
+      "critChance": 0.14639705882352944,
+      "critMultiplier": 2.477118260240128,
+      "dmgReduction": 387.00000000000006,
+      "magicDmgReduction": 567.36,
+      "hpRegenRate": 18.892617449664428,
+      "hpRegenAmount": 26.831999999999994,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1200,
+    "atkSpd": 90,
+    "acc": 1121.157845653966,
+    "eva": 1004.510856630514,
+    "maxMeleeDmg": 62.78031643091577,
+    "maxRangedDmg": 103.11073443492157,
+    "maxMagicDmg": 255.72070132950628,
+    "critChance": 0.08088235294117647,
+    "critMultiplier": 1.6085183508052778,
+    "dmgReduction": 180,
+    "magicDmgReduction": 288,
+    "hpRegenRate": 18.892617449664428,
+    "hpRegenAmount": 17.2
+  },
+  {
+    "id": 55,
+    "name": "Shadow\nSlithling",
+    "description": "The corrupted echo of its former self. Strikes from behind veils of shadow and guilt.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/019_8Bit.png",
+    "level": 19,
+    "str": 38,
+    "def": 28,
+    "dex": 19,
+    "luk": 5,
+    "magic": 5,
+    "hpLevel": 13,
+    "exp": 21,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 2444,
+      "maxHp": 2444,
+      "attackType": "Melee",
+      "atkSpd": 245.10000000000002,
+      "acc": 4769.47489986836,
+      "eva": 3786.341032376338,
+      "maxMeleeDmg": 477.3577187742137,
+      "maxRangedDmg": 322.48996670771527,
+      "maxMagicDmg": 129.78312915232172,
+      "critChance": 0.03176470588235294,
+      "critMultiplier": 1.8921478951519224,
+      "dmgReduction": 546,
+      "magicDmgReduction": 303.88,
+      "hpRegenRate": 15.785234899328858,
+      "hpRegenAmount": 43.524,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1300,
+    "atkSpd": 190,
+    "acc": 2550.5213368279997,
+    "eva": 2201.36106533508,
+    "maxMeleeDmg": 265.1987326523409,
+    "maxRangedDmg": 167.0932469988162,
+    "maxMagicDmg": 71.70338627200096,
+    "critChance": 0.0196078431372549,
+    "critMultiplier": 1.433445375115093,
+    "dmgReduction": 280,
+    "magicDmgReduction": 142,
+    "hpRegenRate": 18.79194630872483,
+    "hpRegenAmount": 27.9
+  },
+  {
+    "id": 56,
+    "name": "Shadow\nScalelord",
+    "description": "The corrupted echo of its former self. Hisses scripture older than stone.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/077_8Bit.png",
+    "level": 20,
+    "str": 10,
+    "def": 20,
+    "dex": 40,
+    "luk": 25,
+    "magic": 5,
+    "hpLevel": 13,
+    "exp": 25,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 2119,
+      "maxHp": 2119,
+      "attackType": "Ranged",
+      "atkSpd": 544,
+      "acc": 10007.188803176123,
+      "eva": 8417.847226577847,
+      "maxMeleeDmg": 213.8606466473816,
+      "maxRangedDmg": 469.4432353719048,
+      "maxMagicDmg": 144.8408402694419,
+      "critChance": 0.11181818181818182,
+      "critMultiplier": 2.826616087640767,
+      "dmgReduction": 480,
+      "magicDmgReduction": 325.59999999999997,
+      "hpRegenRate": 17.288590604026847,
+      "hpRegenAmount": 31.199999999999996,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1300,
+    "atkSpd": 400,
+    "acc": 5784.502198367701,
+    "eva": 4810.198415187341,
+    "maxMeleeDmg": 110.23744672545445,
+    "maxRangedDmg": 274.52820781982734,
+    "maxMagicDmg": 71.70338627200096,
+    "critChance": 0.09090909090909091,
+    "critMultiplier": 1.6244920043912454,
+    "dmgReduction": 200,
+    "magicDmgReduction": 110,
+    "hpRegenRate": 18.79194630872483,
+    "hpRegenAmount": 19.5
+  },
+  {
+    "id": 57,
+    "name": "Shadow\nScalething",
+    "description": "The corrupted echo of its former self. Its echoes warp the tunnel around you.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/079_8Bit.png",
+    "level": 21,
+    "str": 5,
+    "def": 21,
+    "dex": 10,
+    "luk": 26,
+    "magic": 42,
+    "hpLevel": 14,
+    "exp": 25,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 3682,
+      "maxHp": 3682,
+      "attackType": "Magic",
+      "atkSpd": 110,
+      "acc": 2190.5302165218513,
+      "eva": 2064.5139559156128,
+      "maxMeleeDmg": 138.38753550496187,
+      "maxRangedDmg": 248.0342551322725,
+      "maxMagicDmg": 686.5993001415793,
+      "critChance": 0.19123188405797104,
+      "critMultiplier": 2.6559368806737447,
+      "dmgReduction": 493.50000000000006,
+      "magicDmgReduction": 732.4799999999999,
+      "hpRegenRate": 11.962416107382548,
+      "hpRegenAmount": 27.194999999999997,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1400,
+    "atkSpd": 100,
+    "acc": 1258.9254117941675,
+    "eva": 1122.0184543019634,
+    "maxMeleeDmg": 71.70338627200096,
+    "maxRangedDmg": 110.23744672545445,
+    "maxMagicDmg": 283.7187190667683,
+    "critChance": 0.09420289855072464,
+    "critMultiplier": 1.6294091292476962,
+    "dmgReduction": 210,
+    "magicDmgReduction": 336,
+    "hpRegenRate": 18.691275167785236,
+    "hpRegenAmount": 18.5
+  },
+  {
+    "id": 58,
+    "name": "Shadow\nVenomthing",
+    "description": "The corrupted echo of its former self. Venom drips with necrotic hate.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/086_8Bit.png",
+    "level": 22,
+    "str": 44,
+    "def": 33,
+    "dex": 22,
+    "luk": 6,
+    "magic": 6,
+    "hpLevel": 15,
+    "exp": 28,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 3975,
+      "maxHp": 3975,
+      "attackType": "Melee",
+      "atkSpd": 327.8,
+      "acc": 6742.91161444103,
+      "eva": 5469.195128589723,
+      "maxMeleeDmg": 576.7742642568484,
+      "maxRangedDmg": 491.4689792510124,
+      "maxMagicDmg": 231.49732819433575,
+      "critChance": 0.05273437500000001,
+      "critMultiplier": 3.2849764711296654,
+      "dmgReduction": 891,
+      "magicDmgReduction": 530.8799999999999,
+      "hpRegenRate": 15.244295302013423,
+      "hpRegenAmount": 57.71600000000001,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1500,
+    "atkSpd": 220,
+    "acc": 2996.8496064182355,
+    "eva": 2567.697243469354,
+    "maxMeleeDmg": 292.7788143435778,
+    "maxRangedDmg": 184.07077874569754,
+    "maxMagicDmg": 80.10288172814386,
+    "critChance": 0.0234375,
+    "critMultiplier": 1.453529412004277,
+    "dmgReduction": 330,
+    "magicDmgReduction": 168,
+    "hpRegenRate": 18.59060402684564,
+    "hpRegenAmount": 30.7
+  },
+  {
+    "id": 59,
+    "name": "Shadow\nHissthing",
+    "description": "The corrupted echo of its former self. Chanted to by ghostly vipers in reverence.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/061_8Bit.png",
+    "level": 23,
+    "str": 12,
+    "def": 23,
+    "dex": 46,
+    "luk": 29,
+    "magic": 6,
+    "hpLevel": 15,
+    "exp": 32,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 3960,
+      "maxHp": 3960,
+      "attackType": "Ranged",
+      "atkSpd": 989,
+      "acc": 17336.7121396625,
+      "eva": 11363.860418932656,
+      "maxMeleeDmg": 372.88622672447895,
+      "maxRangedDmg": 817.6507749226392,
+      "maxMagicDmg": 261.13539443374896,
+      "critChance": 0.18917562724014336,
+      "critMultiplier": 2.5632927472088016,
+      "dmgReduction": 632.5,
+      "magicDmgReduction": 399.36,
+      "hpRegenRate": 13.757046979865773,
+      "hpRegenAmount": 35.448000000000015,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1500,
+    "atkSpd": 460,
+    "acc": 6745.802388973735,
+    "eva": 5570.5198132022815,
+    "maxMeleeDmg": 123.88246735032521,
+    "maxRangedDmg": 301.716153107985,
+    "maxMagicDmg": 80.10288172814386,
+    "critChance": 0.1039426523297491,
+    "critMultiplier": 1.6431363764158986,
+    "dmgReduction": 230,
+    "magicDmgReduction": 128,
+    "hpRegenRate": 18.59060402684564,
+    "hpRegenAmount": 21.1
+  },
+  {
+    "id": 60,
+    "name": "Shadow\nHisslord",
+    "description": "The corrupted echo of its former self. Its gaze pierces into the heart’s decay.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/042_8Bit.png",
+    "level": 24,
+    "str": 6,
+    "def": 24,
+    "dex": 12,
+    "luk": 30,
+    "magic": 48,
+    "hpLevel": 16,
+    "exp": 35,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 4656,
+      "maxHp": 4656,
+      "attackType": "Magic",
+      "atkSpd": 221.99999999999997,
+      "acc": 3707.8009657298703,
+      "eva": 3437.6434465338702,
+      "maxMeleeDmg": 243.51276045355735,
+      "maxRangedDmg": 395.1850708475375,
+      "maxMagicDmg": 947.1397810592485,
+      "critChance": 0.2603571428571428,
+      "critMultiplier": 3.706669143338133,
+      "dmgReduction": 909.5999999999999,
+      "magicDmgReduction": 1701.12,
+      "hpRegenRate": 13.682550335570468,
+      "hpRegenAmount": 42.966,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1600,
+    "atkSpd": 120,
+    "acc": 1538.5066247841787,
+    "eva": 1358.7523504086441,
+    "maxMeleeDmg": 80.10288172814386,
+    "maxRangedDmg": 123.88246735032521,
+    "maxMagicDmg": 310.5376331341799,
+    "critChance": 0.10714285714285714,
+    "critMultiplier": 1.6474085081502818,
+    "dmgReduction": 240,
+    "magicDmgReduction": 384,
+    "hpRegenRate": 18.48993288590604,
+    "hpRegenAmount": 19.8
+  },
+  {
+    "id": 61,
+    "name": "Shadow\nOathbreaker Fenlord",
+    "description": "The corrupted echo of its former self. Every scar burns with vengeance.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/063_8Bit.png",
+    "level": 25,
+    "str": 50,
+    "def": 38,
+    "dex": 25,
+    "luk": 6,
+    "magic": 6,
+    "hpLevel": 17,
+    "exp": 30,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 2550,
+      "maxHp": 2550,
+      "attackType": "Melee",
+      "atkSpd": 580,
+      "acc": 6691.6888580868945,
+      "eva": 5550.07450609089,
+      "maxMeleeDmg": 705.5413833112917,
+      "maxRangedDmg": 595.0852197986158,
+      "maxMagicDmg": 195.451031416671,
+      "critChance": 0.053671875,
+      "critMultiplier": 2.5291411768874417,
+      "dmgReduction": 809.4000000000001,
+      "magicDmgReduction": 468.12,
+      "hpRegenRate": 15.630872483221477,
+      "hpRegenAmount": 55.94500000000001,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1700,
+    "atkSpd": 250,
+    "acc": 3449.3241536530386,
+    "eva": 2936.547357720048,
+    "maxMeleeDmg": 319.2494947109917,
+    "maxRangedDmg": 200.36539387158783,
+    "maxMagicDmg": 80.10288172814386,
+    "critChance": 0.0234375,
+    "critMultiplier": 1.453529412004277,
+    "dmgReduction": 380,
+    "magicDmgReduction": 188,
+    "hpRegenRate": 18.389261744966444,
+    "hpRegenAmount": 33.5
+  },
+  {
+    "id": 62,
+    "name": "Shadow\nGnashfang Duelist",
+    "description": "The corrupted echo of its former self. Its roar raises the dead in awe.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/076_8Bit.png",
+    "level": 26,
+    "str": 13,
+    "def": 26,
+    "dex": 52,
+    "luk": 32,
+    "magic": 6,
+    "hpLevel": 17,
+    "exp": 33,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 3094,
+      "maxHp": 3094,
+      "attackType": "Ranged",
+      "atkSpd": 961.9999999999999,
+      "acc": 18990.60432013623,
+      "eva": 12608.301550873573,
+      "maxMeleeDmg": 382.2051227776297,
+      "maxRangedDmg": 872.1007026242883,
+      "maxMagicDmg": 259.5333367991861,
+      "critChance": 0.2553191489361702,
+      "critMultiplier": 3.046219694812593,
+      "dmgReduction": 746.2,
+      "magicDmgReduction": 401.79999999999995,
+      "hpRegenRate": 16.918120805369128,
+      "hpRegenAmount": 40.768,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1700,
+    "atkSpd": 520,
+    "acc": 7719.757853713916,
+    "eva": 6335.829925062096,
+    "maxMeleeDmg": 130.44543439509545,
+    "maxRangedDmg": 327.85740700161216,
+    "maxMagicDmg": 80.10288172814386,
+    "critChance": 0.11347517730496454,
+    "critMultiplier": 1.6555541819633661,
+    "dmgReduction": 260,
+    "magicDmgReduction": 140,
+    "hpRegenRate": 18.389261744966444,
+    "hpRegenAmount": 22.4
+  },
+  {
+    "id": 63,
+    "name": "Shadow\nIronhide Outcast",
+    "description": "The corrupted echo of its former self. Each trophy bears a name it whispers.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/060_8Bit.png",
+    "level": 27,
+    "str": 7,
+    "def": 27,
+    "dex": 14,
+    "luk": 34,
+    "magic": 54,
+    "hpLevel": 18,
+    "exp": 33,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 3114,
+      "maxHp": 3114,
+      "attackType": "Magic",
+      "atkSpd": 315,
+      "acc": 3754.9837302515775,
+      "eva": 2891.4321944364074,
+      "maxMeleeDmg": 227.27368489953244,
+      "maxRangedDmg": 376.3609141445793,
+      "maxMagicDmg": 962.0083049308042,
+      "critChance": 0.22866197183098588,
+      "critMultiplier": 3.659084909271182,
+      "dmgReduction": 726.3,
+      "magicDmgReduction": 1088.6399999999999,
+      "hpRegenRate": 14.08221476510067,
+      "hpRegenAmount": 37.55800000000001,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1800,
+    "atkSpd": 140,
+    "acc": 1822.8076360444554,
+    "eva": 1597.4763505173519,
+    "maxMeleeDmg": 88.09057554245443,
+    "maxRangedDmg": 136.8585142343925,
+    "maxMagicDmg": 336.3665401855959,
+    "critChance": 0.11971830985915492,
+    "critMultiplier": 1.6632204133050825,
+    "dmgReduction": 270,
+    "magicDmgReduction": 432,
+    "hpRegenRate": 18.288590604026844,
+    "hpRegenAmount": 21.1
+  },
+  {
+    "id": 64,
+    "name": "Shadow\nGorefang Raider",
+    "description": "The corrupted echo of its former self. Strength is its scripture; mercy is void.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/062_8Bit.png",
+    "level": 28,
+    "str": 56,
+    "def": 42,
+    "dex": 28,
+    "luk": 7,
+    "magic": 7,
+    "hpLevel": 19,
+    "exp": 36,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 6061,
+      "maxHp": 6061,
+      "attackType": "Melee",
+      "atkSpd": 383.59999999999997,
+      "acc": 8322.492987905294,
+      "eva": 7375.998096311096,
+      "maxMeleeDmg": 892.9844117604953,
+      "maxRangedDmg": 561.8138873624,
+      "maxMagicDmg": 268.67625540448597,
+      "critChance": 0.05474708171206226,
+      "critMultiplier": 3.4272599009073677,
+      "dmgReduction": 1226.4,
+      "magicDmgReduction": 716.1,
+      "hpRegenRate": 15.27785234899329,
+      "hpRegenAmount": 72.23699999999998,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1900,
+    "atkSpd": 280,
+    "acc": 3907.2737032419227,
+    "eva": 3307.622464713496,
+    "maxMeleeDmg": 344.7816261623534,
+    "maxRangedDmg": 216.08226437015384,
+    "maxMagicDmg": 88.09057554245443,
+    "critChance": 0.027237354085603113,
+    "critMultiplier": 1.470926996097583,
+    "dmgReduction": 420,
+    "magicDmgReduction": 210,
+    "hpRegenRate": 18.187919463087248,
+    "hpRegenAmount": 36.3
+  },
+  {
+    "id": 65,
+    "name": "Shadow\nBloodtrail Marauder",
+    "description": "The corrupted echo of its former self. Its laughter splits minds from within.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/090_8Bit.png",
+    "level": 29,
+    "str": 14,
+    "def": 29,
+    "dex": 58,
+    "luk": 36,
+    "magic": 7,
+    "hpLevel": 19,
+    "exp": 42,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 5567,
+      "maxHp": 5567,
+      "attackType": "Ranged",
+      "atkSpd": 1281.7999999999997,
+      "acc": 16713.67764131822,
+      "eva": 16982.330718261263,
+      "maxMeleeDmg": 439.31583069239997,
+      "maxRangedDmg": 1218.2191844049219,
+      "maxMagicDmg": 296.8652395780714,
+      "critChance": 0.26181818181818184,
+      "critMultiplier": 3.274102613751393,
+      "dmgReduction": 1044,
+      "magicDmgReduction": 526.14,
+      "hpRegenRate": 14.004697986577181,
+      "hpRegenAmount": 53.562,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 1900,
+    "atkSpd": 580,
+    "acc": 8705.040438186574,
+    "eva": 7105.577706385465,
+    "maxMeleeDmg": 136.8585142343925,
+    "maxRangedDmg": 353.1070099724411,
+    "maxMagicDmg": 88.09057554245443,
+    "critChance": 0.1258741258741259,
+    "critMultiplier": 1.6704605172200984,
+    "dmgReduction": 290,
+    "magicDmgReduction": 158,
+    "hpRegenRate": 18.187919463087248,
+    "hpRegenAmount": 23.7
+  },
+  {
+    "id": 66,
+    "name": "Shadow\nBlighthorn Warchief",
+    "description": "The corrupted echo of its former self. Fueled by echoes of ancient warcries.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/087_8Bit.png",
+    "level": 30,
+    "str": 8,
+    "def": 30,
+    "dex": 15,
+    "luk": 38,
+    "magic": 60,
+    "hpLevel": 20,
+    "exp": 48,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 4460,
+      "maxHp": 4460,
+      "attackType": "Magic",
+      "atkSpd": 388.5,
+      "acc": 5270.298080619795,
+      "eva": 4482.665465579653,
+      "maxMeleeDmg": 347.5430135205395,
+      "maxRangedDmg": 569.6792940974199,
+      "maxMagicDmg": 1441.7733075688677,
+      "critChance": 0.3377777777777778,
+      "critMultiplier": 4.0255665170590795,
+      "dmgReduction": 966,
+      "magicDmgReduction": 1847.9999999999998,
+      "hpRegenRate": 11.214093959731546,
+      "hpRegenAmount": 47.26399999999999,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2000,
+    "atkSpd": 150,
+    "acc": 1966.5291345596252,
+    "eva": 1717.496346965384,
+    "maxMeleeDmg": 95.74187700290345,
+    "maxRangedDmg": 143.13550102950248,
+    "maxMagicDmg": 361.3466936262827,
+    "critChance": 0.13194444444444445,
+    "critMultiplier": 1.6773193821079497,
+    "dmgReduction": 300,
+    "magicDmgReduction": 480,
+    "hpRegenRate": 18.08724832214765,
+    "hpRegenAmount": 22.4
+  },
+  {
+    "id": 67,
+    "name": "Shadow\nCharbeast",
+    "description": "The corrupted echo of its former self. Flames coil within its hollow bones.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/016_8Bit.png",
+    "level": 31,
+    "str": 62,
+    "def": 46,
+    "dex": 31,
+    "luk": 8,
+    "magic": 8,
+    "hpLevel": 21,
+    "exp": 40,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 5859,
+      "maxHp": 5859,
+      "attackType": "Melee",
+      "atkSpd": 759.5,
+      "acc": 10619.501652032288,
+      "eva": 8023.914126461848,
+      "maxMeleeDmg": 1053.087464977871,
+      "maxRangedDmg": 825.7442151863029,
+      "maxMagicDmg": 332.2243132000749,
+      "critChance": 0.07999999999999999,
+      "critMultiplier": 2.8982318680220045,
+      "dmgReduction": 1366.2,
+      "magicDmgReduction": 758.64,
+      "hpRegenRate": 13.849664429530204,
+      "hpRegenAmount": 83.28299999999999,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2100,
+    "atkSpd": 310,
+    "acc": 4370.165288902177,
+    "eva": 3680.694553422866,
+    "maxMeleeDmg": 369.5043736764459,
+    "maxRangedDmg": 231.30090061240978,
+    "maxMagicDmg": 95.74187700290345,
+    "critChance": 0.031007751937984496,
+    "critMultiplier": 1.4862727528317974,
+    "dmgReduction": 460,
+    "magicDmgReduction": 232,
+    "hpRegenRate": 17.986577181208055,
+    "hpRegenAmount": 39.099999999999994
+  },
+  {
+    "id": 68,
+    "name": "Shadow\nCindermancer",
+    "description": "The corrupted echo of its former self. Its ashes cling to memory and skin.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/028_8Bit.png",
+    "level": 32,
+    "str": 16,
+    "def": 32,
+    "dex": 64,
+    "luk": 40,
+    "magic": 8,
+    "hpLevel": 21,
+    "exp": 43,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 6048,
+      "maxHp": 6048,
+      "attackType": "Ranged",
+      "atkSpd": 1600,
+      "acc": 26288.588129556356,
+      "eva": 19461.930886156446,
+      "maxMeleeDmg": 480.7076502101631,
+      "maxRangedDmg": 1408.3863565244608,
+      "maxMagicDmg": 363.819132611033,
+      "critChance": 0.35586206896551725,
+      "critMultiplier": 3.2834785561810444,
+      "dmgReduction": 1091.2,
+      "magicDmgReduction": 658.24,
+      "hpRegenRate": 13.849664429530204,
+      "hpRegenAmount": 54.648,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2100,
+    "atkSpd": 640,
+    "acc": 9700.586025666551,
+    "eva": 7879.324245407466,
+    "maxMeleeDmg": 149.28809012737983,
+    "maxRangedDmg": 377.58347359905116,
+    "maxMagicDmg": 95.74187700290345,
+    "critChance": 0.13793103448275862,
+    "critMultiplier": 1.6838351570159205,
+    "dmgReduction": 320,
+    "magicDmgReduction": 176,
+    "hpRegenRate": 17.986577181208055,
+    "hpRegenAmount": 25.3
+  },
+  {
+    "id": 69,
+    "name": "Shadow\nCharthing",
+    "description": "The corrupted echo of its former self. Burns footprints into reality itself.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/084_8Bit.png",
+    "level": 33,
+    "str": 8,
+    "def": 33,
+    "dex": 16,
+    "luk": 41,
+    "magic": 66,
+    "hpLevel": 22,
+    "exp": 43,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 6336,
+      "maxHp": 6336,
+      "attackType": "Magic",
+      "atkSpd": 400,
+      "acc": 5721.386301111271,
+      "eva": 4539.655898948283,
+      "maxMeleeDmg": 308.28884394934914,
+      "maxRangedDmg": 556.8445761751267,
+      "maxMagicDmg": 1465.231252995214,
+      "critChance": 0.36350515463917527,
+      "critMultiplier": 3.2896008348827714,
+      "dmgReduction": 1125.3000000000002,
+      "magicDmgReduction": 1974.7200000000003,
+      "hpRegenRate": 13.77214765100671,
+      "hpRegenAmount": 50.544000000000004,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2200,
+    "atkSpd": 160,
+    "acc": 2111.2126572366315,
+    "eva": 1837.9173679952562,
+    "maxMeleeDmg": 95.74187700290345,
+    "maxRangedDmg": 149.28809012737983,
+    "maxMagicDmg": 385.5871718408458,
+    "critChance": 0.140893470790378,
+    "critMultiplier": 1.68697478711937,
+    "dmgReduction": 330,
+    "magicDmgReduction": 528,
+    "hpRegenRate": 17.885906040268456,
+    "hpRegenAmount": 23.4
+  },
+  {
+    "id": 70,
+    "name": "Shadow\nCharspawn",
+    "description": "The corrupted echo of its former self. Chokes the air with cursed ember clouds.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/055_8Bit.png",
+    "level": 34,
+    "str": 68,
+    "def": 51,
+    "dex": 34,
+    "luk": 8,
+    "magic": 8,
+    "hpLevel": 23,
+    "exp": 45,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 7544,
+      "maxHp": 7544,
+      "attackType": "Melee",
+      "atkSpd": 849.9999999999999,
+      "acc": 14415.943543235224,
+      "eva": 10868.951652563466,
+      "maxMeleeDmg": 1424.5367029364213,
+      "maxRangedDmg": 935.1164789385533,
+      "maxMagicDmg": 381.05267047155564,
+      "critChance": 0.08992248062015502,
+      "critMultiplier": 3.463015514098087,
+      "dmgReduction": 1912.5000000000002,
+      "magicDmgReduction": 1010.5200000000001,
+      "hpRegenRate": 13.694630872483224,
+      "hpRegenAmount": 97.627,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2300,
+    "atkSpd": 340,
+    "acc": 4837.5649473943695,
+    "eva": 4055.578974837114,
+    "maxMeleeDmg": 393.5184262255307,
+    "maxRangedDmg": 246.08328393119825,
+    "maxMagicDmg": 95.74187700290345,
+    "critChance": 0.031007751937984496,
+    "critMultiplier": 1.4862727528317974,
+    "dmgReduction": 510,
+    "magicDmgReduction": 252,
+    "hpRegenRate": 17.78523489932886,
+    "hpRegenAmount": 41.9
+  },
+  {
+    "id": 71,
+    "name": "Shadow\nCinderbeast",
+    "description": "The corrupted echo of its former self. Nothing remains inside but smoldering wrath.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/064_8Bit.png",
+    "level": 35,
+    "str": 18,
+    "def": 35,
+    "dex": 70,
+    "luk": 44,
+    "magic": 9,
+    "hpLevel": 23,
+    "exp": 50,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 8625,
+      "maxHp": 8625,
+      "attackType": "Ranged",
+      "atkSpd": 1897,
+      "acc": 30617.79261831732,
+      "eva": 25970.134373055174,
+      "maxMeleeDmg": 640.1975723397576,
+      "maxRangedDmg": 1794.1685789232465,
+      "maxMagicDmg": 478.4338077780361,
+      "critChance": 0.4265306122448979,
+      "critMultiplier": 3.4258467833478576,
+      "dmgReduction": 1449,
+      "magicDmgReduction": 795.4,
+      "hpRegenRate": 13.694630872483224,
+      "hpRegenAmount": 67.519,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2300,
+    "atkSpd": 700,
+    "acc": 10705.521894516543,
+    "eva": 8656.71145768506,
+    "maxMeleeDmg": 161.2588343425082,
+    "maxRangedDmg": 401.37999528484266,
+    "maxMagicDmg": 103.11073443492157,
+    "critChance": 0.14965986394557823,
+    "critMultiplier": 1.695963754132603,
+    "dmgReduction": 350,
+    "magicDmgReduction": 194,
+    "hpRegenRate": 17.78523489932886,
+    "hpRegenAmount": 26.9
+  },
+  {
+    "id": 72,
+    "name": "Shadow\nCharmancer",
+    "description": "The corrupted echo of its former self. Its sockets weep soot and sorrow.",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/006_8Bit.png",
+    "level": 36,
+    "str": 9,
+    "def": 36,
+    "dex": 18,
+    "luk": 45,
+    "magic": 72,
+    "hpLevel": 24,
+    "exp": 55,
+    "minGoldDrop": 0,
+    "maxGoldDrop": 0,
+    "minDittoDrop": "0",
+    "maxDittoDrop": "0",
+    "drops": [],
+    "combat": {
+      "hp": 9864,
+      "maxHp": 9864,
+      "attackType": "Magic",
+      "atkSpd": 518.4,
+      "acc": 7714.446792757929,
+      "eva": 6135.615647375813,
+      "maxMeleeDmg": 422.7540111831785,
+      "maxRangedDmg": 741.7906379755375,
+      "maxMagicDmg": 1931.303436938296,
+      "critChance": 0.41796610169491527,
+      "critMultiplier": 3.890314630365241,
+      "dmgReduction": 1656,
+      "magicDmgReduction": 2666.8799999999997,
+      "hpRegenRate": 13.617114093959733,
+      "hpRegenAmount": 68.41899999999998,
+      "meleeFactor": 0,
+      "rangeFactor": 0,
+      "magicFactor": 0,
+      "reinforceAir": 0,
+      "reinforceWater": 0,
+      "reinforceEarth": 0,
+      "reinforceFire": 0
+    },
+    "maxHp": 2400,
+    "atkSpd": 180,
+    "acc": 2403.254452572564,
+    "eva": 2079.869710974852,
+    "maxMeleeDmg": 103.11073443492157,
+    "maxRangedDmg": 161.2588343425082,
+    "maxMagicDmg": 409.1744569784526,
+    "critChance": 0.15254237288135594,
+    "critMultiplier": 1.6988273495044721,
+    "dmgReduction": 360,
+    "magicDmgReduction": 576,
+    "hpRegenRate": 17.684563758389263,
+    "hpRegenAmount": 24.7
   }
 ]

@@ -33,11 +33,11 @@
           "magicDmgReduction": 10,
           "hpRegenRate": 20,
           "hpRegenAmount": 10.8,
-          "exp": 12,
-          "minGoldDrop": -5,
-          "maxGoldDrop": 25,
+          "exp": 13,
+          "minGoldDrop": 0,
+          "maxGoldDrop": 26,
           "minDittoDrop": "0",
-          "maxDittoDrop": "10000000000",
+          "maxDittoDrop": "2000000000",
           "combatId": 1,
           "combat": {
             "id": 1,
@@ -85,7 +85,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": "Melee",
-                "statEffectId": 177,
+                "statEffectId": 285,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -108,7 +108,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": "Melee",
-                "statEffectId": 178,
+                "statEffectId": 286,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -131,7 +131,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 235,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -154,7 +154,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 236,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -177,7 +177,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 245,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -200,7 +200,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 246,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -223,7 +223,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 255,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -246,7 +246,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 256,
+                "statEffectId": 353,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -269,7 +269,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 275,
+                "statEffectId": 372,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -292,7 +292,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 276,
+                "statEffectId": 373,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -314,7 +314,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 10,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -337,7 +337,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 14,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 35,
+                "farmingDurationS": 18,
                 "farmingLevelRequired": 6,
                 "farmingExp": 70
               },
@@ -360,7 +360,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -383,7 +383,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -406,7 +406,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -446,7 +446,7 @@
           "minGoldDrop": 20,
           "maxGoldDrop": 50,
           "minDittoDrop": "0",
-          "maxDittoDrop": "10000000000",
+          "maxDittoDrop": "2000000000",
           "combatId": 2,
           "combat": {
             "id": 2,
@@ -494,7 +494,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": "Ranged",
-                "statEffectId": 197,
+                "statEffectId": 305,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -517,7 +517,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": "Ranged",
-                "statEffectId": 198,
+                "statEffectId": 306,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -540,7 +540,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 235,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -563,7 +563,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 236,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -586,7 +586,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 245,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -609,7 +609,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 246,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -632,7 +632,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 255,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -655,7 +655,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 256,
+                "statEffectId": 353,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -678,7 +678,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 275,
+                "statEffectId": 372,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -701,7 +701,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 276,
+                "statEffectId": 373,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -723,7 +723,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 10,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -746,7 +746,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 14,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 35,
+                "farmingDurationS": 18,
                 "farmingLevelRequired": 6,
                 "farmingExp": 70
               },
@@ -769,7 +769,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -792,7 +792,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -815,7 +815,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -855,7 +855,7 @@
           "minGoldDrop": 20,
           "maxGoldDrop": 50,
           "minDittoDrop": "0",
-          "maxDittoDrop": "10000000000",
+          "maxDittoDrop": "2000000000",
           "combatId": 3,
           "combat": {
             "id": 3,
@@ -903,7 +903,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": "Magic",
-                "statEffectId": 216,
+                "statEffectId": 324,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -926,7 +926,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": "Magic",
-                "statEffectId": 217,
+                "statEffectId": 325,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -949,7 +949,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 235,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -972,7 +972,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 236,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -995,7 +995,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 245,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -1018,7 +1018,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 246,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -1041,7 +1041,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 255,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -1064,7 +1064,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 256,
+                "statEffectId": 353,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -1087,7 +1087,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 275,
+                "statEffectId": 372,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -1110,7 +1110,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 276,
+                "statEffectId": 373,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -1132,7 +1132,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 10,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1155,7 +1155,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 14,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 35,
+                "farmingDurationS": 18,
                 "farmingLevelRequired": 6,
                 "farmingExp": 70
               },
@@ -1178,7 +1178,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1201,7 +1201,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1224,7 +1224,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1260,11 +1260,11 @@
           "magicDmgReduction": 24,
           "hpRegenRate": 19.8993288590604,
           "hpRegenAmount": 12.5,
-          "exp": 37,
-          "minGoldDrop": 45,
-          "maxGoldDrop": 75,
+          "exp": 38,
+          "minGoldDrop": 46,
+          "maxGoldDrop": 76,
           "minDittoDrop": "0",
-          "maxDittoDrop": "10000000000",
+          "maxDittoDrop": "2000000000",
           "combatId": 4,
           "combat": {
             "id": 4,
@@ -1312,7 +1312,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": "Melee",
-                "statEffectId": 177,
+                "statEffectId": 285,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -1335,7 +1335,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": "Melee",
-                "statEffectId": 178,
+                "statEffectId": 286,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -1358,7 +1358,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 235,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -1381,7 +1381,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 236,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -1404,7 +1404,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 245,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -1427,7 +1427,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 246,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -1450,7 +1450,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 255,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -1473,7 +1473,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 256,
+                "statEffectId": 353,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -1496,7 +1496,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 275,
+                "statEffectId": 372,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -1519,7 +1519,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 276,
+                "statEffectId": 373,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -1541,7 +1541,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 10,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1564,7 +1564,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 14,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 35,
+                "farmingDurationS": 18,
                 "farmingLevelRequired": 6,
                 "farmingExp": 70
               },
@@ -1587,7 +1587,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1610,7 +1610,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1633,7 +1633,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1673,7 +1673,7 @@
           "minGoldDrop": 70,
           "maxGoldDrop": 100,
           "minDittoDrop": "0",
-          "maxDittoDrop": "10000000000",
+          "maxDittoDrop": "2000000000",
           "combatId": 5,
           "combat": {
             "id": 5,
@@ -1721,7 +1721,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": "Ranged",
-                "statEffectId": 197,
+                "statEffectId": 305,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -1744,7 +1744,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": "Ranged",
-                "statEffectId": 198,
+                "statEffectId": 306,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -1767,7 +1767,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 235,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -1790,7 +1790,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 236,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -1813,7 +1813,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 245,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -1836,7 +1836,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 246,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -1859,7 +1859,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 255,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -1882,7 +1882,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 256,
+                "statEffectId": 353,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -1905,7 +1905,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 275,
+                "statEffectId": 372,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -1928,7 +1928,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 276,
+                "statEffectId": 373,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -1950,7 +1950,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 10,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -1973,7 +1973,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 14,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 35,
+                "farmingDurationS": 18,
                 "farmingLevelRequired": 6,
                 "farmingExp": 70
               },
@@ -1996,7 +1996,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2019,7 +2019,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2042,7 +2042,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2078,11 +2078,11 @@
           "magicDmgReduction": 62,
           "hpRegenRate": 19.7986577181208,
           "hpRegenAmount": 12.7,
-          "exp": 62,
-          "minGoldDrop": 95,
-          "maxGoldDrop": 125,
+          "exp": 63,
+          "minGoldDrop": 96,
+          "maxGoldDrop": 126,
           "minDittoDrop": "0",
-          "maxDittoDrop": "10000000000",
+          "maxDittoDrop": "2000000000",
           "combatId": 6,
           "combat": {
             "id": 6,
@@ -2130,7 +2130,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": "Magic",
-                "statEffectId": 216,
+                "statEffectId": 324,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -2153,7 +2153,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": "Magic",
-                "statEffectId": 217,
+                "statEffectId": 325,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -2176,7 +2176,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 235,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -2199,7 +2199,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 236,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -2222,7 +2222,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 245,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -2245,7 +2245,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 246,
+                "statEffectId": 344,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -2268,7 +2268,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 255,
+                "statEffectId": 343,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -2291,7 +2291,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 256,
+                "statEffectId": 353,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -2314,7 +2314,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 1,
                 "attackType": null,
-                "statEffectId": 275,
+                "statEffectId": 372,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -2337,7 +2337,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 10,
                 "attackType": null,
-                "statEffectId": 276,
+                "statEffectId": 373,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -2359,7 +2359,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 10,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2382,7 +2382,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 14,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 35,
+                "farmingDurationS": 18,
                 "farmingLevelRequired": 6,
                 "farmingExp": 70
               },
@@ -2405,7 +2405,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2428,7 +2428,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2451,7 +2451,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 30,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 30,
+                "farmingDurationS": 15,
                 "farmingLevelRequired": 1,
                 "farmingExp": 50
               },
@@ -2501,27 +2501,27 @@
           "minGoldDrop": 50,
           "maxGoldDrop": 90,
           "minDittoDrop": "0",
-          "maxDittoDrop": "20000000000",
+          "maxDittoDrop": "4000000000",
           "combatId": 7,
           "combat": {
             "id": 7,
             "attackType": "Melee",
-            "cp": "8912",
-            "hp": 468,
-            "maxHp": 468,
-            "atkSpd": 52.5,
-            "acc": 851.5987337388138,
-            "eva": 736.9829029793705,
-            "maxMeleeDmg": 105.4039778198414,
+            "cp": "17029",
+            "hp": 483,
+            "maxHp": 483,
+            "atkSpd": 54.5,
+            "acc": 869.2180178851341,
+            "eva": 753.239878780386,
+            "maxMeleeDmg": 205.4039778198414,
             "maxRangedDmg": 91.78033442816123,
             "maxMagicDmg": 91.78033442816123,
             "critChance": 0.02431372549019608,
             "critMultiplier": 1.53378655137315,
-            "dmgReduction": 66,
-            "magicDmgReduction": 69.5,
+            "dmgReduction": 68,
+            "magicDmgReduction": 71.5,
             "hpRegenRate": 15.24496644295302,
-            "hpRegenAmount": 15.6,
-            "meleeFactor": 0,
+            "hpRegenAmount": 15.99,
+            "meleeFactor": 6,
             "rangeFactor": 0,
             "magicFactor": 0,
             "reinforceAir": 0,
@@ -2549,7 +2549,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": "Melee",
-                "statEffectId": 179,
+                "statEffectId": 287,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -2572,7 +2572,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 237,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -2595,7 +2595,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 247,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -2618,7 +2618,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 257,
+                "statEffectId": 354,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -2641,7 +2641,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 277,
+                "statEffectId": 374,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -2663,7 +2663,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -2686,7 +2686,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -2709,7 +2709,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -2732,7 +2732,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -2755,7 +2755,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 100,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 16,
                 "farmingExp": 300
               },
@@ -2778,7 +2778,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 50,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 100
               },
@@ -2818,28 +2818,28 @@
           "minGoldDrop": 86,
           "maxGoldDrop": 126,
           "minDittoDrop": "0",
-          "maxDittoDrop": "20000000000",
+          "maxDittoDrop": "4000000000",
           "combatId": 8,
           "combat": {
             "id": 8,
             "attackType": "Ranged",
-            "cp": "21839",
-            "hp": 408,
-            "maxHp": 408,
-            "atkSpd": 109.2,
-            "acc": 1309.569539474114,
-            "eva": 1234.448353250393,
+            "cp": "37222",
+            "hp": 428,
+            "maxHp": 428,
+            "atkSpd": 112,
+            "acc": 1335.080634398935,
+            "eva": 1257.594259873838,
             "maxMeleeDmg": 120.6840884931626,
-            "maxRangedDmg": 140.9449208679271,
+            "maxRangedDmg": 240.9449208679271,
             "maxMagicDmg": 141.8258266233516,
             "critChance": 0.02859922178988327,
             "critMultiplier": 1.559182615863438,
-            "dmgReduction": 112.7,
-            "magicDmgReduction": 115.5,
+            "dmgReduction": 115.5,
+            "magicDmgReduction": 118.3,
             "hpRegenRate": 11.4248322147651,
-            "hpRegenAmount": 24.675,
+            "hpRegenAmount": 25.098,
             "meleeFactor": 0,
-            "rangeFactor": 0,
+            "rangeFactor": 6,
             "magicFactor": 0,
             "reinforceAir": 0,
             "reinforceWater": 0,
@@ -2866,7 +2866,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": "Ranged",
-                "statEffectId": 199,
+                "statEffectId": 307,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -2889,7 +2889,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 237,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -2912,7 +2912,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 247,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -2935,7 +2935,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 257,
+                "statEffectId": 354,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -2958,7 +2958,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 277,
+                "statEffectId": 374,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -2980,7 +2980,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3003,7 +3003,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3026,7 +3026,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3049,7 +3049,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3072,7 +3072,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 100,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 16,
                 "farmingExp": 300
               },
@@ -3095,7 +3095,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 50,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 100
               },
@@ -3135,29 +3135,29 @@
           "minGoldDrop": 86,
           "maxGoldDrop": 126,
           "minDittoDrop": "0",
-          "maxDittoDrop": "20000000000",
+          "maxDittoDrop": "4000000000",
           "combatId": 9,
           "combat": {
             "id": 9,
             "attackType": "Magic",
-            "cp": "12191",
-            "hp": 476,
-            "maxHp": 476,
-            "atkSpd": 72.8,
-            "acc": 1130.991875000372,
-            "eva": 1056.996402470649,
+            "cp": "12588",
+            "hp": 496,
+            "maxHp": 496,
+            "atkSpd": 75.6,
+            "acc": 1156.502969925192,
+            "eva": 1080.142309094094,
             "maxMeleeDmg": 147.1112611558989,
             "maxRangedDmg": 121.5649942485871,
             "maxMagicDmg": 107.4705021617944,
             "critChance": 0.0296887159533074,
             "critMultiplier": 1.779821665278075,
-            "dmgReduction": 105.7,
-            "magicDmgReduction": 105,
+            "dmgReduction": 108.5,
+            "magicDmgReduction": 107.8,
             "hpRegenRate": 15.36442953020134,
-            "hpRegenAmount": 19.176,
+            "hpRegenAmount": 19.599,
             "meleeFactor": 0,
             "rangeFactor": 0,
-            "magicFactor": 0,
+            "magicFactor": 6,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -3183,7 +3183,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": "Magic",
-                "statEffectId": 218,
+                "statEffectId": 326,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -3206,7 +3206,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 237,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -3229,7 +3229,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 247,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -3252,7 +3252,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 257,
+                "statEffectId": 354,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -3275,7 +3275,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 277,
+                "statEffectId": 374,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -3297,7 +3297,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3320,7 +3320,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3343,7 +3343,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3366,7 +3366,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3389,7 +3389,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 100,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 16,
                 "farmingExp": 300
               },
@@ -3412,7 +3412,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 50,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 100
               },
@@ -3452,29 +3452,29 @@
           "minGoldDrop": 158,
           "maxGoldDrop": 198,
           "minDittoDrop": "0",
-          "maxDittoDrop": "20000000000",
+          "maxDittoDrop": "4000000000",
           "combatId": 10,
           "combat": {
             "id": 10,
             "attackType": "Melee",
-            "cp": "30512",
-            "hp": 798,
-            "maxHp": 798,
-            "atkSpd": 125.4,
-            "acc": 2292.850833839094,
-            "eva": 1897.377517597633,
-            "maxMeleeDmg": 171.0435747489361,
-            "maxRangedDmg": 176.9012314184202,
-            "maxMagicDmg": 219.0763594387058,
+            "cp": "51458",
+            "hp": 858,
+            "maxHp": 858,
+            "atkSpd": 135.3,
+            "acc": 2376.735620442964,
+            "eva": 1971.78447907205,
+            "maxMeleeDmg": 275.7297000845234,
+            "maxRangedDmg": 181.5873567540075,
+            "maxMagicDmg": 223.7624847742931,
             "critChance": 0.04509578544061303,
             "critMultiplier": 1.630417179981288,
-            "dmgReduction": 212.3,
-            "magicDmgReduction": 126.5,
+            "dmgReduction": 221.1,
+            "magicDmgReduction": 135.3,
             "hpRegenRate": 17.74194630872483,
-            "hpRegenAmount": 21.51600000000001,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 22.49400000000001,
+            "meleeFactor": 12,
+            "rangeFactor": 6,
+            "magicFactor": 6,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -3500,7 +3500,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": "Melee",
-                "statEffectId": 179,
+                "statEffectId": 287,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -3523,7 +3523,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 237,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -3546,7 +3546,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 247,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -3569,7 +3569,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 257,
+                "statEffectId": 354,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -3592,7 +3592,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 277,
+                "statEffectId": 374,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -3614,7 +3614,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3637,7 +3637,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3660,7 +3660,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3683,7 +3683,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3706,7 +3706,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 100,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 16,
                 "farmingExp": 300
               },
@@ -3729,7 +3729,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 50,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 100
               },
@@ -3769,29 +3769,29 @@
           "minGoldDrop": 194,
           "maxGoldDrop": 234,
           "minDittoDrop": "0",
-          "maxDittoDrop": "20000000000",
+          "maxDittoDrop": "4000000000",
           "combatId": 11,
           "combat": {
             "id": 11,
             "attackType": "Ranged",
-            "cp": "61510",
-            "hp": 896,
-            "maxHp": 896,
-            "atkSpd": 232.7,
-            "acc": 2335.352742950964,
-            "eva": 2069.03842209719,
-            "maxMeleeDmg": 298.7200447647685,
-            "maxRangedDmg": 186.5369711849865,
-            "maxMagicDmg": 277.8487752615533,
+            "cp": "99343",
+            "hp": 966,
+            "maxHp": 966,
+            "atkSpd": 244.4,
+            "acc": 2436.159336171868,
+            "eva": 2157.711497329927,
+            "maxMeleeDmg": 303.9378621405723,
+            "maxRangedDmg": 291.7547885607903,
+            "maxMagicDmg": 283.0665926373571,
             "critChance": 0.0632699619771863,
             "critMultiplier": 2.362072768376311,
-            "dmgReduction": 178.1,
-            "magicDmgReduction": 296.4,
+            "dmgReduction": 188.5000000000001,
+            "magicDmgReduction": 306.8,
             "hpRegenRate": 19.39597315436242,
-            "hpRegenAmount": 22.968,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 24.01200000000001,
+            "meleeFactor": 6,
+            "rangeFactor": 12,
+            "magicFactor": 6,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -3817,7 +3817,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": "Ranged",
-                "statEffectId": 199,
+                "statEffectId": 307,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -3840,7 +3840,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 237,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -3863,7 +3863,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 247,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -3886,7 +3886,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 257,
+                "statEffectId": 354,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -3909,7 +3909,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 277,
+                "statEffectId": 374,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -3931,7 +3931,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -3954,7 +3954,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -3977,7 +3977,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -4000,7 +4000,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -4023,7 +4023,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 100,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 16,
                 "farmingExp": 300
               },
@@ -4046,7 +4046,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 50,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 100
               },
@@ -4086,29 +4086,29 @@
           "minGoldDrop": 230,
           "maxGoldDrop": 270,
           "minDittoDrop": "0",
-          "maxDittoDrop": "20000000000",
+          "maxDittoDrop": "4000000000",
           "combatId": 12,
           "combat": {
             "id": 12,
             "attackType": "Magic",
-            "cp": "42019",
-            "hp": 1176,
-            "maxHp": 1176,
-            "atkSpd": 150,
-            "acc": 2674.47962300109,
-            "eva": 2232.745251054999,
-            "maxMeleeDmg": 163.1744711736328,
-            "maxRangedDmg": 163.1744711736328,
-            "maxMagicDmg": 198.9583464310085,
+            "cp": "47395",
+            "hp": 1264,
+            "maxHp": 1264,
+            "atkSpd": 165,
+            "acc": 2831.80195376586,
+            "eva": 2370.14495881223,
+            "maxMeleeDmg": 168.899891214813,
+            "maxRangedDmg": 268.8998912148129,
+            "maxMagicDmg": 204.6837664721886,
             "critChance": 0.06169811320754717,
-            "critMultiplier": 1.701747234328487,
-            "dmgReduction": 171,
-            "magicDmgReduction": 214.5,
-            "hpRegenRate": 19.29530201342282,
-            "hpRegenAmount": 19.98,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 1.795421394016294,
+            "dmgReduction": 186,
+            "magicDmgReduction": 229.5,
+            "hpRegenRate": 18.13758389261745,
+            "hpRegenAmount": 21.275,
+            "meleeFactor": 20,
+            "rangeFactor": 16,
+            "magicFactor": 10,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -4134,7 +4134,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": "Magic",
-                "statEffectId": 218,
+                "statEffectId": 326,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -4157,7 +4157,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 237,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -4180,7 +4180,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 247,
+                "statEffectId": 345,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -4203,7 +4203,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 257,
+                "statEffectId": 354,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -4226,7 +4226,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 20,
                 "attackType": null,
-                "statEffectId": 277,
+                "statEffectId": 374,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -4248,7 +4248,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -4271,7 +4271,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -4294,7 +4294,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 20,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 90
               },
@@ -4317,7 +4317,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 33,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 45,
+                "farmingDurationS": 23,
                 "farmingLevelRequired": 16,
                 "farmingExp": 110
               },
@@ -4340,7 +4340,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 100,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 16,
                 "farmingExp": 300
               },
@@ -4363,7 +4363,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 50,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 40,
+                "farmingDurationS": 20,
                 "farmingLevelRequired": 11,
                 "farmingExp": 100
               },
@@ -4413,29 +4413,29 @@
           "minGoldDrop": 300,
           "maxGoldDrop": 360,
           "minDittoDrop": "0",
-          "maxDittoDrop": "30000000000",
+          "maxDittoDrop": "6000000000",
           "combatId": 13,
           "combat": {
             "id": 13,
             "attackType": "Melee",
-            "cp": "69600",
-            "hp": 960,
-            "maxHp": 960,
-            "atkSpd": 253.5,
-            "acc": 2458.161418199531,
-            "eva": 2335.795031872923,
-            "maxMeleeDmg": 197.5269914207134,
-            "maxRangedDmg": 186.0761513383532,
-            "maxMagicDmg": 210.4091865133686,
+            "cp": "129796",
+            "hp": 1064,
+            "maxHp": 1064,
+            "atkSpd": 270,
+            "acc": 2595.818457618705,
+            "eva": 2456.0197761605,
+            "maxMeleeDmg": 353.2524114618935,
+            "maxRangedDmg": 191.8015713795334,
+            "maxMagicDmg": 216.1346065545487,
             "critChance": 0.07641509433962265,
             "critMultiplier": 1.889095553704101,
-            "dmgReduction": 279,
-            "magicDmgReduction": 286.5,
+            "dmgReduction": 294,
+            "magicDmgReduction": 301.5,
             "hpRegenRate": 19.29530201342282,
-            "hpRegenAmount": 26.085,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 27.38,
+            "meleeFactor": 15,
+            "rangeFactor": 6,
+            "magicFactor": 6,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -4461,7 +4461,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": "Melee",
-                "statEffectId": 180,
+                "statEffectId": 288,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -4484,7 +4484,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 238,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -4507,7 +4507,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 248,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -4530,7 +4530,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 258,
+                "statEffectId": 355,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -4553,7 +4553,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 278,
+                "statEffectId": 375,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -4575,7 +4575,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 28,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 150
               },
@@ -4598,7 +4598,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 36,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 55,
+                "farmingDurationS": 28,
                 "farmingLevelRequired": 26,
                 "farmingExp": 180
               },
@@ -4621,7 +4621,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 250
               },
@@ -4644,7 +4644,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 68,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 44,
+                "farmingDurationS": 22,
                 "farmingLevelRequired": 21,
                 "farmingExp": 168
               },
@@ -4667,7 +4667,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 90,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 175
               },
@@ -4707,29 +4707,29 @@
           "minGoldDrop": 372,
           "maxGoldDrop": 432,
           "minDittoDrop": "0",
-          "maxDittoDrop": "30000000000",
+          "maxDittoDrop": "6000000000",
           "combatId": 14,
           "combat": {
             "id": 14,
             "attackType": "Ranged",
-            "cp": "119134",
-            "hp": 1323,
-            "maxHp": 1323,
-            "atkSpd": 320.4,
-            "acc": 3965.36984674473,
-            "eva": 3099.005869352529,
-            "maxMeleeDmg": 240.2756631703372,
-            "maxRangedDmg": 282.2029600993893,
-            "maxMagicDmg": 324.1302570284415,
+            "cp": "194588",
+            "hp": 1440,
+            "maxHp": 1440,
+            "atkSpd": 340.2,
+            "acc": 4133.59765842481,
+            "eva": 3244.596749120769,
+            "maxMeleeDmg": 246.7260165440375,
+            "maxRangedDmg": 438.6533134730897,
+            "maxMagicDmg": 330.5806104021418,
             "critChance": 0.06716417910447761,
             "critMultiplier": 1.583626080285849,
-            "dmgReduction": 300.5999999999999,
-            "magicDmgReduction": 235.8000000000001,
+            "dmgReduction": 318.5999999999999,
+            "magicDmgReduction": 253.8000000000001,
             "hpRegenRate": 12.66845637583893,
-            "hpRegenAmount": 26.26800000000001,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 27.66100000000001,
+            "meleeFactor": 6,
+            "rangeFactor": 15,
+            "magicFactor": 6,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -4755,7 +4755,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": "Ranged",
-                "statEffectId": 200,
+                "statEffectId": 308,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -4778,7 +4778,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 238,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -4801,7 +4801,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 248,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -4824,7 +4824,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 258,
+                "statEffectId": 355,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -4847,7 +4847,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 278,
+                "statEffectId": 375,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -4869,7 +4869,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 28,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 150
               },
@@ -4892,7 +4892,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 36,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 55,
+                "farmingDurationS": 28,
                 "farmingLevelRequired": 26,
                 "farmingExp": 180
               },
@@ -4915,7 +4915,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 250
               },
@@ -4938,7 +4938,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 68,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 44,
+                "farmingDurationS": 22,
                 "farmingLevelRequired": 21,
                 "farmingExp": 168
               },
@@ -4961,7 +4961,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 90,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 175
               },
@@ -5001,29 +5001,29 @@
           "minGoldDrop": 372,
           "maxGoldDrop": 432,
           "minDittoDrop": "0",
-          "maxDittoDrop": "30000000000",
+          "maxDittoDrop": "6000000000",
           "combatId": 15,
           "combat": {
             "id": 15,
             "attackType": "Magic",
-            "cp": "128111",
-            "hp": 927,
-            "maxHp": 927,
-            "atkSpd": 257.4,
-            "acc": 3652.946767910298,
-            "eva": 2995.012383803787,
-            "maxMeleeDmg": 277.3651950691141,
-            "maxRangedDmg": 306.3917852507656,
-            "maxMagicDmg": 345.0939054929676,
+            "cp": "140042",
+            "hp": 1044,
+            "maxHp": 1044,
+            "atkSpd": 277.2,
+            "acc": 3821.174579590378,
+            "eva": 3140.603263572027,
+            "maxMeleeDmg": 283.8155484428145,
+            "maxRangedDmg": 312.842138624466,
+            "maxMagicDmg": 351.544258866668,
             "critChance": 0.08865671641791044,
             "critMultiplier": 2.454620424443066,
-            "dmgReduction": 282.6,
-            "magicDmgReduction": 315,
+            "dmgReduction": 300.6,
+            "magicDmgReduction": 333,
             "hpRegenRate": 14.39597315436242,
-            "hpRegenAmount": 29.452,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 30.845,
+            "meleeFactor": 6,
+            "rangeFactor": 6,
+            "magicFactor": 15,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -5049,7 +5049,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": "Magic",
-                "statEffectId": 219,
+                "statEffectId": 327,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -5072,7 +5072,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 238,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -5095,7 +5095,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 248,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -5118,7 +5118,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 258,
+                "statEffectId": 355,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -5141,7 +5141,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 278,
+                "statEffectId": 375,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -5163,7 +5163,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 28,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 150
               },
@@ -5186,7 +5186,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 36,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 55,
+                "farmingDurationS": 28,
                 "farmingLevelRequired": 26,
                 "farmingExp": 180
               },
@@ -5209,7 +5209,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 250
               },
@@ -5232,7 +5232,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 68,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 44,
+                "farmingDurationS": 22,
                 "farmingLevelRequired": 21,
                 "farmingExp": 168
               },
@@ -5255,7 +5255,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 90,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 175
               },
@@ -5295,29 +5295,29 @@
           "minGoldDrop": 444,
           "maxGoldDrop": 504,
           "minDittoDrop": "0",
-          "maxDittoDrop": "30000000000",
+          "maxDittoDrop": "6000000000",
           "combatId": 16,
           "combat": {
             "id": 16,
             "attackType": "Melee",
-            "cp": "149836",
-            "hp": 1573,
-            "maxHp": 1573,
-            "atkSpd": 314.9999999999999,
-            "acc": 5495.390178430162,
-            "eva": 4083.633243626423,
-            "maxMeleeDmg": 340.9228445756644,
-            "maxRangedDmg": 335.5680354985598,
-            "maxMagicDmg": 398.040808064781,
+            "cp": "251367",
+            "hp": 1826,
+            "maxHp": 1826,
+            "atkSpd": 359.1,
+            "acc": 5922.493042038724,
+            "eva": 4450.426648742569,
+            "maxMeleeDmg": 508.7722081660133,
+            "maxRangedDmg": 353.4173990889087,
+            "maxMagicDmg": 415.8901716551299,
             "critChance": 0.09686346863468635,
             "critMultiplier": 1.987381237265861,
-            "dmgReduction": 348.6000000000001,
-            "magicDmgReduction": 483.0000000000001,
+            "dmgReduction": 382.2000000000002,
+            "magicDmgReduction": 516.6000000000001,
             "hpRegenRate": 13.86510067114094,
-            "hpRegenAmount": 30.302,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 33.136,
+            "meleeFactor": 24,
+            "rangeFactor": 15,
+            "magicFactor": 15,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -5343,7 +5343,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": "Melee",
-                "statEffectId": 180,
+                "statEffectId": 288,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -5366,7 +5366,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 238,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -5389,7 +5389,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 248,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -5412,7 +5412,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 258,
+                "statEffectId": 355,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -5435,7 +5435,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 278,
+                "statEffectId": 375,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -5457,7 +5457,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 28,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 150
               },
@@ -5480,7 +5480,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 36,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 55,
+                "farmingDurationS": 28,
                 "farmingLevelRequired": 26,
                 "farmingExp": 180
               },
@@ -5503,7 +5503,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 250
               },
@@ -5526,7 +5526,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 68,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 44,
+                "farmingDurationS": 22,
                 "farmingLevelRequired": 21,
                 "farmingExp": 168
               },
@@ -5549,7 +5549,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 90,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 175
               },
@@ -5589,29 +5589,29 @@
           "minGoldDrop": 516,
           "maxGoldDrop": 576,
           "minDittoDrop": "0",
-          "maxDittoDrop": "30000000000",
+          "maxDittoDrop": "6000000000",
           "combatId": 17,
           "combat": {
             "id": 17,
             "attackType": "Ranged",
-            "cp": "214235",
-            "hp": 2916,
-            "maxHp": 2916,
-            "atkSpd": 369.6,
-            "acc": 6134.021729253469,
-            "eva": 5570.407848317785,
-            "maxMeleeDmg": 460.2061690789986,
-            "maxRangedDmg": 403.6554110142064,
-            "maxMagicDmg": 421.2056462756935,
+            "cp": "341214",
+            "hp": 3192,
+            "maxHp": 3192,
+            "atkSpd": 420,
+            "acc": 6628.700900967459,
+            "eva": 5992.408442887315,
+            "maxMeleeDmg": 479.7064304806511,
+            "maxRangedDmg": 573.1556724158589,
+            "maxMagicDmg": 440.705907677346,
             "critChance": 0.1287591240875912,
             "critMultiplier": 2.024227503252014,
-            "dmgReduction": 686.3999999999999,
-            "magicDmgReduction": 600,
+            "dmgReduction": 724.7999999999998,
+            "magicDmgReduction": 638.4,
             "hpRegenRate": 15.49194630872483,
-            "hpRegenAmount": 39.208,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 42.224,
+            "meleeFactor": 15,
+            "rangeFactor": 24,
+            "magicFactor": 15,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -5637,7 +5637,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": "Ranged",
-                "statEffectId": 200,
+                "statEffectId": 308,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -5660,7 +5660,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 238,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -5683,7 +5683,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 248,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -5706,7 +5706,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 258,
+                "statEffectId": 355,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -5729,7 +5729,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 278,
+                "statEffectId": 375,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -5751,7 +5751,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 28,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 150
               },
@@ -5774,7 +5774,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 36,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 55,
+                "farmingDurationS": 28,
                 "farmingLevelRequired": 26,
                 "farmingExp": 180
               },
@@ -5797,7 +5797,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 250
               },
@@ -5820,7 +5820,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 68,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 44,
+                "farmingDurationS": 22,
                 "farmingLevelRequired": 21,
                 "farmingExp": 168
               },
@@ -5843,7 +5843,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 90,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 175
               },
@@ -5883,29 +5883,29 @@
           "minGoldDrop": 660,
           "maxGoldDrop": 720,
           "minDittoDrop": "0",
-          "maxDittoDrop": "30000000000",
+          "maxDittoDrop": "6000000000",
           "combatId": 18,
           "combat": {
             "id": 18,
             "attackType": "Magic",
-            "cp": "186228",
-            "hp": 3090,
-            "maxHp": 3090,
-            "atkSpd": 300,
-            "acc": 5732.872572053278,
-            "eva": 5760.926468478237,
-            "maxMeleeDmg": 334.8933040638524,
-            "maxRangedDmg": 434.4561782449976,
-            "maxMagicDmg": 373.3607781792948,
+            "cp": "242201",
+            "hp": 3435,
+            "maxHp": 3435,
+            "atkSpd": 363,
+            "acc": 6365.174693970919,
+            "eva": 6294.345585929927,
+            "maxMeleeDmg": 357.5212300141127,
+            "maxRangedDmg": 457.0841041952579,
+            "maxMagicDmg": 395.9887041295551,
             "critChance": 0.1939285714285714,
-            "critMultiplier": 2.537009102551434,
-            "dmgReduction": 645,
-            "magicDmgReduction": 591,
-            "hpRegenRate": 18.59060402684564,
-            "hpRegenAmount": 41.33999999999999,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 2.701749953366462,
+            "dmgReduction": 705,
+            "magicDmgReduction": 651,
+            "hpRegenRate": 17.28926174496645,
+            "hpRegenAmount": 44.785,
+            "meleeFactor": 16,
+            "rangeFactor": 26,
+            "magicFactor": 25,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -5931,7 +5931,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": "Magic",
-                "statEffectId": 219,
+                "statEffectId": 327,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -5954,7 +5954,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 238,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -5977,7 +5977,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 248,
+                "statEffectId": 346,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -6000,7 +6000,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 258,
+                "statEffectId": 355,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -6023,7 +6023,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 30,
                 "attackType": null,
-                "statEffectId": 278,
+                "statEffectId": 375,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -6045,7 +6045,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 28,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 150
               },
@@ -6068,7 +6068,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 36,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 55,
+                "farmingDurationS": 28,
                 "farmingLevelRequired": 26,
                 "farmingExp": 180
               },
@@ -6091,7 +6091,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 250
               },
@@ -6114,7 +6114,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 68,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 44,
+                "farmingDurationS": 22,
                 "farmingLevelRequired": 21,
                 "farmingExp": 168
               },
@@ -6137,7 +6137,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 90,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 50,
+                "farmingDurationS": 25,
                 "farmingLevelRequired": 21,
                 "farmingExp": 175
               },
@@ -6187,29 +6187,29 @@
           "minGoldDrop": 550,
           "maxGoldDrop": 630,
           "minDittoDrop": "0",
-          "maxDittoDrop": "50000000000",
+          "maxDittoDrop": "8000000000",
           "combatId": 19,
           "combat": {
             "id": 19,
             "attackType": "Melee",
-            "cp": "239550",
-            "hp": 2820,
-            "maxHp": 2820,
-            "atkSpd": 387,
-            "acc": 7882.699786573257,
-            "eva": 6116.539213446029,
-            "maxMeleeDmg": 407.3026671046853,
-            "maxRangedDmg": 436.7189708400236,
-            "maxMagicDmg": 409.5654596997113,
+            "cp": "441857",
+            "hp": 3255,
+            "maxHp": 3255,
+            "atkSpd": 465,
+            "acc": 8599.308858079918,
+            "eva": 6721.080879891277,
+            "maxMeleeDmg": 634.4561782449975,
+            "maxRangedDmg": 463.872481980336,
+            "maxMagicDmg": 436.7189708400236,
             "critChance": 0.1735714285714285,
             "critMultiplier": 2.174579230758372,
-            "dmgReduction": 585,
-            "magicDmgReduction": 642,
+            "dmgReduction": 645,
+            "magicDmgReduction": 702,
             "hpRegenRate": 15.61610738255034,
-            "hpRegenAmount": 41.34,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 45.31500000000001,
+            "meleeFactor": 30,
+            "rangeFactor": 18,
+            "magicFactor": 18,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -6235,7 +6235,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": "Melee",
-                "statEffectId": 181,
+                "statEffectId": 289,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -6258,7 +6258,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 239,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -6281,7 +6281,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 249,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -6304,7 +6304,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 259,
+                "statEffectId": 356,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -6327,7 +6327,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 279,
+                "statEffectId": 376,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -6349,7 +6349,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -6372,7 +6372,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -6395,7 +6395,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -6418,7 +6418,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -6441,7 +6441,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 140,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 270
               },
@@ -6481,29 +6481,29 @@
           "minGoldDrop": 655,
           "maxGoldDrop": 735,
           "minDittoDrop": "0",
-          "maxDittoDrop": "50000000000",
+          "maxDittoDrop": "8000000000",
           "combatId": 20,
           "combat": {
             "id": 20,
             "attackType": "Ranged",
-            "cp": "330708",
-            "hp": 2934,
-            "maxHp": 2934,
-            "atkSpd": 475.9999999999999,
-            "acc": 8640.143428111078,
-            "eva": 7316.603075248208,
-            "maxMeleeDmg": 486.7899358491969,
-            "maxRangedDmg": 429.0777269598591,
-            "maxMagicDmg": 506.8637476367925,
+            "cp": "596703",
+            "hp": 3456,
+            "maxHp": 3456,
+            "atkSpd": 567,
+            "acc": 9489.174863243381,
+            "eva": 8027.358802558035,
+            "maxMeleeDmg": 516.9006535305906,
+            "maxRangedDmg": 659.1884446412528,
+            "maxMagicDmg": 536.9744653181862,
             "critChance": 0.1510526315789474,
             "critMultiplier": 2.900389905400524,
-            "dmgReduction": 840,
-            "magicDmgReduction": 1036,
+            "dmgReduction": 910,
+            "magicDmgReduction": 1106,
             "hpRegenRate": 16.8255033557047,
-            "hpRegenAmount": 47.19999999999999,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 51.62499999999999,
+            "meleeFactor": 18,
+            "rangeFactor": 30,
+            "magicFactor": 18,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -6529,7 +6529,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": "Ranged",
-                "statEffectId": 201,
+                "statEffectId": 309,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -6552,7 +6552,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 239,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -6575,7 +6575,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 249,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -6598,7 +6598,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 259,
+                "statEffectId": 356,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -6621,7 +6621,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 279,
+                "statEffectId": 376,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -6643,7 +6643,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -6666,7 +6666,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -6689,7 +6689,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -6712,7 +6712,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -6735,7 +6735,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 140,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 270
               },
@@ -6775,29 +6775,29 @@
           "minGoldDrop": 655,
           "maxGoldDrop": 735,
           "minDittoDrop": "0",
-          "maxDittoDrop": "50000000000",
+          "maxDittoDrop": "8000000000",
           "combatId": 21,
           "combat": {
             "id": 21,
             "attackType": "Magic",
-            "cp": "418486",
-            "hp": 4734,
-            "maxHp": 4734,
-            "atkSpd": 385,
-            "acc": 8690.086453707096,
-            "eva": 7692.885519118117,
-            "maxMeleeDmg": 484.2807093757474,
-            "maxRangedDmg": 564.5759565261303,
-            "maxMagicDmg": 607.2328065747713,
+            "cp": "538875",
+            "hp": 5256,
+            "maxHp": 5256,
+            "atkSpd": 476,
+            "acc": 9539.117888839399,
+            "eva": 8403.641246427944,
+            "maxMeleeDmg": 514.3914270571411,
+            "maxRangedDmg": 594.686674207524,
+            "maxMagicDmg": 637.343524256165,
             "critChance": 0.249298245614035,
             "critMultiplier": 2.717031922875203,
-            "dmgReduction": 822.5,
-            "magicDmgReduction": 763,
+            "dmgReduction": 892.5,
+            "magicDmgReduction": 833,
             "hpRegenRate": 11.70469798657718,
-            "hpRegenAmount": 43.365,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 47.79000000000001,
+            "meleeFactor": 18,
+            "rangeFactor": 18,
+            "magicFactor": 30,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -6823,7 +6823,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": "Magic",
-                "statEffectId": 220,
+                "statEffectId": 328,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -6846,7 +6846,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 239,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -6869,7 +6869,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 249,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -6892,7 +6892,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 259,
+                "statEffectId": 356,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -6915,7 +6915,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 279,
+                "statEffectId": 376,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -6937,7 +6937,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -6960,7 +6960,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -6983,7 +6983,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7006,7 +7006,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7029,7 +7029,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 140,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 270
               },
@@ -7069,29 +7069,29 @@
           "minGoldDrop": 760,
           "maxGoldDrop": 840,
           "minDittoDrop": "0",
-          "maxDittoDrop": "50000000000",
+          "maxDittoDrop": "8000000000",
           "combatId": 22,
           "combat": {
             "id": 22,
             "attackType": "Melee",
-            "cp": "746443",
-            "hp": 5300,
-            "maxHp": 5300,
-            "atkSpd": 596,
-            "acc": 13015.12994632733,
-            "eva": 10245.72262434904,
-            "maxMeleeDmg": 540.82056940506,
-            "maxRangedDmg": 732.990314878939,
-            "maxMagicDmg": 793.3865205993009,
+            "cp": "1358542",
+            "hp": 6100,
+            "maxHp": 6100,
+            "atkSpd": 744,
+            "acc": 14287.72042996822,
+            "eva": 11303.96627569025,
+            "maxMeleeDmg": 795.7262109690255,
+            "maxRangedDmg": 787.8959564429044,
+            "maxMagicDmg": 848.2921621632663,
             "critChance": 0.3103448275862069,
             "critMultiplier": 3.80546745485598,
-            "dmgReduction": 1080,
-            "magicDmgReduction": 1264,
+            "dmgReduction": 1192,
+            "magicDmgReduction": 1376,
             "hpRegenRate": 14.83154362416107,
-            "hpRegenAmount": 60.16,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 66.56,
+            "meleeFactor": 42,
+            "rangeFactor": 30,
+            "magicFactor": 30,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -7117,7 +7117,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": "Melee",
-                "statEffectId": 181,
+                "statEffectId": 289,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -7140,7 +7140,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 239,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -7163,7 +7163,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 249,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -7186,7 +7186,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 259,
+                "statEffectId": 356,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -7209,7 +7209,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 279,
+                "statEffectId": 376,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -7231,7 +7231,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7254,7 +7254,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7277,7 +7277,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7300,7 +7300,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7323,7 +7323,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 140,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 270
               },
@@ -7363,29 +7363,29 @@
           "minGoldDrop": 865,
           "maxGoldDrop": 945,
           "minDittoDrop": "0",
-          "maxDittoDrop": "50000000000",
+          "maxDittoDrop": "8000000000",
           "combatId": 23,
           "combat": {
             "id": 23,
             "attackType": "Ranged",
-            "cp": "1389872",
-            "hp": 6072,
-            "maxHp": 6072,
-            "atkSpd": 967.5,
-            "acc": 16922.59218150519,
-            "eva": 11104.60990790776,
-            "maxMeleeDmg": 894.7597657426038,
-            "maxRangedDmg": 805.5810515489889,
-            "maxMagicDmg": 969.0753609039496,
+            "cp": "2145008",
+            "hp": 6992,
+            "maxHp": 6992,
+            "atkSpd": 1134,
+            "acc": 18371.21874957178,
+            "eva": 12302.1658783684,
+            "maxMeleeDmg": 954.2122418716806,
+            "maxRangedDmg": 1065.033527678066,
+            "maxMagicDmg": 1028.527837033026,
             "critChance": 0.2776271186440678,
             "critMultiplier": 2.650170665226976,
-            "dmgReduction": 1237.5,
-            "magicDmgReduction": 1404,
+            "dmgReduction": 1363.5,
+            "magicDmgReduction": 1530,
             "hpRegenRate": 13.16107382550335,
-            "hpRegenAmount": 58.80000000000002,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 65.80000000000003,
+            "meleeFactor": 30,
+            "rangeFactor": 42,
+            "magicFactor": 30,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -7411,7 +7411,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": "Ranged",
-                "statEffectId": 201,
+                "statEffectId": 309,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -7434,7 +7434,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 239,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -7457,7 +7457,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 249,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -7480,7 +7480,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 259,
+                "statEffectId": 356,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -7503,7 +7503,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 279,
+                "statEffectId": 376,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -7525,7 +7525,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7548,7 +7548,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7571,7 +7571,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7594,7 +7594,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7617,7 +7617,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 140,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 270
               },
@@ -7657,29 +7657,29 @@
           "minGoldDrop": 970,
           "maxGoldDrop": 1050,
           "minDittoDrop": "0",
-          "maxDittoDrop": "50000000000",
+          "maxDittoDrop": "8000000000",
           "combatId": 24,
           "combat": {
             "id": 24,
             "attackType": "Magic",
-            "cp": "2372748",
-            "hp": 7275,
-            "maxHp": 7275,
-            "atkSpd": 925,
-            "acc": 17819.02952137119,
-            "eva": 15382.92865183202,
-            "maxMeleeDmg": 970.5184639214149,
-            "maxRangedDmg": 1018.405888128064,
-            "maxMagicDmg": 973.7109588685247,
+            "cp": "3132164",
+            "hp": 8225,
+            "maxHp": 8225,
+            "atkSpd": 1100,
+            "acc": 19519.60080349375,
+            "eva": 16781.37671108948,
+            "maxMeleeDmg": 1027.983372969393,
+            "maxRangedDmg": 1075.870797176042,
+            "maxMagicDmg": 1031.175867916503,
             "critChance": 0.405,
-            "critMultiplier": 3.852609868866106,
-            "dmgReduction": 1895,
-            "magicDmgReduction": 2215,
-            "hpRegenRate": 13.01208053691275,
-            "hpRegenAmount": 81.375,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 4.126573237318807,
+            "dmgReduction": 2055,
+            "magicDmgReduction": 2375,
+            "hpRegenRate": 10.72617449664429,
+            "hpRegenAmount": 88.875,
+            "meleeFactor": 27,
+            "rangeFactor": 40,
+            "magicFactor": 55,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -7705,7 +7705,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": "Magic",
-                "statEffectId": 220,
+                "statEffectId": 328,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -7728,7 +7728,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 239,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "hat"
               }
@@ -7751,7 +7751,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 249,
+                "statEffectId": 347,
                 "rarity": "D",
                 "type": "armour"
               }
@@ -7774,7 +7774,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 259,
+                "statEffectId": 356,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -7797,7 +7797,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 40,
                 "attackType": null,
-                "statEffectId": 279,
+                "statEffectId": 376,
                 "rarity": "D",
                 "type": "cape"
               }
@@ -7819,7 +7819,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7842,7 +7842,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7865,7 +7865,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 43,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 210
               },
@@ -7888,7 +7888,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 52,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 65,
+                "farmingDurationS": 33,
                 "farmingLevelRequired": 36,
                 "farmingExp": 250
               },
@@ -7911,7 +7911,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 140,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 60,
+                "farmingDurationS": 30,
                 "farmingLevelRequired": 31,
                 "farmingExp": 270
               },
@@ -7961,29 +7961,29 @@
           "minGoldDrop": 1080,
           "maxGoldDrop": 1200,
           "minDittoDrop": "0",
-          "maxDittoDrop": "80000000000",
+          "maxDittoDrop": "10000000000",
           "combatId": 25,
           "combat": {
             "id": 25,
             "attackType": "Melee",
-            "cp": "1749570",
-            "hp": 3750,
-            "maxHp": 3750,
-            "atkSpd": 1160,
-            "acc": 14343.94907529465,
-            "eva": 11491.59492172431,
-            "maxMeleeDmg": 705.5413833112917,
-            "maxRangedDmg": 948.1709992916452,
-            "maxMagicDmg": 778.9687670948196,
+            "cp": "2914045",
+            "hp": 4800,
+            "maxHp": 4800,
+            "atkSpd": 1350,
+            "acc": 16266.33400291146,
+            "eva": 13072.44924958057,
+            "maxMeleeDmg": 1013.00629235927,
+            "maxRangedDmg": 1005.635908339624,
+            "maxMagicDmg": 836.433676142798,
             "critChance": 0.3816666666666666,
             "critMultiplier": 2.979351631923122,
-            "dmgReduction": 1065,
-            "magicDmgReduction": 1245,
+            "dmgReduction": 1205,
+            "magicDmgReduction": 1385,
             "hpRegenRate": 14.94630872483221,
-            "hpRegenAmount": 62.625,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 70.875,
+            "meleeFactor": 42,
+            "rangeFactor": 27,
+            "magicFactor": 27,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -8009,7 +8009,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": "Melee",
-                "statEffectId": 182,
+                "statEffectId": 290,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -8032,7 +8032,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 240,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -8055,7 +8055,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 250,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -8078,7 +8078,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 260,
+                "statEffectId": 357,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -8101,7 +8101,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 280,
+                "statEffectId": 377,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -8123,7 +8123,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8146,7 +8146,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8169,7 +8169,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8192,7 +8192,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8232,29 +8232,29 @@
           "minGoldDrop": 1200,
           "maxGoldDrop": 1320,
           "minDittoDrop": "0",
-          "maxDittoDrop": "80000000000",
+          "maxDittoDrop": "10000000000",
           "combatId": 26,
           "combat": {
             "id": 26,
             "attackType": "Ranged",
-            "cp": "2116167",
-            "hp": 5096,
-            "maxHp": 5096,
-            "atkSpd": 1017.5,
-            "acc": 20199.1951732692,
-            "eva": 13373.15568062342,
-            "maxMeleeDmg": 997.9156878405252,
-            "maxRangedDmg": 905.9575869132414,
-            "maxMagicDmg": 1103.497211127407,
+            "cp": "3414225",
+            "hp": 6272,
+            "maxHp": 6272,
+            "atkSpd": 1226.5,
+            "acc": 22334.0694598749,
+            "eva": 15120.40215145865,
+            "maxMeleeDmg": 1059.221088458715,
+            "maxRangedDmg": 1217.262987531431,
+            "maxMagicDmg": 1164.802611745596,
             "critChance": 0.4057377049180328,
             "critMultiplier": 3.172999790907423,
-            "dmgReduction": 1578.5,
-            "magicDmgReduction": 1578.5,
+            "dmgReduction": 1732.5,
+            "magicDmgReduction": 1732.5,
             "hpRegenRate": 15.8993288590604,
-            "hpRegenAmount": 73.71000000000001,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 82.62000000000003,
+            "meleeFactor": 27,
+            "rangeFactor": 42,
+            "magicFactor": 27,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -8280,7 +8280,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": "Ranged",
-                "statEffectId": 202,
+                "statEffectId": 310,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -8303,7 +8303,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 240,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -8326,7 +8326,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 250,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -8349,7 +8349,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 260,
+                "statEffectId": 357,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -8372,7 +8372,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 280,
+                "statEffectId": 377,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -8394,7 +8394,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8417,7 +8417,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8440,7 +8440,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8463,7 +8463,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8503,29 +8503,29 @@
           "minGoldDrop": 1200,
           "maxGoldDrop": 1320,
           "minDittoDrop": "0",
-          "maxDittoDrop": "80000000000",
+          "maxDittoDrop": "10000000000",
           "combatId": 27,
           "combat": {
             "id": 27,
             "attackType": "Magic",
-            "cp": "2874307",
-            "hp": 4844,
-            "maxHp": 4844,
-            "atkSpd": 1237.5,
-            "acc": 16914.77319387584,
-            "eva": 12163.52350850673,
-            "maxMeleeDmg": 878.7107421940461,
-            "maxRangedDmg": 936.610287222336,
-            "maxMagicDmg": 974.0746987112292,
+            "cp": "3565284",
+            "hp": 6020,
+            "maxHp": 6020,
+            "atkSpd": 1446.5,
+            "acc": 19049.64748048153,
+            "eva": 13910.76997934196,
+            "maxMeleeDmg": 940.0161428122356,
+            "maxRangedDmg": 997.9156878405254,
+            "maxMagicDmg": 1035.380099329418,
             "critChance": 0.3444262295081967,
             "critMultiplier": 3.793804097824093,
-            "dmgReduction": 1479.5,
-            "magicDmgReduction": 1386,
+            "dmgReduction": 1633.5,
+            "magicDmgReduction": 1540,
             "hpRegenRate": 13.30704697986577,
-            "hpRegenAmount": 72.09,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "hpRegenAmount": 81.00000000000003,
+            "meleeFactor": 27,
+            "rangeFactor": 27,
+            "magicFactor": 42,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -8551,7 +8551,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": "Magic",
-                "statEffectId": 221,
+                "statEffectId": 329,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -8574,7 +8574,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 240,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -8597,7 +8597,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 250,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -8620,7 +8620,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 260,
+                "statEffectId": 357,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -8643,7 +8643,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 280,
+                "statEffectId": 377,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -8665,7 +8665,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8688,7 +8688,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8711,7 +8711,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8734,7 +8734,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8774,29 +8774,29 @@
           "minGoldDrop": 1320,
           "maxGoldDrop": 1440,
           "minDittoDrop": "0",
-          "maxDittoDrop": "80000000000",
+          "maxDittoDrop": "10000000000",
           "combatId": 28,
           "combat": {
             "id": 28,
             "attackType": "Melee",
-            "cp": "2057808",
-            "hp": 9570,
-            "maxHp": 9570,
-            "atkSpd": 822,
-            "acc": 19246.24362197872,
-            "eva": 16419.64169959028,
-            "maxMeleeDmg": 935.8879364920722,
-            "maxRangedDmg": 939.5014034283352,
-            "maxMagicDmg": 1102.107415560162,
+            "cp": "3721094",
+            "hp": 11010,
+            "maxHp": 11010,
+            "atkSpd": 1086,
+            "acc": 22047.34011156248,
+            "eva": 18702.19278787413,
+            "maxMeleeDmg": 1265.384209089854,
+            "maxRangedDmg": 1018.997676026117,
+            "maxMagicDmg": 1181.603688157944,
             "critChance": 0.3890322580645162,
-            "critMultiplier": 4.043945554672526,
-            "dmgReduction": 1752,
-            "magicDmgReduction": 2046,
-            "hpRegenRate": 14.34765100671141,
-            "hpRegenAmount": 85.57,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 4.14808149170272,
+            "dmgReduction": 1956,
+            "magicDmgReduction": 2250,
+            "hpRegenRate": 13.32281879194631,
+            "hpRegenAmount": 96.74999999999999,
+            "meleeFactor": 62,
+            "rangeFactor": 37,
+            "magicFactor": 37,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -8822,7 +8822,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": "Melee",
-                "statEffectId": 182,
+                "statEffectId": 290,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -8845,7 +8845,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 240,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -8868,7 +8868,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 250,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -8891,7 +8891,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 260,
+                "statEffectId": 357,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -8914,7 +8914,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 280,
+                "statEffectId": 377,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -8936,7 +8936,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -8959,7 +8959,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -8982,7 +8982,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -9005,7 +9005,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -9045,29 +9045,29 @@
           "minGoldDrop": 1560,
           "maxGoldDrop": 1680,
           "minDittoDrop": "0",
-          "maxDittoDrop": "80000000000",
+          "maxDittoDrop": "10000000000",
           "combatId": 29,
           "combat": {
             "id": 29,
             "attackType": "Ranged",
-            "cp": "5481601",
-            "hp": 10255,
-            "maxHp": 10255,
-            "atkSpd": 1547,
-            "acc": 20554.60203747177,
-            "eva": 20689.54038386729,
-            "maxMeleeDmg": 1288.429784864345,
-            "maxRangedDmg": 1384.760983732707,
-            "maxMagicDmg": 1352.650584109919,
+            "cp": "8636613",
+            "hp": 12075,
+            "maxHp": 12075,
+            "atkSpd": 1883,
+            "acc": 24194.4794816074,
+            "eva": 23632.82227948022,
+            "maxMeleeDmg": 1384.760983732708,
+            "maxRangedDmg": 1731.09218260107,
+            "maxMagicDmg": 1448.981782978282,
             "critChance": 0.455,
-            "critMultiplier": 3.440539909046816,
-            "dmgReduction": 2520,
-            "magicDmgReduction": 2331,
-            "hpRegenRate": 12.76442953020134,
-            "hpRegenAmount": 109.61,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 3.616077659508389,
+            "dmgReduction": 2786,
+            "magicDmgReduction": 2597,
+            "hpRegenRate": 11.60402684563759,
+            "hpRegenAmount": 123.19,
+            "meleeFactor": 37,
+            "rangeFactor": 62,
+            "magicFactor": 37,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -9093,7 +9093,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": "Ranged",
-                "statEffectId": 202,
+                "statEffectId": 310,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -9116,7 +9116,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 240,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -9139,7 +9139,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 250,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -9162,7 +9162,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 260,
+                "statEffectId": 357,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -9185,7 +9185,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 280,
+                "statEffectId": 377,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -9207,7 +9207,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -9230,7 +9230,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -9253,7 +9253,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -9276,7 +9276,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -9316,29 +9316,29 @@
           "minGoldDrop": 1800,
           "maxGoldDrop": 1920,
           "minDittoDrop": "0",
-          "maxDittoDrop": "80000000000",
+          "maxDittoDrop": "10000000000",
           "combatId": 30,
           "combat": {
             "id": 30,
             "attackType": "Magic",
-            "cp": "13260694",
-            "hp": 8920,
-            "maxHp": 8920,
-            "atkSpd": 2072,
-            "acc": 33230.26309303636,
-            "eva": 25994.71101291557,
-            "maxMeleeDmg": 1596.210249321749,
-            "maxRangedDmg": 1750.114818815581,
-            "maxMagicDmg": 1754.512092229691,
+            "cp": "17805752",
+            "hp": 11160,
+            "maxHp": 11160,
+            "atkSpd": 2488,
+            "acc": 37818.02329617943,
+            "eva": 29679.7849879266,
+            "maxMeleeDmg": 1710.539358088596,
+            "maxRangedDmg": 1864.443927582428,
+            "maxMagicDmg": 1868.841200996538,
             "critChance": 0.6206060606060606,
-            "critMultiplier": 4.254109213592628,
-            "dmgReduction": 2576,
-            "magicDmgReduction": 3080,
-            "hpRegenRate": 9.965771812080536,
-            "hpRegenAmount": 113.94,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 4.502265584385531,
+            "dmgReduction": 2912,
+            "magicDmgReduction": 3416,
+            "hpRegenRate": 8.67986577181208,
+            "hpRegenAmount": 130.14,
+            "meleeFactor": 37,
+            "rangeFactor": 37,
+            "magicFactor": 62,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -9364,7 +9364,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": "Magic",
-                "statEffectId": 221,
+                "statEffectId": 329,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -9387,7 +9387,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 240,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -9410,7 +9410,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 250,
+                "statEffectId": 348,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -9433,7 +9433,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 260,
+                "statEffectId": 357,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -9456,7 +9456,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 50,
                 "attackType": null,
-                "statEffectId": 280,
+                "statEffectId": 377,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -9478,7 +9478,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -9501,7 +9501,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -9524,7 +9524,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 60,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 70,
+                "farmingDurationS": 35,
                 "farmingLevelRequired": 41,
                 "farmingExp": 345
               },
@@ -9547,7 +9547,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 120,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 75,
+                "farmingDurationS": 38,
                 "farmingLevelRequired": 46,
                 "farmingExp": 350
               },
@@ -9597,29 +9597,29 @@
           "minGoldDrop": 1420,
           "maxGoldDrop": 1600,
           "minDittoDrop": "0",
-          "maxDittoDrop": "130000000000",
+          "maxDittoDrop": "12000000000",
           "combatId": 31,
           "combat": {
             "id": 31,
             "attackType": "Melee",
-            "cp": "7536422",
-            "hp": 11160,
-            "maxHp": 11160,
-            "atkSpd": 1960,
-            "acc": 30130.42511793969,
-            "eva": 21712.05747438925,
-            "maxMeleeDmg": 1253.222923021208,
-            "maxRangedDmg": 1569.826608837092,
-            "maxMagicDmg": 1525.853874695996,
+            "cp": "12838193",
+            "hp": 13240,
+            "maxHp": 13240,
+            "atkSpd": 2320,
+            "acc": 33106.26957403249,
+            "eva": 24102.37572845045,
+            "maxMeleeDmg": 1791.168391303398,
+            "maxRangedDmg": 1657.772077119282,
+            "maxMagicDmg": 1613.799342978186,
             "critChance": 0.6254545454545454,
-            "critMultiplier": 3.456463736044009,
-            "dmgReduction": 2376,
-            "magicDmgReduction": 2616,
-            "hpRegenRate": 12.37684563758389,
-            "hpRegenAmount": 115.02,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 3.491914646157281,
+            "dmgReduction": 2680,
+            "magicDmgReduction": 2920,
+            "hpRegenRate": 11.5731543624161,
+            "hpRegenAmount": 127.98,
+            "meleeFactor": 59,
+            "rangeFactor": 45,
+            "magicFactor": 38,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -9645,7 +9645,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": "Melee",
-                "statEffectId": 183,
+                "statEffectId": 291,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -9668,7 +9668,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 241,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -9691,7 +9691,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 251,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -9714,7 +9714,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 261,
+                "statEffectId": 358,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -9737,7 +9737,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 281,
+                "statEffectId": 378,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -9759,7 +9759,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -9782,7 +9782,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -9805,7 +9805,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -9828,7 +9828,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -9868,29 +9868,29 @@
           "minGoldDrop": 1520,
           "maxGoldDrop": 1700,
           "minDittoDrop": "0",
-          "maxDittoDrop": "130000000000",
+          "maxDittoDrop": "12000000000",
           "combatId": 32,
           "combat": {
             "id": 32,
             "attackType": "Ranged",
-            "cp": "11493950",
-            "hp": 12384,
-            "maxHp": 12384,
-            "atkSpd": 2125,
-            "acc": 35919.48565093926,
-            "eva": 26217.23127814361,
-            "maxMeleeDmg": 1475.907176676179,
-            "maxRangedDmg": 1709.668872360915,
-            "maxMagicDmg": 1741.75381098431,
+            "cp": "18633449",
+            "hp": 14792,
+            "maxHp": 14792,
+            "atkSpd": 2541.5,
+            "acc": 39498.17979328377,
+            "eva": 29083.08247049129,
+            "maxMeleeDmg": 1576.74555520685,
+            "maxRangedDmg": 2260.507250891586,
+            "maxMagicDmg": 1842.59218951498,
             "critChance": 0.6546268656716417,
-            "critMultiplier": 3.471681593977486,
-            "dmgReduction": 2898.5,
-            "magicDmgReduction": 3179,
-            "hpRegenRate": 12.14429530201342,
-            "hpRegenAmount": 123.12,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 3.57850256609987,
+            "dmgReduction": 3255.5,
+            "magicDmgReduction": 3536,
+            "hpRegenRate": 11.19798657718121,
+            "hpRegenAmount": 137.94,
+            "meleeFactor": 47,
+            "rangeFactor": 64,
+            "magicFactor": 37,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -9916,7 +9916,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": "Ranged",
-                "statEffectId": 203,
+                "statEffectId": 311,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -9939,7 +9939,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 241,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -9962,7 +9962,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 251,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -9985,7 +9985,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 261,
+                "statEffectId": 358,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -10008,7 +10008,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 281,
+                "statEffectId": 378,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -10030,7 +10030,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10053,7 +10053,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10076,7 +10076,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10099,7 +10099,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10139,29 +10139,29 @@
           "minGoldDrop": 1520,
           "maxGoldDrop": 1700,
           "minDittoDrop": "0",
-          "maxDittoDrop": "130000000000",
+          "maxDittoDrop": "12000000000",
           "combatId": 33,
           "combat": {
             "id": 33,
             "attackType": "Magic",
-            "cp": "11709157",
-            "hp": 12384,
-            "maxHp": 12384,
-            "atkSpd": 2125,
-            "acc": 35919.48565093926,
-            "eva": 26217.23127814361,
-            "maxMeleeDmg": 1475.907176676179,
-            "maxRangedDmg": 1709.668872360915,
-            "maxMagicDmg": 1741.75381098431,
+            "cp": "16057834",
+            "hp": 15050,
+            "maxHp": 15050,
+            "atkSpd": 2592.5,
+            "acc": 40160.90093075496,
+            "eva": 29613.79565425938,
+            "maxMeleeDmg": 1595.07980584879,
+            "maxRangedDmg": 1828.841501533526,
+            "maxMagicDmg": 1860.926440156921,
             "critChance": 0.6546268656716417,
-            "critMultiplier": 3.471681593977486,
-            "dmgReduction": 2898.5,
-            "magicDmgReduction": 3179,
-            "hpRegenRate": 12.14429530201342,
-            "hpRegenAmount": 123.12,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 3.685323538222255,
+            "dmgReduction": 3306.5,
+            "magicDmgReduction": 3587,
+            "hpRegenRate": 10.251677852349,
+            "hpRegenAmount": 140.2200000000001,
+            "meleeFactor": 42,
+            "rangeFactor": 65,
+            "magicFactor": 75,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -10187,7 +10187,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": "Magic",
-                "statEffectId": 222,
+                "statEffectId": 330,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -10210,7 +10210,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 241,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -10233,7 +10233,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 251,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -10256,7 +10256,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 261,
+                "statEffectId": 358,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -10279,7 +10279,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 281,
+                "statEffectId": 378,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -10301,7 +10301,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10324,7 +10324,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10347,7 +10347,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10370,7 +10370,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10410,29 +10410,29 @@
           "minGoldDrop": 1620,
           "maxGoldDrop": 1800,
           "minDittoDrop": "0",
-          "maxDittoDrop": "130000000000",
+          "maxDittoDrop": "12000000000",
           "combatId": 34,
           "combat": {
             "id": 34,
             "attackType": "Melee",
-            "cp": "16080749",
-            "hp": 14760,
-            "maxHp": 14760,
-            "atkSpd": 2250,
-            "acc": 42061.33225528018,
-            "eva": 30205.73646078777,
-            "maxMeleeDmg": 1725.505993130398,
-            "maxRangedDmg": 1811.304633672794,
-            "maxMagicDmg": 1897.103274215189,
+            "cp": "26480278",
+            "hp": 17370,
+            "maxHp": 17370,
+            "atkSpd": 2709,
+            "acc": 46154.54915260612,
+            "eva": 33474.2676449775,
+            "maxMeleeDmg": 2289.90418052026,
+            "maxRangedDmg": 1925.702821062655,
+            "maxMagicDmg": 2011.50146160505,
             "critChance": 0.7676470588235293,
-            "critMultiplier": 4.165369933232444,
-            "dmgReduction": 3375,
-            "magicDmgReduction": 3609,
-            "hpRegenRate": 11.98926174496644,
-            "hpRegenAmount": 138.635,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 4.308386926648151,
+            "dmgReduction": 3771,
+            "magicDmgReduction": 4005,
+            "hpRegenRate": 10.27651006711409,
+            "hpRegenAmount": 155.295,
+            "meleeFactor": 79,
+            "rangeFactor": 55,
+            "magicFactor": 48,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -10458,7 +10458,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": "Melee",
-                "statEffectId": 183,
+                "statEffectId": 291,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -10481,7 +10481,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 241,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -10504,7 +10504,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 251,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -10527,7 +10527,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 261,
+                "statEffectId": 358,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -10550,7 +10550,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 281,
+                "statEffectId": 378,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -10572,7 +10572,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10595,7 +10595,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10618,7 +10618,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10641,7 +10641,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10681,29 +10681,29 @@
           "minGoldDrop": 1820,
           "maxGoldDrop": 2000,
           "minDittoDrop": "0",
-          "maxDittoDrop": "130000000000",
+          "maxDittoDrop": "12000000000",
           "combatId": 35,
           "combat": {
             "id": 35,
             "attackType": "Ranged",
-            "cp": "23573257",
-            "hp": 18750,
-            "maxHp": 18750,
-            "atkSpd": 2710,
-            "acc": 45327.94530438787,
-            "eva": 37767.76235382503,
-            "maxMeleeDmg": 2034.137826618607,
-            "maxRangedDmg": 2290.326469769564,
-            "maxMagicDmg": 2377.430608440889,
+            "cp": "38793287",
+            "hp": 22050,
+            "maxHp": 22050,
+            "atkSpd": 3300,
+            "acc": 50875.07147800177,
+            "eva": 42174.00129510462,
+            "maxMeleeDmg": 2177.603466783143,
+            "maxRangedDmg": 2883.792109934101,
+            "maxMagicDmg": 2520.896248605426,
             "critChance": 0.8142857142857143,
-            "critMultiplier": 3.638618752512281,
-            "dmgReduction": 4140,
-            "magicDmgReduction": 4100,
-            "hpRegenRate": 11.60167785234899,
-            "hpRegenAmount": 163.15,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 3.926826178453848,
+            "dmgReduction": 4660,
+            "magicDmgReduction": 4620,
+            "hpRegenRate": 9.642953020134227,
+            "hpRegenAmount": 183.95,
+            "meleeFactor": 57,
+            "rangeFactor": 84,
+            "magicFactor": 47,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -10729,7 +10729,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": "Ranged",
-                "statEffectId": 203,
+                "statEffectId": 311,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -10752,7 +10752,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 241,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -10775,7 +10775,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 251,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -10798,7 +10798,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 261,
+                "statEffectId": 358,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -10821,7 +10821,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 281,
+                "statEffectId": 378,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -10843,7 +10843,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10866,7 +10866,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10889,7 +10889,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -10912,7 +10912,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -10952,29 +10952,29 @@
           "minGoldDrop": 2020,
           "maxGoldDrop": 2200,
           "minDittoDrop": "0",
-          "maxDittoDrop": "130000000000",
+          "maxDittoDrop": "12000000000",
           "combatId": 36,
           "combat": {
             "id": 36,
             "attackType": "Magic",
-            "cp": "35884559",
-            "hp": 22605,
-            "maxHp": 22605,
-            "atkSpd": 3168,
-            "acc": 56498.50889241998,
-            "eva": 41047.27541889196,
-            "maxMeleeDmg": 2242.855082420827,
-            "maxRangedDmg": 2516.373994911171,
-            "maxMagicDmg": 2582.018533908854,
+            "cp": "59414081",
+            "hp": 27665,
+            "maxHp": 27665,
+            "atkSpd": 4103,
+            "acc": 66178.938764953,
+            "eva": 48700.15727665148,
+            "maxMeleeDmg": 2472.610968912717,
+            "maxRangedDmg": 2746.129881403062,
+            "maxMagicDmg": 2811.774420400744,
             "critChance": 0.8372222222222222,
-            "critMultiplier": 4.153136886426433,
-            "dmgReduction": 5060,
-            "magicDmgReduction": 5093,
-            "hpRegenRate": 11.21409395973154,
-            "hpRegenAmount": 195.2850000000001,
-            "meleeFactor": 0,
-            "rangeFactor": 0,
-            "magicFactor": 0,
+            "critMultiplier": 4.914847581753552,
+            "dmgReduction": 5918,
+            "magicDmgReduction": 5951,
+            "hpRegenRate": 7.718791946308725,
+            "hpRegenAmount": 227.7150000000001,
+            "meleeFactor": 77,
+            "rangeFactor": 77,
+            "magicFactor": 104,
             "reinforceAir": 0,
             "reinforceWater": 0,
             "reinforceEarth": 0,
@@ -11000,7 +11000,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": "Magic",
-                "statEffectId": 222,
+                "statEffectId": 330,
                 "rarity": "D",
                 "type": "weapon"
               }
@@ -11023,7 +11023,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 241,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "hat"
               }
@@ -11046,7 +11046,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 251,
+                "statEffectId": 349,
                 "rarity": "C",
                 "type": "armour"
               }
@@ -11069,7 +11069,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 261,
+                "statEffectId": 358,
                 "rarity": "D",
                 "type": "shield"
               }
@@ -11092,7 +11092,7 @@
                 "buyPriceDittoWei": null,
                 "requiredLvl": 60,
                 "attackType": null,
-                "statEffectId": 281,
+                "statEffectId": 378,
                 "rarity": "C",
                 "type": "cape"
               }
@@ -11114,7 +11114,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -11137,7 +11137,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
@@ -11160,7 +11160,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 86,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 80,
+                "farmingDurationS": 40,
                 "farmingLevelRequired": 51,
                 "farmingExp": 390
               },
@@ -11183,7 +11183,7 @@
                 "buyPriceGP": null,
                 "sellPriceGP": 108,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 85,
+                "farmingDurationS": 43,
                 "farmingLevelRequired": 56,
                 "farmingExp": 450
               },
