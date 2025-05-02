@@ -36,14 +36,13 @@ async function seedDungeons() {
         },
       });
 
-      // Wipe existing monster sequence for clean insert
+      // Remove and recreate monster sequence (you can switch to upsert if needed)
       await prisma.dungeonMonsterSequence.deleteMany({
         where: {
           dungeonId: upsertedDungeon.id,
         },
       });
 
-      // Insert monster sequence
       for (let i = 0; i < dungeon.monsterSequence.length; i++) {
         const monster = dungeon.monsterSequence[i];
         await prisma.dungeonMonsterSequence.create({
