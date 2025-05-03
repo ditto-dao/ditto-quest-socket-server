@@ -7,6 +7,8 @@ import { equipSlimeForUser, getEquippedSlimeWithTraits, getSlimeWithTraitsById, 
 import { emitUserAndCombatUpdate } from "../../utils/helpers";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
+import { USE_REFERRAL_CODE } from "../events";
+import { applyReferralCode } from "../../sql-services/referrals";
 
 interface EquipPayload {
     userId: string;
@@ -232,6 +234,24 @@ export async function setupUserSocketHandlers(
             socket.emit("pump-stats-complete", {
                 userId: data.userId,
             });
+        }
+    });
+
+    socket.on(USE_REFERRAL_CODE, async (data: { userId: string, referralCode: string }) => {
+        try {
+            logger.info(`Received USE_REFERRAL_CODE event from user ${data.userId}`);
+            await applyReferralCode(data.userId, data.referralCode);
+        } catch (err) {
+            logger.error(`Error during USE_REFERRAL_CODE for user ${data.userId}: ${err}`);
+
+            socket.emit("error", {
+                userId: data.userId,
+                msg: "Failed to use referral code",
+            });
+        } finally {
+/*             socket.emit("pump-stats-complete", {
+                userId: data.userId,
+            }); */
         }
     });
 }

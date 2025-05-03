@@ -33,6 +33,7 @@
     "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
     "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts",
     "trim-offline-activities": "ts-node ./src/scripts/redis-offline-activities/trim-user-offline-activities.ts",
+    "generate-referral-code": "ts-node ./src/scripts/referral/generate-referral.ts",
     "print-suspicious-users": "ts-node ./src/scripts/user-fingerprint/print-suspicious-users.ts",
     "breed": "ts-node ./src/utils/breed-test.ts",
     "test-exp-system": "ts-node ./src/scripts/simulation/exp-system-simulation.ts",
@@ -63,6 +64,7 @@
     "@types/async-lock": "^1.4.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
+    "@types/uuid": "^10.0.0",
     "csv-parser": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"

@@ -16,6 +16,8 @@ export const USER_DATA_ON_LOGIN_EVENT = 'user-data-on-login';
 
 export const FIRST_LOGIN_EVENT = 'user-first-login';
 
+export const USE_REFERRAL_CODE = 'use-referral-code';
+
 // User
 
 export const USER_UPDATE_EVENT = 'user-update';

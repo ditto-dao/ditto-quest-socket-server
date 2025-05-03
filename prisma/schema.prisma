@@ -115,6 +115,12 @@ model User {
   AccomplishmentProgress AccomplishmentProgress[]
 
   UserDeviceFingerprint UserDeviceFingerprint[]
+
+  referralLink      ReferralLink?        @relation("UserOwnedLink")
+  referredBy        ReferralRelation?    @relation("ReferralReferee")
+  referees          ReferralRelation[]   @relation("ReferralReferrer")
+  referralEarnings  ReferralEarningLog[] @relation("RefEarningsReferrer")
+  earningsGenerated ReferralEarningLog[] @relation("RefEarningsReferee")
 }
 
 model Combat {
@@ -788,4 +794,50 @@ model UserDeviceFingerprint {
   @@index([fingerprint])
   @@index([ipAddress])
   @@index([userId])
+}
+
+// Referral system
+model ReferralLink {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  ownerId   String?  @unique // Nullable, allows tracking org or platform codes
+  owner     User?    @relation("UserOwnedLink", fields: [ownerId], references: [telegramId])
+  createdAt DateTime @default(now())
+}
+
+model ReferralRelation {
+  id         String @id @default(cuid())
+  refereeId  String @unique // One-time referral only
+  referrerId String // Direct referrer
+
+  referee  User @relation("ReferralReferee", fields: [refereeId], references: [telegramId])
+  referrer User @relation("ReferralReferrer", fields: [referrerId], references: [telegramId])
+
+  createdAt DateTime @default(now())
+}
+
+model ReferralEventLog {
+  id            String            @id @default(cuid())
+  userId        String // The user who used the referral code
+  oldReferrerId String? // null if no previous referrer
+  newReferrerId String // new referrer set
+  eventType     ReferralEventType // INITIAL or CHANGE
+  createdAt     DateTime          @default(now())
+}
+
+enum ReferralEventType {
+  INITIAL
+  CHANGE
+}
+
+model ReferralEarningLog {
+  id             String   @id @default(cuid())
+  referrerId     String
+  refereeId      String
+  tier           Int // 1 for direct, 2 for indirect
+  amountDittoWei Int
+  createdAt      DateTime @default(now())
+
+  referrer User @relation("RefEarningsReferrer", fields: [referrerId], references: [telegramId])
+  referee  User @relation("RefEarningsReferee", fields: [refereeId], references: [telegramId])
 }
