@@ -806,14 +806,15 @@ model ReferralLink {
 }
 
 model ReferralRelation {
-  id         String @id @default(cuid())
-  refereeId  String @unique // One-time referral only
-  referrerId String // can be a user or an external source
+  id                String   @id @default(cuid())
+  refereeId         String   @unique
+  referrerUserId    String? // for user-owned referrals
+  referrerExternal  String? // for marketing or platform sources (e.g., referral code)
 
-  referee  User @relation("ReferralReferee", fields: [refereeId], references: [telegramId])
-  referrer User? @relation("ReferralReferrer", fields: [referrerId], references: [telegramId])
+  referee           User     @relation("ReferralReferee", fields: [refereeId], references: [telegramId])
+  referrerUser      User?    @relation("ReferralReferrer", fields: [referrerUserId], references: [telegramId])
 
-  createdAt DateTime @default(now())
+  createdAt         DateTime @default(now())
 }
 
 model ReferralEventLog {

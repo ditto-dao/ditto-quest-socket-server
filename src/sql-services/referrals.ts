@@ -5,14 +5,24 @@ import { logger } from "../utils/logger";
 
 /**
  * Generates a new referral link.
- * If `telegramId` is provided, it associates the code with that user.
+ * Requires either a user (telegramId) or an externalReferrer name (e.g., "TIKTOK").
  */
-export async function createReferralLink(telegramId?: string) {
-    let code: string = "";
+export async function createReferralLink({
+    telegramId,
+    externalReferrer,
+}: {
+    telegramId?: string;
+    externalReferrer?: string;
+}) {
+    if (!telegramId && !externalReferrer) {
+        throw new Error("Either telegramId or externalReferrer must be provided.");
+    }
+
+    let code = "";
     let exists = true;
 
     while (exists) {
-        const rawId = uuidv4().split("-")[0]; // 8 chars from UUID
+        const rawId = uuidv4().split("-")[0];
         code = `DQR-${rawId.toUpperCase()}`;
         exists = await prisma.referralLink.findUnique({ where: { code } }) !== null;
     }
@@ -25,60 +35,60 @@ export async function createReferralLink(telegramId?: string) {
     });
 
     logger.info(
-        `🔗 Referral code generated: ${referralLink.code}` +
-        (referralLink.ownerId ? ` for user ${referralLink.ownerId}` : "")
+        `🧲 Referral code generated: ${referralLink.code}` +
+        (telegramId
+            ? ` for user ${telegramId}`
+            : ` for external referrer "${externalReferrer}"`)
     );
 
-    return referralLink;
+    return {
+        code: referralLink.code,
+        ownerId: telegramId ?? null,
+        externalReferrer: telegramId ? null : externalReferrer,
+    };
 }
 
 /**
- * Applies a referral link for a user (first time only).
- * @param userId The telegramId of the user using the referral.
- * @param code The referral code being used.
+ * Applies a referral code to a user (first time only).
  */
 export async function applyReferralCode(userId: string, code: string) {
-    // Find the referral link
     const referralLink = await prisma.referralLink.findUnique({
         where: { code },
     });
 
-    if (!referralLink) {
-        throw new Error("Referral code not found");
-    }
+    if (!referralLink) throw new Error("Referral code not found");
+    if (referralLink.ownerId === userId) throw new Error("You cannot refer yourself");
 
-    if (referralLink.ownerId === userId) {
-        throw new Error("You cannot refer yourself");
-    }
-
-    // Check if user already has a referrer
-    const existingReferral = await prisma.referralRelation.findUnique({
+    const existing = await prisma.referralRelation.findUnique({
         where: { refereeId: userId },
     });
 
-    if (existingReferral) {
-        throw new Error("User already referred");
-    }
+    if (existing) throw new Error("User already referred");
 
-    // Create the referral relation
-    await prisma.referralRelation.create({
-        data: {
-            refereeId: userId,
-            referrerId: referralLink.ownerId ?? code,
-        },
-    });
+    // Determine source
+    const isUserRef = !!referralLink.ownerId;
+    const relationData = {
+        refereeId: userId,
+        referrerUserId: isUserRef ? referralLink.ownerId : null,
+        referrerExternal: isUserRef ? null : referralLink.code,
+    };
 
-    // Log the event
+    await prisma.referralRelation.create({ data: relationData });
+
     await prisma.referralEventLog.create({
         data: {
             userId,
             oldReferrerId: null,
-            newReferrerId: referralLink.ownerId!,
+            newReferrerId: referralLink.code,
             eventType: ReferralEventType.INITIAL,
         },
     });
 
-    return { success: true, referrerId: referralLink.ownerId };
+    return {
+        success: true,
+        referredBy: isUserRef ? referralLink.ownerId : referralLink.code,
+        isUserReferrer: isUserRef,
+    };
 }
 
 /**
