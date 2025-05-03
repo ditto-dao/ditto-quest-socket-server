@@ -80,3 +80,42 @@ export async function applyReferralCode(userId: string, code: string) {
 
     return { success: true, referrerId: referralLink.ownerId };
 }
+
+/**
+ * Prints first-time and total uses of a referral code
+ * @param code The referral code to inspect
+ */
+export async function printReferralCodeUsage(code: string) {
+    const referralLink = await prisma.referralLink.findUnique({
+        where: { code },
+    });
+
+    if (!referralLink) {
+        logger.warn(`❌ Referral code ${code} not found`);
+        return;
+    }
+
+    const { ownerId } = referralLink;
+
+    // Count INITIAL uses (first-time referrals)
+    const firstTimeCount = await prisma.referralEventLog.count({
+        where: {
+            eventType: ReferralEventType.INITIAL,
+            newReferrerId: ownerId ?? undefined,
+        },
+    });
+
+    // Count total uses (including referrer changes)
+    const totalCount = await prisma.referralEventLog.count({
+        where: {
+            newReferrerId: ownerId ?? undefined,
+        },
+    });
+
+    logger.info(
+        `📊 Referral Code ${code} — ` +
+        `${firstTimeCount} first-time user(s), ` +
+        `${totalCount} total use(s)` +
+        (ownerId ? ` (owner: ${ownerId})` : " (no user owner)")
+    );
+}
