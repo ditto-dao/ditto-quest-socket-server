@@ -808,10 +808,10 @@ model ReferralLink {
 model ReferralRelation {
   id         String @id @default(cuid())
   refereeId  String @unique // One-time referral only
-  referrerId String // Direct referrer
+  referrerId String // can be a user or an external source
 
   referee  User @relation("ReferralReferee", fields: [refereeId], references: [telegramId])
-  referrer User @relation("ReferralReferrer", fields: [referrerId], references: [telegramId])
+  referrer User? @relation("ReferralReferrer", fields: [referrerId], references: [telegramId])
 
   createdAt DateTime @default(now())
 }

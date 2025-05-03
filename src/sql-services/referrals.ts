@@ -64,7 +64,7 @@ export async function applyReferralCode(userId: string, code: string) {
     await prisma.referralRelation.create({
         data: {
             refereeId: userId,
-            referrerId: referralLink.ownerId!,
+            referrerId: referralLink.ownerId ?? code,
         },
     });
 
