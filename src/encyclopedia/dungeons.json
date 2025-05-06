@@ -5,7 +5,7 @@
     "description": "They were once your foes. Now, they are your reflections. In this infinite climb, you face the darkness you left behind.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/dungeon-bg/Dungeon_1_The_Tower_of_Echoes.png",
     "entryPriceGP": 50000,
-    "entryPriceDittoWei": "5000",
+    "entryPriceDittoWei": "5000000000000",
     "monsterGrowthFactor": 1.1,
     "monsterSequence": [
       {
