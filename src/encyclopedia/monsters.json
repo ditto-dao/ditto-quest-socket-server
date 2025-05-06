@@ -13649,9 +13649,9 @@
   },
   {
     "id": 42,
-    "name": "Shadow\nThe Gelatinator",
+    "name": "The Shadow Gelatinator",
     "description": "The corrupted echo of its former self. A grotesque mockery of its perfected form.",
-    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/073_B.png",
+    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/073_8Bit.png",
     "level": 6,
     "str": 2,
     "def": 6,
