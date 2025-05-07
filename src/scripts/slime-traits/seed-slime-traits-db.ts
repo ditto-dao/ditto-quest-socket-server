@@ -4,6 +4,7 @@ import * as path from 'path';
 import { prisma } from '../../sql-services/client';
 import { logger } from '../../utils/logger';
 import { EffectType, Prisma, Rarity, TraitType } from "@prisma/client";
+import { recalculateAndUpdateUserStats } from '../../sql-services/user-service';
 
 interface StatEffect {
   maxHpMod?: number;
@@ -145,6 +146,8 @@ async function seedSlimeTraits() {
       );
 
       logger.info("Slime trait seeding complete.");
+
+      await updateAllUserCombat();
     });
   } catch (err) {
     logger.error("Failed to seed slime traits:", err);
@@ -156,6 +159,25 @@ async function seedSlimeTraits() {
 function convertEffectType(value?: string | null): EffectType | null {
   if (!value) return null;
   return value === 'mul' ? EffectType.mul : EffectType.add;
+}
+
+async function updateAllUserCombat() {
+  const users = await prisma.user.findMany({
+    select: { telegramId: true }
+  });
+
+  logger.info(`🔄 Recalculating stats for ${users.length} users...`);
+
+  for (const user of users) {
+    try {
+      await recalculateAndUpdateUserStats(user.telegramId);
+      logger.info(`✅ Updated stats for user ${user.telegramId}`);
+    } catch (err) {
+      console.error(`❌ Failed to update user ${user.telegramId}:`, err);
+    }
+  }
+
+  logger.info("✅ Done updating all users.");
 }
 
 seedSlimeTraits();
