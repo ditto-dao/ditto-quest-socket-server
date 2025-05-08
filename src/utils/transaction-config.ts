@@ -5,3 +5,6 @@ import { DITTO_DECIMALS } from "./config";
 export const SLIME_GACHA_PULL_TRX_NOTE = 'Slime gacha pull';
 export const SLIME_GACHA_PRICE_GOLD = 10000;
 export const SLIME_GACHA_PRICE_DITTO_WEI = parseUnits("5000", DITTO_DECIMALS);
+
+// Dungeon
+export const ENTER_DUNGEON_TRX_NOTE = 'Enter dungeon';

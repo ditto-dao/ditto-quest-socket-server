@@ -7,6 +7,7 @@ import { SocketManager } from "../socket-manager"
 import { IdleBreedingManager } from "../../managers/idle-managers/breeding-idle-manager"
 import { SLIME_GACHA_PRICE_GOLD } from "../../utils/transaction-config"
 import { incrementUserGoldBalance } from "../../sql-services/user-service"
+import { globalIdleSocketUserLock } from "../socket-handlers"
 
 interface BurnSlimeRequest {
     userId: string,
@@ -86,34 +87,38 @@ export async function setupSlimeSocketHandlers(
     })
 
     socket.on("breed-slimes", async (data: BreedSlimeRequest) => {
-        try {
-            logger.info(`Received breed-slimes event from user ${data.userId}`)
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received breed-slimes event from user ${data.userId}`)
 
-            const sire = await fetchSlimeObjectWithTraits(data.sireId);
-            const dame = await fetchSlimeObjectWithTraits(data.dameId);
+                const sire = await fetchSlimeObjectWithTraits(data.sireId);
+                const dame = await fetchSlimeObjectWithTraits(data.dameId);
 
-            IdleBreedingManager.startBreeding(socketManager, idleManager, data.userId, sire, dame, Date.now());
+                IdleBreedingManager.startBreeding(socketManager, idleManager, data.userId, sire, dame, Date.now());
 
-        } catch (error) {
-            logger.error(`Error processing breed-slime: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to breed slime'
-            })
-        }
+            } catch (error) {
+                logger.error(`Error processing breed-slime: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to breed slime'
+                })
+            }
+        });
     })
 
     socket.on("stop-breed-slimes", async (data: BreedSlimeRequest) => {
-        try {
-            logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
 
-            IdleBreedingManager.stopBreeding(idleManager, data.userId);
-        } catch (error) {
-            logger.error(`Error processing breed-slime: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to breed slime'
-            })
-        }
-    })
+                IdleBreedingManager.stopBreeding(idleManager, data.userId);
+            } catch (error) {
+                logger.error(`Error processing breed-slime: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to breed slime'
+                })
+            }
+        })
+    });
 }

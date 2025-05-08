@@ -669,6 +669,7 @@ model DungeonLeaderboard {
 
   @@index([dungeonId, score])
   @@index([userId, dungeonId])
+  @@unique([userId, dungeonId], name: "userId_dungeonId")
 }
 
 // Activity Logs

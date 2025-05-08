@@ -6,6 +6,7 @@ import { IdleFarmingManager } from "../../managers/idle-managers/farming-idle-ma
 import { SocketManager } from "../socket-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
 import { getItemById } from "../../sql-services/item-service"
+import { globalIdleSocketUserLock } from "../socket-handlers"
 
 interface MintItemPayload {
     userId: string,
@@ -44,36 +45,39 @@ export async function setupItemsSocketHandlers(
     })
 
     socket.on("farm-item", async (data: FarmItemPayload) => {
-        try {
-            logger.info(`Received farm-item event: ${JSON.stringify(data)}`);
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received farm-item event: ${JSON.stringify(data)}`);
 
-            const item = await getItemById(data.itemId);
+                const item = await getItemById(data.itemId);
 
-            if (!item) throw new Error(`Item not found.`);
+                if (!item) throw new Error(`Item not found.`);
 
-            IdleFarmingManager.startFarming(socketManager, idleManager, data.userId, item, Date.now());
-        } catch (error) {
-            logger.error(`Error processing farm-item: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to farm item'
-            })
-        }
+                IdleFarmingManager.startFarming(socketManager, idleManager, data.userId, item, Date.now());
+            } catch (error) {
+                logger.error(`Error processing farm-item: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to farm item'
+                })
+            }
+        });
     })
 
     socket.on("stop-farm-item", async (data: FarmItemPayload) => {
-        try {
-            logger.info(`Received stop-farm-item event from user ${data.userId}`)
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received stop-farm-item event from user ${data.userId}`)
 
-            IdleFarmingManager.stopFarming(idleManager, data.userId);
+                IdleFarmingManager.stopFarming(idleManager, data.userId);
 
-        } catch (error) {
-            logger.error(`Error processing stop-craft-equipment: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to stop farm item'
-            })
-        }
-    })
-
+            } catch (error) {
+                logger.error(`Error processing stop-craft-equipment: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to stop farm item'
+                })
+            }
+        })
+    });
 }

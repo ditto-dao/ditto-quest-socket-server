@@ -12,6 +12,9 @@ import { setupDittoLedgerSocketServerHandlers, setupDittoLedgerUserSocketHandler
 import { ValidateLoginManager } from "../managers/validate-login/validate-login-manager"
 import { IdleCombatManager } from "../managers/idle-managers/combat/combat-idle-manager"
 import { setupCombatSocketHandlers } from "./handlers/combat-handlers"
+import AsyncLock from "async-lock"
+
+export const globalIdleSocketUserLock = new AsyncLock()
 
 export interface EventPayloadWithUserId {
     userId: string,
@@ -27,7 +30,7 @@ export async function setupSocketHandlers(
     validateLoginManager: ValidateLoginManager
 ): Promise<void> {
 
-    setupDittoLedgerSocketServerHandlers(dittoLedgerSocket, validateLoginManager, socketManager)
+    setupDittoLedgerSocketServerHandlers(dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager);
 
     io.on("connection", async (socket) => {
         logger.info("An adapter has connected")

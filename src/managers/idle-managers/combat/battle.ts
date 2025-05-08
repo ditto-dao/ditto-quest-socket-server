@@ -12,6 +12,7 @@ import { mintItemToUser } from "../../../sql-services/item-inventory-service";
 import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
 import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
+import { DungeonManager } from "./dungeon-manager";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -248,6 +249,13 @@ export class Battle {
     const defender = (attackerType === 'user') ? this.monster.combat : this.userCombat;
 
     const damage = Battle.calculateDamage(attacker, defender);
+    if (attackerType == 'user') {
+      DungeonManager.updateDamage(this.user.telegramId, Math.min(damage.dmg, defender.hp), 0);
+    } else {
+      DungeonManager.updateDamage(this.user.telegramId, 0, Math.min(damage.dmg, defender.hp));
+    }
+
+
     defender.hp = Math.max(0, defender.hp - damage.dmg); // Ensure HP does not drop below 0
 
     // emit damage event

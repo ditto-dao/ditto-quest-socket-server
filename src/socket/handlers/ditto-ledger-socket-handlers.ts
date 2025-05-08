@@ -1,12 +1,16 @@
 import { logger } from "../../utils/logger";
 import { Socket as UserSocket, DefaultEventsMap } from "socket.io";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
-import { LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT } from "../events";
+import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT } from "../events";
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { SocketManager } from "../socket-manager";
-import { SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
+import { ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
 import { slimeGachaPull } from "../../sql-services/slime";
 import { DEVELOPMENT_FUNDS_KEY, LEVERAGE_POOL_KEY } from "../../utils/config";
+import { getDungeonById } from "../../sql-services/combat-service";
+import { getSimpleUserData } from "../../sql-services/user-service";
+import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
+import { IdleManager } from "../../managers/idle-managers/idle-manager";
 
 export interface UserBalanceUpdate {
     userId: string;
@@ -43,7 +47,9 @@ export async function setupDittoLedgerUserSocketHandlers(
 export async function setupDittoLedgerSocketServerHandlers(
     ledgerSocket: DittoLedgerSocket,
     validateLoginManager: ValidateLoginManager,
-    socketManager: SocketManager
+    socketManager: SocketManager,
+    idleManager: IdleManager,
+    combatManager: IdleCombatManager,
 ): Promise<void> {
     ledgerSocket.on(LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, (userId: string) => {
         try {
@@ -62,6 +68,10 @@ export async function setupDittoLedgerSocketServerHandlers(
             // Logic to run in socket server after successful ledger trx
             if (res.payload.notes === SLIME_GACHA_PULL_TRX_NOTE) {
                 await handleMintSlime(res.userId, res.payload, socketManager, ledgerSocket);
+            } else if (res.payload.notes && res.payload.notes.includes(ENTER_DUNGEON_TRX_NOTE)) {
+                logger.info(`Entering dungeon after paying DITTO fee.`);
+                const dungeonId = res.payload.notes.split(" ").pop();
+                await handleDungeonEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(dungeonId));
             }
 
             socketManager.emitEvent(res.userId, LEDGER_BALANCE_UPDATE_RES_EVENT, res);
@@ -133,9 +143,42 @@ async function handleMintSlime(userId: string, payload: UserBalanceUpdateRes, so
     }
 }
 
+async function handleDungeonEntry(
+    combatManager: IdleCombatManager,
+    idleManager: IdleManager,
+    socketManager: SocketManager,
+    ledgerSocket: DittoLedgerSocket,
+    balanceUpdate: UserBalanceUpdateRes,
+    userId: string,
+    dungeonId: number
+): Promise<void> {
+    try {
+        const dungeon = await getDungeonById(dungeonId);
+
+        if (!dungeon) throw new Error(`Unable to find dungeon of id: ${dungeonId}`);
+        if (dungeon.entryPriceDittoWei && (-BigInt(dungeon.entryPriceDittoWei.toString()) < BigInt(balanceUpdate.accumulatedBalanceChange) - BigInt(balanceUpdate.liveBalanceChange))) {
+            throw new Error(`Insufficient DITTO deducted for dungeon entry.`);
+        }
+
+        const user = await getSimpleUserData(userId);
+        if (!user) throw new Error(`Unable to find user of id: ${userId}`);
+
+        await combatManager.startDungeonCombat(idleManager, userId, user, user.combat, dungeon, Date.now());
+    } catch (err) {
+        logger.error(`Error entering dungeon with DITTO fee: ${err}`);
+        socketManager.emitEvent(userId, 'error', {
+            userId: userId,
+            msg: `Failed to enter dungeon.`
+        });
+        socketManager.emitEvent(userId, COMBAT_STOPPED_EVENT, { userId: userId });
+
+        revertTrxToLedger(ledgerSocket, userId, DEVELOPMENT_FUNDS_KEY, balanceUpdate);
+    }
+}
+
 async function revertTrxToLedger(ledgerSocket: DittoLedgerSocket, userId: string, refundTo: string, balanceUpdate: UserBalanceUpdateRes) {
     try {
-        logger.info(`revertTrxToLedger:: ledgerSocket: ${ledgerSocket.id}, userId: ${userId}, refundTo: ${refundTo}, balanceUpdate: ${JSON.stringify(balanceUpdate, null , 2)}`);
+        logger.info(`revertTrxToLedger:: ledgerSocket: ${ledgerSocket.id}, userId: ${userId}, refundTo: ${refundTo}, balanceUpdate: ${JSON.stringify(balanceUpdate, null, 2)}`);
 
         if (refundTo !== DEVELOPMENT_FUNDS_KEY && refundTo !== LEVERAGE_POOL_KEY) {
             throw new Error(`Invalid refund recipient: ${refundTo}`);

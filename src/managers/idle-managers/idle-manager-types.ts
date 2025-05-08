@@ -68,8 +68,8 @@ export interface IdleCombatActivityElement {
 
     // Dungeon Mode
     dungeonId?: number;
-    currentWave?: number;
-    waveStartTimestamp?: number;
+    currentFloor?: number;
+    currentMonsterIndex?: number;
     totalDamageDealt?: number;
     totalDamageTaken?: number;
 

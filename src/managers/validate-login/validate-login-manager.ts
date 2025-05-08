@@ -8,7 +8,7 @@ import { createUser, getUserData, userExists } from "../../sql-services/user-ser
 import { DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
-import { getDomainById } from "../../sql-services/combat-service";
+import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
 import { slimeGachaPull } from "../../sql-services/slime";
 import { mintItemToUser } from "../../sql-services/item-inventory-service";
 
@@ -147,7 +147,7 @@ export class ValidateLoginManager {
         let user;
         if (!(await userExists(data.loginPayload.userData.id.toString()))) {
             user = await createUser({ telegramId: data.loginPayload.userData.id.toString(), username: data.loginPayload.userData.username });
-            
+
             // Free on first login
             const firstFreeSlime = await slimeGachaPull(user.telegramId);
             const secondFreeSlime = await slimeGachaPull(user.telegramId);
@@ -160,7 +160,7 @@ export class ValidateLoginManager {
                     freeItems: [mintWood]
                 }
             });
-            
+
         } else {
             user = await getUserData(data.loginPayload.userData.id.toString());
         }
@@ -169,9 +169,15 @@ export class ValidateLoginManager {
 
         const currentCombat = await this.idleManager.loadIdleActivitiesOnLogin(data.loginPayload.userData.id.toString());
         if (currentCombat) {
-            const domain = await getDomainById(currentCombat.domainId);
-            if (!domain) throw new Error(`Unable to find domain to load offline combat`);
-            if (currentCombat.combatType === 'Domain') await this.combatManager.startDomainCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, domain, currentCombat.startTimestamp, currentCombat.monsterToStartWith);
+            if (currentCombat.combatType === 'Domain') {
+                const domain = await getDomainById(currentCombat.locationId);
+                if (!domain) throw new Error(`Unable to find domain to load offline combat`);
+                await this.combatManager.startDomainCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, domain, currentCombat.startTimestamp, currentCombat.monsterToStartWith);
+            } else {
+                const dungeon = await getDungeonById(currentCombat.locationId);
+                if (!dungeon) throw new Error(`Unable to find dungeon to load offline combat`);
+                await this.combatManager.startDungeonCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, dungeon, currentCombat.startTimestamp, currentCombat.monsterToStartWith);
+            }
         }
 
         data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {

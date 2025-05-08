@@ -6,6 +6,7 @@ import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import { SocketManager } from "../socket-manager";
 import { getCraftingRecipeForEquipment } from "../../sql-services/crafting-service";
 import { getEquipmentById } from "../../sql-services/equipment-service";
+import { globalIdleSocketUserLock } from "../socket-handlers"
 
 interface CraftEquipmentPayload {
     userId: string;
@@ -18,39 +19,42 @@ export async function setupCraftingSocketHandlers(
     idleManager: IdleManager
 ): Promise<void> {
     socket.on("craft-equipment", async (data: CraftEquipmentPayload) => {
-        try {
-            logger.info(`Received craft-equipment event from user ${data.userId}`)
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received craft-equipment event from user ${data.userId}`)
 
-            const equipment = await getEquipmentById(data.equipmentId);
+                const equipment = await getEquipmentById(data.equipmentId);
 
-            if (!equipment) throw new Error(`Equipment of ID ${data.equipmentId} not found.`)
+                if (!equipment) throw new Error(`Equipment of ID ${data.equipmentId} not found.`)
 
-            const recipe = await getCraftingRecipeForEquipment(data.equipmentId);
+                const recipe = await getCraftingRecipeForEquipment(data.equipmentId);
 
-            IdleCraftingManager.startCrafting(socketManager, idleManager, data.userId, equipment, recipe, Date.now());
+                IdleCraftingManager.startCrafting(socketManager, idleManager, data.userId, equipment, recipe, Date.now());
 
-        } catch (error) {
-            logger.error(`Error processing craft-equipment: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to craft equipment'
-            })
-        }
+            } catch (error) {
+                logger.error(`Error processing craft-equipment: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to craft equipment'
+                })
+            }
+        });
     })
 
     socket.on("stop-craft-equipment", async (data: CraftEquipmentPayload) => {
-        try {
-            logger.info(`Received stop-craft-equipment event from user ${data.userId}`)
-            
-            IdleCraftingManager.stopCrafting(idleManager, data.userId);
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received stop-craft-equipment event from user ${data.userId}`)
 
-        } catch (error) {
-            logger.error(`Error processing stop-craft-equipment: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to stop crafting equipment'
-            })
-        }
-    })
+                IdleCraftingManager.stopCrafting(idleManager, data.userId);
 
+            } catch (error) {
+                logger.error(`Error processing stop-craft-equipment: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to stop crafting equipment'
+                })
+            }
+        })
+    });
 }

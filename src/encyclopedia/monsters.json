@@ -155,9 +155,9 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -222,9 +222,9 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -289,9 +289,9 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -533,9 +533,9 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -600,9 +600,9 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -667,9 +667,9 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -911,9 +911,9 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -978,9 +978,9 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -1045,9 +1045,9 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -1289,9 +1289,9 @@
             {
               "id": 69,
               "equipmentId": 69,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -1356,9 +1356,9 @@
             {
               "id": 79,
               "equipmentId": 79,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -1423,9 +1423,9 @@
             {
               "id": 99,
               "equipmentId": 99,
-              "durationS": 30,
+              "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 100
+              "craftingExp": 80
             }
           ],
           "statEffect": {
@@ -1667,9 +1667,9 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -1734,9 +1734,9 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -1801,9 +1801,9 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2045,9 +2045,9 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2112,9 +2112,9 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2179,9 +2179,9 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2423,9 +2423,9 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2490,9 +2490,9 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2557,9 +2557,9 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2801,9 +2801,9 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2868,9 +2868,9 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -2935,9 +2935,9 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3179,9 +3179,9 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3246,9 +3246,9 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3313,9 +3313,9 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3557,9 +3557,9 @@
             {
               "id": 70,
               "equipmentId": 70,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3624,9 +3624,9 @@
             {
               "id": 80,
               "equipmentId": 80,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3691,9 +3691,9 @@
             {
               "id": 100,
               "equipmentId": 100,
-              "durationS": 33,
+              "durationS": 25,
               "craftingLevelRequired": 10,
-              "craftingExp": 125
+              "craftingExp": 110
             }
           ],
           "statEffect": {
@@ -3935,7 +3935,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4002,7 +4002,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4069,7 +4069,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4313,7 +4313,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4380,7 +4380,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4447,7 +4447,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4691,7 +4691,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4758,7 +4758,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -4825,7 +4825,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5069,7 +5069,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5136,7 +5136,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5203,7 +5203,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5447,7 +5447,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5514,7 +5514,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5581,7 +5581,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5825,7 +5825,7 @@
             {
               "id": 71,
               "equipmentId": 71,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5892,7 +5892,7 @@
             {
               "id": 81,
               "equipmentId": 81,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -5959,7 +5959,7 @@
             {
               "id": 101,
               "equipmentId": 101,
-              "durationS": 35,
+              "durationS": 30,
               "craftingLevelRequired": 20,
               "craftingExp": 150
             }
@@ -6203,9 +6203,9 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -6270,9 +6270,9 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -6337,9 +6337,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -6581,9 +6581,9 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -6648,9 +6648,9 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -6715,9 +6715,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -6959,9 +6959,9 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7026,9 +7026,9 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7093,9 +7093,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7337,9 +7337,9 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7404,9 +7404,9 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7471,9 +7471,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7715,9 +7715,9 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7782,9 +7782,9 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -7849,9 +7849,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -8093,9 +8093,9 @@
             {
               "id": 72,
               "equipmentId": 72,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -8160,9 +8160,9 @@
             {
               "id": 82,
               "equipmentId": 82,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -8227,9 +8227,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 38,
+              "durationS": 35,
               "craftingLevelRequired": 30,
-              "craftingExp": 180
+              "craftingExp": 190
             }
           ],
           "statEffect": {
@@ -8473,7 +8473,7 @@
               "equipmentId": 73,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -8540,7 +8540,7 @@
               "equipmentId": 83,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -8607,7 +8607,7 @@
               "equipmentId": 103,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -8851,7 +8851,7 @@
               "equipmentId": 73,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -8918,7 +8918,7 @@
               "equipmentId": 83,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -8985,7 +8985,7 @@
               "equipmentId": 103,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9209,7 +9209,7 @@
               "equipmentId": 73,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9276,7 +9276,7 @@
               "equipmentId": 83,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9343,7 +9343,7 @@
               "equipmentId": 103,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9567,7 +9567,7 @@
               "equipmentId": 73,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9634,7 +9634,7 @@
               "equipmentId": 83,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9701,7 +9701,7 @@
               "equipmentId": 103,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9925,7 +9925,7 @@
               "equipmentId": 73,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -9992,7 +9992,7 @@
               "equipmentId": 83,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -10059,7 +10059,7 @@
               "equipmentId": 103,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -10283,7 +10283,7 @@
               "equipmentId": 73,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -10350,7 +10350,7 @@
               "equipmentId": 83,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -10417,7 +10417,7 @@
               "equipmentId": 103,
               "durationS": 40,
               "craftingLevelRequired": 40,
-              "craftingExp": 225
+              "craftingExp": 240
             }
           ],
           "statEffect": {
@@ -10641,7 +10641,7 @@
               "equipmentId": 74,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -10708,7 +10708,7 @@
               "equipmentId": 84,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -10775,7 +10775,7 @@
               "equipmentId": 104,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -10999,7 +10999,7 @@
               "equipmentId": 74,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11066,7 +11066,7 @@
               "equipmentId": 84,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11133,7 +11133,7 @@
               "equipmentId": 104,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11357,7 +11357,7 @@
               "equipmentId": 74,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11424,7 +11424,7 @@
               "equipmentId": 84,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11491,7 +11491,7 @@
               "equipmentId": 104,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11715,7 +11715,7 @@
               "equipmentId": 74,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11782,7 +11782,7 @@
               "equipmentId": 84,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -11849,7 +11849,7 @@
               "equipmentId": 104,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12073,7 +12073,7 @@
               "equipmentId": 74,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12140,7 +12140,7 @@
               "equipmentId": 84,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12207,7 +12207,7 @@
               "equipmentId": 104,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12431,7 +12431,7 @@
               "equipmentId": 74,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12498,7 +12498,7 @@
               "equipmentId": 84,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12565,7 +12565,7 @@
               "equipmentId": 104,
               "durationS": 45,
               "craftingLevelRequired": 50,
-              "craftingExp": 280
+              "craftingExp": 300
             }
           ],
           "statEffect": {
@@ -12789,7 +12789,7 @@
               "equipmentId": 75,
               "durationS": 50,
               "craftingLevelRequired": 60,
-              "craftingExp": 333
+              "craftingExp": 360
             }
           ],
           "statEffect": {
@@ -12856,7 +12856,7 @@
               "equipmentId": 85,
               "durationS": 50,
               "craftingLevelRequired": 60,
-              "craftingExp": 333
+              "craftingExp": 360
             }
           ],
           "statEffect": {
@@ -12923,7 +12923,7 @@
               "equipmentId": 105,
               "durationS": 50,
               "craftingLevelRequired": 60,
-              "craftingExp": 333
+              "craftingExp": 360
             }
           ],
           "statEffect": {
@@ -13147,7 +13147,7 @@
               "equipmentId": 75,
               "durationS": 50,
               "craftingLevelRequired": 60,
-              "craftingExp": 333
+              "craftingExp": 360
             }
           ],
           "statEffect": {
@@ -13214,7 +13214,7 @@
               "equipmentId": 85,
               "durationS": 50,
               "craftingLevelRequired": 60,
-              "craftingExp": 333
+              "craftingExp": 360
             }
           ],
           "statEffect": {
@@ -13281,7 +13281,7 @@
               "equipmentId": 105,
               "durationS": 50,
               "craftingLevelRequired": 60,
-              "craftingExp": 333
+              "craftingExp": 360
             }
           ],
           "statEffect": {
@@ -13369,7 +13369,7 @@
   },
   {
     "id": 37,
-    "name": "Shadow\nGlooplet",
+    "name": "Shadow Glooplet",
     "description": "The corrupted echo of its former self. Drifts mindlessly, compelled to consume memories.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/067_8Bit.png",
     "level": 1,
@@ -13425,7 +13425,7 @@
   },
   {
     "id": 38,
-    "name": "Shadow\nOozeling Wriggler",
+    "name": "Shadow Oozeling Wriggler",
     "description": "The corrupted echo of its former self. Seeps between stones, hunting with ghostlike intent.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/070_8Bit.png",
     "level": 2,
@@ -13481,7 +13481,7 @@
   },
   {
     "id": 39,
-    "name": "Shadow\nSlorbb",
+    "name": "Shadow Slorbb",
     "description": "The corrupted echo of its former self. Trembles unnaturally—joy twisted into hunger.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/068_8Bit.png",
     "level": 3,
@@ -13537,7 +13537,7 @@
   },
   {
     "id": 40,
-    "name": "Shadow\nMiremelt",
+    "name": "Shadow Miremelt",
     "description": "The corrupted echo of its former self. Spills venomous ichor that scars the floor.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/071_8Bit.png",
     "level": 4,
@@ -13593,7 +13593,7 @@
   },
   {
     "id": 41,
-    "name": "Shadow\nSquelchoid",
+    "name": "Shadow Squelchoid",
     "description": "The corrupted echo of its former self. Pulses with a sickly glow beneath a warped skin.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/069_8Bit.png",
     "level": 5,
@@ -13705,7 +13705,7 @@
   },
   {
     "id": 43,
-    "name": "Shadow\nRosemaw",
+    "name": "Shadow Rosemaw",
     "description": "The corrupted echo of its former self. Petals bloom with blood where it bites.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/015_8Bit.png",
     "level": 7,
@@ -13761,7 +13761,7 @@
   },
   {
     "id": 44,
-    "name": "Shadow\nPetalguard",
+    "name": "Shadow Petalguard",
     "description": "The corrupted echo of its former self. Thorns whisper warnings in long-dead tongues.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/023_8Bit.png",
     "level": 8,
@@ -13817,7 +13817,7 @@
   },
   {
     "id": 45,
-    "name": "Shadow\nThornkin Bulb",
+    "name": "Shadow Thornkin Bulb",
     "description": "The corrupted echo of its former self. Its barbs fester with spectral poison.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/013_8Bit.png",
     "level": 9,
@@ -13873,7 +13873,7 @@
   },
   {
     "id": 46,
-    "name": "Shadow\nBloomshroud",
+    "name": "Shadow Bloomshroud",
     "description": "The corrupted echo of its former self. Shrouds itself in cursed blossoms to ensnare souls.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/021_8Bit.png",
     "level": 10,
@@ -13929,7 +13929,7 @@
   },
   {
     "id": 47,
-    "name": "Shadow\nLilylurker",
+    "name": "Shadow Lilylurker",
     "description": "The corrupted echo of its former self. Its roots reach for warmth it no longer feels.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/014_8Bit.png",
     "level": 11,
@@ -13985,7 +13985,7 @@
   },
   {
     "id": 48,
-    "name": "Shadow\nVerdant Snapper",
+    "name": "Shadow Verdant Snapper",
     "description": "The corrupted echo of its former self. Snaps not to feed—but to silence.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/017_8Bit.png",
     "level": 12,
@@ -14041,7 +14041,7 @@
   },
   {
     "id": 49,
-    "name": "Shadow\nMurkmancer",
+    "name": "Shadow Murkmancer",
     "description": "The corrupted echo of its former self. Its croak carries echoes from beyond.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/080_8Bit.png",
     "level": 13,
@@ -14097,7 +14097,7 @@
   },
   {
     "id": 50,
-    "name": "Shadow\nMurkbeast",
+    "name": "Shadow Murkbeast",
     "description": "The corrupted echo of its former self. Disappears into the mist as if never born.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/078_8Bit.png",
     "level": 14,
@@ -14153,7 +14153,7 @@
   },
   {
     "id": 51,
-    "name": "Shadow\nMurkling",
+    "name": "Shadow Murkling",
     "description": "The corrupted echo of its former self. Its slime corrodes spirit and flesh alike.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/053_8Bit.png",
     "level": 15,
@@ -14209,7 +14209,7 @@
   },
   {
     "id": 52,
-    "name": "Shadow\nSludgething",
+    "name": "Shadow Sludgething",
     "description": "The corrupted echo of its former self. Glides across the mire without stirring it.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/022_8Bit.png",
     "level": 16,
@@ -14265,7 +14265,7 @@
   },
   {
     "id": 53,
-    "name": "Shadow\nSwampling",
+    "name": "Shadow Swampling",
     "description": "The corrupted echo of its former self. Lures intruders with mimicry of their own voice.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/027_8Bit.png",
     "level": 17,
@@ -14321,7 +14321,7 @@
   },
   {
     "id": 54,
-    "name": "Shadow\nMurklord",
+    "name": "Shadow Murklord",
     "description": "The corrupted echo of its former self. Fungus thrives where the dead once stood.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/046_8Bit.png",
     "level": 18,
@@ -14377,7 +14377,7 @@
   },
   {
     "id": 55,
-    "name": "Shadow\nSlithling",
+    "name": "Shadow Slithling",
     "description": "The corrupted echo of its former self. Strikes from behind veils of shadow and guilt.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/019_8Bit.png",
     "level": 19,
@@ -14433,7 +14433,7 @@
   },
   {
     "id": 56,
-    "name": "Shadow\nScalelord",
+    "name": "Shadow Scalelord",
     "description": "The corrupted echo of its former self. Hisses scripture older than stone.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/077_8Bit.png",
     "level": 20,
@@ -14489,7 +14489,7 @@
   },
   {
     "id": 57,
-    "name": "Shadow\nScalething",
+    "name": "Shadow Scalething",
     "description": "The corrupted echo of its former self. Its echoes warp the tunnel around you.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/079_8Bit.png",
     "level": 21,
@@ -14545,7 +14545,7 @@
   },
   {
     "id": 58,
-    "name": "Shadow\nVenomthing",
+    "name": "Shadow Venomthing",
     "description": "The corrupted echo of its former self. Venom drips with necrotic hate.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/086_8Bit.png",
     "level": 22,
@@ -14601,7 +14601,7 @@
   },
   {
     "id": 59,
-    "name": "Shadow\nHissthing",
+    "name": "Shadow Hissthing",
     "description": "The corrupted echo of its former self. Chanted to by ghostly vipers in reverence.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/061_8Bit.png",
     "level": 23,
@@ -14657,7 +14657,7 @@
   },
   {
     "id": 60,
-    "name": "Shadow\nHisslord",
+    "name": "Shadow Hisslord",
     "description": "The corrupted echo of its former self. Its gaze pierces into the heart’s decay.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/042_8Bit.png",
     "level": 24,
@@ -14713,7 +14713,7 @@
   },
   {
     "id": 61,
-    "name": "Shadow\nOathbreaker Fenlord",
+    "name": "Shadow Oathbreaker Fenlord",
     "description": "The corrupted echo of its former self. Every scar burns with vengeance.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/063_8Bit.png",
     "level": 25,
@@ -14769,7 +14769,7 @@
   },
   {
     "id": 62,
-    "name": "Shadow\nGnashfang Duelist",
+    "name": "Shadow Gnashfang Duelist",
     "description": "The corrupted echo of its former self. Its roar raises the dead in awe.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/076_8Bit.png",
     "level": 26,
@@ -14825,7 +14825,7 @@
   },
   {
     "id": 63,
-    "name": "Shadow\nIronhide Outcast",
+    "name": "Shadow Ironhide Outcast",
     "description": "The corrupted echo of its former self. Each trophy bears a name it whispers.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/060_8Bit.png",
     "level": 27,
@@ -14881,7 +14881,7 @@
   },
   {
     "id": 64,
-    "name": "Shadow\nGorefang Raider",
+    "name": "Shadow Gorefang Raider",
     "description": "The corrupted echo of its former self. Strength is its scripture; mercy is void.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/062_8Bit.png",
     "level": 28,
@@ -14937,7 +14937,7 @@
   },
   {
     "id": 65,
-    "name": "Shadow\nBloodtrail Marauder",
+    "name": "Shadow Bloodtrail Marauder",
     "description": "The corrupted echo of its former self. Its laughter splits minds from within.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/090_8Bit.png",
     "level": 29,
@@ -14993,7 +14993,7 @@
   },
   {
     "id": 66,
-    "name": "Shadow\nBlighthorn Warchief",
+    "name": "Shadow Blighthorn Warchief",
     "description": "The corrupted echo of its former self. Fueled by echoes of ancient warcries.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/087_8Bit.png",
     "level": 30,
@@ -15049,7 +15049,7 @@
   },
   {
     "id": 67,
-    "name": "Shadow\nCharbeast",
+    "name": "Shadow Charbeast",
     "description": "The corrupted echo of its former self. Flames coil within its hollow bones.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/016_8Bit.png",
     "level": 31,
@@ -15105,7 +15105,7 @@
   },
   {
     "id": 68,
-    "name": "Shadow\nCindermancer",
+    "name": "Shadow Cindermancer",
     "description": "The corrupted echo of its former self. Its ashes cling to memory and skin.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/028_8Bit.png",
     "level": 32,
@@ -15161,7 +15161,7 @@
   },
   {
     "id": 69,
-    "name": "Shadow\nCharthing",
+    "name": "Shadow Charthing",
     "description": "The corrupted echo of its former self. Burns footprints into reality itself.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/084_8Bit.png",
     "level": 33,
@@ -15217,7 +15217,7 @@
   },
   {
     "id": 70,
-    "name": "Shadow\nCharspawn",
+    "name": "Shadow Charspawn",
     "description": "The corrupted echo of its former self. Chokes the air with cursed ember clouds.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/055_8Bit.png",
     "level": 34,
@@ -15273,7 +15273,7 @@
   },
   {
     "id": 71,
-    "name": "Shadow\nCinderbeast",
+    "name": "Shadow Cinderbeast",
     "description": "The corrupted echo of its former self. Nothing remains inside but smoldering wrath.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/064_8Bit.png",
     "level": 35,
@@ -15329,7 +15329,7 @@
   },
   {
     "id": 72,
-    "name": "Shadow\nCharmancer",
+    "name": "Shadow Charmancer",
     "description": "The corrupted echo of its former self. Its sockets weep soot and sorrow.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/006_8Bit.png",
     "level": 36,

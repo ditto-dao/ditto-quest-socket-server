@@ -1,6 +1,8 @@
-import { Combat, Domain, DomainMonster, Equipment, Item, Monster, MonsterDrop, StatEffect } from "@prisma/client";
+import { Combat, Domain, DomainMonster, Dungeon, DungeonMonsterSequence, Equipment, Item, Monster, MonsterDrop, StatEffect } from "@prisma/client";
 import { logger } from "../utils/logger";
 import { prisma } from "./client";
+import { DungeonState } from "../managers/idle-managers/combat/dungeon-manager";
+import { Decimal } from "@prisma/client/runtime/library";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -97,6 +99,158 @@ export async function getDomainById(domainId: number): Promise<DomainWithMonster
                             },
                         },
                     },
+                },
+            },
+        },
+    });
+}
+
+export type DungeonWithMonsters = Dungeon & {
+    monsterSequence: (DungeonMonsterSequence & {
+        monster: Monster & {
+            combat: Combat;
+            statEffects: StatEffect[];
+            drops: (MonsterDrop & {
+                item: Item | null;
+                equipment: Equipment | null;
+            })[];
+        };
+    })[];
+};
+
+/**
+ * Fetches a dungeon by its ID, including all nested monster data but excluding leaderboard.
+ *
+ * - Includes `monsterSequence` in defined order
+ * - Each sequence entry includes the full `Monster` object with:
+ *    - `combat` stats
+ *    - `statEffects`
+ *    - `drops` including nested `item` and `equipment`
+ *
+ * @param dungeonId - The ID of the dungeon to fetch
+ * @returns A `DungeonWithMonsters` object or `null` if not found
+ */
+export async function getDungeonById(dungeonId: number): Promise<DungeonWithMonsters | null> {
+    return await prisma.dungeon.findUnique({
+        where: { id: dungeonId },
+        include: {
+            monsterSequence: {
+                orderBy: { order: "asc" },
+                include: {
+                    monster: {
+                        include: {
+                            combat: true,
+                            statEffects: true,
+                            drops: {
+                                include: {
+                                    item: true,
+                                    equipment: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+export async function updateDungeonLeaderboard(
+    userId: string,
+    dungeonId: number,
+    dungeonState: DungeonState,
+    monstersPerFloor: number,
+) {
+    const monstersKilled = (dungeonState.floor - 1) * monstersPerFloor + dungeonState.monsterIndex;
+    const damageDealt = dungeonState.totalDamageDealt;
+    const damageTaken = dungeonState.totalDamageTaken;
+    const timeElapsedMs = Date.now() - dungeonState.startTimestamp;
+
+    const score =
+        monstersKilled * 1000 +
+        damageDealt * 0.5 -
+        damageTaken * 0.25 -
+        (timeElapsedMs / 1000) * 2;
+
+    await prisma.dungeonLeaderboard.upsert({
+        where: {
+            userId_dungeonId: {
+                userId,
+                dungeonId,
+            },
+        },
+        update: {
+            monstersKilled,
+            damageDealt,
+            damageTaken,
+            timeElapsedMs,
+            score,
+            runDate: new Date(),
+        },
+        create: {
+            userId,
+            dungeonId,
+            monstersKilled,
+            damageDealt,
+            damageTaken,
+            timeElapsedMs,
+            score,
+            runDate: new Date(),
+        },
+    });
+
+    logger.info(`🏆 Upserted leaderboard for user ${userId} in dungeon ${dungeonId}. monstersKilled: ${monstersKilled}, damageDealt: ${damageDealt}, damageTaken: ${damageTaken}, timeElapsedMs: ${timeElapsedMs}, score: ${score}`);
+}
+
+export type DungeonLeaderboardEntry = {
+    id: number;
+    userId: string;
+    dungeonId: number;
+    monstersKilled: number;
+    damageDealt: number;
+    damageTaken: number;
+    timeElapsedMs: number;
+    runDate: Date;
+    score: number;
+    user: {
+        telegramId: string;
+        username: string | null;
+        level: number;
+        combat: {
+            cp: Decimal;
+        } | null;
+        equippedSlime: {
+            imageUri: string;
+        } | null;
+    };
+};
+
+export async function getDungeonLeaderboardPage(
+    dungeonId: number,
+    limit: number,
+    cursor?: { id: number }
+): Promise<DungeonLeaderboardEntry[]> {
+    return await prisma.dungeonLeaderboard.findMany({
+        where: { dungeonId },
+        orderBy: { score: 'desc' },
+        take: limit,
+        ...(cursor ? { skip: 1, cursor } : {}),
+        include: {
+            user: {
+                select: {
+                    telegramId: true,
+                    username: true,
+                    level: true,
+                    combat: {
+                        select: {
+                            cp: true,
+                        },
+                    },
+                    equippedSlime: {
+                        select: {
+                            imageUri: true,
+                        }
+                    }
                 },
             },
         },

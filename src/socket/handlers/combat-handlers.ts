@@ -1,18 +1,17 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { IdleFarmingManager } from "../../managers/idle-managers/farming-idle-manager"
 import { SocketManager } from "../socket-manager"
-import { getItemById } from "../../sql-services/item-service"
-import { COMBAT_STOPPED_EVENT, START_COMBAT_DOMAIN_EVENT, STOP_COMBAT_EVENT } from "../events"
+import { COMBAT_STOPPED_EVENT, DUNGEON_LB_UPDATE_EVENT, GET_DUNGEON_LB, START_COMBAT_DOMAIN_EVENT, START_COMBAT_DUNGEON_EVENT, STOP_COMBAT_EVENT, USER_UPDATE_EVENT } from "../events"
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager"
-import { getDomainById } from "../../sql-services/combat-service"
-import { getSimpleUserData } from "../../sql-services/user-service"
+import { getDomainById, getDungeonById, getDungeonLeaderboardPage } from "../../sql-services/combat-service"
+import { getSimpleUserData, incrementUserGoldBalance } from "../../sql-services/user-service"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
+import { globalIdleSocketUserLock } from "../socket-handlers"
 
-interface StartCombatDomainPayload {
+interface StartCombatPayload {
     userId: string,
-    domainId: number
+    id: number
 }
 
 export async function setupCombatSocketHandlers(
@@ -21,38 +20,106 @@ export async function setupCombatSocketHandlers(
     idleManager: IdleManager,
     combatManager: IdleCombatManager
 ): Promise<void> {
-    socket.on(START_COMBAT_DOMAIN_EVENT, async (data: StartCombatDomainPayload) => {
-        try {
-            logger.info(`Received START_COMBAT_DOMAIN_EVENT event from user ${data.userId}`)
+    socket.on(START_COMBAT_DOMAIN_EVENT, async (data: StartCombatPayload) => {
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received START_COMBAT_DOMAIN_EVENT event from user ${data.userId}`);
 
-            const domain = await getDomainById(data.domainId);
-            if (!domain) throw new Error(`Unable to find domain of id: ${data.domainId}`);
-            const user = await getSimpleUserData(data.userId);
-            if (!user) throw new Error(`Unable to find user of id: ${data.userId}`);
+                const domain = await getDomainById(data.id);
+                if (!domain) throw new Error(`Unable to find domain of id: ${data.id}`);
+                const user = await getSimpleUserData(data.userId);
+                if (!user) throw new Error(`Unable to find user of id: ${data.userId}`);
 
-            await combatManager.startDomainCombat(idleManager,data.userId, user, user.combat, domain, Date.now());
+                await combatManager.startDomainCombat(idleManager, data.userId, user, user.combat, domain, Date.now());
 
-        } catch (error) {
-            logger.error(`Error processing START_COMBAT_DOMAIN_EVENT: ${error}`)
-            socketManager.emitEvent(data.userId, COMBAT_STOPPED_EVENT, { userId: data.userId })
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to enter domain'
-            })
-        }
+            } catch (error) {
+                logger.error(`Error processing START_COMBAT_DOMAIN_EVENT: ${error}`)
+                socketManager.emitEvent(data.userId, COMBAT_STOPPED_EVENT, { userId: data.userId })
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to enter domain'
+                })
+            }
+        });
+    })
+
+    socket.on(START_COMBAT_DUNGEON_EVENT, async (data: StartCombatPayload) => {
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received START_COMBAT_DUNGEON_EVENT event from user ${data.userId}`);
+
+                const dungeon = await getDungeonById(data.id);
+
+                if (!dungeon) throw new Error(`Unable to find dungeon of id: ${data.id}`);
+
+                const entryPriceGp = dungeon.entryPriceGP;
+                if (entryPriceGp) {
+                    const goldBalance = await incrementUserGoldBalance(data.userId, -entryPriceGp);
+                    socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
+                        userId: data.userId,
+                        payload: {
+                            goldBalance
+                        }
+                    });
+                }
+
+                const user = await getSimpleUserData(data.userId);
+                if (!user) throw new Error(`Unable to find user of id: ${data.userId}`);
+
+                await combatManager.startDungeonCombat(idleManager, data.userId, user, user.combat, dungeon, Date.now());
+
+            } catch (error) {
+                logger.error(`Error processing START_COMBAT_DUNGEON_EVENT: ${error}`);
+                socketManager.emitEvent(data.userId, COMBAT_STOPPED_EVENT, { userId: data.userId });
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to enter dungeon'
+                });
+            }
+        });
     })
 
     socket.on(STOP_COMBAT_EVENT, async (userId: string) => {
-        try {
-            logger.info(`Received STOP_COMBAT_EVENT event for user ${userId}`);
+        await globalIdleSocketUserLock.acquire(userId, async () => {
+            try {
+                logger.info(`Received STOP_COMBAT_EVENT event for user ${userId}`);
 
-            await combatManager.stopCombat(idleManager, userId);
+                await combatManager.stopCombat(idleManager, userId);
+            } catch (error) {
+                logger.error(`Error stopping combat for user ${userId}: ${error}`);
+                socket.emit('error', {
+                    userId: userId,
+                    msg: 'Failed to stop combat'
+                });
+            }
+        });
+    })
+
+    socket.on(GET_DUNGEON_LB, async (data: {
+        userId: string,
+        dungeonId: number,
+        limit: number,
+        cursor?: { id: number }
+    }) => {
+        try {
+            logger.info(`Received GET_DUNGEON_LB event for user ${data.userId}: ${JSON.stringify(data, null, 2)}`);
+
+            const lb = await getDungeonLeaderboardPage(data.dungeonId, data.limit, data.cursor);
+
+            logger.info(`LB fetched: ${JSON.stringify(lb, null, 2)}`);
+
+            socketManager.emitEvent(data.userId, DUNGEON_LB_UPDATE_EVENT, {
+                userId: data.userId,
+                payload: {
+                    lb
+                }
+            });
         } catch (error) {
-            logger.error(`Error stopping combat for user ${userId}\: ${error}`)
+            logger.error(`Error retrieving dungeon leaderboard for user ${data.userId}: ${error}`);
             socket.emit('error', {
-                userId: userId,
-                msg: 'Failed to stop combat'
-            })
+                userId: data.userId,
+                msg: 'Failed to retrieve dungeon leaderboard'
+            });
         }
     })
 }
