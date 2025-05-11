@@ -166,12 +166,29 @@ export async function updateDungeonLeaderboard(
     const damageTaken = dungeonState.totalDamageTaken;
     const timeElapsedMs = Date.now() - dungeonState.startTimestamp;
 
-    const score =
+    const newScore =
         monstersKilled * 1000 +
         damageDealt * 0.5 -
         damageTaken * 0.25 -
         (timeElapsedMs / 1000) * 2;
 
+    // Fetch the current leaderboard entry (if it exists)
+    const existingEntry = await prisma.dungeonLeaderboard.findUnique({
+        where: {
+            userId_dungeonId: {
+                userId,
+                dungeonId,
+            },
+        },
+    });
+
+    // If the existing score is higher (or equal), do nothing
+    if (existingEntry && existingEntry.score >= newScore) {
+        logger.info(`⏩ Skipping leaderboard update for user ${userId} in dungeon ${dungeonId}. Current score (${existingEntry.score}) >= new score (${newScore})`);
+        return;
+    }
+
+    // Otherwise, update or create the entry
     await prisma.dungeonLeaderboard.upsert({
         where: {
             userId_dungeonId: {
@@ -184,7 +201,7 @@ export async function updateDungeonLeaderboard(
             damageDealt,
             damageTaken,
             timeElapsedMs,
-            score,
+            score: newScore,
             runDate: new Date(),
         },
         create: {
@@ -194,12 +211,12 @@ export async function updateDungeonLeaderboard(
             damageDealt,
             damageTaken,
             timeElapsedMs,
-            score,
+            score: newScore,
             runDate: new Date(),
         },
     });
 
-    logger.info(`🏆 Upserted leaderboard for user ${userId} in dungeon ${dungeonId}. monstersKilled: ${monstersKilled}, damageDealt: ${damageDealt}, damageTaken: ${damageTaken}, timeElapsedMs: ${timeElapsedMs}, score: ${score}`);
+    logger.info(`🏆 Upserted leaderboard for user ${userId} in dungeon ${dungeonId}. monstersKilled: ${monstersKilled}, damageDealt: ${damageDealt}, damageTaken: ${damageTaken}, timeElapsedMs: ${timeElapsedMs}, score: ${newScore}`);
 }
 
 export type DungeonLeaderboardEntry = {
