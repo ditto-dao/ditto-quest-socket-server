@@ -156,7 +156,9 @@ async function handleDungeonEntry(
         const dungeon = await getDungeonById(dungeonId);
 
         if (!dungeon) throw new Error(`Unable to find dungeon of id: ${dungeonId}`);
-        if (dungeon.entryPriceDittoWei && (-BigInt(dungeon.entryPriceDittoWei.toString()) < BigInt(balanceUpdate.accumulatedBalanceChange) - BigInt(balanceUpdate.liveBalanceChange))) {
+        if (dungeon.entryPriceDittoWei &&
+            (-BigInt(dungeon.entryPriceDittoWei.toString()) <
+                (BigInt(balanceUpdate.accumulatedBalanceChange) - BigInt(balanceUpdate.liveBalanceChange)))) {
             throw new Error(`Insufficient DITTO deducted for dungeon entry.`);
         }
 
