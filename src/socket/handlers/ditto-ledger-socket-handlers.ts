@@ -156,10 +156,14 @@ async function handleDungeonEntry(
         const dungeon = await getDungeonById(dungeonId);
 
         if (!dungeon) throw new Error(`Unable to find dungeon of id: ${dungeonId}`);
-        if (dungeon.entryPriceDittoWei &&
-            (-BigInt(dungeon.entryPriceDittoWei.toString()) <
-                (BigInt(balanceUpdate.accumulatedBalanceChange) - BigInt(balanceUpdate.liveBalanceChange)))) {
-            throw new Error(`Insufficient DITTO deducted for dungeon entry.`);
+        if (dungeon.entryPriceDittoWei) {
+            const entryPrice = BigInt(dungeon.entryPriceDittoWei.toString());
+            const paidAmount = (BigInt(balanceUpdate.liveBalanceChange) + BigInt(balanceUpdate.accumulatedBalanceChange)) * BigInt(-1); // Convert negative deduction to positive
+
+            if (paidAmount < entryPrice) {
+                throw new Error(`Insufficient DITTO deducted for dungeon entry. 
+                    Required: ${entryPrice}, Paid: ${paidAmount}`);
+            }
         }
 
         const user = await getSimpleUserData(userId);
@@ -170,7 +174,7 @@ async function handleDungeonEntry(
         logger.error(`Error entering dungeon with DITTO fee: ${err}`);
         socketManager.emitEvent(userId, 'error', {
             userId: userId,
-            msg: `Failed to enter dungeon.`
+            msg: `Failed to enter dungeon. ${(err as Error).message.includes('Insufficient DITTO') ? ' Insufficient DITTO paid.' : ''}`
         });
         socketManager.emitEvent(userId, COMBAT_STOPPED_EVENT, { userId: userId });
 

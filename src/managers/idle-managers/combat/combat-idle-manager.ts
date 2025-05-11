@@ -8,7 +8,7 @@ import { DomainManager } from './domain-manager';
 import { COMBAT_STARTED_EVENT, COMBAT_STOPPED_EVENT } from '../../../socket/events';
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { sleep } from '../../../utils/helpers';
-import { DungeonManager } from './dungeon-manager';
+import { DungeonManager, DungeonState } from './dungeon-manager';
 
 export class IdleCombatManager {
     private activeBattlesByUserId: Record<string, Battle> = {};
@@ -335,10 +335,10 @@ export class IdleCombatManager {
         await battle.startBattle();
     }
 
-    async startDungeonCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, dungeon: DungeonWithMonsters, startTimestamp: number, monster?: FullMonster) {
+    async startDungeonCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, dungeon: DungeonWithMonsters, startTimestamp: number, monster?: FullMonster, state?: DungeonState) {
         await idleManager.removeAllCombatActivities(userId);
 
-        DungeonManager.initDungeonState(userId, startTimestamp);
+        DungeonManager.initDungeonState(userId, startTimestamp, state);
 
         const dungeonState = DungeonManager.getState(userId);
 

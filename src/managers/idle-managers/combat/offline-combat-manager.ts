@@ -13,7 +13,7 @@ import { mintItemToUser } from "../../../sql-services/item-inventory-service";
 import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { calculateHpExpGained } from "../../../utils/helpers";
 import { CombatActivityInput, logCombatActivities } from "../../../sql-services/user-activity-log";
-import { DungeonManager } from "./dungeon-manager";
+import { DungeonManager, DungeonState } from "./dungeon-manager";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -21,7 +21,8 @@ export interface CurrentCombat {
   userCombat: Combat,
   locationId: number,
   startTimestamp: number,
-  monsterToStartWith: FullMonster
+  monsterToStartWith: FullMonster,
+  dungeonState?: DungeonState,
 }
 
 export class OfflineCombatManager {
@@ -531,7 +532,14 @@ export class OfflineCombatManager {
         startTimestamp: activity.logoutTimestamp! + (totalTicks * tickMs),
         monsterToStartWith: monster?.combat.hp > 0
           ? monster
-          : DungeonManager.getBuffedFullMonster(DungeonManager.getMonsterFromDungeonByIndex(dungeon, activity.currentMonsterIndex), activity.currentFloor)
+          : DungeonManager.getBuffedFullMonster(DungeonManager.getMonsterFromDungeonByIndex(dungeon, activity.currentMonsterIndex), activity.currentFloor),
+        dungeonState: {
+          floor: activity.currentFloor,
+          monsterIndex: activity.currentMonsterIndex,
+          totalDamageDealt: activity.totalDamageDealt,
+          totalDamageTaken: activity.totalDamageTaken,
+          startTimestamp: activity.startTimestamp
+        }
       } : undefined
     }
   }

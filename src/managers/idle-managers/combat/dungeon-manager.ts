@@ -81,8 +81,8 @@ export class DungeonManager {
         };
     }
 
-    static initDungeonState(userId: string, startTimestamp: number) {
-        this.dungeonStateByUserId[userId] = {
+    static initDungeonState(userId: string, startTimestamp: number, state?: DungeonState) {
+        this.dungeonStateByUserId[userId] = (state) ? state : {
             floor: 1,
             monsterIndex: 0,
             totalDamageDealt: 0,

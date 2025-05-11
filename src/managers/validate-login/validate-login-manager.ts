@@ -176,7 +176,7 @@ export class ValidateLoginManager {
             } else {
                 const dungeon = await getDungeonById(currentCombat.locationId);
                 if (!dungeon) throw new Error(`Unable to find dungeon to load offline combat`);
-                await this.combatManager.startDungeonCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, dungeon, currentCombat.startTimestamp, currentCombat.monsterToStartWith);
+                await this.combatManager.startDungeonCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, dungeon, currentCombat.startTimestamp, currentCombat.monsterToStartWith, currentCombat.dungeonState);
             }
         }
 
