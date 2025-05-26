@@ -4,7 +4,7 @@ import { logger } from "../../../utils/logger";
 import { SocketManager } from "../../../socket/socket-manager";
 import { FullMonster, setLastBattleEndTimestamp, setUserCombatHpByTelegramId } from "../../../sql-services/combat-service";
 import { COMBAT_EXP_UPDATE_EVENT, COMBAT_HP_CHANGE_EVENT, COMBAT_STARTED_EVENT, COMBAT_USER_DIED_EVENT, LEDGER_UPDATE_BALANCE_EVENT, USER_UPDATE_EVENT } from "../../../socket/events";
-import { DEVELOPMENT_FUNDS_KEY, DITTO_DECIMALS } from "../../../utils/config";
+import { DEVELOPMENT_FUNDS_KEY, DITTO_DECIMALS, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
 import { incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { randomBytes } from "crypto";
@@ -13,6 +13,7 @@ import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-s
 import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
 import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
 import { DungeonManager } from "./dungeon-manager";
+import { getReferrer, hasUsedReferralCode, logReferralEarning } from "../../../sql-services/referrals";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -284,7 +285,7 @@ export class Battle {
 
         await this.handleExpGain();
         const goldDrop = await this.handleGoldDrop();
-        const dittoDrop = this.handleDittoDrop();
+        const dittoDrop = await this.handleDittoDrop();
         const drops = await this.handleItemAndEquipmentDrop();
 
         if (this.monster && drops) {
@@ -549,34 +550,75 @@ export class Battle {
     }
   }
 
-  handleDittoDrop(): bigint | undefined {
+  async handleDittoDrop(): Promise<bigint | undefined> {
     try {
       if (this.battleEnded) return;
 
-      const dittoDrop = Battle.roundWeiTo1DecimalPlace(Battle.getAmountDrop(BigInt(this.monster.minDittoDrop.toString()), BigInt(this.monster.maxDittoDrop.toString())));
+      const referrer = await getReferrer(this.user.telegramId);
+
+      let dittoDrop = Battle.getAmountDrop(
+        BigInt(this.monster.minDittoDrop.toString()),
+        BigInt(this.monster.maxDittoDrop.toString())
+      );
+
+      if (referrer && referrer.referrerUserId) {
+        dittoDrop = Battle.scaleBN(dittoDrop, REFERRAL_BOOST + 1); // apply boost (e.g. 1.1x)
+      }
+
       if (dittoDrop > 0n) {
-        this.dittoLedgerSocket.emit(LEDGER_UPDATE_BALANCE_EVENT, {
-          sender: DEVELOPMENT_FUNDS_KEY,
-          updates: [
+        const dittoDropRounded = Battle.roundWeiTo2DecimalPlaces(dittoDrop);
+
+        const updates = [
+          {
+            userId: DEVELOPMENT_FUNDS_KEY,
+            liveBalanceChange: (-dittoDropRounded).toString(),
+            accumulatedBalanceChange: "0",
+            notes: "Deducted for monster DITTO drop",
+          },
+          {
+            userId: this.user.telegramId,
+            liveBalanceChange: dittoDropRounded.toString(),
+            accumulatedBalanceChange: "0",
+            notes: "Monster DITTO drop",
+          }
+        ];
+
+        if (referrer && !referrer.referrerExternal && referrer.referrerUserId) {
+          const referrerCut = Battle.roundWeiTo5DecimalPlaces(
+            Battle.scaleBN(dittoDrop, REFERRAL_COMBAT_CUT)
+          );
+          updates.push(
             {
               userId: DEVELOPMENT_FUNDS_KEY,
-              liveBalanceChange: (-dittoDrop).toString(),
+              liveBalanceChange: (-referrerCut).toString(),
               accumulatedBalanceChange: "0",
               notes: "Deducted for monster DITTO drop",
             },
             {
-              userId: this.user.telegramId,
-              liveBalanceChange: (dittoDrop).toString(),
+              userId: referrer.referrerUserId,
+              liveBalanceChange: referrerCut.toString(),
               accumulatedBalanceChange: "0",
-              notes: "Monster DITTO drop",
+              notes: `Referral earnings from user ${this.user.telegramId}`,
             }
-          ]
-        })
+          );
 
-        return dittoDrop;
+          await logReferralEarning({
+            referrerId: referrer.referrerUserId,
+            refereeId: this.user.telegramId,
+            amountDittoWei: Number(referrerCut.toString()),
+            tier: 1
+          });
+        }
+
+        this.dittoLedgerSocket.emit(LEDGER_UPDATE_BALANCE_EVENT, {
+          sender: DEVELOPMENT_FUNDS_KEY,
+          updates,
+        });
+
+        return dittoDropRounded;
       }
     } catch (err) {
-      logger.error(`Failed to handle ditto drop in battle.`)
+      logger.error(`Failed to handle ditto drop in battle.`);
     }
   }
 
@@ -651,5 +693,28 @@ export class Battle {
     const tenthUnit = fullUnit / BigInt(10);                      // 0.1 DITTO in wei
     const tenths = wei / tenthUnit;                               // how many 0.1 DITTOs
     return tenths * tenthUnit;                                    // round down to nearest 0.1 DITTO (in wei)
+  }
+
+  static roundWeiTo2DecimalPlaces(wei: bigint): bigint {
+    const fullUnit = BigInt(10) ** BigInt(DITTO_DECIMALS);        // 1 DITTO in wei
+    const hundredthUnit = fullUnit / BigInt(100);                 // 0.01 DITTO in wei
+    const hundredths = wei / hundredthUnit;                       // how many 0.01 DITTOs
+    return hundredths * hundredthUnit;                            // round down to nearest 0.01 DITTO (in wei)
+  }
+
+  static roundWeiTo5DecimalPlaces(wei: bigint): bigint {
+    const fullUnit = BigInt(10) ** BigInt(DITTO_DECIMALS);          // 1 DITTO in wei
+    const unitAt5dp = fullUnit / BigInt(100000);                    // 0.00001 DITTO in wei
+    const units = wei / unitAt5dp;                                  // how many 0.00001 DITTOs
+    return units * unitAt5dp;                                       // round down to nearest 0.00001 DITTO (in wei)
+  }
+
+  static scaleBN(input: bigint, multiplier: number): bigint {
+    if (multiplier <= 0) throw new Error("Multiplier musst be greater than 0");
+
+    const SCALE = 1_000_000; // 6 decimal precision
+    const scaledMultiplier = Math.round(multiplier * SCALE);
+
+    return (input * BigInt(scaledMultiplier)) / BigInt(SCALE);
   }
 }

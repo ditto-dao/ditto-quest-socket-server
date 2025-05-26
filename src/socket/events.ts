@@ -16,7 +16,17 @@ export const USER_DATA_ON_LOGIN_EVENT = 'user-data-on-login';
 
 export const FIRST_LOGIN_EVENT = 'user-first-login';
 
+export const READ_REFERRAL_CODE = 'read-user-referral-code';
+
+export const READ_REFERRAL_CODE_RES = 'read-user-referral-code-res';
+
+export const READ_REFERRAL_STATS = 'read-user-referral-stats';
+
+export const READ_REFERRAL_STATS_RES = 'read-user-referral-stats-res';
+
 export const USE_REFERRAL_CODE = 'use-referral-code';
+
+export const USE_REFERRAL_CODE_SUCCESS = 'use-referral-code-success';
 
 // User
 

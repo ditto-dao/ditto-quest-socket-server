@@ -837,7 +837,7 @@ model ReferralEarningLog {
   referrerId     String
   refereeId      String
   tier           Int // 1 for direct, 2 for indirect
-  amountDittoWei Int
+  amountDittoWei Decimal @db.Decimal(65, 0)
   createdAt      DateTime @default(now())
 
   referrer User @relation("RefEarningsReferrer", fields: [referrerId], references: [telegramId])

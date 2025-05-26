@@ -6,7 +6,7 @@ import { ValidateLoginManager } from "../../managers/validate-login/validate-log
 import { SocketManager } from "../socket-manager";
 import { ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
 import { slimeGachaPull } from "../../sql-services/slime";
-import { DEVELOPMENT_FUNDS_KEY, LEVERAGE_POOL_KEY } from "../../utils/config";
+import { DEVELOPMENT_FUNDS_KEY } from "../../utils/config";
 import { getDungeonById } from "../../sql-services/combat-service";
 import { getSimpleUserData } from "../../sql-services/user-service";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
@@ -186,7 +186,7 @@ async function revertTrxToLedger(ledgerSocket: DittoLedgerSocket, userId: string
     try {
         logger.info(`revertTrxToLedger:: ledgerSocket: ${ledgerSocket.id}, userId: ${userId}, refundTo: ${refundTo}, balanceUpdate: ${JSON.stringify(balanceUpdate, null, 2)}`);
 
-        if (refundTo !== DEVELOPMENT_FUNDS_KEY && refundTo !== LEVERAGE_POOL_KEY) {
+        if (refundTo !== DEVELOPMENT_FUNDS_KEY) {
             throw new Error(`Invalid refund recipient: ${refundTo}`);
         }
 

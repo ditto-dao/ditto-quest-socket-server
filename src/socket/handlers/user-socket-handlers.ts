@@ -7,8 +7,8 @@ import { equipSlimeForUser, getEquippedSlimeWithTraits, getSlimeWithTraitsById, 
 import { emitUserAndCombatUpdate } from "../../utils/helpers";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
-import { USE_REFERRAL_CODE } from "../events";
-import { applyReferralCode } from "../../sql-services/referrals";
+import { READ_REFERRAL_CODE, READ_REFERRAL_CODE_RES, READ_REFERRAL_STATS, READ_REFERRAL_STATS_RES, USE_REFERRAL_CODE, USE_REFERRAL_CODE_SUCCESS } from "../events";
+import { applyReferralCode, getReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, hasUsedReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals";
 
 interface EquipPayload {
     userId: string;
@@ -237,21 +237,82 @@ export async function setupUserSocketHandlers(
         }
     });
 
+
+    // REFERRALS
+    socket.on(READ_REFERRAL_CODE, async (data: { userId: string }) => {
+        try {
+            logger.info(`Received READ_REFERRAL_CODE event from user ${data.userId}`);
+            const code = await getUserReferralCode(data.userId);
+            socket.emit(READ_REFERRAL_CODE_RES, {
+                userId: data.userId,
+                payload: {
+                    referralCode: code.code
+                }
+            });
+        } catch (err) {
+            logger.error(`Error during READ_REFERRAL_CODE for user ${data.userId}: ${err}`);
+
+            socket.emit("error", {
+                userId: data.userId,
+                msg: "Failed to get user referral code",
+            });
+        }
+    });
+
+    socket.on(READ_REFERRAL_STATS, async (data: { userId: string }) => {
+        try {
+            logger.info(`Received READ_REFERRAL_STATS event from user ${data.userId}`);
+            const referrerDetails = await getReferrerDetails(data.userId);
+            const referralStats = await getReferralStats(data.userId);
+
+            socket.emit(READ_REFERRAL_STATS_RES, {
+                userId: data.userId,
+                payload: {
+                    referrerUserId: referrerDetails?.referrerUserId,
+                    referrerExternal: referrerDetails?.referrerExternal,
+                    referrerUsername: referrerDetails?.referrerUsername,
+                    directRefereeCount: referralStats.directRefereeCount,
+                    totalEarningsWei: referralStats.totalEarningsWei.toString(),
+                }
+            });
+        } catch (err) {
+            logger.error(`Error during READ_REFERRAL_STATS for user ${data.userId}: ${err}`);
+
+            socket.emit("error", {
+                userId: data.userId,
+                msg: "Failed to read referral stats",
+            });
+        }
+    });
+
     socket.on(USE_REFERRAL_CODE, async (data: { userId: string, referralCode: string }) => {
         try {
             logger.info(`Received USE_REFERRAL_CODE event from user ${data.userId}`);
-            await applyReferralCode(data.userId, data.referralCode);
+
+            const validation = await validateReferralCodeUsage(data.userId, data.referralCode);
+            if (!validation.valid) {
+                logger.warn(`Referral code rejected for ${data.userId}: ${validation.reason}`);
+                socket.emit("error", {
+                    userId: data.userId,
+                    msg: validation.reason,
+                });
+                return;
+            }
+
+            const res = await applyReferralCode(data.userId, data.referralCode);
+            socket.emit(USE_REFERRAL_CODE_SUCCESS, {
+                userId: data.userId,
+                payload: {
+                    referredBy: res.referredBy,
+                    isUserReferrer: res.isUserReferrer
+                }
+            });
         } catch (err) {
             logger.error(`Error during USE_REFERRAL_CODE for user ${data.userId}: ${err}`);
-
             socket.emit("error", {
                 userId: data.userId,
                 msg: "Failed to use referral code",
             });
-        } finally {
-/*             socket.emit("pump-stats-complete", {
-                userId: data.userId,
-            }); */
         }
     });
 }

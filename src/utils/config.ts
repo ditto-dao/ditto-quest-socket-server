@@ -13,8 +13,6 @@ export const SOCKET_PATH_DITTO_LEDGER = process.env.SOCKET_PATH_DITTO_LEDGER || 
 
 export const DEVELOPMENT_FUNDS_KEY  = process.env.DEVELOPMENT_FUNDS_KEY || ""
 
-export const LEVERAGE_POOL_KEY  = process.env.LEVERAGE_POOL_KEY || ""
-
 export const DITTO_DECIMALS = (process.env.DITTO_DECIMALS !== undefined && !isNaN(parseInt(process.env.DITTO_DECIMALS))) ? parseInt(process.env.DITTO_DECIMALS) : 9;
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ""
@@ -40,3 +38,7 @@ export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || ""
 export const SLIMES_TARGET_FOLDER = process.env.SLIMES_TARGET_FOLDER || ""
 
 export const S3_UPLOAD_CACHE_CONTROL = process.env.S3_UPLOAD_CACHE_CONTROL || ""
+
+export const REFERRAL_BOOST = (process.env.REFERRAL_BOOST !== undefined && !isNaN(parseFloat(process.env.REFERRAL_BOOST))) ? parseFloat(process.env.REFERRAL_BOOST) : 0.1
+
+export const REFERRAL_COMBAT_CUT = (process.env.REFERRAL_COMBAT_CUT !== undefined && !isNaN(parseFloat(process.env.REFERRAL_COMBAT_CUT))) ? parseFloat(process.env.REFERRAL_COMBAT_CUT) : 0.1
