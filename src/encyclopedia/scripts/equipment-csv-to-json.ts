@@ -24,7 +24,8 @@ interface Item {
 interface Equipment {
     id: number;
     name: string;
-    requiredLvl: number;
+    requiredLvlCraft: number;
+    requiredLvlCombat: number;
     attackType?: AttackType;
     description: string;
     imgsrc: string;
@@ -165,13 +166,13 @@ function parseEquipmentType(value: string): EquipmentType {
 }
 
 function parseAttackType(value: string): AttackType | undefined {
-  const lower = value.toLowerCase();
+    const lower = value.toLowerCase();
 
-  if (lower.includes("melee")) return AttackType.Melee;
-  if (lower.includes("ranged")) return AttackType.Ranged;
-  if (lower.includes("magic")) return AttackType.Magic;
+    if (lower.includes("melee")) return AttackType.Melee;
+    if (lower.includes("ranged")) return AttackType.Ranged;
+    if (lower.includes("magic")) return AttackType.Magic;
 
-  return undefined;
+    return undefined;
 }
 
 const parseCsvToJson = async () => {
@@ -228,7 +229,8 @@ const parseCsvToJson = async () => {
                         id: parseInt(row["Equipment_ID"]),
                         name: row["Item Name"],
                         description: row["Description"],
-                        requiredLvl: row["Required Lvl"] ? parseInt(row["Required Lvl"]) : 1,
+                        requiredLvlCraft: row["Crafting Level Req"] ? parseInt(row["Required Lvl"]) : 1,
+                        requiredLvlCombat: row["Combat Level Req"] ? parseInt(row["Required Lvl"]) : 1,
                         attackType: parseAttackType(row["Category"]),
                         imgsrc: row["Image"] || "",
                         statEffect,

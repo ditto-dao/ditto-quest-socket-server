@@ -371,7 +371,8 @@ model Equipment {
 
   buyPriceDittoWei Decimal? @db.Decimal(65, 0)
 
-  requiredLvl Int @default(1)
+  requiredLvlCraft Int @default(1)
+  requiredLvlCombat Int @default(1)
 
   attackType AttackType? // only for weapon
 

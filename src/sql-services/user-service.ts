@@ -1219,7 +1219,7 @@ export async function equipEquipmentForUser(
             },
         });
 
-        if (equipmentInventory.equipment.requiredLvl > updatedUser.level) throw new Error(`User does not meet level requirements`);
+        if (equipmentInventory.equipment.requiredLvlCombat > updatedUser.level) throw new Error(`User does not meet level requirements`);
 
         logger.info(
             `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`
