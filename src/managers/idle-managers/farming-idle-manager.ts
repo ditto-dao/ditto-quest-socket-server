@@ -1,6 +1,6 @@
 import { Item } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
-import { mintItemToUser } from "../../sql-services/item-inventory-service";
+import { canUserMintItem, mintItemToUser } from "../../sql-services/item-inventory-service";
 import { addFarmingExp, getUserFarmingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
@@ -31,6 +31,14 @@ export class IdleFarmingManager {
             const currentFarmingLevel = await getUserFarmingLevel(userId);
             if (currentFarmingLevel < item.farmingLevelRequired) {
                 throw new Error("Insufficient farming level");
+            }
+
+            if (!(await canUserMintItem(userId, item.id))) {
+                socketManager.emitEvent(userId, 'error', {
+                    userId: userId,
+                    msg: 'Inventory full. Please clear space or upgrade your slots'
+                })
+                throw new Error(`Insufficient inventory space to start farming`);
             }
 
             // Define callbacks

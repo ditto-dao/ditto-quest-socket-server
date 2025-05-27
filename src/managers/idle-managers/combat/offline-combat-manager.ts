@@ -9,8 +9,8 @@ import { DEVELOPMENT_FUNDS_KEY, MAX_OFFLINE_IDLE_PROGRESS_S, REFERRAL_BOOST, REF
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
-import { mintItemToUser } from "../../../sql-services/item-inventory-service";
-import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
+import { canUserMintItem, mintItemToUser } from "../../../sql-services/item-inventory-service";
+import { canUserMintEquipment, mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { calculateHpExpGained } from "../../../utils/helpers";
 import { CombatActivityInput, logCombatActivities } from "../../../sql-services/user-activity-log";
 import { DungeonManager, DungeonState } from "./dungeon-manager";
@@ -236,10 +236,14 @@ export class OfflineCombatManager {
     await OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
 
     for (const itemDrop of itemDrops) {
-      await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
+      if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
+        await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
+      }
     }
     for (const equipmentDrop of equipmentDrops) {
-      await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
+      if (await canUserMintEquipment(activity.userId, equipmentDrop.equipment.id)) {
+        await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
+      }
     }
 
     await logCombatActivities(combatActivities);
@@ -488,10 +492,14 @@ export class OfflineCombatManager {
     await incrementUserGoldBalance(activity.userId, totalGold);
     OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
     for (const itemDrop of itemDrops) {
-      await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
+      if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
+        await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
+      }
     }
     for (const equipmentDrop of equipmentDrops) {
-      await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
+      if (await canUserMintEquipment(activity.userId, equipmentDrop.equipment.id)) {
+        await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
+      }
     }
 
     await logCombatActivities(combatActivities);

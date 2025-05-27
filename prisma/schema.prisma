@@ -37,19 +37,19 @@ model User {
   outstandingSkillPoints Int @default(0) @map("outstanding_skill_points")
 
   // Base combat stats
-  maxHp             Float @default(100) @map("max_hp") // HP Level * 100
-  atkSpd            Float @default(10) @map("atk_spd") // 10 * DEX
-  acc               Float @default(100) @map("acc") // 100 * DEX ^ 1.1
-  eva               Float @default(100) @map("eva") // 100 * DEX ^ 1.05
-  maxMeleeDmg       Float @default(30) @map("max_melee_dmg") // 10 + 20 * STR ^ 0.7
-  maxRangedDmg      Float @default(30) @map("max_ranged_dmg") // 10 + 20 * DEX ^ 0.7
-  maxMagicDmg       Float @default(30) @map("max_magic_dmg") // 10 + 20 * MAGIC ^ 0.7
-  critChance        Float @default(0.006623) @map("crit_chance") // LUK / (LUK + 150)
-  critMultiplier    Float @default(1.290) @map("crit_multiplier") // 1.2 + 0.3 * log(LUK + 1)
-  dmgReduction      Float @default(10) @map("dmg_reduction") // 10 * DEF
-  magicDmgReduction Float @default(10) @map("magic_dmg_reduction") // (4 * DEF) + (6 * MAGIC)
-  hpRegenRate       Float @default(20) @map("hp_regen_rate") // s per tick
-  hpRegenAmount     Float @default(5.7) @map("hp_regen_amount")
+  maxHp             Float @default(100) @map("max_hp")
+  atkSpd            Float @default(10) @map("atk_spd")
+  acc               Float @default(100) @map("acc")
+  eva               Float @default(100) @map("eva")
+  maxMeleeDmg       Float @default(30) @map("max_melee_dmg")
+  maxRangedDmg      Float @default(30) @map("max_ranged_dmg")
+  maxMagicDmg       Float @default(30) @map("max_magic_dmg")
+  critChance        Float @default(0.00398) @map("crit_chance")
+  critMultiplier    Float @default(1.290) @map("crit_multiplier")
+  dmgReduction      Float @default(15) @map("dmg_reduction")
+  magicDmgReduction Float @default(10) @map("magic_dmg_reduction")
+  hpRegenRate       Float @default(20) @map("hp_regen_rate")
+  hpRegenAmount     Float @default(10.8) @map("hp_regen_amount")
 
   lastBattleEndTimestamp DateTime? @map("last_battle_end_timestamp")
 
@@ -71,6 +71,10 @@ model User {
 
   doubleResourceOdds               Float @default(0.01)
   skillIntervalReductionMultiplier Float @default(1)
+
+  // inventory slots
+  maxInventorySlots      Int @default(40) // Set a reasonable default
+  maxSlimeInventorySlots Int @default(40) // Set a reasonable default
 
   // Optional equipment relationships
   hatInventoryId      Int? @unique
@@ -667,9 +671,9 @@ model DungeonLeaderboard {
   user    User    @relation(fields: [userId], references: [telegramId])
   dungeon Dungeon @relation(fields: [dungeonId], references: [id])
 
+  @@unique([userId, dungeonId], name: "userId_dungeonId")
   @@index([dungeonId, score])
   @@index([userId, dungeonId])
-  @@unique([userId, dungeonId], name: "userId_dungeonId")
 }
 
 // Activity Logs
@@ -807,15 +811,15 @@ model ReferralLink {
 }
 
 model ReferralRelation {
-  id                String   @id @default(cuid())
-  refereeId         String   @unique
-  referrerUserId    String? // for user-owned referrals
-  referrerExternal  String? // for marketing or platform sources (e.g., referral code)
+  id               String  @id @default(cuid())
+  refereeId        String  @unique
+  referrerUserId   String? // for user-owned referrals
+  referrerExternal String? // for marketing or platform sources (e.g., referral code)
 
-  referee           User     @relation("ReferralReferee", fields: [refereeId], references: [telegramId])
-  referrerUser      User?    @relation("ReferralReferrer", fields: [referrerUserId], references: [telegramId])
+  referee      User  @relation("ReferralReferee", fields: [refereeId], references: [telegramId])
+  referrerUser User? @relation("ReferralReferrer", fields: [referrerUserId], references: [telegramId])
 
-  createdAt         DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model ReferralEventLog {
@@ -837,7 +841,7 @@ model ReferralEarningLog {
   referrerId     String
   refereeId      String
   tier           Int // 1 for direct, 2 for indirect
-  amountDittoWei Decimal @db.Decimal(65, 0)
+  amountDittoWei Decimal  @db.Decimal(65, 0)
   createdAt      DateTime @default(now())
 
   referrer User @relation("RefEarningsReferrer", fields: [referrerId], references: [telegramId])

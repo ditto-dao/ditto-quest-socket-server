@@ -8,8 +8,8 @@ import { DEVELOPMENT_FUNDS_KEY, DITTO_DECIMALS, REFERRAL_BOOST, REFERRAL_COMBAT_
 import { incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { randomBytes } from "crypto";
-import { mintItemToUser } from "../../../sql-services/item-inventory-service";
-import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
+import { canUserMintItem, mintItemToUser } from "../../../sql-services/item-inventory-service";
+import { canUserMintEquipment, mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
 import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
 import { DungeonManager } from "./dungeon-manager";
@@ -641,11 +641,15 @@ export class Battle {
         if (roll <= drop.dropRate) {
           try {
             if (drop.itemId) {
-              const updateItemInv = await mintItemToUser(this.user.telegramId, drop.itemId, drop.quantity);
-              res.push(updateItemInv);
+              if (await canUserMintItem(this.user.telegramId, drop.itemId)) {
+                const updateItemInv = await mintItemToUser(this.user.telegramId, drop.itemId, drop.quantity);
+                res.push(updateItemInv);
+              }
             } else if (drop.equipmentId) {
-              const updatedEquipmentInv = await mintEquipmentToUser(this.user.telegramId, drop.equipmentId, drop.quantity);
-              res.push(updatedEquipmentInv);
+              if (await canUserMintEquipment(this.user.telegramId, drop.equipmentId)) {
+                const updatedEquipmentInv = await mintEquipmentToUser(this.user.telegramId, drop.equipmentId, drop.quantity);
+                res.push(updatedEquipmentInv);
+              }
             } else {
               throw new Error(`Drop has neither itemId nor equipmentId`);
             }

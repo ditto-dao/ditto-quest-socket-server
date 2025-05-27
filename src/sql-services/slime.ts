@@ -4,8 +4,8 @@ import { logger } from '../utils/logger';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
 import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
 import { DOMINANT_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits, HIDDEN_TRAITS_GACHA_SPECS } from '../utils/gacha-odds';
-import { GACHA_PULL_ODDS } from '../utils/config';
-import { recalculateAndUpdateUserStats, UserDataEquipped } from './user-service';
+import { GACHA_PULL_ODDS, GACHA_PULL_ODDS_NERF } from '../utils/config';
+import { canUserMintSlime, recalculateAndUpdateUserStats, UserDataEquipped } from './user-service';
 
 
 export type SlimeWithTraits = Slime & {
@@ -221,9 +221,13 @@ interface GachaPullRes {
   slimeNoBg: Buffer
 }
 
-export async function slimeGachaPull(ownerId: string): Promise<GachaPullRes> {
+export async function slimeGachaPull(ownerId: string, nerf: boolean = false): Promise<GachaPullRes> {
   try {
-    const rankPull = getGachaPullRarity();
+    if (!(await canUserMintSlime(ownerId))) {
+      throw new Error(`Slime inventory full. Please clear space or upgrade your slots`)
+    }
+
+    const rankPull = getGachaPullRarity(nerf);
 
     const gachaOddsDominantTraits = DOMINANT_TRAITS_GACHA_SPECS[rankPull];
     const gachaOddsHiddenTraits = HIDDEN_TRAITS_GACHA_SPECS[rankPull];
@@ -400,6 +404,10 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
 
     if (!sire || !dame) throw new Error("One or both of the specified slimes do not exist.");
     if (sire.ownerId !== dame.ownerId) throw new Error("Both slimes must have the same owner.");
+
+    if (!(await canUserMintSlime(sire.ownerId))) {
+      throw new Error(`Slime inventory full. Please clear space or upgrade your slots`);
+    }
 
     // Initialize child data with all required fields
     const childData: Record<string, number> = {};
@@ -838,20 +846,20 @@ export async function updateSlimeImageUri(slimeId: number, imageUri: string): Pr
   }
 }
 
-function getGachaPullRarity(): string {
+function getGachaPullRarity(useNerf: boolean = false): string {
+  const odds = useNerf ? GACHA_PULL_ODDS_NERF : GACHA_PULL_ODDS;
+
   const random = Math.random();
-  logger.info(`Gacha random number: ${random}`);
+  logger.info(`Gacha random number: ${random} (${useNerf ? 'NERF' : 'NORMAL'})`);
   let cumulative = 0;
 
-  // Iterate through probabilities to find the corresponding rarity
-  for (let i = 0; i < GACHA_PULL_ODDS.length; i++) {
-    cumulative += GACHA_PULL_ODDS[i];
+  for (let i = 0; i < odds.length; i++) {
+    cumulative += odds[i];
     if (random < cumulative) {
       return GACHA_PULL_RARITIES[i];
     }
   }
 
-  // Fallback (should not happen if probabilities are valid)
   throw new Error('Probabilities do not sum to 1 or unexpected error occurred.');
 }
 

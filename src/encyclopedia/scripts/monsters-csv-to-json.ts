@@ -115,7 +115,7 @@ function parseBaseCombat(
         maxHp: getBaseMaxHpFromHpLvl(hpLevel),
         atkSpd: getBaseAtkSpdFromLuk(luk),
         acc: getBaseAccFromDex(dex),
-        eva: getBaseEvaFromLuk(dex),
+        eva: getBaseEvaFromLuk(luk),
         maxMeleeDmg: getBaseMaxDmg(str),
         maxRangedDmg: getBaseMaxDmg(dex),
         maxMagicDmg: getBaseMaxDmg(magic),

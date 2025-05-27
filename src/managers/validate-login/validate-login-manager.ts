@@ -149,8 +149,8 @@ export class ValidateLoginManager {
             user = await createUser({ telegramId: data.loginPayload.userData.id.toString(), username: data.loginPayload.userData.username });
 
             // Free on first login
-            const firstFreeSlime = await slimeGachaPull(user.telegramId);
-            const secondFreeSlime = await slimeGachaPull(user.telegramId);
+            const firstFreeSlime = await slimeGachaPull(user.telegramId, true);
+            const secondFreeSlime = await slimeGachaPull(user.telegramId, true);
             const mintWood = await mintItemToUser(user.telegramId, 30, 30);
 
             data.socket.emit(FIRST_LOGIN_EVENT, {

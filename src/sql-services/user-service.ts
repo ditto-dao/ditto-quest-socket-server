@@ -2,7 +2,7 @@ import { logger } from '../utils/logger';
 import { calculateCombatPower, calculateExpForNextLevel, calculateHpExpGained } from '../utils/helpers';
 import { prisma } from './client';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
-import { ABILITY_POINTS_PER_LEVEL } from '../utils/config';
+import { ABILITY_POINTS_PER_LEVEL, MAX_INITIAL_INVENTORY_SLOTS, MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { getBaseMaxHpFromHpLvl, getBaseAccFromDex, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseEvaFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef } from '../managers/idle-managers/combat/combat-helpers';
 
 // Interface for user input
@@ -1707,3 +1707,71 @@ export async function getEquipmentOrItemFromInventory(
     }
 }
 
+export async function getUserInventorySlotInfo(telegramId: string): Promise<{
+    usedSlots: number;
+    maxSlots: number;
+}> {
+    const user = await prisma.user.findUnique({
+        where: { telegramId },
+        select: {
+            maxInventorySlots: true,
+        },
+    });
+
+    if (!user) {
+        throw new Error(`User ${telegramId} not found`);
+    }
+
+    const usedSlots = await prisma.inventory.count({
+        where: { userId: telegramId },
+    });
+
+    return {
+        usedSlots,
+        maxSlots: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS // fallback default if ever unset
+    };
+}
+
+export async function getUserSlimeInventoryInfo(telegramId: string): Promise<{
+    usedSlots: number;
+    maxSlots: number;
+}> {
+    const user = await prisma.user.findUnique({
+        where: { telegramId },
+        select: {
+            maxSlimeInventorySlots: true,
+        },
+    });
+
+    if (!user) {
+        throw new Error(`User ${telegramId} not found`);
+    }
+
+    const usedSlots = await prisma.slime.count({
+        where: { ownerId: telegramId },
+    });
+
+    return {
+        usedSlots,
+        maxSlots: user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS,
+    };
+}
+
+export async function canUserMintSlime(telegramId: string): Promise<boolean> {
+    const user = await prisma.user.findUnique({
+        where: { telegramId },
+        select: { maxSlimeInventorySlots: true },
+    });
+
+    if (!user) {
+        throw new Error(`User ${telegramId} not found`);
+    }
+
+    const usedSlots = await prisma.slime.count({
+        where: { ownerId: telegramId },
+    });
+
+    const maxSlots = user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS;
+
+    return usedSlots < maxSlots;
+}

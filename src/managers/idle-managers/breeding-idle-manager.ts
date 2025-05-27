@@ -1,6 +1,7 @@
 import { SocketManager } from "../../socket/socket-manager";
 import { breedSlimes, getEquippedSlimeId, SlimeWithTraits } from "../../sql-services/slime";
 import { logBreedingActivity } from "../../sql-services/user-activity-log";
+import { canUserMintSlime } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { getBreedingTimesByGeneration, getHighestDominantTraitRarity } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
@@ -37,6 +38,9 @@ export class IdleBreedingManager {
                 sire.id === equippedSlimeId ||
                 dame.id === equippedSlimeId
             ) throw new Error("Cannot breed equipped slime.");
+            if (!(await canUserMintSlime(sire.ownerId))) {
+                throw new Error(`Slime inventory full. Please clear space or upgrade your slots`);
+            }
 
             // Define callbacks
             const completeCallback = async () => {
@@ -176,20 +180,24 @@ export class IdleBreedingManager {
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
             for (let i = 0; i < repetitions; i++) {
-                const slime = await breedSlimes(breeding.sire.id, breeding.dame.id);
-                mintedSlimes.push(slime);
-                await logBreedingActivity({
-                    userId: userId,
-                    dameId: breeding.dame.id,
-                    dameGeneration: breeding.dame.generation,
-                    dameRarity: getHighestDominantTraitRarity(breeding.dame),
-                    sireId: breeding.sire.id,
-                    sireGeneration: breeding.sire.generation,
-                    sireRarity: getHighestDominantTraitRarity(breeding.sire),
-                    childId: slime.id,
-                    childGeneration: slime.generation,
-                    childRarity: getHighestDominantTraitRarity(slime),
-                });
+                try {
+                    const slime = await breedSlimes(breeding.sire.id, breeding.dame.id);
+                    mintedSlimes.push(slime);
+                    await logBreedingActivity({
+                        userId: userId,
+                        dameId: breeding.dame.id,
+                        dameGeneration: breeding.dame.generation,
+                        dameRarity: getHighestDominantTraitRarity(breeding.dame),
+                        sireId: breeding.sire.id,
+                        sireGeneration: breeding.sire.generation,
+                        sireRarity: getHighestDominantTraitRarity(breeding.sire),
+                        childId: slime.id,
+                        childGeneration: slime.generation,
+                        childRarity: getHighestDominantTraitRarity(slime),
+                    });
+                } catch (err) {
+                    logger.error(`Failed to breed slime in loaded breeding activity: ${err}`);
+                }
             }
 
             return {
@@ -209,6 +217,14 @@ export class IdleBreedingManager {
         dame: SlimeWithTraits,
     ): Promise<void> {
         try {
+            if (!(await canUserMintSlime(userId))) {
+                socketManager.emitEvent(userId, 'error', {
+                    userId: userId,
+                    msg: 'Slime inventory full. Please clear space or upgrade your slots'
+                })
+                throw new Error(`Insufficient slime inventory space to complete breeding`);
+            }
+
             const slime = await breedSlimes(sire.id, dame.id);
 
             socketManager.emitEvent(userId, 'update-slime-inventory', {

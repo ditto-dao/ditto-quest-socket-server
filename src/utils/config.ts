@@ -25,6 +25,8 @@ export const ABILITY_POINTS_PER_LEVEL = (process.env.ABILITY_POINTS_PER_LEVEL !=
 
 export const GACHA_PULL_ODDS = process.env.GACHA_PULL_ODDS ? process.env.GACHA_PULL_ODDS.split(' ').map(prob => parseFloat(prob)) : []
 
+export const GACHA_PULL_ODDS_NERF = process.env.GACHA_PULL_ODDS_NERF ? process.env.GACHA_PULL_ODDS_NERF.split(' ').map(prob => parseFloat(prob)) : []
+
 export const MAX_CONCURRENT_IDLE_ACTIVITIES = (process.env.MAX_CONCURRENT_IDLE_ACTIVITIES !== undefined && !isNaN(parseInt(process.env.MAX_CONCURRENT_IDLE_ACTIVITIES))) ? parseInt(process.env.MAX_CONCURRENT_IDLE_ACTIVITIES) : 1
 
 export const MAX_OFFLINE_IDLE_PROGRESS_S = (process.env.MAX_OFFLINE_IDLE_PROGRESS_S !== undefined && !isNaN(parseInt(process.env.MAX_OFFLINE_IDLE_PROGRESS_S))) ? parseInt(process.env.MAX_OFFLINE_IDLE_PROGRESS_S) : 1
@@ -42,3 +44,7 @@ export const S3_UPLOAD_CACHE_CONTROL = process.env.S3_UPLOAD_CACHE_CONTROL || ""
 export const REFERRAL_BOOST = (process.env.REFERRAL_BOOST !== undefined && !isNaN(parseFloat(process.env.REFERRAL_BOOST))) ? parseFloat(process.env.REFERRAL_BOOST) : 0.1
 
 export const REFERRAL_COMBAT_CUT = (process.env.REFERRAL_COMBAT_CUT !== undefined && !isNaN(parseFloat(process.env.REFERRAL_COMBAT_CUT))) ? parseFloat(process.env.REFERRAL_COMBAT_CUT) : 0.1
+
+export const MAX_INITIAL_INVENTORY_SLOTS = (process.env.MAX_INITIAL_INVENTORY_SLOTS !== undefined && !isNaN(parseInt(process.env.MAX_INITIAL_INVENTORY_SLOTS))) ? parseInt(process.env.MAX_INITIAL_INVENTORY_SLOTS) : 20
+
+export const MAX_INITIAL_SLIME_INVENTORY_SLOTS = (process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS !== undefined && !isNaN(parseInt(process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS))) ? parseInt(process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS) : 20

@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `User` MODIFY `crit_chance` DOUBLE NOT NULL DEFAULT 0.00398,
+    MODIFY `dmg_reduction` DOUBLE NOT NULL DEFAULT 15,
+    MODIFY `hp_regen_amount` DOUBLE NOT NULL DEFAULT 10.8;

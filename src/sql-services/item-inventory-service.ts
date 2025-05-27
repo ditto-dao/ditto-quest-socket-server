@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
-import { getNextInventoryOrder } from './user-service';
+import { getNextInventoryOrder, getUserInventorySlotInfo } from './user-service';
 
 // Function to check if a user owns all specified items with the required quantities
 export async function doesUserOwnItems(
@@ -114,6 +114,13 @@ export async function mintItemToUser(
             return updatedInventory;
         } else {
             // Case 2: Item does not exist → Create a new entry
+
+            const inventorySlots = await getUserInventorySlotInfo(telegramId);
+
+            if (inventorySlots.usedSlots >= inventorySlots.maxSlots) {
+                throw new Error(`User inventory is full`);
+            }
+
             const nextOrder = await getNextInventoryOrder(telegramId); // Get next inventory order index
 
             const newInventory = await prisma.inventory.create({
@@ -223,4 +230,27 @@ export async function deleteItemsFromUserInventory(
         logger.error(`Failed to delete items from user inventory: ${error}`);
         throw error;
     }
+}
+
+export async function canUserMintItem(
+    telegramId: string,
+    itemId: number
+): Promise<boolean> {
+    // Check if item already exists (stacking is always allowed)
+    const existingInventory = await prisma.inventory.findFirst({
+        where: {
+            userId: telegramId,
+            itemId: itemId,
+            equipmentId: null, // make sure it's an item, not equipment
+        },
+        select: {
+            id: true,
+        },
+    });
+
+    if (existingInventory) return true; // Stacking doesn't use a new slot
+
+    // Otherwise, check if user has room to add a new inventory row
+    const { usedSlots, maxSlots } = await getUserInventorySlotInfo(telegramId);
+    return usedSlots < maxSlots;
 }

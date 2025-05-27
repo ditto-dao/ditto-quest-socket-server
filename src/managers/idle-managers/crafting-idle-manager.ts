@@ -1,7 +1,7 @@
-import { Equipment, Prisma } from "@prisma/client";
+import { Equipment } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
 import { CraftingRecipeRes } from "../../sql-services/crafting-service";
-import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
+import { canUserMintEquipment, mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 import { deleteItemsFromUserInventory, doesUserOwnItems } from "../../sql-services/item-inventory-service";
 import { addCraftingExp, getUserCraftingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
@@ -30,6 +30,14 @@ export class IdleCraftingManager {
             if (!recipe) throw new Error('Crafting recipe not found');
             if ((await getUserCraftingLevel(userId)) < recipe.craftingLevelRequired) {
                 throw new Error('Insufficient crafting level');
+            }
+
+            if (!(await canUserMintEquipment(userId, equipment.id))) {
+                socketManager.emitEvent(userId, 'error', {
+                    userId: userId,
+                    msg: 'Inventory full. Please clear space or upgrade your slots'
+                })
+                throw new Error(`Insufficient inventory space to start crafting`);
             }
 
             const requiredItemIds = recipe.requiredItems.map(item => item.itemId);
@@ -177,9 +185,9 @@ export class IdleCraftingManager {
         let expRes;
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
-            await deleteItemsFromUserInventory(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions));
-
             await mintEquipmentToUser(userId.toString(), crafting.equipment.id, repetitions);
+
+            await deleteItemsFromUserInventory(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions));
 
             expRes = await addCraftingExp(userId, crafting.recipe.craftingExp * repetitions);
 
@@ -222,8 +230,9 @@ export class IdleCraftingManager {
         recipe: CraftingRecipeRes,
     ): Promise<void> {
         try {
-            const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
             const updatedEquipmentInv = await mintEquipmentToUser(userId.toString(), recipe.equipmentId);
+
+            const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
 
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,
