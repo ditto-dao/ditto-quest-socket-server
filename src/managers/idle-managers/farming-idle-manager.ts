@@ -2,7 +2,7 @@ import { Item } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
 import { canUserMintItem, mintItemToUser } from "../../sql-services/item-inventory-service";
 import { addFarmingExp, getUserFarmingLevel } from "../../sql-services/user-service";
-import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
+import { FARM_REPS_MULTIPLIER, MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { FarmingUpdate, IdleActivityIntervalElement, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
@@ -174,7 +174,7 @@ export class IdleFarmingManager {
 
         let expRes;
         if (repetitions > 0) {
-            await mintItemToUser(userId.toString(), farming.item.id, repetitions);
+            await mintItemToUser(userId.toString(), farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
             expRes = await addFarmingExp(userId, farming.item.farmingExp * repetitions);
 
             await logFarmingActivity(userId, farming.item.id, repetitions);
@@ -204,7 +204,7 @@ export class IdleFarmingManager {
         itemId: number,
     ): Promise<void> {
         try {
-            const updatedItemsInv = await mintItemToUser(userId.toString(), itemId);
+            const updatedItemsInv = await mintItemToUser(userId.toString(), itemId, FARM_REPS_MULTIPLIER);
             const expRes = await addFarmingExp(userId, updatedItemsInv.item!.farmingExp!);
 
             socketManager.emitEvent(userId, 'update-inventory', {

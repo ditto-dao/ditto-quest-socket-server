@@ -48,3 +48,5 @@ export const REFERRAL_COMBAT_CUT = (process.env.REFERRAL_COMBAT_CUT !== undefine
 export const MAX_INITIAL_INVENTORY_SLOTS = (process.env.MAX_INITIAL_INVENTORY_SLOTS !== undefined && !isNaN(parseInt(process.env.MAX_INITIAL_INVENTORY_SLOTS))) ? parseInt(process.env.MAX_INITIAL_INVENTORY_SLOTS) : 20
 
 export const MAX_INITIAL_SLIME_INVENTORY_SLOTS = (process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS !== undefined && !isNaN(parseInt(process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS))) ? parseInt(process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS) : 20
+
+export const FARM_REPS_MULTIPLIER = (process.env.FARM_REPS_MULTIPLIER !== undefined && !isNaN(parseInt(process.env.FARM_REPS_MULTIPLIER))) ? parseInt(process.env.FARM_REPS_MULTIPLIER) : 1
