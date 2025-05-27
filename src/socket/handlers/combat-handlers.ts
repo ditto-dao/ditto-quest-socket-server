@@ -27,6 +27,18 @@ export async function setupCombatSocketHandlers(
 
                 const domain = await getDomainById(data.id);
                 if (!domain) throw new Error(`Unable to find domain of id: ${data.id}`);
+
+                const entryPriceGp = domain.entryPriceGP;
+                if (entryPriceGp) {
+                    const goldBalance = await incrementUserGoldBalance(data.userId, -entryPriceGp);
+                    socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
+                        userId: data.userId,
+                        payload: {
+                            goldBalance
+                        }
+                    });
+                }
+
                 const user = await getSimpleUserData(data.userId);
                 if (!user) throw new Error(`Unable to find user of id: ${data.userId}`);
 

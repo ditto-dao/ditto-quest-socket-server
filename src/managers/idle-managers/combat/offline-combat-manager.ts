@@ -3,7 +3,7 @@ import { logger } from "../../../utils/logger";
 import { CombatUpdate, IdleCombatActivityElement } from "../idle-manager-types";
 import { DomainManager } from "./domain-manager";
 import { FullMonster, getDomainById, getDungeonById, updateDungeonLeaderboard } from "../../../sql-services/combat-service";
-import { getAtkCooldownFromAtkSpd, getBaseHpRegenRateFromHpLvl } from "./combat-helpers";
+import { getAtkCooldownFromAtkSpd } from "./combat-helpers";
 import { Battle } from "./battle";
 import { DEVELOPMENT_FUNDS_KEY, MAX_OFFLINE_IDLE_PROGRESS_S, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
@@ -96,7 +96,7 @@ export class OfflineCombatManager {
     let userNextAtk = userAtkCooldown;
     let monsterNextAtk = monsterAtkCooldown;
 
-    let userRegenTimer = getBaseHpRegenRateFromHpLvl(userCombat.hpRegenRate) * 1000;
+    let userRegenTimer = userCombat.hpRegenRate * 1000;
     let monsterRegenTimer = monster.combat.hpRegenRate * 1000;
     let userNextRegen = userRegenTimer;
     let monsterNextRegen = monsterRegenTimer;
@@ -325,7 +325,7 @@ export class OfflineCombatManager {
     let userNextAtk = userAtkCooldown;
     let monsterNextAtk = monsterAtkCooldown;
 
-    let userRegenTimer = getBaseHpRegenRateFromHpLvl(userCombat.hpRegenRate) * 1000;
+    let userRegenTimer = userCombat.hpRegenRate * 1000;
     let monsterRegenTimer = monster.combat.hpRegenRate * 1000;
     let userNextRegen = userRegenTimer;
     let monsterNextRegen = monsterRegenTimer;

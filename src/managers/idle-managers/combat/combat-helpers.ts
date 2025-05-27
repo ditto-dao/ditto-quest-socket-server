@@ -1,5 +1,3 @@
-import { Combat } from "@prisma/client";
-
 /**
  * MAX HP = HPLVL * A
  */
@@ -12,39 +10,41 @@ export function getBaseMaxHpFromHpLvl(hpLvl: number): number {
 /**
  * HP REGEN RATE: SECONDS PER HEAL
  * 
- * For 1 ≤ HP LVL ≤ 150, Linear decrease from 20s → 5s
- * For HP LVL > 150, Decreasing rate from 5s → approaching 0s
+ * For 1 ≤ REGEN FACTOR ≤ 150, Linear decrease from 20s → 5s
+ * For REGEN FACTOR > 150, Decreasing rate from 5s → approaching 0s
  */
-export function getBaseHpRegenRateFromHpLvl(hpLvl: number): number {
-    if (hpLvl < 1) return 20.0; // Prevents errors for invalid levels
+export function getBaseHpRegenRateFromHpLvlAndDef(hpLvl: number, def: number): number {
+    const regenFactor = 0.5 * hpLvl + 0.5 * def;
 
-    if (hpLvl >= 1 && hpLvl <= 150) {
+    if (regenFactor < 1) return 20.0; // Prevents errors for invalid levels
+
+    if (regenFactor >= 1 && regenFactor <= 150) {
         // Linear decrease from 20s to 5s
-        return 20 - ((hpLvl - 1) / (150 - 1)) * (20 - 5);
+        return 20 - ((regenFactor - 1) / (150 - 1)) * (20 - 5);
     }
 
     // Smooth transition from 5s at level 150, decreasing towards 0.1s but never reaching 0
-    return 0.1 + (4.9 * Math.exp(-0.017 * (hpLvl - 150)));
+    return 0.1 + (4.9 * Math.exp(-0.017 * (regenFactor - 150)));
 }
 
 /**
- * HP REGEN AMT = A + (B * HP LEVEL) + (C * STR)
+ * HP REGEN AMT = A + (B * HP LEVEL) + (C * DEF)
  */
-export function getBaseHpRegenAmtFromHpLvl(hpLvl: number, str: number): number {
+export function getBaseHpRegenAmtFromHpLvlAndDef(hpLvl: number, def: number): number {
     const A = 10;
     const B = 0.5;
     const C = 0.3;
 
-    return A + (B * hpLvl) + (C * str);
+    return A + (B * hpLvl) + (C * def);
 }
 
 /**
- * ATK SPD = DEX * A
+ * ATK SPD = LUK * A
  */
-export function getBaseAtkSpdFromDex(dex: number): number {
+export function getBaseAtkSpdFromLuk(luk: number): number {
     const A = 10;
 
-    return dex * A;
+    return luk * A;
 }
 
 /**
@@ -105,18 +105,18 @@ export function getBaseAccFromDex(dex: number): number {
 }
 
 /**
- * EVA = (DEX ^ A) * B
+ * EVA = (LUK ^ A) * B
  */
-export function getBaseEvaFromDex(dex: number): number {
+export function getBaseEvaFromLuk(luk: number): number {
     const A = 1.05;
     const B = 100;
 
-    return Math.pow(dex, A) * B;
+    return Math.pow(luk, A) * B;
 }
 
 /**
  * MAX DMG = A + B * (STR ^ C)
- * MAX RANGE DMG uses DEX, MAX MAGIC DMG uses MAGIC
+ * MAX MELEE DMG uses STR, MAX RANGE DMG uses DEX, MAX MAGIC DMG uses MAGIC
  */
 export function getBaseMaxDmg(lvl: number): number {
     const A = 10;
@@ -145,12 +145,13 @@ export function getBaseCritMulFromLuk(luk: number): number {
 }
 
 /**
- * DMG REDUCTION = DEF * A
+ * DMG REDUCTION = DEF * A + STR * B
  */
-export function getBaseDmgReductionFromDef(def: number): number {
+export function getBaseDmgReductionFromDefAndStr(def: number, str: number): number {
     const A = 10;
+    const B = 5;
 
-    return def * A;
+    return def * A + str * B;
 }
 
 /**

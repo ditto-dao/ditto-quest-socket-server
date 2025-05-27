@@ -3,7 +3,7 @@ import { calculateCombatPower, calculateExpForNextLevel, calculateHpExpGained } 
 import { prisma } from './client';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
 import { ABILITY_POINTS_PER_LEVEL } from '../utils/config';
-import { getBaseMaxHpFromHpLvl, getBaseAtkSpdFromDex, getBaseAccFromDex, getBaseEvaFromDex, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseHpRegenRateFromHpLvl, getBaseHpRegenAmtFromHpLvl } from '../managers/idle-managers/combat/combat-helpers';
+import { getBaseMaxHpFromHpLvl, getBaseAccFromDex, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseEvaFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef } from '../managers/idle-managers/combat/combat-helpers';
 
 // Interface for user input
 interface CreateUserInput {
@@ -1637,18 +1637,18 @@ export async function recalculateAndUpdateUserBaseStats(
 
         const newBaseStats = {
             maxHp: getBaseMaxHpFromHpLvl(hpLevel),
-            atkSpd: getBaseAtkSpdFromDex(dex),
+            atkSpd: getBaseAtkSpdFromLuk(luk),
             acc: getBaseAccFromDex(dex),
-            eva: getBaseEvaFromDex(dex),
+            eva: getBaseEvaFromLuk(luk),
             maxMeleeDmg: getBaseMaxDmg(str),
             maxRangedDmg: getBaseMaxDmg(dex),
             maxMagicDmg: getBaseMaxDmg(magic),
             critChance: getBaseCritChanceFromLuk(luk),
             critMultiplier: getBaseCritMulFromLuk(luk),
-            dmgReduction: getBaseDmgReductionFromDef(def),
+            dmgReduction: getBaseDmgReductionFromDefAndStr(def, str),
             magicDmgReduction: getBaseMagicDmgReductionFromDefAndMagic(def, magic),
-            hpRegenRate: getBaseHpRegenRateFromHpLvl(hpLevel),
-            hpRegenAmount: getBaseHpRegenAmtFromHpLvl(hpLevel, str)
+            hpRegenRate: getBaseHpRegenRateFromHpLvlAndDef(hpLevel, def),
+            hpRegenAmount: getBaseHpRegenAmtFromHpLvlAndDef(hpLevel, def)
         };
 
         await prisma.user.update({

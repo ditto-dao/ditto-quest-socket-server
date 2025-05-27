@@ -4,10 +4,10 @@ import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT } from "../events";
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { SocketManager } from "../socket-manager";
-import { ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
+import { ENTER_DOMAIN_TRX_NOTE, ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
 import { slimeGachaPull } from "../../sql-services/slime";
 import { DEVELOPMENT_FUNDS_KEY } from "../../utils/config";
-import { getDungeonById } from "../../sql-services/combat-service";
+import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
 import { getSimpleUserData } from "../../sql-services/user-service";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
@@ -72,6 +72,10 @@ export async function setupDittoLedgerSocketServerHandlers(
                 logger.info(`Entering dungeon after paying DITTO fee.`);
                 const dungeonId = res.payload.notes.split(" ").pop();
                 await handleDungeonEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(dungeonId));
+            } else if (res.payload.notes && res.payload.notes.includes(ENTER_DOMAIN_TRX_NOTE)) {
+                logger.info(`Entering domain after paying DITTO fee.`);
+                const domainId = res.payload.notes.split(" ").pop();
+                await handleDomainEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(domainId));
             }
 
             socketManager.emitEvent(res.userId, LEDGER_BALANCE_UPDATE_RES_EVENT, res);
@@ -140,6 +144,45 @@ async function handleMintSlime(userId: string, payload: UserBalanceUpdateRes, so
         });
 
         revertTrxToLedger(ledgerSocket, userId, DEVELOPMENT_FUNDS_KEY, payload);
+    }
+}
+
+async function handleDomainEntry(
+    combatManager: IdleCombatManager,
+    idleManager: IdleManager,
+    socketManager: SocketManager,
+    ledgerSocket: DittoLedgerSocket,
+    balanceUpdate: UserBalanceUpdateRes,
+    userId: string,
+    domainId: number
+): Promise<void> {
+    try {
+        const domain = await getDomainById(domainId);
+        if (!domain) throw new Error(`Unable to find domain of id: ${domainId}`);
+
+        if (domain.entryPriceDittoWei) {
+            const entryPrice = BigInt(domain.entryPriceDittoWei.toString());
+            const paidAmount = (BigInt(balanceUpdate.liveBalanceChange) + BigInt(balanceUpdate.accumulatedBalanceChange)) * BigInt(-1); // Convert negative deduction to positive
+
+            if (paidAmount < entryPrice) {
+                throw new Error(`Insufficient DITTO deducted for domain entry. 
+                    Required: ${entryPrice}, Paid: ${paidAmount}`);
+            }
+        }
+
+        const user = await getSimpleUserData(userId);
+        if (!user) throw new Error(`Unable to find user of id: ${userId}`);
+
+        await combatManager.startDomainCombat(idleManager, userId, user, user.combat, domain, Date.now());
+    } catch (err) {
+        logger.error(`Error entering domain with DITTO fee: ${err}`);
+        socketManager.emitEvent(userId, 'error', {
+            userId: userId,
+            msg: `Failed to enter domain. ${(err as Error).message.includes('Insufficient DITTO') ? ' Insufficient DITTO paid.' : ''}`
+        });
+        socketManager.emitEvent(userId, COMBAT_STOPPED_EVENT, { userId: userId });
+
+        revertTrxToLedger(ledgerSocket, userId, DEVELOPMENT_FUNDS_KEY, balanceUpdate);
     }
 }
 

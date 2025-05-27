@@ -1,5 +1,5 @@
-import { User, Combat, AttackType, CombatDrop } from "@prisma/client";
-import { getAtkCooldownFromAtkSpd, getBaseHpRegenRateFromHpLvl, getPercentageDmgReduct } from "./combat-helpers";
+import { User, Combat, AttackType } from "@prisma/client";
+import { getAtkCooldownFromAtkSpd, getPercentageDmgReduct } from "./combat-helpers";
 import { logger } from "../../../utils/logger";
 import { SocketManager } from "../../../socket/socket-manager";
 import { FullMonster, setLastBattleEndTimestamp, setUserCombatHpByTelegramId } from "../../../sql-services/combat-service";
@@ -13,7 +13,7 @@ import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-s
 import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
 import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
 import { DungeonManager } from "./dungeon-manager";
-import { getReferrer, hasUsedReferralCode, logReferralEarning } from "../../../sql-services/referrals";
+import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -206,7 +206,7 @@ export class Battle {
 
     if (this.userCombat.hp === this.userCombat.maxHp) return;
 
-    const regenIntervalS = getBaseHpRegenRateFromHpLvl(this.user.hpLevel);
+    const regenIntervalS = this.userCombat.hpRegenRate;
     const hpPerTick = Math.floor(this.userCombat.hpRegenAmount);
 
     const ratio = restTimeS / regenIntervalS;

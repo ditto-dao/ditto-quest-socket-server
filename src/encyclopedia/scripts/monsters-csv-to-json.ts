@@ -8,7 +8,7 @@ import { AttackType, Equipment, Item, StatEffect } from '@prisma/client';
 import { getEquipmentById } from '../../sql-services/equipment-service';
 import { getItemById } from '../../sql-services/item-service';
 import { getSlimeTraitById } from '../../sql-services/slime';
-import { getBaseAccFromDex, getBaseAtkSpdFromDex, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDef, getBaseEvaFromDex, getBaseHpRegenAmtFromHpLvl, getBaseHpRegenRateFromHpLvl, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../../managers/idle-managers/combat/combat-helpers';
+import { getBaseAccFromDex, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromLuk, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../../managers/idle-managers/combat/combat-helpers';
 import { parseUnits } from 'ethers';
 import { DITTO_DECIMALS } from '../../utils/config';
 
@@ -113,18 +113,18 @@ function parseBaseCombat(
 ): BaseCombat {
     return {
         maxHp: getBaseMaxHpFromHpLvl(hpLevel),
-        atkSpd: getBaseAtkSpdFromDex(dex),
+        atkSpd: getBaseAtkSpdFromLuk(luk),
         acc: getBaseAccFromDex(dex),
-        eva: getBaseEvaFromDex(dex),
+        eva: getBaseEvaFromLuk(dex),
         maxMeleeDmg: getBaseMaxDmg(str),
         maxRangedDmg: getBaseMaxDmg(dex),
         maxMagicDmg: getBaseMaxDmg(magic),
         critChance: getBaseCritChanceFromLuk(luk),
         critMultiplier: getBaseCritMulFromLuk(luk),
-        dmgReduction: getBaseDmgReductionFromDef(def),
+        dmgReduction: getBaseDmgReductionFromDefAndStr(def, str),
         magicDmgReduction: getBaseMagicDmgReductionFromDefAndMagic(def, magic),
-        hpRegenRate: getBaseHpRegenRateFromHpLvl(hpLevel),
-        hpRegenAmount: getBaseHpRegenAmtFromHpLvl(hpLevel, str)
+        hpRegenRate: getBaseHpRegenRateFromHpLvlAndDef(hpLevel, def),
+        hpRegenAmount: getBaseHpRegenAmtFromHpLvlAndDef(hpLevel, def)
     }
 }
 
