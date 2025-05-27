@@ -5,7 +5,7 @@ import { DomainManager } from "./domain-manager";
 import { FullMonster, getDomainById, getDungeonById, updateDungeonLeaderboard } from "../../../sql-services/combat-service";
 import { getAtkCooldownFromAtkSpd, getBaseHpRegenRateFromHpLvl } from "./combat-helpers";
 import { Battle } from "./battle";
-import { DEVELOPMENT_FUNDS_KEY, MAX_OFFLINE_IDLE_PROGRESS_S } from "../../../utils/config";
+import { DEVELOPMENT_FUNDS_KEY, MAX_OFFLINE_IDLE_PROGRESS_S, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
@@ -14,6 +14,7 @@ import { mintEquipmentToUser } from "../../../sql-services/equipment-inventory-s
 import { calculateHpExpGained } from "../../../utils/helpers";
 import { CombatActivityInput, logCombatActivities } from "../../../sql-services/user-activity-log";
 import { DungeonManager, DungeonState } from "./dungeon-manager";
+import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -231,7 +232,9 @@ export class OfflineCombatManager {
     // handle increments in db
     const expRes = await incrementExpAndHpExpAndCheckLevelUp(activity.userId, totalExp);
     await incrementUserGoldBalance(activity.userId, totalGold);
-    OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
+
+    await OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
+
     for (const itemDrop of itemDrops) {
       await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
     }
@@ -544,32 +547,83 @@ export class OfflineCombatManager {
     }
   }
 
-  static handleDittoDrop(dittoLedgerSocket: DittoLedgerSocket, userId: string, amountDitto: bigint) {
+  static async handleDittoDrop(
+    dittoLedgerSocket: DittoLedgerSocket,
+    userId: string,
+    amountDitto: bigint
+  ) {
     try {
-      if (amountDitto > 0n) {
-        dittoLedgerSocket.emit(LEDGER_UPDATE_BALANCE_EVENT, {
-          sender: DEVELOPMENT_FUNDS_KEY,
-          updates: [
+      const referrer = await getReferrer(userId);
+
+      let dittoDrop = amountDitto;
+
+      let referrerCut = 0n;
+
+      if (referrer && referrer.referrerUserId) {
+        dittoDrop = Battle.scaleBN(dittoDrop, REFERRAL_BOOST + 1); // e.g. 1.1x boost
+        referrerCut = Battle.scaleBN(dittoDrop, REFERRAL_COMBAT_CUT);
+      }
+
+      if (dittoDrop > 0n) {
+        const dittoDropUser = dittoDrop - referrerCut;
+        const dittoDropUserRounded = Battle.roundWeiTo2DecimalPlaces(dittoDropUser);
+        const referrerCutRounded = Battle.roundWeiTo5DecimalPlaces(referrerCut);
+
+        const updates = [
+          {
+            userId: DEVELOPMENT_FUNDS_KEY,
+            liveBalanceChange: (-dittoDropUserRounded).toString(),
+            accumulatedBalanceChange: "0",
+            notes: "Deducted for monster DITTO drop to user",
+          },
+          {
+            userId: userId,
+            liveBalanceChange: dittoDropUserRounded.toString(),
+            accumulatedBalanceChange: "0",
+            notes: "Monster DITTO drop",
+          }
+        ];
+
+        if (
+          referrer &&
+          !referrer.referrerExternal &&
+          referrer.referrerUserId &&
+          referrerCut > 0n
+        ) {
+          updates.push(
             {
               userId: DEVELOPMENT_FUNDS_KEY,
-              liveBalanceChange: (-amountDitto).toString(),
+              liveBalanceChange: (-referrerCutRounded).toString(),
               accumulatedBalanceChange: "0",
-              notes: "Deducted for monster DITTO drop",
+              notes: "Deducted for referral DITTO reward",
             },
             {
-              userId: userId,
-              liveBalanceChange: (amountDitto).toString(),
+              userId: referrer.referrerUserId,
+              liveBalanceChange: referrerCutRounded.toString(),
               accumulatedBalanceChange: "0",
-              notes: "Monster DITTO drop",
+              notes: `Referral earnings from user ${userId}`,
             }
-          ]
-        })
+          );
+
+          await logReferralEarning({
+            referrerId: referrer.referrerUserId,
+            refereeId: userId,
+            amountDittoWei: referrerCutRounded.toString(),
+            tier: 1,
+          });
+        }
+
+        dittoLedgerSocket.emit(LEDGER_UPDATE_BALANCE_EVENT, {
+          sender: DEVELOPMENT_FUNDS_KEY,
+          updates,
+        });
+
+        return dittoDropUserRounded;
       }
     } catch (err) {
-      logger.error(`Failed to handle ditto drop in battle.`)
+      logger.error(`Failed to handle ditto drop in offline combat.`);
     }
   }
-
 
   static nerfUserCombat(userCombat: Combat) {
     const multiplier = OfflineCombatManager.USER_NERF_MULTIPLIER;

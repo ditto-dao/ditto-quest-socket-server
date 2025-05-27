@@ -561,42 +561,49 @@ export class Battle {
         BigInt(this.monster.maxDittoDrop.toString())
       );
 
+      let referrerCut = 0n;
+
       if (referrer && referrer.referrerUserId) {
-        dittoDrop = Battle.scaleBN(dittoDrop, REFERRAL_BOOST + 1); // apply boost (e.g. 1.1x)
+        dittoDrop = Battle.scaleBN(dittoDrop, REFERRAL_BOOST + 1); // e.g. 1.1x boost
+        referrerCut = Battle.scaleBN(dittoDrop, REFERRAL_COMBAT_CUT);
       }
 
       if (dittoDrop > 0n) {
-        const dittoDropRounded = Battle.roundWeiTo2DecimalPlaces(dittoDrop);
+        const dittoDropUser = dittoDrop - referrerCut;
+        const dittoDropUserRounded = Battle.roundWeiTo2DecimalPlaces(dittoDropUser);
+        const referrerCutRounded = Battle.roundWeiTo5DecimalPlaces(referrerCut);
 
         const updates = [
           {
             userId: DEVELOPMENT_FUNDS_KEY,
-            liveBalanceChange: (-dittoDropRounded).toString(),
+            liveBalanceChange: (-dittoDropUserRounded).toString(),
             accumulatedBalanceChange: "0",
-            notes: "Deducted for monster DITTO drop",
+            notes: "Deducted for monster DITTO drop to user",
           },
           {
             userId: this.user.telegramId,
-            liveBalanceChange: dittoDropRounded.toString(),
+            liveBalanceChange: dittoDropUserRounded.toString(),
             accumulatedBalanceChange: "0",
             notes: "Monster DITTO drop",
           }
         ];
 
-        if (referrer && !referrer.referrerExternal && referrer.referrerUserId) {
-          const referrerCut = Battle.roundWeiTo5DecimalPlaces(
-            Battle.scaleBN(dittoDrop, REFERRAL_COMBAT_CUT)
-          );
+        if (
+          referrer &&
+          !referrer.referrerExternal &&
+          referrer.referrerUserId &&
+          referrerCut > 0n
+        ) {
           updates.push(
             {
               userId: DEVELOPMENT_FUNDS_KEY,
-              liveBalanceChange: (-referrerCut).toString(),
+              liveBalanceChange: (-referrerCutRounded).toString(),
               accumulatedBalanceChange: "0",
-              notes: "Deducted for monster DITTO drop",
+              notes: "Deducted for referral DITTO reward",
             },
             {
               userId: referrer.referrerUserId,
-              liveBalanceChange: referrerCut.toString(),
+              liveBalanceChange: referrerCutRounded.toString(),
               accumulatedBalanceChange: "0",
               notes: `Referral earnings from user ${this.user.telegramId}`,
             }
@@ -605,8 +612,8 @@ export class Battle {
           await logReferralEarning({
             referrerId: referrer.referrerUserId,
             refereeId: this.user.telegramId,
-            amountDittoWei: Number(referrerCut.toString()),
-            tier: 1
+            amountDittoWei: referrerCutRounded.toString(),
+            tier: 1,
           });
         }
 
@@ -615,7 +622,7 @@ export class Battle {
           updates,
         });
 
-        return dittoDropRounded;
+        return dittoDropUserRounded;
       }
     } catch (err) {
       logger.error(`Failed to handle ditto drop in battle.`);

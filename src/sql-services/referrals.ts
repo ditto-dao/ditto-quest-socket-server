@@ -309,7 +309,7 @@ export async function logReferralEarning({
 }: {
     referrerId: string;
     refereeId: string;
-    amountDittoWei: number;
+    amountDittoWei: string;
     tier?: number;
 }) {
     if (referrerId === refereeId) {
