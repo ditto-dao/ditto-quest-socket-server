@@ -7,7 +7,7 @@ import { getAtkCooldownFromAtkSpd } from "./combat-helpers";
 import { Battle } from "./battle";
 import { DEVELOPMENT_FUNDS_KEY, MAX_OFFLINE_IDLE_PROGRESS_S, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
-import { incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
+import { getUserLevel, incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
 import { canUserMintItem, mintItemToUser } from "../../../sql-services/item-inventory-service";
 import { canUserMintEquipment, mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
@@ -82,6 +82,19 @@ export class OfflineCombatManager {
 
     const domain = await getDomainById(activity.domainId);
     if (!domain) throw new Error(`Domain not found: ${activity.domainId}`);
+
+    const userLevel = await getUserLevel(activity.userId);
+    if (
+      userLevel < (domain.minCombatLevel ?? -Infinity) ||
+      userLevel > (domain.maxCombatLevel ?? Infinity)
+    ) {
+      logger.warn(`User ${activity.userId} does not meet domain level requirements. Skipping offline progress.`);
+
+      return {
+        combatUpdate: undefined,
+        currentCombat: undefined
+      };
+    }
 
     let originalCombat = activity.userCombatState;
     let userCombat = OfflineCombatManager.cloneCombat(originalCombat);
@@ -311,6 +324,19 @@ export class OfflineCombatManager {
 
     const dungeon = await getDungeonById(activity.dungeonId);
     if (!dungeon) throw new Error(`Dungeon not found: ${activity.dungeonId}`);
+
+    const userLevel = await getUserLevel(activity.userId);
+    if (
+      userLevel < (dungeon.minCombatLevel ?? -Infinity) ||
+      userLevel > (dungeon.maxCombatLevel ?? Infinity)
+    ) {
+      logger.warn(`User ${activity.userId} does not meet dungeon level requirements. Skipping offline progress.`);
+
+      return {
+        combatUpdate: undefined,
+        currentCombat: undefined
+      };
+    }
 
     let originalCombat = activity.userCombatState;
     let userCombat = OfflineCombatManager.cloneCombat(originalCombat);

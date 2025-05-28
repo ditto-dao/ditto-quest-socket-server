@@ -34,7 +34,7 @@ export class IdleCombatManager {
         domain: DomainWithMonsters,
         userId: string,
     ) {
-        const battle = new Battle('Domain', domain.id, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster);
+        const battle = new Battle('Domain', domain.id, domain.minCombatLevel, domain.maxCombatLevel, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster);
 
         battle.onBattleEnd = async () => {
             if (this.activeBattlesByUserId[userId] === battle) {
@@ -144,7 +144,7 @@ export class IdleCombatManager {
         dungeon: DungeonWithMonsters,
         userId: string,
     ) {
-        const battle = new Battle('Dungeon', dungeon.id, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster);
+        const battle = new Battle('Dungeon', dungeon.id, dungeon.minCombatLevel, dungeon.maxCombatLevel, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster);
 
         battle.onBattleEnd = async () => {
             const dungeonState = DungeonManager.getState(userId);

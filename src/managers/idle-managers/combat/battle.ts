@@ -5,7 +5,7 @@ import { SocketManager } from "../../../socket/socket-manager";
 import { FullMonster, setLastBattleEndTimestamp, setUserCombatHpByTelegramId } from "../../../sql-services/combat-service";
 import { COMBAT_EXP_UPDATE_EVENT, COMBAT_HP_CHANGE_EVENT, COMBAT_STARTED_EVENT, COMBAT_USER_DIED_EVENT, LEDGER_UPDATE_BALANCE_EVENT, USER_UPDATE_EVENT } from "../../../socket/events";
 import { DEVELOPMENT_FUNDS_KEY, DITTO_DECIMALS, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
-import { incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
+import { getUserLevel, incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { randomBytes } from "crypto";
 import { canUserMintItem, mintItemToUser } from "../../../sql-services/item-inventory-service";
@@ -18,6 +18,9 @@ import { getReferrer, logReferralEarning } from "../../../sql-services/referrals
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
   combatAreaId: number;
+
+  minCombatLevel: number | null;
+  maxCombatLevel: number | null;
 
   socketManager: SocketManager;
   dittoLedgerSocket: DittoLedgerSocket;
@@ -43,6 +46,8 @@ export class Battle {
   constructor(
     combatAreaType: 'Domain' | 'Dungeon',
     combatAreaId: number,
+    minCombatLevel: number | null,
+    maxCombatLevel: number | null,
     socketManager: SocketManager,
     dittoLedgerSocket: DittoLedgerSocket,
     user: User,
@@ -53,6 +58,8 @@ export class Battle {
   ) {
     this.combatAreaType = combatAreaType;
     this.combatAreaId = combatAreaId;
+    this.minCombatLevel = minCombatLevel;
+    this.maxCombatLevel = maxCombatLevel;
     this.socketManager = socketManager;
     this.dittoLedgerSocket = dittoLedgerSocket;
     this.user = user;
@@ -65,6 +72,14 @@ export class Battle {
 
   async startBattle() {
     logger.info(`🚀 Entered startBattle for ${this.user.telegramId}`);
+
+    const userLevel = await getUserLevel(this.user.telegramId);
+    if (
+      userLevel < (this.minCombatLevel ?? -Infinity) ||
+      userLevel > (this.maxCombatLevel ?? Infinity)
+    ) {
+      throw new Error(`User ${this.user.telegramId} does not meet battle level requirements.`);
+    }
 
     if (this.battleEnded) {
       logger.warn(`❌ Tried to start battle for ${this.user.telegramId} but it was already ended.`);
