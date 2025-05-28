@@ -82,6 +82,11 @@ export async function mintItemToUser(
     quantity: number = 1
 ): Promise<Prisma.InventoryGetPayload<{ include: { item: { include: { statEffect: true } } } }>> {
     try {
+        const itemExists = await prisma.item.findUnique({ where: { id: itemId } });
+        if (!itemExists) {
+            throw new Error(`Item ID ${itemId} does not exist in the database`);
+        }
+        
         // Check if the item already exists in the user's inventory
         const existingInventory = await prisma.inventory.findFirst({
             where: {

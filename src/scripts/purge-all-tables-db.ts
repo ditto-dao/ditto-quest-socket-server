@@ -9,63 +9,68 @@ async function deleteAllTables() {
   try {
     logger.info("🚨 Starting full database cleanup...");
 
-    // STEP 1: DELETE ALL CHILD/JUNCTION TABLES
-    await prisma.monsterDrop.deleteMany();
-    logger.info("🧹 Deleted MonsterDrop");
-    await resetAutoIncrement("MonsterDrop");
+    await prisma.domain.deleteMany();
+    logger.info("🧹 Deleted Domain");
+    await resetAutoIncrement("Domain");
 
-    await prisma.domainMonster.deleteMany();
-    logger.info("🧹 Deleted DomainMonster");
-    await resetAutoIncrement("DomainMonster");
+    await prisma.dungeon.deleteMany();
+    logger.info("🧹 Deleted Dungeon");
+    await resetAutoIncrement("Dungeon");
 
-    await prisma.dungeonMonsterSequence.deleteMany();
-    logger.info("🧹 Deleted DungeonMonsterSequence");
-    await resetAutoIncrement("DungeonMonsterSequence");
+    await prisma.farmingActivityLog.deleteMany();
+    logger.info("🧹 Deleted FarmingActivityLog");
+    await resetAutoIncrement("FarmingActivityLog");
 
-    await prisma.craftingRecipeItems.deleteMany();
-    logger.info("🧹 Deleted CraftingRecipeItems");
-    await resetAutoIncrement("CraftingRecipeItems");
+    await prisma.craftingConsumedItem.deleteMany();
+    logger.info("🧹 Deleted CraftingConsumedItem");
+    await resetAutoIncrement("CraftingConsumedItem");
 
-    await prisma.craftingRecipe.deleteMany();
-    logger.info("🧹 Deleted CraftingRecipe");
-    await resetAutoIncrement("CraftingRecipe");
+    await prisma.craftingActivityLog.deleteMany();
+    logger.info("🧹 Deleted CraftingActivityLog");
+    await resetAutoIncrement("CraftingActivityLog");
 
-    await prisma.inventory.deleteMany();
-    logger.info("🧹 Deleted Inventory");
-    await resetAutoIncrement("Inventory");
+    await prisma.breedingActivityLog.deleteMany();
+    logger.info("🧹 Deleted BreedingActivityLog");
+    await resetAutoIncrement("BreedingActivityLog");
 
-    await prisma.equipment.deleteMany();
-    logger.info("🧹 Deleted Equipment");
-    await resetAutoIncrement("Equipment");
+    await prisma.combatDrop.deleteMany();
+    logger.info("🧹 Deleted CombatDrop");
+    await resetAutoIncrement("CombatDrop");
 
-    await prisma.item.deleteMany();
-    logger.info("🧹 Deleted Item");
-    await resetAutoIncrement("Item");
+    await prisma.combatActivityLog.deleteMany();
+    logger.info("🧹 Deleted CombatActivityLog");
+    await resetAutoIncrement("CombatActivityLog");
 
-    await prisma.slime.deleteMany();
-    logger.info("🧹 Deleted Slime");
-    await resetAutoIncrement("Slime");
+    await prisma.accomplishmentProgress.deleteMany();
+    logger.info("🧹 Deleted AccomplishmentProgress");
+    await resetAutoIncrement("AccomplishmentProgress");
 
-    await prisma.slimeTrait.deleteMany();
-    logger.info("🧹 Deleted SlimeTrait");
-    await resetAutoIncrement("SlimeTrait");
+    await prisma.accomplishment.deleteMany();
+    logger.info("🧹 Deleted Accomplishment");
+    await resetAutoIncrement("Accomplishment");
 
-    await prisma.user.deleteMany();
-    logger.info("🧹 Deleted User");
-    await resetAutoIncrement("User");
+    await prisma.userDeviceFingerprint.deleteMany();
+    logger.info("🧹 Deleted UserDeviceFingerprint");
+    await resetAutoIncrement("UserDeviceFingerprint");
 
-    await prisma.monster.deleteMany();
-    logger.info("🧹 Deleted Monster");
-    await resetAutoIncrement("Monster");
+    await prisma.referralEarningLog.deleteMany();
+    logger.info("🧹 Deleted ReferralEarningLog");
+    await resetAutoIncrement("ReferralEarningLog");
 
-    await prisma.statEffect.deleteMany();
-    logger.info("🧹 Deleted StatEffect");
-    await resetAutoIncrement("StatEffect");
+    await prisma.referralEventLog.deleteMany();
+    logger.info("🧹 Deleted ReferralEventLog");
+    await resetAutoIncrement("ReferralEventLog");
 
-    // STEP 2: DELETE COMBAT LAST
-    await prisma.combat.deleteMany();
-    logger.info("🧹 Deleted Combat");
-    await resetAutoIncrement("Combat");
+    await prisma.referralRelation.deleteMany();
+    logger.info("🧹 Deleted ReferralRelation");
+    await resetAutoIncrement("ReferralRelation");
+
+    await prisma.referralLink.deleteMany();
+    logger.info("🧹 Deleted ReferralLink");
+    await resetAutoIncrement("ReferralLink");
+
+    await prisma.betaTester.deleteMany();
+    logger.info("🧹 Deleted BetaTester");
 
     logger.info("✅ Successfully purged all tables and reset auto-increment.");
   } catch (error) {

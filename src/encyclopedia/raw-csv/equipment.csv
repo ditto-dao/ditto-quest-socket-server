@@ -1,398 +1,341 @@
 Equipment_ID,Item Name,Description,Category,Crafting Materials,"Crafting Materials
-(qty x item id)",Abilities,Image,Crafting Level Req,Days to Level 99,Change in XP/S,XP/S,Crafting XP,Crafting Interval (S),Crafting Interval (M),Buy Price (GP),Buy Price ($DITTO),Sell Price (GP),GP/S,Change in GP/S,Rarity,Double Resource Odds,Skill Interval Reduction Multiplier,Required Lvl,MAX HP Mod,ATK SPD mod,ACC Mod,EVA Mod,MAX MELEE DMG Mod,MAX RANGE DMG Mod,MAX MAGIC DMG Mod,CRIT CHANCE Mod,CRIT MULTIPLIER Mod,DMG REDUCTION Mod,MAGIC DMG REDUCTION Mod,HP REGEN RATE Mod,HP REGEN AMOUNT Mod,MELEE FACTOR,RANGE FACTOR,MAGIC FACTOR,REINFORCE AIR,REINFORCE WATER,REINFORCE EARTH,REINFORCE FIRE,Stat Profile
-1,Sticky Sword,"A crude blade made from sticky sap-covered wood, barely holding its shape. A humble beginning for any adventurer.",Weapon (Melee),10 Wood,10x30,,https://wiki.melvoridle.com/images/thumb/0/05/Aranite_2H_Blade_%28item%29.png/250px-Aranite_2H_Blade_%28item%29.png,1,77.486,,4.000,80,20,0 m 20 s,,,50,2.500,,D,,,1,*1.02,*1.02,*1.02,*1.02,50,0,0,,,*1.02,*1.02,,*1.02,3,0,0,,,,,Melee Offensive
-2,Slime Bronze Sword,"A sturdy sword gleaming with goo, crafted by novice slime smiths. Its bronze edge reflects the maker's care.",Weapon (Melee),"15 Bronze Ores
+(qty x item id)",Abilities,Image,Crafting Level Req,XP/S,Crafting XP,Crafting Interval (S),Crafting Interval (M),Buy Price (GP),Buy Price ($DITTO),Sell Price (GP),GP/S,Rarity,Double Resource Odds,Skill Interval Reduction Multiplier,Combat Level Req,MAX HP Mod,ATK SPD mod,ACC Mod,EVA Mod,MAX MELEE DMG Mod,MAX RANGE DMG Mod,MAX MAGIC DMG Mod,CRIT CHANCE Mod,CRIT MULTIPLIER Mod,DMG REDUCTION Mod,MAGIC DMG REDUCTION Mod,HP REGEN RATE Mod,HP REGEN AMOUNT Mod,MELEE FACTOR,RANGE FACTOR,MAGIC FACTOR,REINFORCE AIR,REINFORCE WATER,REINFORCE EARTH,REINFORCE FIRE,Stat Profile
+1,Rustfang,A worn blade with flaking edges. Still good enough to scare off slimebats.,Weapon (Melee),10 Wood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,50,0,0,,,*1.02,*1.02,,*1.02,3,0,0,,,,,Melee Offensive
+2,Timbertooth,Carved from ironwood and nailed with steel teeth. Surprisingly dependable.,Weapon (Melee),15 Wood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_4.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,65,0,0,,,*1.02,*1.02,,*1.02,4,0,0,,,,,Melee Offensive
+3,Ironlink,Forged from spare chain loops. It clinks louder than it cuts.,Weapon (Melee),20 Wood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_6.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,80,0,0,,,*1.03,*1.03,,*1.03,5,0,0,,,,,Melee Offensive
+4,Mirepiercer,"Shaped to jab, not swing. Perfect for stabbing through swamp armor.",Weapon (Melee),"15 Bronze Ores
 10 Wood","15x1
-10x30",,https://wiki.melvoridle.com/images/thumb/0/0b/Bronze_Sword_%28item%29.png/375px-Bronze_Sword_%28item%29.png,10,70.442,0.400,4.400,110,25,0 m 25 s,,,70,2.800,0.300,D,,,10,*1.05,*1.04,*1.03,*1.03,100,0,0,,,*1.04,*1.04,,*1.03,6,0,0,,,,,Melee Offensive
-3,Hardened Sword,"Forged with reinforced iron and solidified ooze, this blade is dependable in battle.",Weapon (Melee),"20 Iron Ores
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_8.png,10,4.400,110,25,0 m 25 s,,,70,2.800,D,,,10,*1.05,*1.04,*1.03,*1.03,100,0,0,,,*1.04,*1.04,,*1.03,6,0,0,,,,,Melee Offensive
+5,Glowbrand,A simple core blade with a faint internal shimmer. A favorite among trainees.,Weapon (Melee),"20 Iron Ores
 10 Wood","20x2
-10x30",,https://wiki.melvoridle.com/images/thumb/e/ed/Iron_Sword_%28item%29.png/375px-Iron_Sword_%28item%29.png,20,61.989,0.600,5.000,150,30,0 m 30 s,,,100,3.333,0.533,D,,,20,*1.08,*1.06,*1.04,*1.04,150,0,0,,,*1.06,*1.06,,*1.04,9,0,0,,,,,Melee Offensive
-4,Alloy Sword,"A sharp blade forged from alloyed metals, layered with protective slime. It shines with an industrial elegance.",Weapon (Melee),"15 Bronze Ores
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_10.png,15,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.06,*1.04,*1.04,150,0,0,,,*1.06,*1.06,,*1.04,9,0,0,,,,,Melee Offensive
+6,Hollowsteel,"Thin and light, yet unnaturally strong. Whistles on wide arcs.",Weapon (Melee),"15 Bronze Ores
 15 Iron Ores
 10 Wood","15x1
 15x2
-10x30",,https://wiki.melvoridle.com/images/thumb/0/0b/Steel_Sword_%28item%29.png/375px-Steel_Sword_%28item%29.png,30,57.095,0.429,5.429,190,35,0 m 35 s,,,160,4.571,1.238,D,,,30,*1.11,*1.08,*1.05,*1.05,200,0,0,,,*1.08,*1.08,,*1.05,12,0,0,,,,,Melee Offensive
-5,Veil Sword,"Cloaked in shadowy energy, this blade seems to absorb light. Perfect for those who fight in the dark.",Weapon (Melee),"25 Shadow Ores
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_12.png,20,5.429,190,35,0 m 35 s,,,160,4.571,D,,,30,*1.11,*1.08,*1.05,*1.05,200,0,0,,,*1.08,*1.08,,*1.05,12,0,0,,,,,Melee Offensive
+7,Splinterblade,Jagged like broken glass. You’ll need a steady hand and a lot of gauze.,Weapon (Melee),"25 Shadow Ores
 15 Wood","25x3
-15x30",,https://wiki.melvoridle.com/images/thumb/8/8f/Black_Sword_%28item%29.png/375px-Black_Sword_%28item%29.png,40,51.658,0.571,6.000,240,40,0 m 40 s,,,210,5.250,0.679,D,,,40,*1.14,*1.10,*1.06,*1.06,250,0,0,,,*1.10,*1.10,,*1.06,15,0,0,,,,,Melee Offensive
-6,Muck Sword,"A mithril blade covered in enchanted muck, glowing faintly under moonlight. A rarity among skilled crafters.",Weapon (Melee),"35 Mystical Ores
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_14.png,25,6.000,240,40,0 m 40 s,,,210,5.250,D,,,40,*1.14,*1.10,*1.06,*1.06,250,0,0,,,*1.10,*1.10,,*1.06,15,0,0,,,,,Melee Offensive
+8,Embercut,Warms the air around it. Once used to light torches on expedition trails.,Weapon (Melee),"35 Mystical Ores
 15 Wood","35x4
-15x30",,https://wiki.melvoridle.com/images/thumb/4/4e/Mithril_Sword_%28item%29.png/250px-Mithril_Sword_%28item%29.png,50,46.492,0.667,6.667,300,45,0 m 45 s,,,260,5.778,0.528,D,,,50,*1.17,*1.12,*1.07,*1.07,300,0,0,,,*1.12,*1.12,,*1.07,18,0,0,,,,,Melee Offensive
-7,Glow Sword,"This radiant blade is forged from adamant and glowing slime, making it both beautiful and powerful.",Weapon (Melee),"45 Adamant Ores
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_16.png,30,6.667,300,45,0 m 45 s,,,260,5.778,C,,,50,*1.17,*1.12,*1.07,*1.07,300,0,0,,,*1.12,*1.12,,*1.07,18,0,0,,,,,Melee Offensive
+9,Bramblefang,Decorated with curling vine patterns. Draws blood like a thorn.,Weapon (Melee),"45 Adamant Ores
 20 Wood","45x5
-20x30",,https://wiki.melvoridle.com/images/thumb/e/e5/Adamant_Sword_%28item%29.png/250px-Adamant_Sword_%28item%29.png,60,43.048,0.533,7.200,360,50,0 m 50 s,,,350,7.000,1.222,D,,,60,*1.20,*1.14,*1.08,*1.08,*1.10,0,0,,,*1.14,*1.14,,*1.08,21,0,0,,,,,Melee Offensive
-8,Frost Sword,A chilling blade of frozen ooze Crystal. It freezes the air around it and leaves frost on its enemies.,Weapon (Melee),"40 Ice Crystals
+20x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_18.png,35,7.200,360,50,0 m 50 s,,,350,7.000,C,,,60,*1.20,*1.14,*1.08,*1.08,*1.10,0,0,,,*1.14,*1.14,,*1.08,21,0,0,,,,,Melee Offensive
+10,Moonbite,Faint lunar etchings glow softly in the dark. Feels lighter under starlight.,Weapon (Melee),"40 Ice Crystals
 30 Ooze Shards","40x16
-30x25",,https://wiki.melvoridle.com/images/thumb/6/63/Ice_Sword_%28item%29.png/375px-Ice_Sword_%28item%29.png,70,39.644,0.618,7.818,430,55,0 m 55 s,,,420,7.636,0.636,D,,,70,*1.23,*1.16,*1.09,*1.09,*1.13,0,0,,,*1.16,*1.16,,*1.09,24,0,0,,,,,Melee Offensive
-9,Ember Sword,"Forged with molten slime and fire shards, this blade burns with an inner inferno, igniting its surroundings.",Weapon (Melee),"40 Fire Crystals
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_20.png,40,7.818,430,55,0 m 55 s,,,420,7.636,C,,,70,*1.23,*1.16,*1.09,*1.09,*1.13,0,0,,,*1.16,*1.16,,*1.09,24,0,0,,,,,Melee Offensive
+11,Dusthowl,Kicks up air as it swings. Makes more noise than damage — for now.,Weapon (Melee),"40 Fire Crystals
 30 Ooze Shards","40x17
-30x25",,https://wiki.melvoridle.com/images/thumb/b/bd/Netherite_Sword_%28item%29.png/250px-Netherite_Sword_%28item%29.png,80,35.763,0.848,8.667,520,60,1 m 0 s,,,500,8.333,0.697,D,,,80,*1.26,*1.18,*1.10,*1.10,*1.16,0,0,,,*1.18,*1.18,,*1.10,27,0,0,,,,,Melee Offensive
-10,Relic Sword,"Polished to a mirror finish, this relic blade carries the wisdom of forgotten eras.",Weapon (Melee),"40 Relic Ores
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_22.png,45,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.18,*1.10,*1.10,*1.16,0,0,,,*1.18,*1.18,,*1.10,27,0,0,,,,,Melee Offensive
+12,Thorncleave,Covered in forged briars. Cuts as it drags. Feared in the undergroves.,Weapon (Melee),"40 Relic Ores
 25 Ooze Shards","40x6
-25x25",,https://wiki.melvoridle.com/images/thumb/a/a2/Ancient_Sword_%28item%29.png/375px-Ancient_Sword_%28item%29.png,90,33.027,0.718,9.385,610,65,1 m 5 s,,,650,10.000,1.667,D,,,90,*1.29,*1.20,*1.11,*1.11,*1.19,0,0,,,*1.20,*1.20,,*1.11,30,0,0,,,,,Melee Offensive
-11,Fracture Sword,"Jagged and ominous, this weapon leaks molten ooze through its fiery cracks. It pulses with unstable power.",Weapon (Melee),"45 Magma Shards
-25 Ooze Shards","45x26
-25x25",,https://wiki.melvoridle.com/images/thumb/7/7b/Strange_Sword_%28item%29.png/375px-Strange_Sword_%28item%29.png,100,30.558,0.758,10.143,710,70,1 m 10 s,,,740,10.571,0.571,C,,,100,*1.32,*1.22,*1.12,*1.12,*1.22,0,0,,,*1.22,*1.22,,*1.12,33,0,0,,,,,Melee Offensive
-12,Gleam Sword,"Studded with corundum gems, this light purple sword refracts light, creating a dazzling visual display.",Weapon (Melee),"50 Corundum Crystals
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_24.png,50,9.385,610,65,1 m 5 s,,,650,10.000,C,,,90,*1.29,*1.20,*1.11,*1.11,*1.19,0,0,,,*1.20,*1.20,,*1.11,30,0,0,,,,,Melee Offensive
+13,Starflare,Its polished finish reflects starlight in dungeons. Favored by lightseers.,Weapon (Melee),"45 Magma Shards
+25 Ooze Shards",75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_26.png,55,10.143,710,70,1 m 10 s,,,740,10.571,B,,,100,*1.32,*1.22,*1.12,*1.12,*1.22,0,0,,,*1.22,*1.22,,*1.12,33,0,0,,,,,Melee Offensive
+14,Ashsplitter,"Blackened tip, cool to the touch. Used by fire-walkers of Ember Steppe.",Weapon (Melee),"50 Corundum Crystals
 30 Ooze Shards","50x19
-30x25",,https://wiki.melvoridle.com/images/thumb/d/d9/Corundum_Sword_%28item%29.png/375px-Corundum_Sword_%28item%29.png,110,28.007,0.924,11.067,830,75,1 m 15 s,,,850,11.333,0.762,C,,,110,*1.35,*1.24,*1.13,*1.13,*1.25,0,0,,,*1.24,*1.24,,*1.13,36,0,0,,,,,Melee Offensive
-13,Verdant Sword,A vibrant green sword made from augite and enriched with nature’s purest slime essence.,Weapon (Melee),"55 Augite Crystals
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_28.png,60,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.24,*1.13,*1.13,*1.25,0,0,,,*1.24,*1.24,,*1.13,36,0,0,,,,,Melee Offensive
+15,Daggerroot,The hilt smells faintly of earth. Born from jungle-forged steel.,Weapon (Melee),"55 Augite Crystals
 30 Ooze Shards","55x20
-30x25",,https://wiki.melvoridle.com/images/thumb/8/8c/Augite_Sword_%28item%29.png/375px-Augite_Sword_%28item%29.png,120,26.101,0.808,11.875,950,80,1 m 20 s,,,1100,13.750,2.417,C,,,120,*1.38,*1.26,*1.14,*1.14,*1.28,0,0,,,*1.26,*1.26,,*1.14,39,0,0,,,,,Melee Offensive
-14,Sanctum Sword,"Forged from celestial Ore, this weapon resonates with divine energy, offering both grace and devastation.",Weapon (Melee),"60 Sanctum Ores
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_30.png,65,11.875,950,80,1 m 20 s,,,1100,13.750,B,,,120,*1.38,*1.26,*1.14,*1.14,*1.28,0,0,,,*1.26,*1.26,,*1.14,39,0,0,,,,,Melee Offensive
+16,Spiritlash,Leaves a faint echo after striking. Those hit feel... slower.,Weapon (Melee),"60 Sanctum Ores
 35 Ooze Shards","60x10
-35x25",,https://wiki.melvoridle.com/images/thumb/6/66/Divine_Sword_%28item%29.png/375px-Divine_Sword_%28item%29.png,130,24.394,0.831,12.706,1080,85,1 m 25 s,,,1260,14.824,1.074,C,,,130,*1.41,*1.28,*1.15,*1.15,*1.31,0,0,,,*1.28,*1.28,,*1.15,42,0,0,,,,,Melee Offensive
-15,Abyss Sword,"A blade forged in the depths, steeped in dark energy and abyssal slime, emanating a sinister glow.",Weapon (Melee),"70 Abyssium Ores
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_32.png,70,12.706,1080,85,1 m 25 s,,,1260,14.824,B,,,130,*1.41,*1.28,*1.15,*1.15,*1.31,0,0,,,*1.28,*1.28,,*1.15,42,0,0,,,,,Melee Offensive
+17,Gleamscourge,Ornate but deadly. Used in ceremonial duels that rarely ended peacefully.,Weapon (Melee),"70 Abyssium Ores
 40 Ooze Shards","70x11
-40x25",,https://wiki.melvoridle.com/images/thumb/5/5b/Abyssium_Sword_%28item%29.png/375px-Abyssium_Sword_%28item%29.png,140,22.679,0.961,13.667,1230,90,1 m 30 s,,,1430,15.889,1.065,C,,,140,*1.44,*1.30,*1.16,*1.16,*1.34,0,0,,,*1.30,*1.30,,*1.16,45,0,0,,,,,Melee Offensive
-16,Wisp Sword,"A spectral blade forged from brumite, leaving an eerie mist in its path as it chills the very soul.",Weapon (Melee),"60 Brumite Ores
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_34.png,75,13.667,1230,90,1 m 30 s,,,1430,15.889,B,,,140,*1.44,*1.30,*1.16,*1.16,*1.34,0,0,,,*1.30,*1.30,,*1.16,45,0,0,,,,,Melee Offensive
+18,Blightpiercer,A twisted core blade once wielded in the Rot Wars. Resists corrosion.,Weapon (Melee),"60 Brumite Ores
 35 Ice Ooze Crystals","60x12
-35x18",,https://wiki.melvoridle.com/images/thumb/f/fa/Brumite_Sword_%28item%29.png/375px-Brumite_Sword_%28item%29.png,150,21.337,0.860,14.526,1380,95,1 m 35 s,,,1800,18.947,3.058,C,,,150,*1.47,*1.32,*1.17,*1.17,*1.37,0,0,,,*1.32,*1.32,,*1.17,45,0,0,,,,,Melee Offensive
-17,Dusk Sword,"This shadowy weapon seems alive, constantly reforming its edge with seeping twilight goo.",Weapon (Melee),"65 Dusk Ores
+35x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_36.png,80,14.526,1380,95,1 m 35 s,,,1800,18.947,A,,,150,*1.47,*1.32,*1.17,*1.17,*1.37,0,0,,,*1.32,*1.32,,*1.17,45,0,0,,,,,Melee Offensive
+19,Gloomfang,"The darker it is, the faster it cuts. Whispers when held at dusk.",Weapon (Melee),"65 Dusk Ores
 35 Ooze Shards","65x13
-35x25",,https://wiki.melvoridle.com/images/thumb/3/31/Fear_Hunter_Whip_%28item%29.png/250px-Fear_Hunter_Whip_%28item%29.png,160,19.996,0.974,15.500,1550,100,1 m 40 s,,,2100,21.000,2.053,C,,,160,*1.50,*1.34,*1.18,*1.18,*1.40,0,0,,,*1.34,*1.34,,*1.18,45,0,0,,,,,Melee Offensive
-18,Siphon Sword,"With each strike, this silver blade drains vitality, powered by the mysterious properties of witherite ooze.",Weapon (Melee),"75 Witherite Ores
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_38.png,85,15.500,1550,100,1 m 40 s,,,2100,21.000,A,,,160,*1.50,*1.34,*1.18,*1.18,*1.40,0,0,,,*1.34,*1.34,,*1.18,45,0,0,,,,,Melee Offensive
+20,Thunderbite,"Sparks on metal contact. Loud, erratic, but effective.",Weapon (Melee),"75 Witherite Ores
 40 Ooze Shards","75x14
-40x25",,https://wiki.melvoridle.com/images/thumb/f/f1/Witherite_Sword_%28item%29.png/375px-Witherite_Sword_%28item%29.png,170,18.597,1.167,16.667,1750,105,1 m 45 s,,,2450,23.333,2.333,B,,,170,*1.53,*1.36,*1.19,*1.19,*1.43,0,0,,,*1.36,*1.36,,*1.19,50,0,0,,,,,Melee Offensive
-19,Rift Sword,"This blade warps reality around it, its netherite core glowing with void-infused slime energy.",Weapon (Melee),"90 Netherite Ores
-45 Ooze Shards","90x15
-45x25",,https://wiki.melvoridle.com/images/thumb/7/75/Eternity_Sword_%28item%29.png/250px-Eternity_Sword_%28item%29.png,185,15.497,3.333,20.000,2200,110,1 m 50 s,,,3200,29.091,5.758,B,,,185,*1.56,*1.38,*1.20,*1.20,*1.46,0,0,,,*1.38,*1.38,,*1.20,50,0,0,,,,,Melee Offensive
-20,Eternal Slime Core,"A pulsating orb of primordial slime, its dark purple glow radiates infinite possibilities and untapped power.",Weapon (Special),"100 Slime Core Essence
-50 Ooze Shards","100x27
-50x25",,https://wiki.melvoridle.com/images/thumb/5/55/Powered_Red_Crystal_%28item%29.png/250px-Powered_Red_Crystal_%28item%29.png,200,15.497,0.000,20.000,4000,200,3 m 20 s,,,7500,37.500,8.409,A,,,200,*1.75,*1.50,*1.30,*1.30,*1.50,*1.50,*1.50,,,*1.50,*1.50,,*1.30,50,50,50,,,,,Miscellaneous
-21,Sticky Longbow,A basic longbow made from sticky sap wood. It barely holds tension but works in a pinch.,Weapon (Ranged),"10 Wood
-5 Dacron","10x30
-5x31",,https://wiki.melvoridle.com/images/thumb/4/43/Basic_Shortbow_%28item%29.png/250px-Basic_Shortbow_%28item%29.png,1,77.486,-16.000,4.000,80,20,0 m 20 s,,,50,2.500,-35.000,D,,,1,*1.02,*1.02,*1.02,*1.02,0,50,0,,,*1.02,*1.02,,*1.02,0,3,0,,,,,Ranged Precision
-22,Slime Bronze Longbow,A sturdy longbow reinforced with bronze elements and sticky ooze for improved elasticity.,Weapon (Ranged),"15 Bronze Ores
-10 Wood
-5 Dacron","15x1
-10x30
-5x31",,https://wiki.melvoridle.com/images/thumb/0/0e/Normal_Longbow_%28item%29.png/250px-Normal_Longbow_%28item%29.png,10,70.442,0.400,4.400,110,25,0 m 25 s,,,80,3.200,0.700,D,,,10,*1.05,*1.04,*1.03,*1.03,0,100,0,,,*1.04,*1.04,,*1.03,0,6,0,,,,,Ranged Precision
-23,Hardened Longbow,"An iron-tipped longbow strung with hardened ooze fiber, delivering reliable accuracy.",Weapon (Ranged),"20 Iron Ores
-10 Wood
-5 Dacron","20x2
-10x30
-5x31",,https://wiki.melvoridle.com/images/thumb/d/db/Oak_Longbow_%28item%29.png/250px-Oak_Longbow_%28item%29.png,20,61.989,0.600,5.000,150,30,0 m 30 s,,,100,3.333,0.133,D,,,20,*1.08,*1.06,*1.04,*1.04,0,150,0,,,*1.06,*1.06,,*1.04,0,9,0,,,,,Ranged Precision
-24,Alloy Longbow,"A bow forged with mixed metals, with a slime-coated grip for enhanced handling.",Weapon (Ranged),"15 Bronze Ores
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_40.png,90,16.667,1750,105,1 m 45 s,,,2450,23.333,A,,,170,*1.53,*1.36,*1.19,*1.19,*1.43,0,0,,,*1.36,*1.36,,*1.19,50,0,0,,,,,Melee Offensive
+21,Barksting,Crafted from old wood and thorn. Arrows buzz more than they fly.,Weapon (Ranged),10 Wood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,0,50,0,,,*1.02,*1.02,,*1.02,0,3,0,,,,,Ranged Precision
+22,Sapshot,Drips resin from the limbs. Makes quivers stickier than they should be.,Weapon (Ranged),15 Wood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_4.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,0,65,0,,,*1.02,*1.02,,*1.02,0,4,0,,,,,Ranged Precision
+23,Driftwhistle,Light and wind-tuned. Hums softly when drawn.,Weapon (Ranged),20 Wood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_6.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,0,80,0,,,*1.03,*1.03,,*1.03,0,5,0,,,,,Ranged Precision
+24,Mirebranch,Found buried in marsh soil. Pulls just a little left with every shot.,Weapon (Ranged),"15 Bronze Ores
+10 Wood","15x1
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_8.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.04,*1.03,*1.03,0,100,0,,,*1.04,*1.04,,*1.03,0,6,0,,,,,Ranged Precision
+25,Glowtwig,Dimly radiant under moonlight. A good companion for late hunts.,Weapon (Ranged),"20 Iron Ores
+10 Wood","20x2
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_10.png,15,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.06,*1.04,*1.04,0,150,0,,,*1.06,*1.06,,*1.04,0,9,0,,,,,Ranged Precision
+26,Spindlebend,Wobbly-looking but weirdly accurate. Made from scrap and luck.,Weapon (Ranged),"15 Bronze Ores
 15 Iron Ores
-10 Wood
-10 Dacron","15x1
+10 Wood","15x1
 15x2
-10x30
-10x31",,https://wiki.melvoridle.com/images/thumb/b/bb/Crystal_Longbow_%28item%29.png/250px-Crystal_Longbow_%28item%29.png,30,57.095,0.429,5.429,190,35,0 m 35 s,,,150,4.286,0.952,D,,,30,*1.11,*1.08,*1.05,*1.05,0,200,0,,,*1.08,*1.08,,*1.05,0,12,0,,,,,Ranged Precision
-25,Veil Longbow,"A shadow-infused longbow, silent and lethal. Perfect for precise strikes in the dark.",Weapon (Ranged),"25 Shadow Ores
-15 Wood
-5 Dacron","25x3
-15x30
-5x31",,https://wiki.melvoridle.com/images/thumb/4/46/Old_Hunting_Bow_%28item%29.png/250px-Old_Hunting_Bow_%28item%29.png,40,51.658,0.571,6.000,240,40,0 m 40 s,,,195,4.875,0.589,D,,,40,*1.14,*1.10,*1.06,*1.06,0,250,0,,,*1.10,*1.10,,*1.06,0,15,0,,,,,Ranged Precision
-26,Muck Longbow,"Crafted from mithril and enchanted muck, this longbow glimmers faintly in the moonlight.",Weapon (Ranged),"35 Mystical Ores
-15 Wood
-5 Dacron","35x4
-15x30
-5x31",,https://wiki.melvoridle.com/images/thumb/1/1e/Willow_Longbow_%28item%29.png/250px-Willow_Longbow_%28item%29.png,50,46.492,0.667,6.667,300,45,0 m 45 s,,,250,5.556,0.681,D,,,50,*1.17,*1.12,*1.07,*1.07,0,300,0,,,*1.12,*1.12,,*1.07,0,18,0,,,,,Ranged Precision
-27,Glow Longbow,"A radiant longbow that emits a soft glow, perfect for sharp and piercing shots.",Weapon (Ranged),"45 Adamant Ores
-20 Wood
-5 Dacron","45x5
-20x30
-5x31",,https://wiki.melvoridle.com/images/thumb/1/17/Maple_Longbow_%28item%29.png/250px-Maple_Longbow_%28item%29.png,60,43.048,0.533,7.200,360,50,0 m 50 s,,,320,6.400,0.844,D,,,60,*1.20,*1.14,*1.08,*1.08,0,*1.10,0,,,*1.14,*1.14,,*1.08,0,21,0,,,,,Ranged Precision
-28,Frost Longbow,"A bow of frozen Crystal, releasing arrows that chill enemies to the bone.",Weapon (Ranged),"40 Ice Crystals
-30 Ooze Shards
-10 Spectra","40x16
-30x25
-10x33",,https://wiki.melvoridle.com/images/thumb/3/34/Ice_Longbow_%28item%29.png/250px-Ice_Longbow_%28item%29.png,70,39.644,0.618,7.818,430,55,0 m 55 s,,,400,7.273,0.873,D,,,70,*1.23,*1.16,*1.09,*1.09,0,*1.13,0,,,*1.16,*1.16,,*1.09,0,24,0,,,,,Ranged Precision
-29,Ember Longbow,"Forged with molten slime and fire shards, this longbow ignites its projectiles with searing flames.",Weapon (Ranged),"40 Fire Crystals
-30 Ooze Shards
-10 Spectra","40x17
-30x25
-10x33",,https://wiki.melvoridle.com/images/thumb/c/c2/Engulfing_Vortex_Longbow_%28item%29.png/250px-Engulfing_Vortex_Longbow_%28item%29.png,80,35.763,0.848,8.667,520,60,1 m 0 s,,,500,8.333,1.061,D,,,80,*1.26,*1.18,*1.10,*1.10,0,*1.16,0,,,*1.18,*1.18,,*1.10,0,27,0,,,,,Ranged Precision
-30,Relic Longbow,"A relic from a forgotten era, this longbow holds ancient secrets within its polished frame.",Weapon (Ranged),"40 Relic Ores
-25 Ooze Shards
-10 Spectra","40x6
-25x25
-10x33",,https://wiki.melvoridle.com/images/thumb/a/a8/Stormsnap_%28item%29.png/250px-Stormsnap_%28item%29.png,90,33.027,0.718,9.385,610,65,1 m 5 s,,,666,10.246,1.913,D,,,90,*1.29,*1.20,*1.11,*1.11,0,*1.19,0,,,*1.20,*1.20,,*1.11,0,30,0,,,,,Ranged Precision
-31,Fracture Longbow,A jagged and ominous longbow that leaks molten ooze through its fiery cracks.,Weapon (Ranged),"45 Magma Shards
-25 Ooze Shards
-10 Spectra","45x26
-25x25
-10x33",,https://wiki.melvoridle.com/images/thumb/5/5a/Poisoned_Shortbow_%28item%29.png/250px-Poisoned_Shortbow_%28item%29.png,100,30.558,0.758,10.143,710,70,1 m 10 s,,,700,10.000,-0.246,C,,,100,*1.32,*1.22,*1.12,*1.12,0,*1.22,0,,,*1.22,*1.22,,*1.12,0,33,0,,,,,Ranged Precision
-32,Gleam Longbow,"Decorated with corundum gems, this longbow dazzles foes with its radiant beauty.",Weapon (Ranged),"50 Corundum Crystals
-30 Ooze Shards
-10 Spectra","50x19
-30x25
-10x33",,https://wiki.melvoridle.com/images/thumb/b/bb/Eternity_Bow_%28item%29.png/250px-Eternity_Bow_%28item%29.png,110,28.007,0.924,11.067,830,75,1 m 15 s,,,850,11.333,1.333,C,,,110,*1.35,*1.24,*1.13,*1.13,0,*1.25,0,,,*1.24,*1.24,,*1.13,0,36,0,,,,,Ranged Precision
-33,Verdant Longbow,"A green bow imbued with augite's natural energies, perfectly balanced for precision shooting.",Weapon (Ranged),"55 Augite Crystals
-30 Ooze Shards
-15 Spectra","55x20
-30x25
-15x33",,https://wiki.melvoridle.com/images/thumb/c/c1/Pure_Crystal_Longbow_%28item%29.png/250px-Pure_Crystal_Longbow_%28item%29.png,120,26.101,0.808,11.875,950,80,1 m 20 s,,,1000,12.500,1.167,C,,,120,*1.38,*1.26,*1.14,*1.14,0,*1.28,0,,,*1.26,*1.26,,*1.14,0,39,0,,,,,Ranged Precision
-34,Sanctum Longbow,"A celestial longbow forged from sanctum ore, resonating with divine energy for otherworldly accuracy.",Weapon (Ranged),"60 Sanctum Ores
-35 Ooze Shards
-15 Spectra","60x10
-35x25
-15x33",,https://wiki.melvoridle.com/images/thumb/8/88/Malevolent_Blight_Longbow_%28item%29.png/250px-Malevolent_Blight_Longbow_%28item%29.png,130,24.394,0.831,12.706,1080,85,1 m 25 s,,,1200,14.118,1.618,C,,,130,*1.41,*1.28,*1.15,*1.15,0,*1.31,0,,,*1.28,*1.28,,*1.15,0,42,0,,,,,Ranged Precision
-35,Abyss Longbow,"Forged in the depths, this longbow emanates dark energy from its abyssal components.",Weapon (Ranged),"70 Abyssium Ores
-40 Ooze Shards
-15 Spectra","70x11
-40x25
-15x33",,https://wiki.melvoridle.com/images/thumb/b/be/Hollow_Nightmare_Longbow_%28item%29.png/250px-Hollow_Nightmare_Longbow_%28item%29.png,140,22.679,0.961,13.667,1230,90,1 m 30 s,,,1666,18.511,4.393,C,,,140,*1.44,*1.30,*1.16,*1.16,0,*1.34,0,,,*1.30,*1.30,,*1.16,0,45,0,,,,,Ranged Precision
-36,Wisp Longbow,"A longbow crafted with brumite, shrouded in spectral mist, chilling enemies from afar.",Weapon (Ranged),"60 Brumite Ores
-35 Ice Ooze Crystals
-15 Dyneema","60x12
-35x18
-15x32",,https://wiki.melvoridle.com/images/thumb/2/2a/Unholy_Longbow_%28m%29_%28item%29.png/250px-Unholy_Longbow_%28m%29_%28item%29.png,150,21.337,0.860,14.526,1380,95,1 m 35 s,,,1600,16.842,-1.669,C,,,150,*1.47,*1.32,*1.17,*1.17,0,*1.37,0,,,*1.32,*1.32,,*1.17,0,45,0,,,,,Ranged Precision
-37,Dusk Longbow,"A bow of twilight energy, constantly reforming its tension with flowing goo.",Weapon (Ranged),"65 Dusk Ores
-35 Ooze Shards
-15 Dyneema","65x13
-35x25
-15x32",,https://wiki.melvoridle.com/images/thumb/8/85/Ethereal_Longbow_%28item%29.png/250px-Ethereal_Longbow_%28item%29.png,160,19.996,0.974,15.500,1550,100,1 m 40 s,,,1900,19.000,2.158,C,,,160,*1.50,*1.34,*1.18,*1.18,0,*1.40,0,,,*1.34,*1.34,,*1.18,0,45,0,,,,,Ranged Precision
-38,Siphon Longbow,"Strung with witherite fibers, this bow drains vitality with every shot.",Weapon (Ranged),"75 Witherite Ores
-40 Ooze Shards
-15 Dyneema","75x14
-40x25
-15x32",,https://wiki.melvoridle.com/images/thumb/5/5e/Elerine_Longbow_%28item%29.png/250px-Elerine_Longbow_%28item%29.png,170,18.597,1.167,16.667,1750,105,1 m 45 s,,,2400,22.857,3.857,B,,,170,*1.53,*1.36,*1.19,*1.19,0,*1.43,0,,,*1.36,*1.36,,*1.19,0,50,0,,,,,Ranged Precision
-39,Rift Longbow,"A void-powered bow infused with netherite, bending reality with its projectiles.",Weapon (Ranged),"90 Netherite Ores
-45 Ooze Shards
-15 Dyneema","90x15
-45x25
-15x32",,https://wiki.melvoridle.com/images/thumb/c/c2/Familiar_Longbow_%28item%29.png/250px-Familiar_Longbow_%28item%29.png,185,15.497,3.333,20.000,2200,110,1 m 50 s,,,3500,31.818,8.961,B,,,185,*1.56,*1.38,*1.20,*1.20,0,*1.46,0,,,*1.38,*1.38,,*1.20,0,50,0,,,,,Ranged Precision
-40,Sticky Staff,A basic staff made of sticky sap-covered wood. A humble tool for novice casters.,Weapon (Magic),9 Wood,9x30,,https://wiki.melvoridle.com/images/thumb/e/ea/Mudball_Staff_%28item%29.png/250px-Mudball_Staff_%28item%29.png,1,77.486,-16.000,4.000,80,20,0 m 20 s,,,50,2.500,-29.318,D,,,1,*1.02,*1.02,*1.02,*1.02,0,0,,,,*1.02,*1.02,,*1.02,0,0,3,,,,,Magic Burst
-41,Slime Bronze Staff,"A sturdy staff capped with bronze and goo, channeling magical energies efficiently.",Weapon (Magic),"13 Bronze Ores
-9 Wood","13x1
-9x30",,https://wiki.melvoridle.com/images/thumb/3/3e/Blight_Burst_Staff_%28item%29.png/250px-Blight_Burst_Staff_%28item%29.png,10,70.442,0.400,4.400,110,25,0 m 25 s,,,80,3.200,0.700,D,,,10,*1.05,*1.04,*1.03,*1.03,0,0,,,,*1.04,*1.04,,*1.03,0,0,6,,,,,Magic Burst
-42,Hardened Staff,"Iron strengthened with solidified ooze, providing stability for focused spells.",Weapon (Magic),"18 Iron Ores
-9 Wood","18x2
-9x30",,https://wiki.melvoridle.com/images/thumb/1/1f/Blighted_Staff_%28item%29.png/250px-Blighted_Staff_%28item%29.png,20,61.989,0.600,5.000,150,30,0 m 30 s,,,100,3.333,0.133,D,,,20,*1.08,*1.06,*1.04,*1.04,0,0,,,,*1.06,*1.06,,*1.04,0,0,9,,,,,Magic Burst
-43,Alloy Staff,"A staff forged from mixed metals and layered with protective slime, perfect for amplifying spells.",Weapon (Magic),"13 Bronze Ores
-13 Iron Ores
-9 Wood","13x1
-13x2
-9x30",,https://wiki.melvoridle.com/images/thumb/5/57/Nature%27s_Call_Staff_%28item%29.png/250px-Nature%27s_Call_Staff_%28item%29.png,30,57.095,0.429,5.429,190,35,0 m 35 s,,,150,4.286,0.952,D,,,30,*1.11,*1.08,*1.05,*1.05,0,0,,,,*1.08,*1.08,,*1.05,0,0,12,,,,,Magic Burst
-44,Veil Staff,"Cloaked in shadowy energy, this staff whispers incantations of darkness to its wielder.",Weapon (Magic),"22 Shadow Ores
-13 Wood","22x3
-13x30",,https://wiki.melvoridle.com/images/thumb/b/b5/Shadow_Wand_%28item%29.png/375px-Shadow_Wand_%28item%29.png,40,51.658,0.571,6.000,240,40,0 m 40 s,,,195,4.875,0.589,D,,,40,*1.14,*1.10,*1.06,*1.06,0,0,,,,*1.10,*1.10,,*1.06,0,0,15,,,,,Magic Burst
-45,Muck Staff,"Enchanted muck adorns this mithril staff, glowing faintly under mystical light, amplifying arcane potential.",Weapon (Magic),"31 Mystical Ores
-13 Wood","31x4
-13x30",,https://wiki.melvoridle.com/images/thumb/c/c8/Rotten_Staff_%28item%29.png/250px-Rotten_Staff_%28item%29.png,50,46.492,0.667,6.667,300,45,0 m 45 s,,,250,5.556,0.681,D,,,50,*1.17,*1.12,*1.07,*1.07,0,0,,,,*1.12,*1.12,,*1.07,0,0,18,,,,,Magic Burst
-46,Glow Staff,"A radiant staff glowing with slime energy, ideal for illuminating magical paths.",Weapon (Magic),"40 Adamant Ores
-18 Wood","40x5
-18x30",,https://wiki.melvoridle.com/images/thumb/5/5c/Archaic_Wand_%28item%29.png/250px-Archaic_Wand_%28item%29.png,60,43.048,0.533,7.200,360,50,0 m 50 s,,,320,6.400,0.844,D,,,60,*1.20,*1.14,*1.08,*1.08,0,0,*1.10,,,*1.14,*1.14,,*1.08,0,0,21,,,,,Magic Burst
-47,Frost Staff,"A staff crafted from frozen ooze Crystal, chilling the air and channeling frost magic.",Weapon (Magic),"36 Ice Crystals
-27 Ooze Shards","36x16
-27x25",,https://wiki.melvoridle.com/images/thumb/c/c6/Water_Imbued_Wand_%28item%29.png/250px-Water_Imbued_Wand_%28item%29.png,70,39.644,0.618,7.818,430,55,0 m 55 s,,,400,7.273,0.873,D,,,70,*1.23,*1.16,*1.09,*1.09,0,0,*1.13,,,*1.16,*1.16,,*1.09,0,0,24,,,,,Magic Burst
-48,Ember Staff,"Forged with molten slime and fire shards, this staff channels fiery energy into devastating spells.",Weapon (Magic),"36 Fire Crystals
-27 Ooze Shards","36x17
-27x25",,https://wiki.melvoridle.com/images/thumb/7/7d/Fire_Imbued_Wand_%28item%29.png/250px-Fire_Imbued_Wand_%28item%29.png,80,35.763,0.848,8.667,520,60,1 m 0 s,,,500,8.333,1.061,D,,,80,*1.26,*1.18,*1.10,*1.10,0,0,*1.16,,,*1.18,*1.18,,*1.10,0,0,27,,,,,Magic Burst
-49,Relic Staff,"Polished to perfection, this relic staff holds the knowledge of a forgotten era, amplifying arcane power.",Weapon (Magic),"36 Relic Ores
-22 Ooze Shards","36x6
-22x25",,https://wiki.melvoridle.com/images/thumb/7/76/Witherbind_Wand_%28item%29.png/250px-Witherbind_Wand_%28item%29.png,90,33.027,0.718,9.385,610,65,1 m 5 s,,,666,10.246,1.913,D,,,90,*1.29,*1.20,*1.11,*1.11,0,0,*1.19,,,*1.20,*1.20,,*1.11,0,0,30,,,,,Magic Burst
-50,Fracture Staff,"A jagged staff that seeps molten slime through its fiery cracks, radiating chaotic magical energy.",Weapon (Magic),"40 Magma Shards
-22 Ooze Shards","40x26
-22x25",,https://wiki.melvoridle.com/images/thumb/1/18/Desolation_Wand_%28item%29.png/250px-Desolation_Wand_%28item%29.png,100,30.558,0.758,10.143,710,70,1 m 10 s,,,700,10.000,-0.246,C,,,100,*1.32,*1.22,*1.12,*1.12,0,0,*1.22,,,*1.22,*1.22,,*1.12,0,0,33,,,,,Magic Burst
-51,Gleam Staff,"Studded with corundum gems, this staff dazzles with refracted magical energies, making it both functional and beautiful.",Weapon (Magic),"45 Corundum Crystals
-27 Ooze Shards","45x19
-27x25",,https://wiki.melvoridle.com/images/thumb/4/4e/Eternity_Staff_%28item%29.png/250px-Eternity_Staff_%28item%29.png,110,28.007,0.924,11.067,830,75,1 m 15 s,,,850,11.333,1.333,C,,,110,*1.35,*1.24,*1.13,*1.13,0,0,*1.25,,,*1.24,*1.24,,*1.13,0,0,36,,,,,Magic Burst
-52,Verdant Staff,"A vibrant green staff imbued with augite essence, perfect for nurturing nature-based magic.",Weapon (Magic),"49 Augite Crystals
-27 Ooze Shards","49x20
-27x25",,https://wiki.melvoridle.com/images/thumb/8/82/Cloudburst_Staff_%28item%29.gif/232px-Cloudburst_Staff_%28item%29.gif,120,26.101,0.808,11.875,950,80,1 m 20 s,,,1000,12.500,1.167,C,,,120,*1.38,*1.26,*1.14,*1.14,0,0,*1.28,,,*1.26,*1.26,,*1.14,0,0,39,,,,,Magic Burst
-53,Sanctum Staff,"Forged from celestial Ore, this staff resonates with divine energy, offering unmatched grace and power.",Weapon (Magic),"54 Sanctum Ores
-31 Ooze Shards","54x10
-31x25",,https://wiki.melvoridle.com/images/thumb/e/e7/Silent_Tangle_Wand_%28item%29.png/250px-Silent_Tangle_Wand_%28item%29.png,130,24.394,0.831,12.706,1080,85,1 m 25 s,,,1200,14.118,1.618,C,,,130,*1.41,*1.28,*1.15,*1.15,0,0,*1.31,,,*1.28,*1.28,,*1.15,0,0,42,,,,,Magic Burst
-54,Abyss Staff,"A staff forged from abyssium, channeling deep and foreboding energies for powerful dark spells.",Weapon (Magic),"63 Abyssium Ores
-36 Ooze Shards","63x11
-36x25",,https://wiki.melvoridle.com/images/thumb/b/b4/Blazing_Shadow_Staff_%28item%29.png/250px-Blazing_Shadow_Staff_%28item%29.png,140,22.679,0.961,13.667,1230,90,1 m 30 s,,,1666,18.511,4.393,C,,,140,*1.44,*1.30,*1.16,*1.16,0,0,*1.34,,,*1.30,*1.30,,*1.16,0,0,45,,,,,Magic Burst
-55,Wisp Staff,"Shrouded in ethereal mist, this brumite staff chills the soul and amplifies spectral magic.",Weapon (Magic),"54 Brumite Ores
-31 Ice Ooze Crystals","54x12
-31x18",,https://wiki.melvoridle.com/images/thumb/4/49/Ocean_Song_%28item%29.png/250px-Ocean_Song_%28item%29.png,150,21.337,0.860,14.526,1380,95,1 m 35 s,,,1600,16.842,-1.669,C,,,150,*1.47,*1.32,*1.17,*1.17,0,0,*1.37,,,*1.32,*1.32,,*1.17,0,0,45,,,,,Magic Burst
-56,Dusk Staff,"A staff of twilight energy, constantly shifting and reforming with seeping slime.",Weapon (Magic),"58 Dusk Ores
-31 Ooze Shards","58x13
-31x25",,https://wiki.melvoridle.com/images/thumb/b/b7/Ethereal_Staff_%28item%29.png/250px-Ethereal_Staff_%28item%29.png,160,19.996,0.974,15.500,1550,100,1 m 40 s,,,1900,19.000,2.158,C,,,160,*1.50,*1.34,*1.18,*1.18,0,0,*1.40,,,*1.34,*1.34,,*1.18,0,0,45,,,,,Magic Burst
-57,Siphon Staff,"This witherite staff drains life energy, enhancing dark magic spells with every use.",Weapon (Magic),"67 Witherite Ores
-36 Ooze Shards","67x14
-36x25",,https://wiki.melvoridle.com/images/thumb/9/91/Soul_Taker_Wand_%28item%29.png/250px-Soul_Taker_Wand_%28item%29.png,170,18.597,1.167,16.667,1750,105,1 m 45 s,,,2400,22.857,3.857,B,,,170,*1.53,*1.36,*1.19,*1.19,0,0,*1.43,,,*1.36,*1.36,,*1.19,0,0,50,,,,,Magic Burst
-58,Rift Staff,"A staff forged with netherite, bending reality to unleash void-powered spells.",Weapon (Magic),"81 Netherite Ores
-40 Ooze Shards","81x15
-40x25",,https://wiki.melvoridle.com/images/thumb/c/cc/Voidfire_Cascade_Wand_%28item%29.png/250px-Voidfire_Cascade_Wand_%28item%29.png,185,15.497,3.333,20.000,2200,110,1 m 50 s,,,3500,31.818,8.961,B,,,185,*1.56,*1.38,*1.20,*1.20,0,0,*1.46,,,*1.38,*1.38,,*1.20,0,0,50,,,,,Magic Burst
-59,Blight Helm,"A helm infused with shadowed energy, radiating an aura of corruption and decay.",Hat,"32 Shadow Ores
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_12.png,20,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.08,*1.05,*1.05,0,200,0,,,*1.08,*1.08,,*1.05,0,12,0,,,,,Ranged Precision
+27,Snarlroot,"Tensioned too tight, it bites back on misfires. Often wrapped in rags.",Weapon (Ranged),"25 Shadow Ores
+15 Wood","25x3
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_14.png,25,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.10,*1.06,*1.06,0,250,0,,,*1.10,*1.10,,*1.06,0,15,0,,,,,Ranged Precision
+28,Hearthbloom,Warm to the touch. A popular starter bow for cozy rangers.,Weapon (Ranged),"35 Mystical Ores
+15 Wood","35x4
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_16.png,30,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.12,*1.07,*1.07,0,300,0,,,*1.12,*1.12,,*1.07,0,18,0,,,,,Ranged Precision
+29,Vinecoil,Flexible frame lashed with living vines. Grows faint leaves over time.,Weapon (Ranged),"45 Adamant Ores
+20 Wood","45x5
+20x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_18.png,35,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.14,*1.08,*1.08,0,*1.10,0,,,*1.14,*1.14,,*1.08,0,21,0,,,,,Ranged Precision
+30,Silenttwig,Makes no sound. Even the arrows seem surprised when they hit.,Weapon (Ranged),"40 Ice Crystals
+30 Ooze Shards","40x16
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_20.png,40,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.16,*1.09,*1.09,0,*1.13,0,,,*1.16,*1.16,,*1.09,0,24,0,,,,,Ranged Precision
+31,Flickerbranch,Glimmers when turned sideways. Loses shine in direct moonlight.,Weapon (Ranged),"40 Fire Crystals
+30 Ooze Shards","40x17
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_22.png,45,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.18,*1.10,*1.10,0,*1.16,0,,,*1.18,*1.18,,*1.10,0,27,0,,,,,Ranged Precision
+32,Dustreel,Quivers with recoil. Once used in desert duels at dawn.,Weapon (Ranged),"40 Relic Ores
+25 Ooze Shards","40x6
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_24.png,50,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.20,*1.11,*1.11,0,*1.19,0,,,*1.20,*1.20,,*1.11,0,30,0,,,,,Ranged Precision
+33,Gleamthread,String woven from starlit spider silk. It resets itself overnight.,Weapon (Ranged),"45 Magma Shards
+25 Ooze Shards",75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_26.png,55,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.22,*1.12,*1.12,0,*1.22,0,,,*1.22,*1.22,,*1.12,0,33,0,,,,,Ranged Precision
+34,Ashgroove,"Burnt wood, still glowing faintly. Arrows smell like campfire.",Weapon (Ranged),"50 Corundum Crystals
+30 Ooze Shards","50x19
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_28.png,60,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.24,*1.13,*1.13,0,*1.25,0,,,*1.24,*1.24,,*1.13,0,36,0,,,,,Ranged Precision
+35,Briarhook,Fires sticky-tipped arrows that tangle in enemy cloaks.,Weapon (Ranged),"55 Augite Crystals
+30 Ooze Shards","55x20
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_30.png,65,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.26,*1.14,*1.14,0,*1.28,0,,,*1.26,*1.26,,*1.14,0,39,0,,,,,Ranged Precision
+36,Hushbeam,Shots make no noise. Even the wind forgets they passed.,Weapon (Ranged),"60 Sanctum Ores
+35 Ooze Shards","60x10
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_32.png,70,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.28,*1.15,*1.15,0,*1.31,0,,,*1.28,*1.28,,*1.15,0,42,0,,,,,Ranged Precision
+37,Mistfang,Tends to fog when drawn. Excellent in ambush-heavy regions.,Weapon (Ranged),"70 Abyssium Ores
+40 Ooze Shards","70x11
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_33.png,75,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.30,*1.16,*1.16,0,*1.34,0,,,*1.30,*1.30,,*1.16,0,45,0,,,,,Ranged Precision
+38,Sporespine,Mossy and damp. Arrows grow fluff if left too long.,Weapon (Ranged),"60 Brumite Ores
+35 Ice Ooze Crystals","60x12
+35x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_34.png,80,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.32,*1.17,*1.17,0,*1.37,0,,,*1.32,*1.32,,*1.17,0,45,0,,,,,Ranged Precision
+39,Stonepulse,Strikes with heavy force. Arrows hit like falling fruit.,Weapon (Ranged),"65 Dusk Ores
+35 Ooze Shards","65x13
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_35.png,85,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.34,*1.18,*1.18,0,*1.40,0,,,*1.34,*1.34,,*1.18,0,45,0,,,,,Ranged Precision
+40,Moonbrace,Carved beneath lunar eclipse. Favored by owl-eyed archers.,Weapon (Ranged),"75 Witherite Ores
+40 Ooze Shards","75x14
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_36.png,90,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.36,*1.19,*1.19,0,*1.43,0,,,*1.36,*1.36,,*1.19,0,50,0,,,,,Ranged Precision
+41,Twigwand,A snapped stick with ambition. Best for misfires and sparks.,Weapon (Magic),10 Wood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_1.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,0,0,50,,,*1.02,*1.02,,*1.02,0,0,3,,,,,Magic Burst
+42,Barkroot Rod,Smells of wet wood and burnt paper. Casts minor but honest spells.,Weapon (Magic),15 Wood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_2.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,0,0,65,,,*1.02,*1.02,,*1.02,0,0,4,,,,,Magic Burst
+43,Mossvine Staff,Wrapped in creeping green. Useful for growing herbs or headaches.,Weapon (Magic),20 Wood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_3.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,0,0,80,,,*1.03,*1.03,,*1.03,0,0,5,,,,,Magic Burst
+44,Embertwig,Smolders faintly. Will ignite scrolls if held too long.,Weapon (Magic),"15 Bronze Ores
+10 Wood","15x1
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_4.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.04,*1.03,*1.03,0,0,100,,,*1.04,*1.04,,*1.03,0,0,6,,,,,Magic Burst
+45,Dewlight Wand,Condensation gathers at its tip. Radiates sleepy warmth.,Weapon (Magic),"20 Iron Ores
+10 Wood","20x2
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_5.png,15,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.06,*1.04,*1.04,0,0,150,,,*1.06,*1.06,,*1.04,0,0,9,,,,,Magic Burst
+46,Glowsap Channel,Translucent wood pulsing with syrupy light. Attracts beetles.,Weapon (Magic),"15 Bronze Ores
+15 Iron Ores
+10 Wood","15x1
+15x2
+10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_6.png,20,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.08,*1.05,*1.05,0,0,200,,,*1.08,*1.08,,*1.05,0,0,12,,,,,Magic Burst
+47,Flicker Staff,Hard to focus on. Glitches slightly between planes when idle.,Weapon (Magic),"25 Shadow Ores
+15 Wood","25x3
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_7.png,25,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.10,*1.06,*1.06,0,0,250,,,*1.10,*1.10,,*1.06,0,0,15,,,,,Magic Burst
+48,Thornchant Staff,Covered in natural barbs. Enhances curses by at least 12%.,Weapon (Magic),"35 Mystical Ores
+15 Wood","35x4
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_8.png,30,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.12,*1.07,*1.07,0,0,300,,,*1.12,*1.12,,*1.07,0,0,18,,,,,Magic Burst
+49,Dustcoil Wand,Leaves a trail of motes when waved. Best for dramatic exits.,Weapon (Magic),"45 Adamant Ores
+20 Wood","45x5
+20x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_9.png,35,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.14,*1.08,*1.08,0,0,*1.10,,,*1.14,*1.14,,*1.08,0,0,21,,,,,Magic Burst
+50,Sparkhook,Jerks forward on its own when spells are strong.,Weapon (Magic),"40 Ice Crystals
+30 Ooze Shards","40x16
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_10.png,40,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.16,*1.09,*1.09,0,0,*1.13,,,*1.16,*1.16,,*1.09,0,0,24,,,,,Magic Burst
+51,Soulreed,Used to stir memory pools. Whispers unintelligibly when near graves.,Weapon (Magic),"40 Fire Crystals
+30 Ooze Shards","40x17
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_11.png,45,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.18,*1.10,*1.10,0,0,*1.16,,,*1.18,*1.18,,*1.10,0,0,27,,,,,Magic Burst
+52,Emberlock,Glows red when angry. Locks fire magic into stable orbs.,Weapon (Magic),"40 Relic Ores
+25 Ooze Shards","40x6
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_12.png,50,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.20,*1.11,*1.11,0,0,*1.19,,,*1.20,*1.20,,*1.11,0,0,30,,,,,Magic Burst
+53,Hollowbloom,A staff of dry petals and void. Blossoms only in nightmares.,Weapon (Magic),"45 Magma Shards
+25 Ooze Shards",75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_13.png,55,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.22,*1.12,*1.12,0,0,*1.22,,,*1.22,*1.22,,*1.12,0,0,33,,,,,Magic Burst
+54,Windcrutch,Used to walk on air. Mostly effective on small stairs.,Weapon (Magic),"50 Corundum Crystals
+30 Ooze Shards","50x19
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_14.png,60,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.24,*1.13,*1.13,0,0,*1.25,,,*1.24,*1.24,,*1.13,0,0,36,,,,,Magic Burst
+55,Sporespike,Rains puffs when slammed. Causes sneezing if used too frequently.,Weapon (Magic),"55 Augite Crystals
+30 Ooze Shards","55x20
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_15.png,65,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.26,*1.14,*1.14,0,0,*1.28,,,*1.26,*1.26,,*1.14,0,0,39,,,,,Magic Burst
+56,Murmuroak,The wood murmurs gently. No one knows what it’s saying.,Weapon (Magic),"60 Sanctum Ores
+35 Ooze Shards","60x10
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_16.png,70,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.28,*1.15,*1.15,0,0,*1.31,,,*1.28,*1.28,,*1.15,0,0,42,,,,,Magic Burst
+57,Gleamroot,"Shines through walls. Sometimes inconvenient, always dazzling.",Weapon (Magic),"70 Abyssium Ores
+40 Ooze Shards","70x11
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_17.png,75,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.30,*1.16,*1.16,0,0,*1.34,,,*1.30,*1.30,,*1.16,0,0,45,,,,,Magic Burst
+58,Runeberry Rod,Dotted with glowing fruit. Casting causes one to vanish.,Weapon (Magic),"60 Brumite Ores
+35 Ice Ooze Crystals","60x12
+35x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_18.png,80,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.32,*1.17,*1.17,0,0,*1.37,,,*1.32,*1.32,,*1.17,0,0,45,,,,,Magic Burst
+59,Shardstem,Covered in prismatic shards. Shoots rays that taste faintly of ozone.,Weapon (Magic),"65 Dusk Ores
+35 Ooze Shards","65x13
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_19.png,85,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.34,*1.18,*1.18,0,0,*1.40,,,*1.34,*1.34,,*1.18,0,0,45,,,,,Magic Burst
+60,Flowthread Staff,Made from silk and sighs. It directs energy like a lazy river.,Weapon (Magic),"75 Witherite Ores
+40 Ooze Shards","75x14
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_20.png,90,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.36,*1.19,*1.19,0,0,*1.43,,,*1.36,*1.36,,*1.19,0,0,50,,,,,Magic Burst
+61,Blight Helm,"A helm infused with shadowed energy, radiating an aura of corruption and decay.",Hat,"32 Shadow Ores
 20 Ooze Shards","32x3
-20x25",,https://wiki.melvoridle.com/images/thumb/8/87/Netherite_Helmet_%28U%29_%28item%29.png/250px-Netherite_Helmet_%28U%29_%28item%29.png,1,77.486,-16.000,4.000,80,20,0 m 20 s,,,50,2.500,-29.318,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Miscellaneous
-60,Void Helm,"A sleek and ethereal helm crafted from voidium, granting enhanced agility and perception.",Hat,"40 Voidium Ores
+20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Miscellaneous
+62,Void Helm,"A sleek and ethereal helm crafted from voidium, granting enhanced agility and perception.",Hat,"40 Voidium Ores
 24 Ooze Shards","40x7
-24x25",,https://wiki.melvoridle.com/images/thumb/8/8a/Voidium_Entity_Helmet_%28item%29.png/250px-Voidium_Entity_Helmet_%28item%29.png,10,70.442,0.400,4.400,110,25,0 m 25 s,,,80,3.200,0.700,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.04,6,6,6,,,,,Miscellaneous
-61,Voidheart Helm,"A heavy helm forged from concentrated voidium, exuding an unearthly and intimidating presence.",Hat,"48 Voidium Ores
+24x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_4.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.04,6,6,6,,,,,Miscellaneous
+63,Voidheart Helm,"A heavy helm forged from concentrated voidium, exuding an unearthly and intimidating presence.",Hat,"48 Voidium Ores
 28 Ooze Shards","48x7
-28x25",,https://wiki.melvoridle.com/images/thumb/0/07/Voidium_Artificer_Helmet_%28item%29.png/250px-Voidium_Artificer_Helmet_%28item%29.png,20,61.989,0.600,5.000,150,30,0 m 30 s,,,100,3.333,0.133,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.06,9,9,9,,,,,Miscellaneous
-62,Protector Helm,"A protective helm forged by the ancient Vorloran, symbolizing resilience and vigilance.",Hat,"56 Vorloran Ores
+28x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_6.png,20,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.06,9,9,9,,,,,Miscellaneous
+64,Protector Helm,"A protective helm forged by the ancient Vorloran, symbolizing resilience and vigilance.",Hat,"56 Vorloran Ores
 32 Ooze Shards","56x8
-32x25",,https://wiki.melvoridle.com/images/thumb/b/bd/Vorloran_Protector_Helmet_%28item%29.png/250px-Vorloran_Protector_Helmet_%28item%29.png,30,57.095,0.429,5.429,190,35,0 m 35 s,,,150,4.286,0.952,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.08,12,12,12,,,,,Miscellaneous
-63,Watcher Helm,"This helm sharpens awareness, allowing its wearer to detect unseen threats with ease.",Hat,"60 Vorloran Ores
+32x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_8.png,30,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.08,12,12,12,,,,,Miscellaneous
+65,Watcher Helm,"This helm sharpens awareness, allowing its wearer to detect unseen threats with ease.",Hat,"60 Vorloran Ores
 36 Ooze Shards","60x8
-36x25",,https://wiki.melvoridle.com/images/thumb/1/1e/Vorloran_Watcher_Helmet_%28item%29.png/250px-Vorloran_Watcher_Helmet_%28item%29.png,40,51.658,0.571,6.000,240,40,0 m 40 s,,,195,4.875,0.589,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.10,15,15,15,,,,,Miscellaneous
-64,Eldritch Hood,"A hood woven with eldritch threads, crackling with chaotic magic for arcane defense and power.",Hat,"52 Eldritch Ores
+36x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_10.png,40,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.10,15,15,15,,,,,Miscellaneous
+66,Eldritch Hood,"A hood woven with eldritch threads, crackling with chaotic magic for arcane defense and power.",Hat,"52 Eldritch Ores
 28 Ooze Shards","52x9
-28x25",,https://wiki.melvoridle.com/images/thumb/8/8d/Eldritch_Harbinger_Helmet_%28item%29.png/250px-Eldritch_Harbinger_Helmet_%28item%29.png,50,46.492,0.667,6.667,300,45,0 m 45 s,,,250,5.556,0.681,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.12,18,18,18,,,,,Miscellaneous
-65,Zephyr Crown,"A light crown blessed by unseen winds, offering unmatched grace and agility to its wearer.",Hat,"64 Aeris Crystals
+28x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_12.png,50,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.12,18,18,18,,,,,Miscellaneous
+67,Zephyr Crown,"A light crown blessed by unseen winds, offering unmatched grace and agility to its wearer.",Hat,"64 Aeris Crystals
 40 Ooze Shards","64x21
-40x25",,https://wiki.melvoridle.com/images/thumb/a/a7/Aeris_God_Helmet_%28item%29.png/250px-Aeris_God_Helmet_%28item%29.png,60,43.048,0.533,7.200,360,50,0 m 50 s,,,320,6.400,0.844,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.14,21,21,21,,,,,Miscellaneous
-66,Glacier Crown,"A crown imbued with eternal frost, protecting the wearer with icy resilience.",Hat,"60 Glacia Crystals
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_14.png,60,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.14,21,21,21,,,,,Miscellaneous
+68,Glacier Crown,"A crown imbued with eternal frost, protecting the wearer with icy resilience.",Hat,"60 Glacia Crystals
 36 Ice Crystals","60x22
-36x16",,https://wiki.melvoridle.com/images/thumb/0/08/Glacia_God_Helmet_%28item%29.png/250px-Glacia_God_Helmet_%28item%29.png,70,39.644,0.618,7.818,430,55,0 m 55 s,,,400,7.273,0.873,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.16,24,24,24,,,,,Miscellaneous
-67,Terra Crown,"A sturdy helm rooted in the strength of the earth, granting steadfast protection.",Hat,"68 Terran Ores
+36x16",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_16.png,70,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.16,24,24,24,,,,,Miscellaneous
+69,Terra Crown,"A sturdy helm rooted in the strength of the earth, granting steadfast protection.",Hat,"68 Terran Ores
 44 Ooze Shards","68x23
-44x25",,https://wiki.melvoridle.com/images/thumb/0/01/Terran_God_Helmet_%28item%29.png/250px-Terran_God_Helmet_%28item%29.png,80,35.763,0.848,8.667,520,60,1 m 0 s,,,500,8.333,1.061,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.18,27,27,27,,,,,Miscellaneous
-68,Inferno Crown,"Forged in molten fire, this fiery helm emanates the raw rage of Ragnar’s forge.",Hat,"72 Ragnar Crystals
+44x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_18.png,80,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.18,27,27,27,,,,,Miscellaneous
+70,Inferno Crown,"Forged in molten fire, this fiery helm emanates the raw rage of Ragnar’s forge.",Hat,"72 Ragnar Crystals
 48 Fire Crystals","72x24
-48x17",,https://wiki.melvoridle.com/images/thumb/0/06/Ragnar_God_Helmet_%28item%29.png/250px-Ragnar_God_Helmet_%28item%29.png,90,33.027,0.718,9.385,610,65,1 m 5 s,,,666,10.246,1.913,C,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.20,30,30,30,,,,,Miscellaneous
-69,Blight Plate,"A corrupted armor forged from shadowed materials, emanating an aura of decay.",Armour,"40 Shadow Ores
+48x17",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_20.png,90,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.20,30,30,30,,,,,Miscellaneous
+71,Blight Plate,"A corrupted armor forged from shadowed materials, emanating an aura of decay.",Armour,"40 Shadow Ores
 25 Ooze Shards","40x3
-25x25",,https://wiki.melvoridle.com/images/thumb/5/51/Blight_Warder_Body_%28item%29.png/250px-Blight_Warder_Body_%28item%29.png,1,77.486,-5.385,4.000,80,20,0 m 20 s,,,50,2.500,-7.746,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Miscellaneous
-70,Void Plate,"A sleek armor made of voidium, designed for agility and enhanced with ethereal energy.",Armour,"50 Voidium Ores
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Miscellaneous
+72,Void Plate,"A sleek armor made of voidium, designed for agility and enhanced with ethereal energy.",Armour,"50 Voidium Ores
 30 Ooze Shards","50x7
-30x25",,https://wiki.melvoridle.com/images/thumb/8/81/Voidium_Artificer_Body_%28item%29.png/250px-Voidium_Artificer_Body_%28item%29.png,10,70.442,0.400,4.400,110,25,0 m 25 s,,,80,3.200,0.700,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.04,6,6,6,,,,,Miscellaneous
-71,Voidheart Plate,"A heavy armor forged from condensed voidium, radiating an intimidating and otherworldly presence.",Armour,"60 Voidium Ores
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_4.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.04,6,6,6,,,,,Miscellaneous
+73,Voidheart Plate,"A heavy armor forged from condensed voidium, radiating an intimidating and otherworldly presence.",Armour,"60 Voidium Ores
 35 Ooze Shards","60x7
-35x25",,https://wiki.melvoridle.com/images/thumb/9/9b/Voidium_Entity_Platebody_%28item%29.png/250px-Voidium_Entity_Platebody_%28item%29.png,20,61.989,0.600,5.000,150,30,0 m 30 s,,,100,3.333,0.133,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.06,9,9,9,,,,,Miscellaneous
-72,Protector Plate,"Forged by the ancient Vorloran, this plate embodies strength and resilience in battle.",Armour,"70 Vorloran Ores
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_6.png,20,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.06,9,9,9,,,,,Miscellaneous
+74,Protector Plate,"Forged by the ancient Vorloran, this plate embodies strength and resilience in battle.",Armour,"70 Vorloran Ores
 40 Ooze Shards","70x8
-40x25",,https://wiki.melvoridle.com/images/thumb/d/d0/Vorloran_Protector_Platebody_%28item%29.png/250px-Vorloran_Protector_Platebody_%28item%29.png,30,57.095,0.429,5.429,190,35,0 m 35 s,,,150,4.286,0.952,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.08,12,12,12,,,,,Miscellaneous
-73,Watcher Plate,"This armor sharpens its wearer’s awareness, aiding in detecting unseen threats.",Armour,"75 Vorloran Ores
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_8.png,30,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.08,12,12,12,,,,,Miscellaneous
+75,Watcher Plate,"This armor sharpens its wearer’s awareness, aiding in detecting unseen threats.",Armour,"75 Vorloran Ores
 45 Ooze Shards","75x8
-45x25",,https://wiki.melvoridle.com/images/thumb/c/c6/Vorloran_Watcher_Platebody_%28item%29.png/250px-Vorloran_Watcher_Platebody_%28item%29.png,40,51.658,0.571,6.000,240,40,0 m 40 s,,,195,4.875,0.589,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.10,15,15,15,,,,,Miscellaneous
-74,Eldritch Robes,"Arcane robes crackling with chaotic magic, favored by spellcasters seeking unbridled power.",Armour,"65 Eldritch Ores
+45x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_10.png,40,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.10,15,15,15,,,,,Miscellaneous
+76,Eldritch Robes,"Arcane robes crackling with chaotic magic, favored by spellcasters seeking unbridled power.",Armour,"65 Eldritch Ores
 35 Ooze Shards","65x9
-35x25",,https://wiki.melvoridle.com/images/thumb/5/54/Eldritch_Harbinger_Robes_%28item%29.png/250px-Eldritch_Harbinger_Robes_%28item%29.png,50,46.492,0.667,6.667,300,45,0 m 45 s,,,250,5.556,0.681,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.12,18,18,18,,,,,Miscellaneous
-75,Zephyr Godplate,"A light and graceful armor, blessed by unseen winds to grant unparalleled mobility in combat.",Armour,"80 Aeris Crystals
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_12.png,50,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.12,18,18,18,,,,,Miscellaneous
+77,Zephyr Godplate,"A light and graceful armor, blessed by unseen winds to grant unparalleled mobility in combat.",Armour,"80 Aeris Crystals
 50 Ooze Shards","80x21
-50x25",,https://wiki.melvoridle.com/images/thumb/b/b7/Aeris_God_Platebody_%28item%29.png/250px-Aeris_God_Platebody_%28item%29.png,60,43.048,0.533,7.200,360,50,0 m 50 s,,,320,6.400,0.844,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.14,21,21,21,,,,,Miscellaneous
-76,Glacier Godplate,"Infused with eternal frost, this plate can freeze incoming strikes, making its wearer nearly untouchable.",Armour,"75 Glacia Crystals
+50x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_14.png,60,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.14,21,21,21,,,,,Miscellaneous
+78,Glacier Godplate,"Infused with eternal frost, this plate can freeze incoming strikes, making its wearer nearly untouchable.",Armour,"75 Glacia Crystals
 45 Ice Crystals","75x22
-45x16",,https://wiki.melvoridle.com/images/thumb/0/06/Glacia_God_Platebody_%28item%29.png/250px-Glacia_God_Platebody_%28item%29.png,70,39.644,0.618,7.818,430,55,0 m 55 s,,,400,7.273,0.873,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.16,24,24,24,,,,,Miscellaneous
-77,Terra Godplate,"A sturdy plate forged from the strongest earthly materials, offering unshakable defense in any encounter.",Armour,"85 Terran Ores
+45x16",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_16.png,70,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.16,24,24,24,,,,,Miscellaneous
+79,Terra Godplate,"A sturdy plate forged from the strongest earthly materials, offering unshakable defense in any encounter.",Armour,"85 Terran Ores
 55 Ooze Shards","85x23
-55x25",,https://wiki.melvoridle.com/images/thumb/c/c7/Terran_God_Platebody_%28item%29.png/250px-Terran_God_Platebody_%28item%29.png,80,35.763,0.848,8.667,520,60,1 m 0 s,,,500,8.333,1.061,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.18,27,27,27,,,,,Miscellaneous
-78,Inferno Godplate,"Born from the molten core of Ragnar’s forge, this armor burns with the rage of a thousand flames.",Armour,"90 Ragnar Crystals
+55x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_18.png,80,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.18,27,27,27,,,,,Miscellaneous
+80,Inferno Godplate,"Born from the molten core of Ragnar’s forge, this armor burns with the rage of a thousand flames.",Armour,"90 Ragnar Crystals
 60 Fire Crystals","90x24
-60x17",,https://wiki.melvoridle.com/images/thumb/0/03/Ragnar_God_Platebody_%28item%29.png/250px-Ragnar_God_Platebody_%28item%29.png,90,33.027,0.718,9.385,610,65,1 m 5 s,,,666,10.246,1.913,C,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.20,30,30,30,,,,,Miscellaneous
-79,Sticky Shield,"A basic shield of slimewood, perfect for beginners.",Shield,7 Wood,7x30,,https://wiki.melvoridle.com/images/thumb/a/a2/Aranite_Shield_%28item%29.png/250px-Aranite_Shield_%28item%29.png,1,77.486,-5.385,4.000,80,20,0 m 20 s,,,50,2.500,-7.746,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Tank
-80,Slime Bronze Shield,"Reinforced with slime-bronze, offering reliable protection.",Shield,"12 Bronze Ores
+60x17",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_20.png,90,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.20,30,30,30,,,,,Miscellaneous
+81,Sticky Shield,"A basic shield of slimewood, perfect for beginners.",Shield,7 Wood,7x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_01.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Tank
+82,Slime Bronze Shield,"Reinforced with slime-bronze, offering reliable protection.",Shield,"12 Bronze Ores
 7 Wood","12x1
-7x30",,https://wiki.melvoridle.com/images/thumb/8/80/Bronze_Shield_%28item%29.png/250px-Bronze_Shield_%28item%29.png,10,70.442,0.400,4.400,110,25,0 m 25 s,,,80,3.200,0.700,D,,,10,*1.05,*1.05,*1.03,*1.03,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.03,6,6,6,,,,,Tank
-81,Hardened Shield,Made with hardened materials to endure greater impacts.,Shield,"17 Iron Ores
+7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_02.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.05,*1.03,*1.03,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.03,6,6,6,,,,,Tank
+83,Hardened Shield,Made with hardened materials to endure greater impacts.,Shield,"17 Iron Ores
 7 Wood","17x2
-7x30",,https://wiki.melvoridle.com/images/thumb/0/04/Iron_Shield_%28item%29.png/250px-Iron_Shield_%28item%29.png,20,61.989,0.600,5.000,150,30,0 m 30 s,,,100,3.333,0.133,D,,,20,*1.08,*1.08,*1.04,*1.04,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.04,9,9,9,,,,,Tank
-82,Alloy Shield,A balanced shield forged with slime-alloy for versatility.,Shield,"12 Bronze Ores
+7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_03.png,20,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.08,*1.04,*1.04,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.04,9,9,9,,,,,Tank
+84,Alloy Shield,A balanced shield forged with slime-alloy for versatility.,Shield,"12 Bronze Ores
 12 Iron Ores
 7 Wood","12x1
 12x2
-7x30",,https://wiki.melvoridle.com/images/thumb/e/e0/Steel_Shield_%28item%29.png/250px-Steel_Shield_%28item%29.png,30,57.095,0.429,5.429,190,35,0 m 35 s,,,150,4.286,0.952,D,,,30,*1.11,*1.11,*1.05,*1.05,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.05,12,12,12,,,,,Tank
-83,Veil Shield,"Shadowy and sleek, ideal for silent defenders.",Shield,"20 Shadow Ores
+7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_04.png,30,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.11,*1.05,*1.05,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.05,12,12,12,,,,,Tank
+85,Veil Shield,"Shadowy and sleek, ideal for silent defenders.",Shield,"20 Shadow Ores
 12 Wood","20x3
-12x30",,https://wiki.melvoridle.com/images/thumb/f/fc/Black_Shield_%28item%29.png/250px-Black_Shield_%28item%29.png,40,51.658,0.571,6.000,240,40,0 m 40 s,,,195,4.875,0.589,D,,,40,*1.14,*1.14,*1.06,*1.06,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.06,15,15,15,,,,,Tank
-84,Muck Shield,"Crafted from resilient muckstone, unusually tough.",Shield,"30 Mystical Ores
+12x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_05.png,40,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.14,*1.06,*1.06,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.06,15,15,15,,,,,Tank
+86,Muck Shield,"Crafted from resilient muckstone, unusually tough.",Shield,"30 Mystical Ores
 12 Wood","30x4
-12x30",,https://wiki.melvoridle.com/images/thumb/2/24/Mithril_Shield_%28item%29.png/250px-Mithril_Shield_%28item%29.png,50,46.492,0.667,6.667,300,45,0 m 45 s,,,250,5.556,0.681,D,,,50,*1.17,*1.17,*1.07,*1.07,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.07,18,18,18,,,,,Tank
-85,Glow Shield,"Radiates protective light, instilling courage in its wielder.",Shield,"40 Adamant Ores
+12x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_06.png,50,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.17,*1.07,*1.07,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.07,18,18,18,,,,,Tank
+87,Glow Shield,"Radiates protective light, instilling courage in its wielder.",Shield,"40 Adamant Ores
 15 Wood","40x5
-15x30",,https://wiki.melvoridle.com/images/thumb/d/d7/Adamant_Shield_%28item%29.png/250px-Adamant_Shield_%28item%29.png,60,43.048,0.533,7.200,360,50,0 m 50 s,,,320,6.400,0.844,D,,,60,*1.20,*1.20,*1.08,*1.08,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.08,21,21,21,,,,,Tank
-86,Frost Shield,A frosty shield that chills attackers upon impact.,Shield,"35 Ice Crystals
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_07.png,60,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.20,*1.08,*1.08,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.08,21,21,21,,,,,Tank
+88,Frost Shield,A frosty shield that chills attackers upon impact.,Shield,"35 Ice Crystals
 25 Ooze Shards","35x16
-25x25",,https://wiki.melvoridle.com/images/thumb/d/db/Ice_Shield_%28item%29.png/250px-Ice_Shield_%28item%29.png,70,39.644,0.618,7.818,430,55,0 m 55 s,,,400,7.273,0.873,D,,,70,*1.23,*1.23,*1.09,*1.09,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.09,24,24,24,,,,,Tank
-87,Ember Shield,"Burns brightly, deflecting attacks with fiery resilience.",Shield,"35 Fire Crystals
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_08.png,70,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.23,*1.09,*1.09,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.09,24,24,24,,,,,Tank
+89,Ember Shield,"Burns brightly, deflecting attacks with fiery resilience.",Shield,"35 Fire Crystals
 25 Ooze Shards","35x17
-25x25",,https://wiki.melvoridle.com/images/thumb/b/b5/Crystal_Shield_%28item%29.png/250px-Crystal_Shield_%28item%29.png,80,35.763,0.848,8.667,520,60,1 m 0 s,,,500,8.333,1.061,D,,,80,*1.26,*1.26,*1.10,*1.10,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.10,27,27,27,,,,,Tank
-88,Relic Shield,"A relic of old, emanating ancient defensive power.",Shield,"35 Relic Ores
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_09.png,80,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.26,*1.10,*1.10,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.10,27,27,27,,,,,Tank
+90,Relic Shield,"A relic of old, emanating ancient defensive power.",Shield,"35 Relic Ores
 20 Ooze Shards","35x6
-20x25",,https://wiki.melvoridle.com/images/thumb/3/3a/Ancient_Shield_%28item%29.png/250px-Ancient_Shield_%28item%29.png,90,33.027,0.718,9.385,610,65,1 m 5 s,,,666,10.246,1.913,D,,,90,*1.29,*1.29,*1.11,*1.11,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.11,30,30,30,,,,,Tank
-89,Fracture Shield,"Forged with dragon’s magma shards, unbreakable and fierce.",Shield,"40 Magma Shards
+20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_10.png,90,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.29,*1.11,*1.11,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.11,30,30,30,,,,,Tank
+91,Fracture Shield,"Forged with dragon’s magma shards, unbreakable and fierce.",Shield,"40 Magma Shards
 20 Ooze Shards","40x26
-20x25",,https://wiki.melvoridle.com/images/thumb/3/33/Dragonfire_Shield_%28item%29.png/250px-Dragonfire_Shield_%28item%29.png,100,30.558,0.758,10.143,710,70,1 m 10 s,,,700,10.000,-0.246,C,,,100,*1.32,*1.32,*1.12,*1.12,*1.22,*1.22,*1.22,,,*1.22,*1.22,,*1.12,33,33,33,,,,,Tank
-90,Gleam Shield,"Crafted from glittering Crystal, as tough as it is radiant.",Shield,"45 Corundum Crystals
+20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_11.png,100,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.32,*1.12,*1.12,*1.22,*1.22,*1.22,,,*1.22,*1.22,,*1.12,33,33,33,,,,,Tank
+92,Gleam Shield,"Crafted from glittering Crystal, as tough as it is radiant.",Shield,"45 Corundum Crystals
 25 Ooze Shards","45x19
-25x25",,https://wiki.melvoridle.com/images/thumb/5/58/Corundum_Shield_%28item%29.png/250px-Corundum_Shield_%28item%29.png,110,28.007,0.924,11.067,830,75,1 m 15 s,,,850,11.333,1.333,C,,,110,*1.35,*1.35,*1.13,*1.13,*1.24,*1.24,*1.24,,,*1.24,*1.24,,*1.13,36,36,36,,,,,Tank
-91,Verdant Shield,"Enriched with lush, green Crystal of unparalleled strength.",Shield,"50 Augite Crystals
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_12.png,110,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.35,*1.13,*1.13,*1.24,*1.24,*1.24,,,*1.24,*1.24,,*1.13,36,36,36,,,,,Tank
+93,Verdant Shield,"Enriched with lush, green Crystal of unparalleled strength.",Shield,"50 Augite Crystals
 25 Ooze Shards","50x20
-25x25",,https://wiki.melvoridle.com/images/thumb/d/d2/Augite_Shield_%28item%29.png/250px-Augite_Shield_%28item%29.png,120,26.101,0.808,11.875,950,80,1 m 20 s,,,1000,12.500,1.167,C,,,120,*1.38,*1.38,*1.14,*1.14,*1.26,*1.26,*1.26,,,*1.26,*1.26,,*1.14,39,39,39,,,,,Tank
-92,Sanctum Shield,"A shield of holy power, blessed with sanctified slime.",Shield,"55 Sanctum Ores
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_13.png,120,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.38,*1.14,*1.14,*1.26,*1.26,*1.26,,,*1.26,*1.26,,*1.14,39,39,39,,,,,Tank
+94,Sanctum Shield,"A shield of holy power, blessed with sanctified slime.",Shield,"55 Sanctum Ores
 30 Ooze Shards","55x10
-30x25",,https://wiki.melvoridle.com/images/thumb/d/d7/%28P%29_Divine_Shield_%28item%29.png/250px-%28P%29_Divine_Shield_%28item%29.png,130,24.394,0.831,12.706,1080,85,1 m 25 s,,,1200,14.118,1.618,C,,,130,*1.41,*1.41,*1.15,*1.15,*1.28,*1.28,*1.28,,,*1.28,*1.28,,*1.15,42,42,42,,,,,Tank
-93,Abyss Shield,A dark shield imbued with chaotic abyssal energies.,Shield,"65 Abyssium Ores
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_14.png,130,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.41,*1.15,*1.15,*1.28,*1.28,*1.28,,,*1.28,*1.28,,*1.15,42,42,42,,,,,Tank
+95,Abyss Shield,A dark shield imbued with chaotic abyssal energies.,Shield,"65 Abyssium Ores
 35 Ooze Shards","65x11
-35x25",,https://wiki.melvoridle.com/images/thumb/1/1f/Abyssal_Shield_%28item%29.png/250px-Abyssal_Shield_%28item%29.png,140,22.679,0.961,13.667,1230,90,1 m 30 s,,,1666,18.511,4.393,C,,,140,*1.44,*1.44,*1.16,*1.16,*1.30,*1.30,*1.30,,,*1.30,*1.30,,*1.16,45,45,45,,,,,Tank
-94,Wisp Shield,"Flickering with faint light, mysterious and graceful.",Shield,"55 Brumite Ores
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_15.png,140,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.44,*1.16,*1.16,*1.30,*1.30,*1.30,,,*1.30,*1.30,,*1.16,45,45,45,,,,,Tank
+96,Wisp Shield,"Flickering with faint light, mysterious and graceful.",Shield,"55 Brumite Ores
 30 Ice Ooze Crystals","55x12
-30x18",,https://wiki.melvoridle.com/images/thumb/5/5b/%28G%29_Pure_Crystal_Shield_%28item%29.png/250px-%28G%29_Pure_Crystal_Shield_%28item%29.png,150,21.337,0.860,14.526,1380,95,1 m 35 s,,,1600,16.842,-1.669,C,,,150,*1.47,*1.47,*1.17,*1.17,*1.32,*1.32,*1.32,,,*1.32,*1.32,,*1.17,45,45,45,,,,,Tank
-95,Dusk Shield,"Forged in twilight, carrying the essence of dusk.",Shield,"60 Dusk Ores
+30x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_16.png,150,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.47,*1.17,*1.17,*1.32,*1.32,*1.32,,,*1.32,*1.32,,*1.17,45,45,45,,,,,Tank
+97,Dusk Shield,"Forged in twilight, carrying the essence of dusk.",Shield,"60 Dusk Ores
 30 Ooze Shards","60x13
-30x25",,https://wiki.melvoridle.com/images/thumb/1/18/Recoil_Shield_%28item%29.png/250px-Recoil_Shield_%28item%29.png,160,19.996,0.974,15.500,1550,100,1 m 40 s,,,1900,19.000,2.158,C,,,160,*1.50,*1.50,*1.18,*1.18,*1.34,*1.34,*1.34,,,*1.34,*1.34,,*1.18,45,45,45,,,,,Tank
-96,Siphon Shield,"Draws strength from those it deflects, eerie and powerful.",Shield,"70 Witherite Ores
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_17.png,160,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.50,*1.18,*1.18,*1.34,*1.34,*1.34,,,*1.34,*1.34,,*1.18,45,45,45,,,,,Tank
+98,Siphon Shield,"Draws strength from those it deflects, eerie and powerful.",Shield,"70 Witherite Ores
 35 Ooze Shards","70x14
-35x25",,https://wiki.melvoridle.com/images/thumb/0/08/Wither_Guard_Shield_%28item%29.png/250px-Wither_Guard_Shield_%28item%29.png,170,18.597,1.167,16.667,1750,105,1 m 45 s,,,2400,22.857,3.857,B,,,170,*1.53,*1.53,*1.19,*1.19,*1.36,*1.36,*1.36,,,*1.36,*1.36,,*1.19,50,50,50,,,,,Tank
-97,Rift Shield,"Rips through reality, forged from the Nether’s essence.",Shield,"80 Netherite Ores
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_18.png,170,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.53,*1.19,*1.19,*1.36,*1.36,*1.36,,,*1.36,*1.36,,*1.19,50,50,50,,,,,Tank
+99,Rift Shield,"Rips through reality, forged from the Nether’s essence.",Shield,"80 Netherite Ores
 40 Ooze Shards","80x15
-40x25",,https://wiki.melvoridle.com/images/thumb/a/a7/Fractured_Beast_Shield_%28item%29.png/250px-Fractured_Beast_Shield_%28item%29.png,185,15.497,3.333,20.000,2200,110,1 m 50 s,,,3500,31.818,8.961,B,,,185,*1.56,*1.56,*1.20,*1.20,*1.38,*1.38,*1.38,,,*1.38,*1.38,,*1.20,50,50,50,,,,,Tank
-98,Eternal Barrier,"A legendary shield, said to be forged from the core of slimes.",Shield,"90 Slime Core Essence
-45 Ooze Shards","90x27
-45x25",,https://wiki.melvoridle.com/images/thumb/b/b4/Book_of_Occults_%28item%29.png/250px-Book_of_Occults_%28item%29.png,200,15.497,-12.000,8.000,4000,200,3 m 20 s,,,6000,30.000,-1.818,A,,,200,*1.59,*1.59,*1.30,*1.30,*1.40,*1.40,*1.40,,,*1.50,*1.50,,*1.30,50,50,50,,,,,Tank
-99,Sticky Mantle,"A slimy, flexible mantle offering basic protection.",Cape,"75 Wool
-25 String","75x29
-25x28",,https://wiki.melvoridle.com/images/thumb/6/63/Cape_of_Prat_%28item%29.png/250px-Cape_of_Prat_%28item%29.png,1,77.486,-6.333,1.667,80,20,0 m 20 s,,,50,2.500,-27.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,*1.02,*1.02,*1.02,*0.95,*1.02,5,18,11,,,,,Miscellaneous
-100,Bronze Warden Cape,"Bronze-threaded and durable, guarding its wearer.",Cape,"10 Bronze Ores
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_19.png,185,20.000,2200,110,1 m 50 s,,,3500,31.818,A,,,185,*1.56,*1.56,*1.20,*1.20,*1.38,*1.38,*1.38,,,*1.38,*1.38,,*1.20,50,50,50,,,,,Tank
+100,Eternal Barrier,"A legendary shield, said to be forged from the core of slimes.",Shield,"90 Slime Core Essence
+45 Ooze Shards",100x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_20.png,200,8.000,4000,200,3 m 20 s,,,6000,30.000,S,,,200,*1.59,*1.59,*1.30,*1.30,*1.40,*1.40,*1.40,,,*1.50,*1.50,,*1.30,50,50,50,,,,,Tank
+101,Sticky Mantle,"A slimy, flexible mantle offering basic protection.",Cape,"75 Wool
+25 String",100x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-01.png,1,1.667,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,*1.02,*1.02,*1.02,*0.95,*1.02,5,18,11,,,,,Miscellaneous
+102,Bronze Warden Cape,"Bronze-threaded and durable, guarding its wearer.",Cape,"10 Bronze Ores
 100 Wool
-25 String","10x1
-100x29
-25x28",,https://wiki.melvoridle.com/images/thumb/3/3a/Golden_Fire_Cape_%28item%29.png/374px-Golden_Fire_Cape_%28item%29.png,10,70.442,0.256,1.923,110,25,0 m 25 s,,,80,3.200,0.700,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,*1.06,*1.06,*1.06,*0.94,*1.04,20,10,10,,,,,Miscellaneous
-101,Ironclad Wrap,Iron-fortified fibers providing excellent defense.,Cape,"15 Iron Ores
+25 String","100x26
+50x27",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-02.png,10,1.923,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,*1.06,*1.06,*1.06,*0.94,*1.04,20,10,10,,,,,Miscellaneous
+103,Ironclad Wrap,Iron-fortified fibers providing excellent defense.,Cape,"15 Iron Ores
 100 Wool
-25 String","15x2
-100x29
-25x28",,https://wiki.melvoridle.com/images/thumb/f/f5/Weakness_Exploiter_Cape_%28item%29.png/375px-Weakness_Exploiter_Cape_%28item%29.png,20,61.989,0.220,2.143,150,30,0 m 30 s,,,100,3.333,0.133,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,*1.10,*1.10,*1.10,*0.93,*1.06,10,20,10,,,,,Miscellaneous
-102,Shroud of Shadows,"A dark and flowing cape, perfect for evasion.",Cape,"20 Shadow Ores
+25 String","200x26
+100x27",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-03.png,20,2.143,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,*1.10,*1.10,*1.10,*0.93,*1.06,10,20,10,,,,,Miscellaneous
+104,Shroud of Shadows,"A dark and flowing cape, perfect for evasion.",Cape,"20 Shadow Ores
 125 Wool
-30 String","20x3
-125x29
-30x28",,https://wiki.melvoridle.com/images/thumb/a/a9/Void_Shambler_Cape_%28item%29.png/375px-Void_Shambler_Cape_%28item%29.png,30,57.095,0.257,2.400,190,35,0 m 35 s,,,150,4.286,0.952,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,*1.14,*1.14,*1.14,*0.92,*1.08,10,10,20,,,,,Miscellaneous
-103,Verdant Aegis Cloak,"A lush, nature-inspired design, blending protection and grace.",Cape,"25 Mystical Ores
+30 String",100x27,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-04.png,30,2.400,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,*1.14,*1.14,*1.14,*0.92,*1.08,10,10,20,,,,,Miscellaneous
+105,Verdant Aegis Cloak,"A lush, nature-inspired design, blending protection and grace.",Cape,"25 Mystical Ores
 150 Wool
-30 String","25x4
-150x29
-30x28",,https://wiki.melvoridle.com/images/thumb/9/93/Superior_Herblore_Skillcape_%28item%29.png/361px-Superior_Herblore_Skillcape_%28item%29.png,40,51.658,0.413,2.813,240,40,0 m 40 s,,,195,4.875,0.589,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,*1.18,*1.18,*1.18,*0.91,*1.10,30,20,20,,,,,Miscellaneous
-104,Luminous Veil,"A glowing cape, guiding its wearer through the darkest paths.",Cape,"30 Adamant Ores
+30 String","100x27
+50x28",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-05.png,40,2.813,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,*1.18,*1.18,*1.18,*0.91,*1.10,30,20,20,,,,,Miscellaneous
+106,Luminous Veil,"A glowing cape, guiding its wearer through the darkest paths.",Cape,"30 Adamant Ores
 175 Wool
-35 String","30x5
-175x29
-35x28",,https://wiki.melvoridle.com/images/thumb/5/58/Superior_Prayer_Skillcape_%28item%29.png/361px-Superior_Prayer_Skillcape_%28item%29.png,50,46.492,0.299,3.111,300,45,0 m 45 s,,,250,5.556,0.681,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,*1.22,*1.22,*1.22,*0.90,*1.12,20,30,20,,,,,Miscellaneous
-105,Cryo Cloak,"A frosted design, resistant to the coldest environments.",Cape,"30 Ice Crystals
+35 String","200x27
+100x28",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-06.png,50,3.111,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,*1.22,*1.22,*1.22,*0.90,*1.12,20,30,20,,,,,Miscellaneous
+107,Cryo Cloak,"A frosted design, resistant to the coldest environments.",Cape,"30 Ice Crystals
 20 Ooze Shards
-200 Wool","30x16
-20x25
-200x29",,https://wiki.melvoridle.com/images/thumb/f/f8/Shadow_Cloak_%28item%29.png/375px-Shadow_Cloak_%28item%29.png,60,43.048,0.219,3.330,360,50,0 m 50 s,,,320,6.400,0.844,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,*1.26,*1.26,*1.26,*0.89,*1.14,20,20,30,,,,,Miscellaneous
-106,Infernal Drape,"Ablaze with fiery hues, protecting against searing heat.",Cape,"30 Fire Crystals
+200 Wool",100x28,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-07.png,60,3.330,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,*1.26,*1.26,*1.26,*0.89,*1.14,20,20,30,,,,,Miscellaneous
+108,Infernal Drape,"Ablaze with fiery hues, protecting against searing heat.",Cape,"30 Fire Crystals
 20 Ooze Shards
-200 Wool","30x17
-20x25
-200x29",,https://wiki.melvoridle.com/images/thumb/f/fa/Voidborne_Cape_%28item%29.png/375px-Voidborne_Cape_%28item%29.png,70,39.644,0.125,3.455,430,55,0 m 55 s,,,400,7.273,0.873,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,*1.30,*1.30,*1.30,*0.88,*1.16,40,30,30,,,,,Miscellaneous
-107,Wispweave Cape,"Ethereal and mysterious, its threads shimmer with light.",Cape,"35 Dusk Ores
+200 Wool","100x28
+50x29",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-08.png,70,3.455,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,*1.30,*1.30,*1.30,*0.88,*1.16,40,30,30,,,,,Miscellaneous
+109,Wispweave Cape,"Ethereal and mysterious, its threads shimmer with light.",Cape,"35 Dusk Ores
 250 Wool
-40 String","35x13
-250x29
-40x28",,https://wiki.melvoridle.com/images/thumb/b/b6/Wither_Cape_%28item%29.png/375px-Wither_Cape_%28item%29.png,80,35.763,0.295,3.750,520,60,1 m 0 s,,,500,8.333,1.061,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,*1.34,*1.34,*1.34,*0.87,*1.18,30,40,30,,,,,Miscellaneous
-108,Mantle of Eternity,"A legendary artifact, radiating pure slime energy.",Cape,"50 Slime Core Essence
+40 String","200x28
+100x29",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-09.png,80,3.750,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,*1.34,*1.34,*1.34,*0.87,*1.18,30,40,30,,,,,Miscellaneous
+110,Mantle of Eternity,"A legendary artifact, radiating pure slime energy.",Cape,"50 Slime Core Essence
 250 Wool
-50 String","50x27
-250x29
-50x28",,https://wiki.melvoridle.com/images/thumb/f/f8/Cape_of_Completion_%28Into_the_Abyss%29_%28item%29.png/278px-Cape_of_Completion_%28Into_the_Abyss%29_%28item%29.png,90,33.027,0.250,4.000,610,65,1 m 5 s,,,666,10.246,1.913,B,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,*1.38,*1.38,*1.38,*0.86,*1.20,30,30,40,,,,,Miscellaneous
-109,Luminspire Amulet I,"A radiant moonstone gem that emanates soft brilliance, gently enhancing the flow of every action.",Necklace,,,-10% Skilling Interval,https://wiki.melvoridle.com/images/thumb/d/d3/Azurian_Moonstone_Amulet_I_%28item%29.png/375px-Azurian_Moonstone_Amulet_I_%28item%29.png,,,-4.000,,,,0 m 0 s,10 M,,1000000,,-10.246,D,,-0.1,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
-110,Luminspire Amulet II,"Refined with celestial energy, this amulet imbues its wearer with unmatched grace and efficiency.",Necklace,,,"-10% Skilling Interval
-+5% Double Resource",https://wiki.melvoridle.com/images/thumb/9/97/Azurian_Moonstone_Amulet_II_%28item%29.png/375px-Azurian_Moonstone_Amulet_II_%28item%29.png,,,0.000,,,,0 m 0 s,15 M,10 M,1500000,,0.000,D,0.05,-0.1,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
-111,Obsidianflare Pendant I,"A darkly luminous relic that channels the moon’s quiet strength, quickening every effort.",Necklace,,,-20% Skilling Interval,https://wiki.melvoridle.com/images/thumb/e/e1/Obsidian_Moonstone_Amulet_I_%28item%29.png/375px-Obsidian_Moonstone_Amulet_I_%28item%29.png,,,0.000,,,,0 m 0 s,40 M,,4000000,,0.000,C,,-0.2,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
-112,Obsidianflare Pendant II,"Polished to perfection, this artifact transforms work into art, granting seamless motion to all tasks.",Necklace,,,"-20% Skilling Interval
-+10% Double Resource",https://wiki.melvoridle.com/images/thumb/1/1c/Obsidian_Moonstone_Amulet_II_%28item%29.png/375px-Obsidian_Moonstone_Amulet_II_%28item%29.png,,,0.000,,,,0 m 0 s,45 M,20 M,4500000,,0.000,C,0.1,-0.2,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
-113,Amulet of Eternal Lumina,"The pinnacle of moonstone craftsmanship, this amulet blends light and shadow to create mastery beyond mortal limits.",Necklace,,,"-30% Crafting Interval
-+15% Double Resource",https://wiki.melvoridle.com/images/thumb/9/9b/Obzurian_Rampant_Power_Amulet_%28item%29.png/375px-Obzurian_Rampant_Power_Amulet_%28item%29.png,,,0.000,,,,0 m 0 s,,40 M,12000000,,0.000,B,0.15,-0.3,,,,,,,,,,,,,,,30,30,30,,,,,Miscellaneous
-114,Nightveil Pendant I,"A glimmering nightopal amulet, cloaked in twilight, it amplifies creation with an enigmatic aura.",Necklace,,, +10% Double Resource,https://wiki.melvoridle.com/images/thumb/3/33/Azurian_Nightopal_Amulet_I_%28item%29.png/375px-Azurian_Nightopal_Amulet_I_%28item%29.png,,,0.000,,,,0 m 0 s,10 M,,1000000,,0.000,D,0.1,,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
-115,Nightveil Pendant II,"Charged with cosmic energy, this pendant magnifies fortune, doubling the bounty of all endeavors.",Necklace,,," +15% Double Resource
- -5% Skilling Interval",https://wiki.melvoridle.com/images/thumb/b/ba/Azurian_Nightopal_Amulet_II_%28item%29.png/375px-Azurian_Nightopal_Amulet_II_%28item%29.png,,,0.000,,,,0 m 0 s,15 M,20 M,1500000,,0.000,D,0.15,-0.05,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
-116,Shadowweave Charm I,"Forged in secret rites, this pendant draws from hidden depths, ensuring abundance in every outcome.",Necklace,,, +20% Double Resource,https://wiki.melvoridle.com/images/thumb/3/3c/Obsidian_Nightopal_Amulet_I_%28item%29.png/375px-Obsidian_Nightopal_Amulet_I_%28item%29.png,,,0.000,,,,0 m 0 s,40 M,,4000000,,0.000,C,0.2,,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
-117,Shadowweave Charm II,"Etched with forbidden glyphs, this charm turns the ordinary into the extraordinary, multiplying rewards effortlessly.",Necklace,,," +25% Double Resource
- -10% Skilling Interval",https://wiki.melvoridle.com/images/thumb/2/25/Obsidian_Nightopal_Amulet_II_%28item%29.png/375px-Obsidian_Nightopal_Amulet_II_%28item%29.png,,,0.000,,,,0 m 0 s,45 M,40 M,4500000,,0.000,C,0.25,-0.1,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
-118,Core of Eternal Darkness,"A relic of ultimate power, this nightopal core merges shadow and mystery to unlock boundless prosperity for its bearer.",Necklace,,," +30% Double Resource
- -15% Skilling Interval",https://wiki.melvoridle.com/images/thumb/d/d9/Obzurian_Critical_Strike_Amulet_%28item%29.png/375px-Obzurian_Critical_Strike_Amulet_%28item%29.png,,,0.000,,,,0 m 0 s,120 M,80 M,12000000,,0.000,B,0.3,-0.15,,,,,,,,,,,,,,,30,30,30,,,,,Miscellaneous
+50 String","100x26
+100x27
+100x28
+100x29",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-10.png,90,4.000,610,65,1 m 5 s,,,666,10.246,B,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,*1.38,*1.38,*1.38,*0.86,*1.20,30,30,40,,,,,Miscellaneous
+111,Pendant of Origin,Worn by those who walked the world before it was ready. It hums faintly with the echoes of first steps.,Necklace,,,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/08-necklace-amulet/Icon40.png,,,,,,,,,,A,,,,,*1.05,*1.05,*1.05,,,,,,*1.05,*1.05,,,5,5,5,,,,,
+112,Luminspire Amulet I,"A radiant moonstone gem that emanates soft brilliance, gently enhancing the flow of every action.",Necklace,,,-10% Skilling Interval,,,,,,,10 M,,1000000,,D,,-0.1,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
+113,Luminspire Amulet II,"Refined with celestial energy, this amulet imbues its wearer with unmatched grace and efficiency.",Necklace,,,"-10% Skilling Interval
++5% Double Resource",,,,,,,15 M,10 M,1500000,,D,0.05,-0.1,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
+114,Obsidianflare Pendant I,"A darkly luminous relic that channels the moon’s quiet strength, quickening every effort.",Necklace,,,-20% Skilling Interval,,,,,,,40 M,,4000000,,C,,-0.2,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
+115,Obsidianflare Pendant II,"Polished to perfection, this artifact transforms work into art, granting seamless motion to all tasks.",Necklace,,,"-20% Skilling Interval
++10% Double Resource",,,,,,,45 M,20 M,4500000,,C,0.1,-0.2,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
+116,Amulet of Eternal Lumina,"The pinnacle of moonstone craftsmanship, this amulet blends light and shadow to create mastery beyond mortal limits.",Necklace,,,"-30% Crafting Interval
++15% Double Resource",,,,,,,,40 M,12000000,,B,0.15,-0.3,,,,,,,,,,,,,,,30,30,30,,,,,Miscellaneous
+117,Nightveil Pendant I,"A glimmering nightopal amulet, cloaked in twilight, it amplifies creation with an enigmatic aura.",Necklace,,, +10% Double Resource,,,,,,,10 M,,1000000,,D,0.1,,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
+118,Nightveil Pendant II,"Charged with cosmic energy, this pendant magnifies fortune, doubling the bounty of all endeavors.",Necklace,,," +15% Double Resource
+ -5% Skilling Interval",,,,,,,15 M,20 M,1500000,,D,0.15,-0.05,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
+119,Shadowweave Charm I,"Forged in secret rites, this pendant draws from hidden depths, ensuring abundance in every outcome.",Necklace,,, +20% Double Resource,,,,,,,40 M,,4000000,,C,0.2,,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
+120,Shadowweave Charm II,"Etched with forbidden glyphs, this charm turns the ordinary into the extraordinary, multiplying rewards effortlessly.",Necklace,,," +25% Double Resource
+ -10% Skilling Interval",,,,,,,45 M,40 M,4500000,,C,0.25,-0.1,,,,,,,,,,,,,,,20,20,20,,,,,Miscellaneous
+121,Core of Eternal Darkness,"A relic of ultimate power, this nightopal core merges shadow and mystery to unlock boundless prosperity for its bearer.",Necklace,,," +30% Double Resource
+ -15% Skilling Interval",,,,,,,120 M,80 M,12000000,,B,0.3,-0.15,,,,,,,,,,,,,,,30,30,30,,,,,Miscellaneous

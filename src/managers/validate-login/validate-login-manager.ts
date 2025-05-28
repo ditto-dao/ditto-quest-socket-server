@@ -5,12 +5,14 @@ import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { createUser, getUserData, userExists } from "../../sql-services/user-service";
-import { DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
+import { BETA_TESTER_LOGIN_EVENT, DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
 import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
 import { slimeGachaPull } from "../../sql-services/slime";
 import { mintItemToUser } from "../../sql-services/item-inventory-service";
+import { handleBetaTesterClaim, isUnclaimedBetaTester } from "../../sql-services/beta-testers";
+import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -151,15 +153,23 @@ export class ValidateLoginManager {
             // Free on first login
             const firstFreeSlime = await slimeGachaPull(user.telegramId, true);
             const secondFreeSlime = await slimeGachaPull(user.telegramId, true);
-            const mintWood = await mintItemToUser(user.telegramId, 30, 30);
+            const mintWood = await mintItemToUser(user.telegramId, 26, 30);
 
             data.socket.emit(FIRST_LOGIN_EVENT, {
-                userId: data.loginPayload.userData.id,
+                userId: user.telegramId,
                 payload: {
                     freeSlimes: [firstFreeSlime, secondFreeSlime],
                     freeItems: [mintWood]
                 }
             });
+
+            if (await isUnclaimedBetaTester(user.telegramId)) {
+                await mintEquipmentToUser(user.telegramId, 111);
+                await handleBetaTesterClaim(user.telegramId);
+                data.socket.emit(BETA_TESTER_LOGIN_EVENT, {
+                    userId: user.telegramId,
+                });
+            }
 
         } else {
             user = await getUserData(data.loginPayload.userData.id.toString());

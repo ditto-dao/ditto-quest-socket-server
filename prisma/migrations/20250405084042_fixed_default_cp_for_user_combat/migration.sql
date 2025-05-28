@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `Combat` MODIFY `cp` INTEGER NOT NULL DEFAULT 699;

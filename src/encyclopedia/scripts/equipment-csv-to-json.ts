@@ -229,8 +229,8 @@ const parseCsvToJson = async () => {
                         id: parseInt(row["Equipment_ID"]),
                         name: row["Item Name"],
                         description: row["Description"],
-                        requiredLvlCraft: row["Crafting Level Req"] ? parseInt(row["Required Lvl"]) : 1,
-                        requiredLvlCombat: row["Combat Level Req"] ? parseInt(row["Required Lvl"]) : 1,
+                        requiredLvlCraft: row["Crafting Level Req"] ? parseInt(row["Crafting Level Req"]) : 1,
+                        requiredLvlCombat: row["Combat Level Req"] ? parseInt(row["Combat Level Req"]) : 1,
                         attackType: parseAttackType(row["Category"]),
                         imgsrc: row["Image"] || "",
                         statEffect,
@@ -256,7 +256,8 @@ const parseCsvToJson = async () => {
 
                     equipmentList.push(equipment);
 
-                    if (row['Crafting Materials\n(qty x item id)'].length > 0) {
+                    const rawMaterials = row['Crafting Materials\n(qty x item id)'];
+                    if (rawMaterials && rawMaterials.trim().length > 0) {
                         const recipe = {
                             equipmentId: parseInt(row["Equipment_ID"]),
                             durationS: parseInt(row['Crafting Interval (S)'], 10),

@@ -9,6 +9,7 @@ import { COMBAT_STARTED_EVENT, COMBAT_STOPPED_EVENT } from '../../../socket/even
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { sleep } from '../../../utils/helpers';
 import { DungeonManager, DungeonState } from './dungeon-manager';
+import { getUserLevel } from '../../../sql-services/user-service';
 
 export class IdleCombatManager {
     private activeBattlesByUserId: Record<string, Battle> = {};
@@ -274,6 +275,14 @@ export class IdleCombatManager {
     }
 
     async startDomainCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, domain: DomainWithMonsters, startTimestamp: number, monster?: FullMonster) {
+        const userLevel = await getUserLevel(userId);
+        if (
+            userLevel < (domain.minCombatLevel ?? -Infinity) ||
+            userLevel > (domain.maxCombatLevel ?? Infinity)
+        ) {
+            throw new Error(`User does not meet the combat level requirements for this domain.`)
+        }
+
         await idleManager.removeAllCombatActivities(userId);
 
         const firstMonster = (monster) ? monster : DomainManager.getRandomMonsterFromDomain(domain);
@@ -336,6 +345,14 @@ export class IdleCombatManager {
     }
 
     async startDungeonCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, dungeon: DungeonWithMonsters, startTimestamp: number, monster?: FullMonster, state?: DungeonState) {
+        const userLevel = await getUserLevel(userId);
+        if (
+            userLevel < (dungeon.minCombatLevel ?? -Infinity) ||
+            userLevel > (dungeon.maxCombatLevel ?? Infinity)
+        ) {
+            throw new Error(`User does not meet the combat level requirements for this dungeon.`);
+        }
+
         await idleManager.removeAllCombatActivities(userId);
 
         DungeonManager.initDungeonState(userId, startTimestamp, state);

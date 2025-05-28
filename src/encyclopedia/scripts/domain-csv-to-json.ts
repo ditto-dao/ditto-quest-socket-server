@@ -33,6 +33,8 @@ interface Domain {
   imgsrc?: string;
   entryPriceGP?: number;
   entryPriceDittoWei?: string;
+  minCombatLevel: number | null;
+  maxCombatLevel: number | null;
   monsters: DomainMonster[];
 }
 
@@ -88,6 +90,8 @@ const parseDomains = async () => {
             imgsrc: row['Image Src'] || undefined,
             entryPriceGP: row['Entry Price GP'] ? parseInt(row['Entry Price GP'], 10) : 0,
             entryPriceDittoWei: parseUnits(row['Entry Price DITTO'] || "0", DITTO_DECIMALS).toString(),
+            minCombatLevel: row['Min Level'] ? parseInt(row['Min Level'], 10) : null,
+            maxCombatLevel: row['Max Level'] ? parseInt(row['Max Level'], 10) : null,
             monsters: domainMonsters,
           };
 

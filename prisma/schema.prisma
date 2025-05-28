@@ -280,7 +280,7 @@ model Slime {
 }
 
 model SlimeTrait {
-  id          Int       @id @default(autoincrement())
+  id          Int       @id
   type        TraitType
   name        String
   rarity      Rarity
@@ -361,7 +361,7 @@ enum EquipmentType {
 
 // Equipment table
 model Equipment {
-  id          Int    @id @default(autoincrement())
+  id          Int    @id
   name        String @unique
   description String @db.Text
   imgsrc      String
@@ -371,7 +371,7 @@ model Equipment {
 
   buyPriceDittoWei Decimal? @db.Decimal(65, 0)
 
-  requiredLvlCraft Int @default(1)
+  requiredLvlCraft  Int @default(1)
   requiredLvlCombat Int @default(1)
 
   attackType AttackType? // only for weapon
@@ -391,7 +391,7 @@ model Equipment {
 
 // Items table
 model Item {
-  id           Int         @id @default(autoincrement())
+  id           Int         @id
   name         String      @unique
   description  String      @db.Text
   imgsrc       String
@@ -527,7 +527,7 @@ model CraftingRecipeItems {
 }
 
 model Monster {
-  id          Int    @id @default(autoincrement())
+  id          Int    @id
   name        String @unique
   description String @db.Text
   imgsrc      String
@@ -595,12 +595,15 @@ model MonsterDrop {
 }
 
 model Domain {
-  id          Int     @id @default(autoincrement())
+  id          Int     @id
   name        String  @unique
   description String  @db.Text
   imgsrc      String?
 
   monsters DomainMonster[]
+
+  minCombatLevel Int?
+  maxCombatLevel Int?
 
   entryPriceGP       Int?
   entryPriceDittoWei Decimal? @db.Decimal(65, 0)
@@ -623,13 +626,16 @@ model DomainMonster {
 }
 
 model Dungeon {
-  id                  Int      @id @default(autoincrement())
+  id                  Int      @id
   name                String   @unique
   description         String   @db.Text
   imgsrc              String
   monsterGrowthFactor Float    @default(1.05) // e.g., 1.05 = 5% growth per wave
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+
+  minCombatLevel Int?
+  maxCombatLevel Int?
 
   entryPriceGP       Int?
   entryPriceDittoWei Decimal? @db.Decimal(65, 0)
@@ -847,4 +853,9 @@ model ReferralEarningLog {
 
   referrer User @relation("RefEarningsReferrer", fields: [referrerId], references: [telegramId])
   referee  User @relation("RefEarningsReferee", fields: [refereeId], references: [telegramId])
+}
+
+model BetaTester {
+  telegramId String  @id
+  claimed    Boolean @default(false)
 }

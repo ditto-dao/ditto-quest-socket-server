@@ -4,6 +4,25 @@ import { prisma } from '../../sql-services/client';
 import { logger } from '../../utils/logger';
 import { recalculateAndUpdateUserStats } from '../../sql-services/user-service';
 
+async function updateAllUserCombat() {
+    const users = await prisma.user.findMany({
+        select: { telegramId: true }
+    });
+
+    logger.info(`🔄 Recalculating stats for ${users.length} users...`);
+
+    for (const user of users) {
+        try {
+            await recalculateAndUpdateUserStats(user.telegramId);
+            logger.info(`✅ Updated stats for user ${user.telegramId}`);
+        } catch (err) {
+            console.error(`❌ Failed to update user ${user.telegramId}:`, err);
+        }
+    }
+
+    logger.info("✅ Done updating all users.");
+}
+
 async function seedEquipment() {
     try {
         const equipmentPath = path.join(__dirname, '../../encyclopedia/equipment.json');
@@ -14,29 +33,35 @@ async function seedEquipment() {
         for (const equipment of equipmentData) {
             const { statEffect, id, ...equipmentFields } = equipment;
 
-            const existing = await prisma.equipment.findUnique({
-                where: { id }
-            });
-
-            if (existing) {
-                await prisma.equipment.update({
-                    where: { id },
-                    data: {
-                        ...equipmentFields,
-                        ...(statEffect ? { statEffect: { update: statEffect } } : {})  // only add if exists
-                    }
+            try {
+                const existing = await prisma.equipment.findUnique({
+                    where: { id }
                 });
-            } else {
-                await prisma.equipment.create({
-                    data: {
-                        id,
-                        ...equipmentFields,
-                        ...(statEffect ? { statEffect: { create: statEffect } } : {})  // only add if exists
-                    }
-                });
+    
+                if (existing) {
+                    await prisma.equipment.update({
+                        where: { id },
+                        data: {
+                            ...equipmentFields,
+                            ...(statEffect ? { statEffect: { update: statEffect } } : {})  // only add if exists
+                        }
+                    });
+                } else {
+                    await prisma.equipment.create({
+                        data: {
+                            id,
+                            ...equipmentFields,
+                            ...(statEffect ? { statEffect: { create: statEffect } } : {})  // only add if exists
+                        }
+                    });
+                }
+    
+                insertedCount++;
+            } catch (err) {
+                logger.error(`❌ Failed to insert/update equipment with ID ${id}: ${err}`);
+                logger.error(`➡️ Equipment object that caused the error:\n${JSON.stringify(equipment, null, 2)}`);
+                throw err;
             }
-
-            insertedCount++;
         }
 
         logger.info(`Inserted or updated ${insertedCount} equipment items.`);
@@ -48,25 +73,6 @@ async function seedEquipment() {
     } finally {
         await prisma.$disconnect();
     }
-}
-
-async function updateAllUserCombat() {
-    const users = await prisma.user.findMany({
-        select: { telegramId: true }
-      });
-    
-      logger.info(`🔄 Recalculating stats for ${users.length} users...`);
-    
-      for (const user of users) {
-        try {
-          await recalculateAndUpdateUserStats(user.telegramId);
-          logger.info(`✅ Updated stats for user ${user.telegramId}`);
-        } catch (err) {
-          console.error(`❌ Failed to update user ${user.telegramId}:`, err);
-        }
-      }
-    
-      logger.info("✅ Done updating all users.");
 }
 
 seedEquipment();

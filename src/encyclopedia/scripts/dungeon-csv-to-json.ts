@@ -26,7 +26,8 @@ interface Dungeon {
     imgsrc?: string;
     entryPriceGP?: number;
     entryPriceDittoWei?: string;
-
+    minCombatLevel: number | null;
+    maxCombatLevel: number | null;
     monsterGrowthFactor: number;
     monsterSequence: MonsterWithCombatAndDrops[];
 }
@@ -78,6 +79,8 @@ const parseDomains = async () => {
                         imgsrc: row['Image Src'] || undefined,
                         entryPriceGP: row['Entry Price GP'] ? parseInt(row['Entry Price GP'], 10) : 0,
                         entryPriceDittoWei: row['Entry Price DITTO (Wei)'] || "0",
+                        minCombatLevel: row['Min Level'] ? parseInt(row['Min Level'], 10) : null,
+                        maxCombatLevel: row['Max Level'] ? parseInt(row['Max Level'], 10) : null,
                         monsterGrowthFactor: row['Growth Factor'] ? parseFloat(row['Growth Factor']) : 1.05,
                         monsterSequence: monsters,
                     };

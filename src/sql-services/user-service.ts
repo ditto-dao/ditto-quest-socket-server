@@ -1726,6 +1726,12 @@ export async function getUserInventorySlotInfo(telegramId: string): Promise<{
         where: { userId: telegramId },
     });
 
+    logger.info(JSON.stringify({
+        usedSlots,
+        maxSlots: user.maxInventorySlots,
+        fallbackUsed: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS
+    }, null, 2));
+
     return {
         usedSlots,
         maxSlots: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS // fallback default if ever unset
@@ -1774,4 +1780,17 @@ export async function canUserMintSlime(telegramId: string): Promise<boolean> {
     const maxSlots = user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS;
 
     return usedSlots < maxSlots;
+}
+
+export async function getUserLevel(telegramId: string): Promise<number> {
+    const user = await prisma.user.findUnique({
+        where: { telegramId },
+        select: { level: true },
+    });
+
+    if (!user) {
+        throw new Error(`User with telegramId ${telegramId} not found`);
+    }
+
+    return user.level;
 }

@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `User` ADD COLUMN `maxInventorySlots` INTEGER NOT NULL DEFAULT 20,
-    ADD COLUMN `maxSlimeInventorySlots` INTEGER NOT NULL DEFAULT 20;

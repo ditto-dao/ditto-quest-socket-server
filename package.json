@@ -30,6 +30,7 @@
     "seed-monsters": "ts-node ./src/scripts/monsters/seed-monsters-db.ts",
     "seed-domains": "ts-node ./src/scripts/monsters/seed-domains-db.ts",
     "seed-dungeons": "ts-node ./src/scripts/monsters/seed-dungeons-db.ts",
+    "seed-beta-testers": "ts-node ./src/scripts/beta-testers/seed-beta-testers.ts",
     "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
     "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts",
     "trim-offline-activities": "ts-node ./src/scripts/redis-offline-activities/trim-user-offline-activities.ts",
