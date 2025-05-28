@@ -76,6 +76,16 @@ export class SocketManager {
         }
     }
 
+    disconnectUsersBySocketId(socketId: string) {
+        // Find and remove userId from cache
+        const userId = Object.entries(this.socketIdByUser).find(([, sid]) => sid === socketId)?.[0];
+        if (userId) {
+            this.emitEvent(userId, DISCONNECT_USER_EVENT, userId);
+            this.removeSocketIdCacheForUser(userId);
+            logger.info(`Removed socketId cache for user ${userId} during disconnect.`);
+        }
+    }
+
     emitEvent(userId: string, name: string, params: any) {
         try {
             if (this.isUserSocketCached(userId)) {

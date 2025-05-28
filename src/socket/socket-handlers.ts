@@ -48,6 +48,15 @@ export async function setupSocketHandlers(
         setupCombatSocketHandlers(socket, socketManager, idleManager, combatManager)
 
         setupDittoLedgerUserSocketHandlers(socket, dittoLedgerSocket)
+
+        socket.on("disconnect", async () => {
+            try {
+                logger.info(`Adapter disconnected.`);
+                socketManager.disconnectUsersBySocketId(socket.id);
+            } catch (error) {
+                logger.error(`Error disconnecting all users associated with adapter.`);
+            }
+        });
     })
 
     io.on('error', err => {
