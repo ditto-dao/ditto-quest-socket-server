@@ -2,83 +2,53 @@ import { prisma } from "../sql-services/client";
 import { logger } from "../utils/logger";
 
 async function resetAutoIncrement(table: string) {
-  await prisma.$executeRawUnsafe(`ALTER TABLE ${table} AUTO_INCREMENT = 1`);
+  try {
+    await prisma.$executeRawUnsafe(`ALTER TABLE \`${table}\` AUTO_INCREMENT = 1`);
+    logger.info(`🔁 Reset AUTO_INCREMENT for ${table}`);
+  } catch (err) {
+    logger.error(`❌ Failed to reset AUTO_INCREMENT for ${table}: ${err}`);
+  }
 }
 
-async function deleteAllTables() {
+async function deleteTable(tableName: string, deleteFn: () => Promise<any>) {
   try {
-    logger.info("🚨 Starting full database cleanup...");
-
-    await prisma.domain.deleteMany();
-    logger.info("🧹 Deleted Domain");
-    await resetAutoIncrement("Domain");
-
-    await prisma.dungeon.deleteMany();
-    logger.info("🧹 Deleted Dungeon");
-    await resetAutoIncrement("Dungeon");
-
-    await prisma.farmingActivityLog.deleteMany();
-    logger.info("🧹 Deleted FarmingActivityLog");
-    await resetAutoIncrement("FarmingActivityLog");
-
-    await prisma.craftingConsumedItem.deleteMany();
-    logger.info("🧹 Deleted CraftingConsumedItem");
-    await resetAutoIncrement("CraftingConsumedItem");
-
-    await prisma.craftingActivityLog.deleteMany();
-    logger.info("🧹 Deleted CraftingActivityLog");
-    await resetAutoIncrement("CraftingActivityLog");
-
-    await prisma.breedingActivityLog.deleteMany();
-    logger.info("🧹 Deleted BreedingActivityLog");
-    await resetAutoIncrement("BreedingActivityLog");
-
-    await prisma.combatDrop.deleteMany();
-    logger.info("🧹 Deleted CombatDrop");
-    await resetAutoIncrement("CombatDrop");
-
-    await prisma.combatActivityLog.deleteMany();
-    logger.info("🧹 Deleted CombatActivityLog");
-    await resetAutoIncrement("CombatActivityLog");
-
-    await prisma.accomplishmentProgress.deleteMany();
-    logger.info("🧹 Deleted AccomplishmentProgress");
-    await resetAutoIncrement("AccomplishmentProgress");
-
-    await prisma.accomplishment.deleteMany();
-    logger.info("🧹 Deleted Accomplishment");
-    await resetAutoIncrement("Accomplishment");
-
-    await prisma.userDeviceFingerprint.deleteMany();
-    logger.info("🧹 Deleted UserDeviceFingerprint");
-    await resetAutoIncrement("UserDeviceFingerprint");
-
-    await prisma.referralEarningLog.deleteMany();
-    logger.info("🧹 Deleted ReferralEarningLog");
-    await resetAutoIncrement("ReferralEarningLog");
-
-    await prisma.referralEventLog.deleteMany();
-    logger.info("🧹 Deleted ReferralEventLog");
-    await resetAutoIncrement("ReferralEventLog");
-
-    await prisma.referralRelation.deleteMany();
-    logger.info("🧹 Deleted ReferralRelation");
-    await resetAutoIncrement("ReferralRelation");
-
-    await prisma.referralLink.deleteMany();
-    logger.info("🧹 Deleted ReferralLink");
-    await resetAutoIncrement("ReferralLink");
-
-    await prisma.betaTester.deleteMany();
-    logger.info("🧹 Deleted BetaTester");
-
-    logger.info("✅ Successfully purged all tables and reset auto-increment.");
-  } catch (error) {
-    logger.error(`❌ Error during cleanup: ${error}`);
-    throw error;
-  } finally {
-    await prisma.$disconnect();
+    logger.info(`🗑 Deleting data from ${tableName}...`);
+    await deleteFn();
+    logger.info(`✅ Deleted all rows from ${tableName}`);
+    await resetAutoIncrement(tableName);
+  } catch (err) {
+    logger.error(`❌ Failed to delete ${tableName}: ${err}`);
   }
+}
+
+export async function deleteAllTables() {
+  logger.info("🚨 Starting full database cleanup...");
+
+  await deleteTable("CombatDrop", () => prisma.combatDrop.deleteMany());
+  await deleteTable("CombatActivityLog", () => prisma.combatActivityLog.deleteMany());
+  await deleteTable("CraftingConsumedItem", () => prisma.craftingConsumedItem.deleteMany());
+  await deleteTable("CraftingActivityLog", () => prisma.craftingActivityLog.deleteMany());
+  await deleteTable("FarmingActivityLog", () => prisma.farmingActivityLog.deleteMany());
+  await deleteTable("BreedingActivityLog", () => prisma.breedingActivityLog.deleteMany());
+  await deleteTable("DomainMonster", () => prisma.domainMonster.deleteMany());
+  await deleteTable("DungeonMonsterSequence", () => prisma.dungeonMonsterSequence.deleteMany());
+  await deleteTable("DungeonLeaderboard", () => prisma.dungeonLeaderboard.deleteMany());
+  await deleteTable("MonsterDrop", () => prisma.monsterDrop.deleteMany());
+  await deleteTable("AccomplishmentProgress", () => prisma.accomplishmentProgress.deleteMany());
+  await deleteTable("Accomplishment", () => prisma.accomplishment.deleteMany());
+  await deleteTable("UserDeviceFingerprint", () => prisma.userDeviceFingerprint.deleteMany());
+  await deleteTable("ReferralEarningLog", () => prisma.referralEarningLog.deleteMany());
+  await deleteTable("ReferralEventLog", () => prisma.referralEventLog.deleteMany());
+  await deleteTable("ReferralRelation", () => prisma.referralRelation.deleteMany());
+  await deleteTable("ReferralLink", () => prisma.referralLink.deleteMany());
+  await deleteTable("BetaTester", () => prisma.betaTester.deleteMany());
+
+  // PARENT TABLES
+  await deleteTable("Domain", () => prisma.domain.deleteMany());
+  await deleteTable("Dungeon", () => prisma.dungeon.deleteMany());
+
+  logger.info("🎉 Finished full database cleanup.");
+  await prisma.$disconnect();
 }
 
 deleteAllTables();

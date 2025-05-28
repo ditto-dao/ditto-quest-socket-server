@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { recalculateAndUpdateUserBaseStats, recalculateAndUpdateUserStats } from "../../sql-services/user-service";
+import { getUserLevel, recalculateAndUpdateUserBaseStats, recalculateAndUpdateUserStats } from "../../sql-services/user-service";
 import { getBaseMaxHpFromHpLvl, getBaseAtkSpdFromLuk, getBaseAccFromDex, getBaseEvaFromLuk, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseMagicDmgReductionFromDefAndMagic, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef } from "../../managers/idle-managers/combat/combat-helpers";
+import { getDomainById } from "../../sql-services/combat-service";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,7 @@ async function main() {
     select: { telegramId: true }
   });
 
-  console.log(`🔄 Recalculating stats for ${users.length} users...\n`);
+/*   console.log(`🔄 Recalculating stats for ${users.length} users...\n`);
 
   for (const user of users) {
     try {
@@ -19,9 +20,28 @@ async function main() {
     } catch (err) {
       console.error(`❌ Failed to update user ${user.telegramId}:`, err);
     }
-  }
+  } */
 
-  console.log("\n✅ Done updating all users.");
+    const level = await getUserLevel('138050881');
+    console.log(`level: ${level}`);
+
+    const domain = await getDomainById(1);
+
+    if (!domain) throw new Error(`Domain does not exist`);
+
+    console.log(`domain.minCombatLevel : ${domain.minCombatLevel}`);
+    console.log(`domain.maxCombatLevel : ${domain.maxCombatLevel}`);
+
+    if (
+      level < (domain.minCombatLevel ?? -Infinity) ||
+      level > (domain.maxCombatLevel ?? Infinity)
+    ) {
+      console.warn(`User does not meet domain level requirements. Skipping offline progress.`);
+    } else {
+      console.log(`ENTER BATTLE`);
+    }
+
+
   /*   const newBaseStats = {
       maxHp: getBaseMaxHpFromHpLvl(1),
       atkSpd: getBaseAtkSpdFromLuk(1),

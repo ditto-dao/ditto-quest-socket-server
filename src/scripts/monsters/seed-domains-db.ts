@@ -31,6 +31,8 @@ interface DomainInput {
   id: number;
   name: string;
   description: string;
+  minCombatLevel: number | null;
+  maxCombatLevel: number | null;
   imgsrc?: string;
   entryPriceGP?: number;
   entryPriceDittoWei?: string;
@@ -51,6 +53,8 @@ async function seedDomains(domains: DomainInput[]) {
           imgsrc: domain.imgsrc,
           entryPriceGP: domain.entryPriceGP,
           entryPriceDittoWei: domain.entryPriceDittoWei ?? undefined,
+          minCombatLevel: domain.minCombatLevel,
+          maxCombatLevel: domain.maxCombatLevel
         },
         create: {
           id: domain.id,
@@ -59,6 +63,8 @@ async function seedDomains(domains: DomainInput[]) {
           imgsrc: domain.imgsrc,
           entryPriceGP: domain.entryPriceGP,
           entryPriceDittoWei: domain.entryPriceDittoWei ?? undefined,
+          minCombatLevel: domain.minCombatLevel,
+          maxCombatLevel: domain.maxCombatLevel
         },
       });
 

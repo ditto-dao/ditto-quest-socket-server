@@ -22,6 +22,8 @@ async function seedDungeons() {
           entryPriceGP: dungeon.entryPriceGP,
           entryPriceDittoWei: new Decimal(dungeon.entryPriceDittoWei),
           monsterGrowthFactor: dungeon.monsterGrowthFactor,
+          minCombatLevel: dungeon.minCombatLevel,
+          maxCombatLevel: dungeon.maxCombatLevel,
           isActive: true,
         },
         create: {
@@ -32,6 +34,8 @@ async function seedDungeons() {
           entryPriceGP: dungeon.entryPriceGP,
           entryPriceDittoWei: new Decimal(dungeon.entryPriceDittoWei),
           monsterGrowthFactor: dungeon.monsterGrowthFactor,
+          minCombatLevel: dungeon.minCombatLevel,
+          maxCombatLevel: dungeon.maxCombatLevel,
           isActive: true,
         },
       });
