@@ -186,7 +186,7 @@ export class IdleFarmingManager {
                         {
                             itemId: farming.item.id,
                             itemName: farming.item.name || 'Item',
-                            quantity: repetitions,
+                            quantity: repetitions * FARM_REPS_MULTIPLIER,
                             uri: farming.item.imgsrc
                         }
                     ],
