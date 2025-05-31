@@ -1807,7 +1807,7 @@
     "equipmentName": "Slime Bronze Shield",
     "type": "shield",
     "durationS": 25,
-    "craftingLevelRequired": 10,
+    "craftingLevelRequired": 4,
     "craftingExp": 110,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_02.png",
     "requiredItems": [
@@ -1830,7 +1830,7 @@
     "equipmentName": "Hardened Shield",
     "type": "shield",
     "durationS": 30,
-    "craftingLevelRequired": 20,
+    "craftingLevelRequired": 7,
     "craftingExp": 150,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_03.png",
     "requiredItems": [
@@ -1853,7 +1853,7 @@
     "equipmentName": "Alloy Shield",
     "type": "shield",
     "durationS": 35,
-    "craftingLevelRequired": 30,
+    "craftingLevelRequired": 10,
     "craftingExp": 190,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_04.png",
     "requiredItems": [
@@ -1882,7 +1882,7 @@
     "equipmentName": "Veil Shield",
     "type": "shield",
     "durationS": 40,
-    "craftingLevelRequired": 40,
+    "craftingLevelRequired": 15,
     "craftingExp": 240,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_05.png",
     "requiredItems": [
@@ -1905,7 +1905,7 @@
     "equipmentName": "Muck Shield",
     "type": "shield",
     "durationS": 45,
-    "craftingLevelRequired": 50,
+    "craftingLevelRequired": 20,
     "craftingExp": 300,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_06.png",
     "requiredItems": [
@@ -1928,7 +1928,7 @@
     "equipmentName": "Glow Shield",
     "type": "shield",
     "durationS": 50,
-    "craftingLevelRequired": 60,
+    "craftingLevelRequired": 25,
     "craftingExp": 360,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_07.png",
     "requiredItems": [
@@ -1951,7 +1951,7 @@
     "equipmentName": "Frost Shield",
     "type": "shield",
     "durationS": 55,
-    "craftingLevelRequired": 70,
+    "craftingLevelRequired": 30,
     "craftingExp": 430,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_08.png",
     "requiredItems": [
@@ -1974,7 +1974,7 @@
     "equipmentName": "Ember Shield",
     "type": "shield",
     "durationS": 60,
-    "craftingLevelRequired": 80,
+    "craftingLevelRequired": 35,
     "craftingExp": 520,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_09.png",
     "requiredItems": [
@@ -1997,7 +1997,7 @@
     "equipmentName": "Relic Shield",
     "type": "shield",
     "durationS": 65,
-    "craftingLevelRequired": 90,
+    "craftingLevelRequired": 40,
     "craftingExp": 610,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_10.png",
     "requiredItems": [
@@ -2020,7 +2020,7 @@
     "equipmentName": "Fracture Shield",
     "type": "shield",
     "durationS": 70,
-    "craftingLevelRequired": 100,
+    "craftingLevelRequired": 45,
     "craftingExp": 710,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_11.png",
     "requiredItems": [
@@ -2043,7 +2043,7 @@
     "equipmentName": "Gleam Shield",
     "type": "shield",
     "durationS": 75,
-    "craftingLevelRequired": 110,
+    "craftingLevelRequired": 50,
     "craftingExp": 830,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_12.png",
     "requiredItems": [
@@ -2066,7 +2066,7 @@
     "equipmentName": "Verdant Shield",
     "type": "shield",
     "durationS": 80,
-    "craftingLevelRequired": 120,
+    "craftingLevelRequired": 55,
     "craftingExp": 950,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_13.png",
     "requiredItems": [
@@ -2089,7 +2089,7 @@
     "equipmentName": "Sanctum Shield",
     "type": "shield",
     "durationS": 85,
-    "craftingLevelRequired": 130,
+    "craftingLevelRequired": 60,
     "craftingExp": 1080,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_14.png",
     "requiredItems": [
@@ -2112,7 +2112,7 @@
     "equipmentName": "Abyss Shield",
     "type": "shield",
     "durationS": 90,
-    "craftingLevelRequired": 140,
+    "craftingLevelRequired": 65,
     "craftingExp": 1230,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_15.png",
     "requiredItems": [
@@ -2135,7 +2135,7 @@
     "equipmentName": "Wisp Shield",
     "type": "shield",
     "durationS": 95,
-    "craftingLevelRequired": 150,
+    "craftingLevelRequired": 70,
     "craftingExp": 1380,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_16.png",
     "requiredItems": [
@@ -2158,7 +2158,7 @@
     "equipmentName": "Dusk Shield",
     "type": "shield",
     "durationS": 100,
-    "craftingLevelRequired": 160,
+    "craftingLevelRequired": 75,
     "craftingExp": 1550,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_17.png",
     "requiredItems": [
@@ -2181,7 +2181,7 @@
     "equipmentName": "Siphon Shield",
     "type": "shield",
     "durationS": 105,
-    "craftingLevelRequired": 170,
+    "craftingLevelRequired": 80,
     "craftingExp": 1750,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_18.png",
     "requiredItems": [
@@ -2204,7 +2204,7 @@
     "equipmentName": "Rift Shield",
     "type": "shield",
     "durationS": 110,
-    "craftingLevelRequired": 185,
+    "craftingLevelRequired": 85,
     "craftingExp": 2200,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_19.png",
     "requiredItems": [
@@ -2227,7 +2227,7 @@
     "equipmentName": "Eternal Barrier",
     "type": "shield",
     "durationS": 200,
-    "craftingLevelRequired": 200,
+    "craftingLevelRequired": 90,
     "craftingExp": 4000,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_20.png",
     "requiredItems": [

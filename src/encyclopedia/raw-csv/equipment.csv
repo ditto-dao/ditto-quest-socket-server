@@ -1,328 +1,215 @@
 Equipment_ID,Item Name,Description,Category,Crafting Materials,"Crafting Materials
 (qty x item id)",Abilities,Image,Crafting Level Req,XP/S,Crafting XP,Crafting Interval (S),Crafting Interval (M),Buy Price (GP),Buy Price ($DITTO),Sell Price (GP),GP/S,Rarity,Double Resource Odds,Skill Interval Reduction Multiplier,Combat Level Req,MAX HP Mod,ATK SPD mod,ACC Mod,EVA Mod,MAX MELEE DMG Mod,MAX RANGE DMG Mod,MAX MAGIC DMG Mod,CRIT CHANCE Mod,CRIT MULTIPLIER Mod,DMG REDUCTION Mod,MAGIC DMG REDUCTION Mod,HP REGEN RATE Mod,HP REGEN AMOUNT Mod,MELEE FACTOR,RANGE FACTOR,MAGIC FACTOR,REINFORCE AIR,REINFORCE WATER,REINFORCE EARTH,REINFORCE FIRE,Stat Profile
-1,Rustfang,A worn blade with flaking edges. Still good enough to scare off slimebats.,Weapon (Melee),10 Wood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,50,0,0,,,*1.02,*1.02,,*1.02,3,0,0,,,,,Melee Offensive
-2,Timbertooth,Carved from ironwood and nailed with steel teeth. Surprisingly dependable.,Weapon (Melee),15 Wood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_4.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,65,0,0,,,*1.02,*1.02,,*1.02,4,0,0,,,,,Melee Offensive
-3,Ironlink,Forged from spare chain loops. It clinks louder than it cuts.,Weapon (Melee),20 Wood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_6.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,80,0,0,,,*1.03,*1.03,,*1.03,5,0,0,,,,,Melee Offensive
-4,Mirepiercer,"Shaped to jab, not swing. Perfect for stabbing through swamp armor.",Weapon (Melee),"15 Bronze Ores
-10 Wood","15x1
+1,Rustfang,A worn blade with flaking edges. Still good enough to scare off slimebats.,Weapon (Melee),10 Barkwood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,50,0,0,,,*1.02,*1.02,,*1.02,3,0,0,,,,,Melee Offensive
+2,Timbertooth,Carved from ironwood and nailed with steel teeth. Surprisingly dependable.,Weapon (Melee),15 Barkwood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_4.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,65,0,0,,,*1.02,*1.02,,*1.02,4,0,0,,,,,Melee Offensive
+3,Ironlink,Forged from spare chain loops. It clinks louder than it cuts.,Weapon (Melee),20 Barkwood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_6.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,80,0,0,,,*1.03,*1.03,,*1.03,5,0,0,,,,,Melee Offensive
+4,Mirepiercer,"Shaped to jab, not swing. Perfect for stabbing through swamp armor.",Weapon (Melee),"15 Flintrock, 10 Barkwood","15x1
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_8.png,10,4.400,110,25,0 m 25 s,,,70,2.800,D,,,10,*1.05,*1.04,*1.03,*1.03,100,0,0,,,*1.04,*1.04,,*1.03,6,0,0,,,,,Melee Offensive
-5,Glowbrand,A simple core blade with a faint internal shimmer. A favorite among trainees.,Weapon (Melee),"20 Iron Ores
-10 Wood","20x2
+5,Glowbrand,A simple core blade with a faint internal shimmer. A favorite among trainees.,Weapon (Melee),"20 Dusklead, 10 Barkwood","20x2
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_10.png,15,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.06,*1.04,*1.04,150,0,0,,,*1.06,*1.06,,*1.04,9,0,0,,,,,Melee Offensive
-6,Hollowsteel,"Thin and light, yet unnaturally strong. Whistles on wide arcs.",Weapon (Melee),"15 Bronze Ores
-15 Iron Ores
-10 Wood","15x1
+6,Hollowsteel,"Thin and light, yet unnaturally strong. Whistles on wide arcs.",Weapon (Melee),"15 Flintrock, 15 Dusklead, 10 Barkwood","15x1
 15x2
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_12.png,20,5.429,190,35,0 m 35 s,,,160,4.571,D,,,30,*1.11,*1.08,*1.05,*1.05,200,0,0,,,*1.08,*1.08,,*1.05,12,0,0,,,,,Melee Offensive
-7,Splinterblade,Jagged like broken glass. You’ll need a steady hand and a lot of gauze.,Weapon (Melee),"25 Shadow Ores
-15 Wood","25x3
+7,Splinterblade,Jagged like broken glass. You’ll need a steady hand and a lot of gauze.,Weapon (Melee),"25 Cinderslag, 15 Barkwood","25x3
 15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_14.png,25,6.000,240,40,0 m 40 s,,,210,5.250,D,,,40,*1.14,*1.10,*1.06,*1.06,250,0,0,,,*1.10,*1.10,,*1.06,15,0,0,,,,,Melee Offensive
-8,Embercut,Warms the air around it. Once used to light torches on expedition trails.,Weapon (Melee),"35 Mystical Ores
-15 Wood","35x4
+8,Embercut,Warms the air around it. Once used to light torches on expedition trails.,Weapon (Melee),"35 Ironbloom, 15 Barkwood","35x4
 15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_16.png,30,6.667,300,45,0 m 45 s,,,260,5.778,C,,,50,*1.17,*1.12,*1.07,*1.07,300,0,0,,,*1.12,*1.12,,*1.07,18,0,0,,,,,Melee Offensive
-9,Bramblefang,Decorated with curling vine patterns. Draws blood like a thorn.,Weapon (Melee),"45 Adamant Ores
-20 Wood","45x5
+9,Bramblefang,Decorated with curling vine patterns. Draws blood like a thorn.,Weapon (Melee),"45 Stoneflare, 20 Barkwood","45x5
 20x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_18.png,35,7.200,360,50,0 m 50 s,,,350,7.000,C,,,60,*1.20,*1.14,*1.08,*1.08,*1.10,0,0,,,*1.14,*1.14,,*1.08,21,0,0,,,,,Melee Offensive
-10,Moonbite,Faint lunar etchings glow softly in the dark. Feels lighter under starlight.,Weapon (Melee),"40 Ice Crystals
-30 Ooze Shards","40x16
+10,Moonbite,Faint lunar etchings glow softly in the dark. Feels lighter under starlight.,Weapon (Melee),"40 Oblivionite, 30 Ooze Shards","40x16
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_20.png,40,7.818,430,55,0 m 55 s,,,420,7.636,C,,,70,*1.23,*1.16,*1.09,*1.09,*1.13,0,0,,,*1.16,*1.16,,*1.09,24,0,0,,,,,Melee Offensive
-11,Dusthowl,Kicks up air as it swings. Makes more noise than damage — for now.,Weapon (Melee),"40 Fire Crystals
-30 Ooze Shards","40x17
+11,Dusthowl,Kicks up air as it swings. Makes more noise than damage — for now.,Weapon (Melee),"40 Hearthshard, 30 Ooze Shards","40x17
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_22.png,45,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.18,*1.10,*1.10,*1.16,0,0,,,*1.18,*1.18,,*1.10,27,0,0,,,,,Melee Offensive
-12,Thorncleave,Covered in forged briars. Cuts as it drags. Feared in the undergroves.,Weapon (Melee),"40 Relic Ores
-25 Ooze Shards","40x6
+12,Thorncleave,Covered in forged briars. Cuts as it drags. Feared in the undergroves.,Weapon (Melee),"40 Quicksilt, 25 Ooze Shards","40x6
 25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_24.png,50,9.385,610,65,1 m 5 s,,,650,10.000,C,,,90,*1.29,*1.20,*1.11,*1.11,*1.19,0,0,,,*1.20,*1.20,,*1.11,30,0,0,,,,,Melee Offensive
-13,Starflare,Its polished finish reflects starlight in dungeons. Favored by lightseers.,Weapon (Melee),"45 Magma Shards
-25 Ooze Shards",75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_26.png,55,10.143,710,70,1 m 10 s,,,740,10.571,B,,,100,*1.32,*1.22,*1.12,*1.12,*1.22,0,0,,,*1.22,*1.22,,*1.12,33,0,0,,,,,Melee Offensive
-14,Ashsplitter,"Blackened tip, cool to the touch. Used by fire-walkers of Ember Steppe.",Weapon (Melee),"50 Corundum Crystals
-30 Ooze Shards","50x19
+13,Starflare,Its polished finish reflects starlight in dungeons. Favored by lightseers.,Weapon (Melee),75 Ooze Shards,75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_26.png,55,10.143,710,70,1 m 10 s,,,740,10.571,B,,,100,*1.32,*1.22,*1.12,*1.12,*1.22,0,0,,,*1.22,*1.22,,*1.12,33,0,0,,,,,Melee Offensive
+14,Ashsplitter,"Blackened tip, cool to the touch. Used by fire-walkers of Ember Steppe.",Weapon (Melee),"50 Spellrose, 30 Ooze Shards","50x19
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_28.png,60,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.24,*1.13,*1.13,*1.25,0,0,,,*1.24,*1.24,,*1.13,36,0,0,,,,,Melee Offensive
-15,Daggerroot,The hilt smells faintly of earth. Born from jungle-forged steel.,Weapon (Melee),"55 Augite Crystals
-30 Ooze Shards","55x20
+15,Daggerroot,The hilt smells faintly of earth. Born from jungle-forged steel.,Weapon (Melee),"55 Gildroot, 30 Ooze Shards","55x20
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_30.png,65,11.875,950,80,1 m 20 s,,,1100,13.750,B,,,120,*1.38,*1.26,*1.14,*1.14,*1.28,0,0,,,*1.26,*1.26,,*1.14,39,0,0,,,,,Melee Offensive
-16,Spiritlash,Leaves a faint echo after striking. Those hit feel... slower.,Weapon (Melee),"60 Sanctum Ores
-35 Ooze Shards","60x10
+16,Spiritlash,Leaves a faint echo after striking. Those hit feel... slower.,Weapon (Melee),"60 Paleiron, 35 Ooze Shards","60x10
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_32.png,70,12.706,1080,85,1 m 25 s,,,1260,14.824,B,,,130,*1.41,*1.28,*1.15,*1.15,*1.31,0,0,,,*1.28,*1.28,,*1.15,42,0,0,,,,,Melee Offensive
-17,Gleamscourge,Ornate but deadly. Used in ceremonial duels that rarely ended peacefully.,Weapon (Melee),"70 Abyssium Ores
-40 Ooze Shards","70x11
+17,Gleamscourge,Ornate but deadly. Used in ceremonial duels that rarely ended peacefully.,Weapon (Melee),"70 Howlglass, 40 Ooze Shards","70x11
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_34.png,75,13.667,1230,90,1 m 30 s,,,1430,15.889,B,,,140,*1.44,*1.30,*1.16,*1.16,*1.34,0,0,,,*1.30,*1.30,,*1.16,45,0,0,,,,,Melee Offensive
-18,Blightpiercer,A twisted core blade once wielded in the Rot Wars. Resists corrosion.,Weapon (Melee),"60 Brumite Ores
-35 Ice Ooze Crystals","60x12
+18,Blightpiercer,A twisted core blade once wielded in the Rot Wars. Resists corrosion.,Weapon (Melee),"60 Aetherore, 35 Dunecryst","60x12
 35x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_36.png,80,14.526,1380,95,1 m 35 s,,,1800,18.947,A,,,150,*1.47,*1.32,*1.17,*1.17,*1.37,0,0,,,*1.32,*1.32,,*1.17,45,0,0,,,,,Melee Offensive
-19,Gloomfang,"The darker it is, the faster it cuts. Whispers when held at dusk.",Weapon (Melee),"65 Dusk Ores
-35 Ooze Shards","65x13
+19,Gloomfang,"The darker it is, the faster it cuts. Whispers when held at dusk.",Weapon (Melee),"65 Gravegold, 35 Ooze Shards","65x13
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_38.png,85,15.500,1550,100,1 m 40 s,,,2100,21.000,A,,,160,*1.50,*1.34,*1.18,*1.18,*1.40,0,0,,,*1.34,*1.34,,*1.18,45,0,0,,,,,Melee Offensive
-20,Thunderbite,"Sparks on metal contact. Loud, erratic, but effective.",Weapon (Melee),"75 Witherite Ores
-40 Ooze Shards","75x14
+20,Thunderbite,"Sparks on metal contact. Loud, erratic, but effective.",Weapon (Melee),"75 Glimmercoal, 40 Ooze Shards","75x14
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_40.png,90,16.667,1750,105,1 m 45 s,,,2450,23.333,A,,,170,*1.53,*1.36,*1.19,*1.19,*1.43,0,0,,,*1.36,*1.36,,*1.19,50,0,0,,,,,Melee Offensive
-21,Barksting,Crafted from old wood and thorn. Arrows buzz more than they fly.,Weapon (Ranged),10 Wood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,0,50,0,,,*1.02,*1.02,,*1.02,0,3,0,,,,,Ranged Precision
-22,Sapshot,Drips resin from the limbs. Makes quivers stickier than they should be.,Weapon (Ranged),15 Wood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_4.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,0,65,0,,,*1.02,*1.02,,*1.02,0,4,0,,,,,Ranged Precision
-23,Driftwhistle,Light and wind-tuned. Hums softly when drawn.,Weapon (Ranged),20 Wood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_6.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,0,80,0,,,*1.03,*1.03,,*1.03,0,5,0,,,,,Ranged Precision
-24,Mirebranch,Found buried in marsh soil. Pulls just a little left with every shot.,Weapon (Ranged),"15 Bronze Ores
-10 Wood","15x1
+21,Barksting,Crafted from old wood and thorn. Arrows buzz more than they fly.,Weapon (Ranged),10 Barkwood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,0,50,0,,,*1.02,*1.02,,*1.02,0,3,0,,,,,Ranged Precision
+22,Sapshot,Drips resin from the limbs. Makes quivers stickier than they should be.,Weapon (Ranged),15 Barkwood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_4.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,0,65,0,,,*1.02,*1.02,,*1.02,0,4,0,,,,,Ranged Precision
+23,Driftwhistle,Light and wind-tuned. Hums softly when drawn.,Weapon (Ranged),20 Barkwood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_6.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,0,80,0,,,*1.03,*1.03,,*1.03,0,5,0,,,,,Ranged Precision
+24,Mirebranch,Found buried in marsh soil. Pulls just a little left with every shot.,Weapon (Ranged),"15 Flintrock, 10 Barkwood","15x1
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_8.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.04,*1.03,*1.03,0,100,0,,,*1.04,*1.04,,*1.03,0,6,0,,,,,Ranged Precision
-25,Glowtwig,Dimly radiant under moonlight. A good companion for late hunts.,Weapon (Ranged),"20 Iron Ores
-10 Wood","20x2
+25,Glowtwig,Dimly radiant under moonlight. A good companion for late hunts.,Weapon (Ranged),"20 Dusklead, 10 Barkwood","20x2
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_10.png,15,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.06,*1.04,*1.04,0,150,0,,,*1.06,*1.06,,*1.04,0,9,0,,,,,Ranged Precision
-26,Spindlebend,Wobbly-looking but weirdly accurate. Made from scrap and luck.,Weapon (Ranged),"15 Bronze Ores
-15 Iron Ores
-10 Wood","15x1
+26,Spindlebend,Wobbly-looking but weirdly accurate. Made from scrap and luck.,Weapon (Ranged),"15 Flintrock, 15 Dusklead, 10 Barkwood","15x1
 15x2
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_12.png,20,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.08,*1.05,*1.05,0,200,0,,,*1.08,*1.08,,*1.05,0,12,0,,,,,Ranged Precision
-27,Snarlroot,"Tensioned too tight, it bites back on misfires. Often wrapped in rags.",Weapon (Ranged),"25 Shadow Ores
-15 Wood","25x3
+27,Snarlroot,"Tensioned too tight, it bites back on misfires. Often wrapped in rags.",Weapon (Ranged),"25 Cinderslag, 15 Barkwood","25x3
 15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_14.png,25,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.10,*1.06,*1.06,0,250,0,,,*1.10,*1.10,,*1.06,0,15,0,,,,,Ranged Precision
-28,Hearthbloom,Warm to the touch. A popular starter bow for cozy rangers.,Weapon (Ranged),"35 Mystical Ores
-15 Wood","35x4
+28,Hearthbloom,Warm to the touch. A popular starter bow for cozy rangers.,Weapon (Ranged),"35 Ironbloom, 15 Barkwood","35x4
 15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_16.png,30,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.12,*1.07,*1.07,0,300,0,,,*1.12,*1.12,,*1.07,0,18,0,,,,,Ranged Precision
-29,Vinecoil,Flexible frame lashed with living vines. Grows faint leaves over time.,Weapon (Ranged),"45 Adamant Ores
-20 Wood","45x5
+29,Vinecoil,Flexible frame lashed with living vines. Grows faint leaves over time.,Weapon (Ranged),"45 Stoneflare, 20 Barkwood","45x5
 20x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_18.png,35,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.14,*1.08,*1.08,0,*1.10,0,,,*1.14,*1.14,,*1.08,0,21,0,,,,,Ranged Precision
-30,Silenttwig,Makes no sound. Even the arrows seem surprised when they hit.,Weapon (Ranged),"40 Ice Crystals
-30 Ooze Shards","40x16
+30,Silenttwig,Makes no sound. Even the arrows seem surprised when they hit.,Weapon (Ranged),"40 Oblivionite, 30 Ooze Shards","40x16
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_20.png,40,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.16,*1.09,*1.09,0,*1.13,0,,,*1.16,*1.16,,*1.09,0,24,0,,,,,Ranged Precision
-31,Flickerbranch,Glimmers when turned sideways. Loses shine in direct moonlight.,Weapon (Ranged),"40 Fire Crystals
-30 Ooze Shards","40x17
+31,Flickerbranch,Glimmers when turned sideways. Loses shine in direct moonlight.,Weapon (Ranged),"40 Hearthshard, 30 Ooze Shards","40x17
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_22.png,45,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.18,*1.10,*1.10,0,*1.16,0,,,*1.18,*1.18,,*1.10,0,27,0,,,,,Ranged Precision
-32,Dustreel,Quivers with recoil. Once used in desert duels at dawn.,Weapon (Ranged),"40 Relic Ores
-25 Ooze Shards","40x6
+32,Dustreel,Quivers with recoil. Once used in desert duels at dawn.,Weapon (Ranged),"40 Quicksilt, 25 Ooze Shards","40x6
 25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_24.png,50,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.20,*1.11,*1.11,0,*1.19,0,,,*1.20,*1.20,,*1.11,0,30,0,,,,,Ranged Precision
-33,Gleamthread,String woven from starlit spider silk. It resets itself overnight.,Weapon (Ranged),"45 Magma Shards
-25 Ooze Shards",75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_26.png,55,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.22,*1.12,*1.12,0,*1.22,0,,,*1.22,*1.22,,*1.12,0,33,0,,,,,Ranged Precision
-34,Ashgroove,"Burnt wood, still glowing faintly. Arrows smell like campfire.",Weapon (Ranged),"50 Corundum Crystals
-30 Ooze Shards","50x19
+33,Gleamthread,String woven from starlit spider silk. It resets itself overnight.,Weapon (Ranged),75 Ooze Shards,75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_26.png,55,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.22,*1.12,*1.12,0,*1.22,0,,,*1.22,*1.22,,*1.12,0,33,0,,,,,Ranged Precision
+34,Ashgroove,"Burnt wood, still glowing faintly. Arrows smell like campfire.",Weapon (Ranged),"50 Spellrose, 30 Ooze Shards","50x19
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_28.png,60,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.24,*1.13,*1.13,0,*1.25,0,,,*1.24,*1.24,,*1.13,0,36,0,,,,,Ranged Precision
-35,Briarhook,Fires sticky-tipped arrows that tangle in enemy cloaks.,Weapon (Ranged),"55 Augite Crystals
-30 Ooze Shards","55x20
+35,Briarhook,Fires sticky-tipped arrows that tangle in enemy cloaks.,Weapon (Ranged),"55 Gildroot, 30 Ooze Shards","55x20
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_30.png,65,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.26,*1.14,*1.14,0,*1.28,0,,,*1.26,*1.26,,*1.14,0,39,0,,,,,Ranged Precision
-36,Hushbeam,Shots make no noise. Even the wind forgets they passed.,Weapon (Ranged),"60 Sanctum Ores
-35 Ooze Shards","60x10
+36,Hushbeam,Shots make no noise. Even the wind forgets they passed.,Weapon (Ranged),"60 Paleiron, 35 Ooze Shards","60x10
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_32.png,70,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.28,*1.15,*1.15,0,*1.31,0,,,*1.28,*1.28,,*1.15,0,42,0,,,,,Ranged Precision
-37,Mistfang,Tends to fog when drawn. Excellent in ambush-heavy regions.,Weapon (Ranged),"70 Abyssium Ores
-40 Ooze Shards","70x11
+37,Mistfang,Tends to fog when drawn. Excellent in ambush-heavy regions.,Weapon (Ranged),"70 Howlglass, 40 Ooze Shards","70x11
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_33.png,75,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.30,*1.16,*1.16,0,*1.34,0,,,*1.30,*1.30,,*1.16,0,45,0,,,,,Ranged Precision
-38,Sporespine,Mossy and damp. Arrows grow fluff if left too long.,Weapon (Ranged),"60 Brumite Ores
-35 Ice Ooze Crystals","60x12
+38,Sporespine,Mossy and damp. Arrows grow fluff if left too long.,Weapon (Ranged),"60 Aetherore, 35 Dunecryst","60x12
 35x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_34.png,80,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.32,*1.17,*1.17,0,*1.37,0,,,*1.32,*1.32,,*1.17,0,45,0,,,,,Ranged Precision
-39,Stonepulse,Strikes with heavy force. Arrows hit like falling fruit.,Weapon (Ranged),"65 Dusk Ores
-35 Ooze Shards","65x13
+39,Stonepulse,Strikes with heavy force. Arrows hit like falling fruit.,Weapon (Ranged),"65 Gravegold, 35 Ooze Shards","65x13
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_35.png,85,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.34,*1.18,*1.18,0,*1.40,0,,,*1.34,*1.34,,*1.18,0,45,0,,,,,Ranged Precision
-40,Moonbrace,Carved beneath lunar eclipse. Favored by owl-eyed archers.,Weapon (Ranged),"75 Witherite Ores
-40 Ooze Shards","75x14
+40,Moonbrace,Carved beneath lunar eclipse. Favored by owl-eyed archers.,Weapon (Ranged),"75 Glimmercoal, 40 Ooze Shards","75x14
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_36.png,90,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.36,*1.19,*1.19,0,*1.43,0,,,*1.36,*1.36,,*1.19,0,50,0,,,,,Ranged Precision
-41,Twigwand,A snapped stick with ambition. Best for misfires and sparks.,Weapon (Magic),10 Wood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_1.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,0,0,50,,,*1.02,*1.02,,*1.02,0,0,3,,,,,Magic Burst
-42,Barkroot Rod,Smells of wet wood and burnt paper. Casts minor but honest spells.,Weapon (Magic),15 Wood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_2.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,0,0,65,,,*1.02,*1.02,,*1.02,0,0,4,,,,,Magic Burst
-43,Mossvine Staff,Wrapped in creeping green. Useful for growing herbs or headaches.,Weapon (Magic),20 Wood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_3.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,0,0,80,,,*1.03,*1.03,,*1.03,0,0,5,,,,,Magic Burst
-44,Embertwig,Smolders faintly. Will ignite scrolls if held too long.,Weapon (Magic),"15 Bronze Ores
-10 Wood","15x1
+41,Twigwand,A snapped stick with ambition. Best for misfires and sparks.,Weapon (Magic),10 Barkwood,10x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_1.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,0,0,50,,,*1.02,*1.02,,*1.02,0,0,3,,,,,Magic Burst
+42,Barkroot Rod,Smells of wet wood and burnt paper. Casts minor but honest spells.,Weapon (Magic),15 Barkwood,15x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_2.png,4,4.091,90,22,0 m 22 s,,,55,2.500,D,,,4,*1.03,*1.03,*1.02,*1.02,0,0,65,,,*1.02,*1.02,,*1.02,0,0,4,,,,,Magic Burst
+43,Mossvine Staff,Wrapped in creeping green. Useful for growing herbs or headaches.,Weapon (Magic),20 Barkwood,20x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_3.png,7,4.255,100,24,0 m 24 s,,,60,2.553,D,,,7,*1.04,*1.04,*1.03,*1.03,0,0,80,,,*1.03,*1.03,,*1.03,0,0,5,,,,,Magic Burst
+44,Embertwig,Smolders faintly. Will ignite scrolls if held too long.,Weapon (Magic),"15 Flintrock, 10 Barkwood","15x1
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_4.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.04,*1.03,*1.03,0,0,100,,,*1.04,*1.04,,*1.03,0,0,6,,,,,Magic Burst
-45,Dewlight Wand,Condensation gathers at its tip. Radiates sleepy warmth.,Weapon (Magic),"20 Iron Ores
-10 Wood","20x2
+45,Dewlight Wand,Condensation gathers at its tip. Radiates sleepy warmth.,Weapon (Magic),"20 Dusklead, 10 Barkwood","20x2
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_5.png,15,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.06,*1.04,*1.04,0,0,150,,,*1.06,*1.06,,*1.04,0,0,9,,,,,Magic Burst
-46,Glowsap Channel,Translucent wood pulsing with syrupy light. Attracts beetles.,Weapon (Magic),"15 Bronze Ores
-15 Iron Ores
-10 Wood","15x1
+46,Glowsap Channel,Translucent wood pulsing with syrupy light. Attracts beetles.,Weapon (Magic),"15 Flintrock, 15 Dusklead, 10 Barkwood","15x1
 15x2
 10x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_6.png,20,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.08,*1.05,*1.05,0,0,200,,,*1.08,*1.08,,*1.05,0,0,12,,,,,Magic Burst
-47,Flicker Staff,Hard to focus on. Glitches slightly between planes when idle.,Weapon (Magic),"25 Shadow Ores
-15 Wood","25x3
+47,Flicker Staff,Hard to focus on. Glitches slightly between planes when idle.,Weapon (Magic),"25 Cinderslag, 15 Barkwood","25x3
 15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_7.png,25,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.10,*1.06,*1.06,0,0,250,,,*1.10,*1.10,,*1.06,0,0,15,,,,,Magic Burst
-48,Thornchant Staff,Covered in natural barbs. Enhances curses by at least 12%.,Weapon (Magic),"35 Mystical Ores
-15 Wood","35x4
+48,Thornchant Staff,Covered in natural barbs. Enhances curses by at least 12%.,Weapon (Magic),"35 Ironbloom, 15 Barkwood","35x4
 15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_8.png,30,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.12,*1.07,*1.07,0,0,300,,,*1.12,*1.12,,*1.07,0,0,18,,,,,Magic Burst
-49,Dustcoil Wand,Leaves a trail of motes when waved. Best for dramatic exits.,Weapon (Magic),"45 Adamant Ores
-20 Wood","45x5
+49,Dustcoil Wand,Leaves a trail of motes when waved. Best for dramatic exits.,Weapon (Magic),"45 Stoneflare, 20 Barkwood","45x5
 20x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_9.png,35,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.14,*1.08,*1.08,0,0,*1.10,,,*1.14,*1.14,,*1.08,0,0,21,,,,,Magic Burst
-50,Sparkhook,Jerks forward on its own when spells are strong.,Weapon (Magic),"40 Ice Crystals
-30 Ooze Shards","40x16
+50,Sparkhook,Jerks forward on its own when spells are strong.,Weapon (Magic),"40 Oblivionite, 30 Ooze Shards","40x16
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_10.png,40,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.16,*1.09,*1.09,0,0,*1.13,,,*1.16,*1.16,,*1.09,0,0,24,,,,,Magic Burst
-51,Soulreed,Used to stir memory pools. Whispers unintelligibly when near graves.,Weapon (Magic),"40 Fire Crystals
-30 Ooze Shards","40x17
+51,Soulreed,Used to stir memory pools. Whispers unintelligibly when near graves.,Weapon (Magic),"40 Hearthshard, 30 Ooze Shards","40x17
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_11.png,45,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.18,*1.10,*1.10,0,0,*1.16,,,*1.18,*1.18,,*1.10,0,0,27,,,,,Magic Burst
-52,Emberlock,Glows red when angry. Locks fire magic into stable orbs.,Weapon (Magic),"40 Relic Ores
-25 Ooze Shards","40x6
+52,Emberlock,Glows red when angry. Locks fire magic into stable orbs.,Weapon (Magic),"40 Quicksilt, 25 Ooze Shards","40x6
 25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_12.png,50,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.20,*1.11,*1.11,0,0,*1.19,,,*1.20,*1.20,,*1.11,0,0,30,,,,,Magic Burst
-53,Hollowbloom,A staff of dry petals and void. Blossoms only in nightmares.,Weapon (Magic),"45 Magma Shards
-25 Ooze Shards",75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_13.png,55,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.22,*1.12,*1.12,0,0,*1.22,,,*1.22,*1.22,,*1.12,0,0,33,,,,,Magic Burst
-54,Windcrutch,Used to walk on air. Mostly effective on small stairs.,Weapon (Magic),"50 Corundum Crystals
-30 Ooze Shards","50x19
+53,Hollowbloom,A staff of dry petals and void. Blossoms only in nightmares.,Weapon (Magic),75 Ooze Shards,75x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_13.png,55,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.22,*1.12,*1.12,0,0,*1.22,,,*1.22,*1.22,,*1.12,0,0,33,,,,,Magic Burst
+54,Windcrutch,Used to walk on air. Mostly effective on small stairs.,Weapon (Magic),"50 Spellrose, 30 Ooze Shards","50x19
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_14.png,60,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.24,*1.13,*1.13,0,0,*1.25,,,*1.24,*1.24,,*1.13,0,0,36,,,,,Magic Burst
-55,Sporespike,Rains puffs when slammed. Causes sneezing if used too frequently.,Weapon (Magic),"55 Augite Crystals
-30 Ooze Shards","55x20
+55,Sporespike,Rains puffs when slammed. Causes sneezing if used too frequently.,Weapon (Magic),"55 Gildroot, 30 Ooze Shards","55x20
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_15.png,65,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.26,*1.14,*1.14,0,0,*1.28,,,*1.26,*1.26,,*1.14,0,0,39,,,,,Magic Burst
-56,Murmuroak,The wood murmurs gently. No one knows what it’s saying.,Weapon (Magic),"60 Sanctum Ores
-35 Ooze Shards","60x10
+56,Murmuroak,The wood murmurs gently. No one knows what it’s saying.,Weapon (Magic),"60 Paleiron, 35 Ooze Shards","60x10
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_16.png,70,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.28,*1.15,*1.15,0,0,*1.31,,,*1.28,*1.28,,*1.15,0,0,42,,,,,Magic Burst
-57,Gleamroot,"Shines through walls. Sometimes inconvenient, always dazzling.",Weapon (Magic),"70 Abyssium Ores
-40 Ooze Shards","70x11
+57,Gleamroot,"Shines through walls. Sometimes inconvenient, always dazzling.",Weapon (Magic),"70 Howlglass, 40 Ooze Shards","70x11
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_17.png,75,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.30,*1.16,*1.16,0,0,*1.34,,,*1.30,*1.30,,*1.16,0,0,45,,,,,Magic Burst
-58,Runeberry Rod,Dotted with glowing fruit. Casting causes one to vanish.,Weapon (Magic),"60 Brumite Ores
-35 Ice Ooze Crystals","60x12
+58,Runeberry Rod,Dotted with glowing fruit. Casting causes one to vanish.,Weapon (Magic),"60 Aetherore, 35 Dunecryst","60x12
 35x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_18.png,80,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.32,*1.17,*1.17,0,0,*1.37,,,*1.32,*1.32,,*1.17,0,0,45,,,,,Magic Burst
-59,Shardstem,Covered in prismatic shards. Shoots rays that taste faintly of ozone.,Weapon (Magic),"65 Dusk Ores
-35 Ooze Shards","65x13
+59,Shardstem,Covered in prismatic shards. Shoots rays that taste faintly of ozone.,Weapon (Magic),"65 Gravegold, 35 Ooze Shards","65x13
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_19.png,85,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.34,*1.18,*1.18,0,0,*1.40,,,*1.34,*1.34,,*1.18,0,0,45,,,,,Magic Burst
-60,Flowthread Staff,Made from silk and sighs. It directs energy like a lazy river.,Weapon (Magic),"75 Witherite Ores
-40 Ooze Shards","75x14
+60,Flowthread Staff,Made from silk and sighs. It directs energy like a lazy river.,Weapon (Magic),"75 Glimmercoal, 40 Ooze Shards","75x14
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_20.png,90,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.36,*1.19,*1.19,0,0,*1.43,,,*1.36,*1.36,,*1.19,0,0,50,,,,,Magic Burst
-61,Blight Helm,"A helm infused with shadowed energy, radiating an aura of corruption and decay.",Hat,"32 Shadow Ores
-20 Ooze Shards","32x3
+61,Blight Helm,"A helm infused with shadowed energy, radiating an aura of corruption and decay.",Hat,"32 Cinderslag, 20 Ooze Shards","32x3
 20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Miscellaneous
-62,Void Helm,"A sleek and ethereal helm crafted from voidium, granting enhanced agility and perception.",Hat,"40 Voidium Ores
-24 Ooze Shards","40x7
+62,Void Helm,"A sleek and ethereal helm crafted from voidium, granting enhanced agility and perception.",Hat,"40 Emberite, 24 Ooze Shards","40x7
 24x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_4.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.04,6,6,6,,,,,Miscellaneous
-63,Voidheart Helm,"A heavy helm forged from concentrated voidium, exuding an unearthly and intimidating presence.",Hat,"48 Voidium Ores
-28 Ooze Shards","48x7
+63,Voidheart Helm,"A heavy helm forged from concentrated voidium, exuding an unearthly and intimidating presence.",Hat,"48 Emberite, 28 Ooze Shards","48x7
 28x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_6.png,20,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.06,9,9,9,,,,,Miscellaneous
-64,Protector Helm,"A protective helm forged by the ancient Vorloran, symbolizing resilience and vigilance.",Hat,"56 Vorloran Ores
-32 Ooze Shards","56x8
+64,Protector Helm,"A protective helm forged by the ancient Vorloran, symbolizing resilience and vigilance.",Hat,"56 Cragmite, 32 Ooze Shards","56x8
 32x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_8.png,30,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.08,12,12,12,,,,,Miscellaneous
-65,Watcher Helm,"This helm sharpens awareness, allowing its wearer to detect unseen threats with ease.",Hat,"60 Vorloran Ores
-36 Ooze Shards","60x8
+65,Watcher Helm,"This helm sharpens awareness, allowing its wearer to detect unseen threats with ease.",Hat,"60 Cragmite, 36 Ooze Shards","60x8
 36x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_10.png,40,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.10,15,15,15,,,,,Miscellaneous
-66,Eldritch Hood,"A hood woven with eldritch threads, crackling with chaotic magic for arcane defense and power.",Hat,"52 Eldritch Ores
-28 Ooze Shards","52x9
+66,Eldritch Hood,"A hood woven with eldritch threads, crackling with chaotic magic for arcane defense and power.",Hat,"52 Stargrit, 28 Ooze Shards","52x9
 28x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_12.png,50,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.12,18,18,18,,,,,Miscellaneous
-67,Zephyr Crown,"A light crown blessed by unseen winds, offering unmatched grace and agility to its wearer.",Hat,"64 Aeris Crystals
-40 Ooze Shards","64x21
+67,Zephyr Crown,"A light crown blessed by unseen winds, offering unmatched grace and agility to its wearer.",Hat,"64 Blazebloom, 40 Ooze Shards","64x21
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_14.png,60,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.14,21,21,21,,,,,Miscellaneous
-68,Glacier Crown,"A crown imbued with eternal frost, protecting the wearer with icy resilience.",Hat,"60 Glacia Crystals
-36 Ice Crystals","60x22
+68,Glacier Crown,"A crown imbued with eternal frost, protecting the wearer with icy resilience.",Hat,"60 Grovegleam, 36 Oblivionite","60x22
 36x16",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_16.png,70,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.16,24,24,24,,,,,Miscellaneous
-69,Terra Crown,"A sturdy helm rooted in the strength of the earth, granting steadfast protection.",Hat,"68 Terran Ores
-44 Ooze Shards","68x23
+69,Terra Crown,"A sturdy helm rooted in the strength of the earth, granting steadfast protection.",Hat,"68 Mindmirror, 44 Ooze Shards","68x23
 44x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_18.png,80,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.18,27,27,27,,,,,Miscellaneous
-70,Inferno Crown,"Forged in molten fire, this fiery helm emanates the raw rage of Ragnar’s forge.",Hat,"72 Ragnar Crystals
-48 Fire Crystals","72x24
+70,Inferno Crown,"Forged in molten fire, this fiery helm emanates the raw rage of Ragnar’s forge.",Hat,"72 Voidorchid, 48 Hearthshard","72x24
 48x17",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_20.png,90,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.20,30,30,30,,,,,Miscellaneous
-71,Blight Plate,"A corrupted armor forged from shadowed materials, emanating an aura of decay.",Armour,"40 Shadow Ores
-25 Ooze Shards","40x3
+71,Blight Plate,"A corrupted armor forged from shadowed materials, emanating an aura of decay.",Armour,"40 Cinderslag, 25 Ooze Shards","40x3
 25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_2.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Miscellaneous
-72,Void Plate,"A sleek armor made of voidium, designed for agility and enhanced with ethereal energy.",Armour,"50 Voidium Ores
-30 Ooze Shards","50x7
+72,Void Plate,"A sleek armor made of voidium, designed for agility and enhanced with ethereal energy.",Armour,"50 Emberite, 30 Ooze Shards","50x7
 30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_4.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.04,6,6,6,,,,,Miscellaneous
-73,Voidheart Plate,"A heavy armor forged from condensed voidium, radiating an intimidating and otherworldly presence.",Armour,"60 Voidium Ores
-35 Ooze Shards","60x7
+73,Voidheart Plate,"A heavy armor forged from condensed voidium, radiating an intimidating and otherworldly presence.",Armour,"60 Emberite, 35 Ooze Shards","60x7
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_6.png,20,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.06,9,9,9,,,,,Miscellaneous
-74,Protector Plate,"Forged by the ancient Vorloran, this plate embodies strength and resilience in battle.",Armour,"70 Vorloran Ores
-40 Ooze Shards","70x8
+74,Protector Plate,"Forged by the ancient Vorloran, this plate embodies strength and resilience in battle.",Armour,"70 Cragmite, 40 Ooze Shards","70x8
 40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_8.png,30,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.08,12,12,12,,,,,Miscellaneous
-75,Watcher Plate,"This armor sharpens its wearer’s awareness, aiding in detecting unseen threats.",Armour,"75 Vorloran Ores
-45 Ooze Shards","75x8
+75,Watcher Plate,"This armor sharpens its wearer’s awareness, aiding in detecting unseen threats.",Armour,"75 Cragmite, 45 Ooze Shards","75x8
 45x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_10.png,40,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.10,15,15,15,,,,,Miscellaneous
-76,Eldritch Robes,"Arcane robes crackling with chaotic magic, favored by spellcasters seeking unbridled power.",Armour,"65 Eldritch Ores
-35 Ooze Shards","65x9
+76,Eldritch Robes,"Arcane robes crackling with chaotic magic, favored by spellcasters seeking unbridled power.",Armour,"65 Stargrit, 35 Ooze Shards","65x9
 35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_12.png,50,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.12,18,18,18,,,,,Miscellaneous
-77,Zephyr Godplate,"A light and graceful armor, blessed by unseen winds to grant unparalleled mobility in combat.",Armour,"80 Aeris Crystals
-50 Ooze Shards","80x21
+77,Zephyr Godplate,"A light and graceful armor, blessed by unseen winds to grant unparalleled mobility in combat.",Armour,"80 Blazebloom, 50 Ooze Shards","80x21
 50x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_14.png,60,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.14,21,21,21,,,,,Miscellaneous
-78,Glacier Godplate,"Infused with eternal frost, this plate can freeze incoming strikes, making its wearer nearly untouchable.",Armour,"75 Glacia Crystals
-45 Ice Crystals","75x22
+78,Glacier Godplate,"Infused with eternal frost, this plate can freeze incoming strikes, making its wearer nearly untouchable.",Armour,"75 Grovegleam, 45 Oblivionite","75x22
 45x16",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_16.png,70,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.16,24,24,24,,,,,Miscellaneous
-79,Terra Godplate,"A sturdy plate forged from the strongest earthly materials, offering unshakable defense in any encounter.",Armour,"85 Terran Ores
-55 Ooze Shards","85x23
+79,Terra Godplate,"A sturdy plate forged from the strongest earthly materials, offering unshakable defense in any encounter.",Armour,"85 Mindmirror, 55 Ooze Shards","85x23
 55x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_18.png,80,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.18,27,27,27,,,,,Miscellaneous
-80,Inferno Godplate,"Born from the molten core of Ragnar’s forge, this armor burns with the rage of a thousand flames.",Armour,"90 Ragnar Crystals
-60 Fire Crystals","90x24
+80,Inferno Godplate,"Born from the molten core of Ragnar’s forge, this armor burns with the rage of a thousand flames.",Armour,"90 Voidorchid, 60 Hearthshard","90x24
 60x17",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_20.png,90,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.20,30,30,30,,,,,Miscellaneous
-81,Sticky Shield,"A basic shield of slimewood, perfect for beginners.",Shield,7 Wood,7x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_01.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Tank
-82,Slime Bronze Shield,"Reinforced with slime-bronze, offering reliable protection.",Shield,"12 Bronze Ores
-7 Wood","12x1
-7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_02.png,10,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.05,*1.03,*1.03,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.03,6,6,6,,,,,Tank
-83,Hardened Shield,Made with hardened materials to endure greater impacts.,Shield,"17 Iron Ores
-7 Wood","17x2
-7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_03.png,20,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.08,*1.04,*1.04,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.04,9,9,9,,,,,Tank
-84,Alloy Shield,A balanced shield forged with slime-alloy for versatility.,Shield,"12 Bronze Ores
-12 Iron Ores
-7 Wood","12x1
+81,Sticky Shield,"A basic shield of slimewood, perfect for beginners.",Shield,7 Barkwood,7x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_01.png,1,4.000,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,,*1.02,*1.02,,*1.02,3,3,3,,,,,Tank
+82,Slime Bronze Shield,"Reinforced with slime-bronze, offering reliable protection.",Shield,"12 Flintrock, 7 Barkwood","12x1
+7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_02.png,4,4.400,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.05,*1.05,*1.03,*1.03,*1.04,*1.04,*1.04,,,*1.04,*1.04,,*1.03,6,6,6,,,,,Tank
+83,Hardened Shield,Made with hardened materials to endure greater impacts.,Shield,"17 Dusklead, 7 Barkwood","17x2
+7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_03.png,7,5.000,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.08,*1.08,*1.04,*1.04,*1.06,*1.06,*1.06,,,*1.06,*1.06,,*1.04,9,9,9,,,,,Tank
+84,Alloy Shield,A balanced shield forged with slime-alloy for versatility.,Shield,"12 Flintrock, 12 Dusklead, 7 Barkwood","12x1
 12x2
-7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_04.png,30,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.11,*1.05,*1.05,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.05,12,12,12,,,,,Tank
-85,Veil Shield,"Shadowy and sleek, ideal for silent defenders.",Shield,"20 Shadow Ores
-12 Wood","20x3
-12x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_05.png,40,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.14,*1.06,*1.06,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.06,15,15,15,,,,,Tank
-86,Muck Shield,"Crafted from resilient muckstone, unusually tough.",Shield,"30 Mystical Ores
-12 Wood","30x4
-12x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_06.png,50,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.17,*1.07,*1.07,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.07,18,18,18,,,,,Tank
-87,Glow Shield,"Radiates protective light, instilling courage in its wielder.",Shield,"40 Adamant Ores
-15 Wood","40x5
-15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_07.png,60,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.20,*1.08,*1.08,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.08,21,21,21,,,,,Tank
-88,Frost Shield,A frosty shield that chills attackers upon impact.,Shield,"35 Ice Crystals
-25 Ooze Shards","35x16
-25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_08.png,70,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.23,*1.09,*1.09,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.09,24,24,24,,,,,Tank
-89,Ember Shield,"Burns brightly, deflecting attacks with fiery resilience.",Shield,"35 Fire Crystals
-25 Ooze Shards","35x17
-25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_09.png,80,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.26,*1.10,*1.10,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.10,27,27,27,,,,,Tank
-90,Relic Shield,"A relic of old, emanating ancient defensive power.",Shield,"35 Relic Ores
-20 Ooze Shards","35x6
-20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_10.png,90,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.29,*1.11,*1.11,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.11,30,30,30,,,,,Tank
-91,Fracture Shield,"Forged with dragon’s magma shards, unbreakable and fierce.",Shield,"40 Magma Shards
-20 Ooze Shards","40x26
-20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_11.png,100,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.32,*1.12,*1.12,*1.22,*1.22,*1.22,,,*1.22,*1.22,,*1.12,33,33,33,,,,,Tank
-92,Gleam Shield,"Crafted from glittering Crystal, as tough as it is radiant.",Shield,"45 Corundum Crystals
-25 Ooze Shards","45x19
-25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_12.png,110,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.35,*1.13,*1.13,*1.24,*1.24,*1.24,,,*1.24,*1.24,,*1.13,36,36,36,,,,,Tank
-93,Verdant Shield,"Enriched with lush, green Crystal of unparalleled strength.",Shield,"50 Augite Crystals
-25 Ooze Shards","50x20
-25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_13.png,120,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.38,*1.14,*1.14,*1.26,*1.26,*1.26,,,*1.26,*1.26,,*1.14,39,39,39,,,,,Tank
-94,Sanctum Shield,"A shield of holy power, blessed with sanctified slime.",Shield,"55 Sanctum Ores
-30 Ooze Shards","55x10
-30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_14.png,130,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.41,*1.15,*1.15,*1.28,*1.28,*1.28,,,*1.28,*1.28,,*1.15,42,42,42,,,,,Tank
-95,Abyss Shield,A dark shield imbued with chaotic abyssal energies.,Shield,"65 Abyssium Ores
-35 Ooze Shards","65x11
-35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_15.png,140,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.44,*1.16,*1.16,*1.30,*1.30,*1.30,,,*1.30,*1.30,,*1.16,45,45,45,,,,,Tank
-96,Wisp Shield,"Flickering with faint light, mysterious and graceful.",Shield,"55 Brumite Ores
-30 Ice Ooze Crystals","55x12
-30x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_16.png,150,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.47,*1.17,*1.17,*1.32,*1.32,*1.32,,,*1.32,*1.32,,*1.17,45,45,45,,,,,Tank
-97,Dusk Shield,"Forged in twilight, carrying the essence of dusk.",Shield,"60 Dusk Ores
-30 Ooze Shards","60x13
-30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_17.png,160,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.50,*1.18,*1.18,*1.34,*1.34,*1.34,,,*1.34,*1.34,,*1.18,45,45,45,,,,,Tank
-98,Siphon Shield,"Draws strength from those it deflects, eerie and powerful.",Shield,"70 Witherite Ores
-35 Ooze Shards","70x14
-35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_18.png,170,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.53,*1.19,*1.19,*1.36,*1.36,*1.36,,,*1.36,*1.36,,*1.19,50,50,50,,,,,Tank
-99,Rift Shield,"Rips through reality, forged from the Nether’s essence.",Shield,"80 Netherite Ores
-40 Ooze Shards","80x15
-40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_19.png,185,20.000,2200,110,1 m 50 s,,,3500,31.818,A,,,185,*1.56,*1.56,*1.20,*1.20,*1.38,*1.38,*1.38,,,*1.38,*1.38,,*1.20,50,50,50,,,,,Tank
-100,Eternal Barrier,"A legendary shield, said to be forged from the core of slimes.",Shield,"90 Slime Core Essence
-45 Ooze Shards",100x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_20.png,200,8.000,4000,200,3 m 20 s,,,6000,30.000,S,,,200,*1.59,*1.59,*1.30,*1.30,*1.40,*1.40,*1.40,,,*1.50,*1.50,,*1.30,50,50,50,,,,,Tank
-101,Sticky Mantle,"A slimy, flexible mantle offering basic protection.",Cape,"75 Wool
-25 String",100x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-01.png,1,1.667,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,*1.02,*1.02,*1.02,*0.95,*1.02,5,18,11,,,,,Miscellaneous
-102,Bronze Warden Cape,"Bronze-threaded and durable, guarding its wearer.",Cape,"10 Bronze Ores
-100 Wool
-25 String","100x26
+7x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_04.png,10,5.429,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.11,*1.11,*1.05,*1.05,*1.08,*1.08,*1.08,,,*1.08,*1.08,,*1.05,12,12,12,,,,,Tank
+85,Veil Shield,"Shadowy and sleek, ideal for silent defenders.",Shield,"20 Cinderslag, 12 Barkwood","20x3
+12x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_05.png,15,6.000,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.14,*1.14,*1.06,*1.06,*1.10,*1.10,*1.10,,,*1.10,*1.10,,*1.06,15,15,15,,,,,Tank
+86,Muck Shield,"Crafted from resilient muckstone, unusually tough.",Shield,"30 Ironbloom, 12 Barkwood","30x4
+12x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_06.png,20,6.667,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.17,*1.17,*1.07,*1.07,*1.12,*1.12,*1.12,,,*1.12,*1.12,,*1.07,18,18,18,,,,,Tank
+87,Glow Shield,"Radiates protective light, instilling courage in its wielder.",Shield,"40 Stoneflare, 15 Barkwood","40x5
+15x26",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_07.png,25,7.200,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.20,*1.20,*1.08,*1.08,*1.14,*1.14,*1.14,,,*1.14,*1.14,,*1.08,21,21,21,,,,,Tank
+88,Frost Shield,A frosty shield that chills attackers upon impact.,Shield,"35 Oblivionite, 25 Ooze Shards","35x16
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_08.png,30,7.818,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.23,*1.23,*1.09,*1.09,*1.16,*1.16,*1.16,,,*1.16,*1.16,,*1.09,24,24,24,,,,,Tank
+89,Ember Shield,"Burns brightly, deflecting attacks with fiery resilience.",Shield,"35 Hearthshard, 25 Ooze Shards","35x17
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_09.png,35,8.667,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.26,*1.26,*1.10,*1.10,*1.18,*1.18,*1.18,,,*1.18,*1.18,,*1.10,27,27,27,,,,,Tank
+90,Relic Shield,"A relic of old, emanating ancient defensive power.",Shield,"35 Quicksilt, 20 Ooze Shards","35x6
+20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_10.png,40,9.385,610,65,1 m 5 s,,,666,10.246,C,,,90,*1.29,*1.29,*1.11,*1.11,*1.20,*1.20,*1.20,,,*1.20,*1.20,,*1.11,30,30,30,,,,,Tank
+91,Fracture Shield,"Forged with dragon’s magma shards, unbreakable and fierce.",Shield,"40 Barkwood, 20 Ooze Shards","40x26
+20x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_11.png,45,10.143,710,70,1 m 10 s,,,700,10.000,B,,,100,*1.32,*1.32,*1.12,*1.12,*1.22,*1.22,*1.22,,,*1.22,*1.22,,*1.12,33,33,33,,,,,Tank
+92,Gleam Shield,"Crafted from glittering Crystal, as tough as it is radiant.",Shield,"45 Spellrose, 25 Ooze Shards","45x19
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_12.png,50,11.067,830,75,1 m 15 s,,,850,11.333,B,,,110,*1.35,*1.35,*1.13,*1.13,*1.24,*1.24,*1.24,,,*1.24,*1.24,,*1.13,36,36,36,,,,,Tank
+93,Verdant Shield,"Enriched with lush, green Crystal of unparalleled strength.",Shield,"50 Gildroot, 25 Ooze Shards","50x20
+25x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_13.png,55,11.875,950,80,1 m 20 s,,,1000,12.500,B,,,120,*1.38,*1.38,*1.14,*1.14,*1.26,*1.26,*1.26,,,*1.26,*1.26,,*1.14,39,39,39,,,,,Tank
+94,Sanctum Shield,"A shield of holy power, blessed with sanctified slime.",Shield,"55 Paleiron, 30 Ooze Shards","55x10
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_14.png,60,12.706,1080,85,1 m 25 s,,,1200,14.118,B,,,130,*1.41,*1.41,*1.15,*1.15,*1.28,*1.28,*1.28,,,*1.28,*1.28,,*1.15,42,42,42,,,,,Tank
+95,Abyss Shield,A dark shield imbued with chaotic abyssal energies.,Shield,"65 Howlglass, 35 Ooze Shards","65x11
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_15.png,65,13.667,1230,90,1 m 30 s,,,1666,18.511,B,,,140,*1.44,*1.44,*1.16,*1.16,*1.30,*1.30,*1.30,,,*1.30,*1.30,,*1.16,45,45,45,,,,,Tank
+96,Wisp Shield,"Flickering with faint light, mysterious and graceful.",Shield,"55 Aetherore, 30 Dunecryst","55x12
+30x18",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_16.png,70,14.526,1380,95,1 m 35 s,,,1600,16.842,A,,,150,*1.47,*1.47,*1.17,*1.17,*1.32,*1.32,*1.32,,,*1.32,*1.32,,*1.17,45,45,45,,,,,Tank
+97,Dusk Shield,"Forged in twilight, carrying the essence of dusk.",Shield,"60 Gravegold, 30 Ooze Shards","60x13
+30x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_17.png,75,15.500,1550,100,1 m 40 s,,,1900,19.000,A,,,160,*1.50,*1.50,*1.18,*1.18,*1.34,*1.34,*1.34,,,*1.34,*1.34,,*1.18,45,45,45,,,,,Tank
+98,Siphon Shield,"Draws strength from those it deflects, eerie and powerful.",Shield,"70 Glimmercoal, 35 Ooze Shards","70x14
+35x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_18.png,80,16.667,1750,105,1 m 45 s,,,2400,22.857,A,,,170,*1.53,*1.53,*1.19,*1.19,*1.36,*1.36,*1.36,,,*1.36,*1.36,,*1.19,50,50,50,,,,,Tank
+99,Rift Shield,"Rips through reality, forged from the Nether’s essence.",Shield,"80 Mythsteel, 40 Ooze Shards","80x15
+40x25",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_19.png,85,20.000,2200,110,1 m 50 s,,,3500,31.818,A,,,185,*1.56,*1.56,*1.20,*1.20,*1.38,*1.38,*1.38,,,*1.38,*1.38,,*1.20,50,50,50,,,,,Tank
+100,Eternal Barrier,"A legendary shield, said to be forged from the core of slimes.",Shield,100 Ooze Shards,100x25,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_20.png,90,8.000,4000,200,3 m 20 s,,,6000,30.000,S,,,200,*1.59,*1.59,*1.30,*1.30,*1.40,*1.40,*1.40,,,*1.50,*1.50,,*1.30,50,50,50,,,,,Tank
+101,Sticky Mantle,"A slimy, flexible mantle offering basic protection.",Cape,100 Barkwood,100x26,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-01.png,1,1.667,80,20,0 m 20 s,,,50,2.500,D,,,1,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,*1.02,,*1.02,*1.02,*1.02,*0.95,*1.02,5,18,11,,,,,Miscellaneous
+102,Bronze Warden Cape,"Bronze-threaded and durable, guarding its wearer.",Cape,"100 Barkwood, 50 Palegrain","100x26
 50x27",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-02.png,10,1.923,110,25,0 m 25 s,,,80,3.200,D,,,10,*1.06,*1.06,*1.05,*1.05,*1.04,*1.04,*1.04,,*1.06,*1.06,*1.06,*0.94,*1.04,20,10,10,,,,,Miscellaneous
-103,Ironclad Wrap,Iron-fortified fibers providing excellent defense.,Cape,"15 Iron Ores
-100 Wool
-25 String","200x26
+103,Ironclad Wrap,Iron-fortified fibers providing excellent defense.,Cape,"200 Barkwood, 100 Palegrain","200x26
 100x27",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-03.png,20,2.143,150,30,0 m 30 s,,,100,3.333,D,,,20,*1.10,*1.10,*1.08,*1.08,*1.06,*1.06,*1.06,,*1.10,*1.10,*1.10,*0.93,*1.06,10,20,10,,,,,Miscellaneous
-104,Shroud of Shadows,"A dark and flowing cape, perfect for evasion.",Cape,"20 Shadow Ores
-125 Wool
-30 String",100x27,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-04.png,30,2.400,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,*1.14,*1.14,*1.14,*0.92,*1.08,10,10,20,,,,,Miscellaneous
-105,Verdant Aegis Cloak,"A lush, nature-inspired design, blending protection and grace.",Cape,"25 Mystical Ores
-150 Wool
-30 String","100x27
+104,Shroud of Shadows,"A dark and flowing cape, perfect for evasion.",Cape,100 Palegrain,100x27,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-04.png,30,2.400,190,35,0 m 35 s,,,150,4.286,D,,,30,*1.14,*1.14,*1.11,*1.11,*1.08,*1.08,*1.08,,*1.14,*1.14,*1.14,*0.92,*1.08,10,10,20,,,,,Miscellaneous
+105,Verdant Aegis Cloak,"A lush, nature-inspired design, blending protection and grace.",Cape,"100 Palegrain, 50 Ironbark","100x27
 50x28",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-05.png,40,2.813,240,40,0 m 40 s,,,195,4.875,D,,,40,*1.18,*1.18,*1.14,*1.14,*1.10,*1.10,*1.10,,*1.18,*1.18,*1.18,*0.91,*1.10,30,20,20,,,,,Miscellaneous
-106,Luminous Veil,"A glowing cape, guiding its wearer through the darkest paths.",Cape,"30 Adamant Ores
-175 Wool
-35 String","200x27
+106,Luminous Veil,"A glowing cape, guiding its wearer through the darkest paths.",Cape,"200 Palegrain, 100 Ironbark","200x27
 100x28",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-06.png,50,3.111,300,45,0 m 45 s,,,250,5.556,C,,,50,*1.22,*1.22,*1.17,*1.17,*1.12,*1.12,*1.12,,*1.22,*1.22,*1.22,*0.90,*1.12,20,30,20,,,,,Miscellaneous
-107,Cryo Cloak,"A frosted design, resistant to the coldest environments.",Cape,"30 Ice Crystals
-20 Ooze Shards
-200 Wool",100x28,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-07.png,60,3.330,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,*1.26,*1.26,*1.26,*0.89,*1.14,20,20,30,,,,,Miscellaneous
-108,Infernal Drape,"Ablaze with fiery hues, protecting against searing heat.",Cape,"30 Fire Crystals
-20 Ooze Shards
-200 Wool","100x28
+107,Cryo Cloak,"A frosted design, resistant to the coldest environments.",Cape,100 Ironbark,100x28,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-07.png,60,3.330,360,50,0 m 50 s,,,320,6.400,C,,,60,*1.26,*1.26,*1.20,*1.20,*1.14,*1.14,*1.14,,*1.26,*1.26,*1.26,*0.89,*1.14,20,20,30,,,,,Miscellaneous
+108,Infernal Drape,"Ablaze with fiery hues, protecting against searing heat.",Cape,"100 Ironbark, 50 Prismroot","100x28
 50x29",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-08.png,70,3.455,430,55,0 m 55 s,,,400,7.273,C,,,70,*1.30,*1.30,*1.23,*1.23,*1.16,*1.16,*1.16,,*1.30,*1.30,*1.30,*0.88,*1.16,40,30,30,,,,,Miscellaneous
-109,Wispweave Cape,"Ethereal and mysterious, its threads shimmer with light.",Cape,"35 Dusk Ores
-250 Wool
-40 String","200x28
+109,Wispweave Cape,"Ethereal and mysterious, its threads shimmer with light.",Cape,"200 Ironbark, 100 Prismroot","200x28
 100x29",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-09.png,80,3.750,520,60,1 m 0 s,,,500,8.333,C,,,80,*1.34,*1.34,*1.26,*1.26,*1.18,*1.18,*1.18,,*1.34,*1.34,*1.34,*0.87,*1.18,30,40,30,,,,,Miscellaneous
-110,Mantle of Eternity,"A legendary artifact, radiating pure slime energy.",Cape,"50 Slime Core Essence
-250 Wool
-50 String","100x26
+110,Mantle of Eternity,"A legendary artifact, radiating pure slime energy.",Cape,"100 Barkwood, 100 Palegrain, 100 Ironbark, 100 Prismroot","100x26
 100x27
 100x28
 100x29",,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-10.png,90,4.000,610,65,1 m 5 s,,,666,10.246,B,,,90,*1.38,*1.38,*1.29,*1.29,*1.20,*1.20,*1.20,,*1.38,*1.38,*1.38,*0.86,*1.20,30,30,40,,,,,Miscellaneous
-111,Pendant of Origin,Worn by those who walked the world before it was ready. It hums faintly with the echoes of first steps.,Necklace,,,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/08-necklace-amulet/Icon40.png,,,,,,,,,,A,,,,,*1.05,*1.05,*1.05,,,,,,*1.05,*1.05,,,5,5,5,,,,,
+111,Pendant of Origin,Worn by those who walked the world before it was ready. It hums faintly with the echoes of first steps.,Necklace,Beta,,,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/08-necklace-amulet/Icon40.png,,,,,,,,,,A,,,,,*1.05,*1.05,*1.05,,,,,,*1.05,*1.05,,,5,5,5,,,,,
 112,Luminspire Amulet I,"A radiant moonstone gem that emanates soft brilliance, gently enhancing the flow of every action.",Necklace,,,-10% Skilling Interval,,,,,,,10 M,,1000000,,D,,-0.1,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
 113,Luminspire Amulet II,"Refined with celestial energy, this amulet imbues its wearer with unmatched grace and efficiency.",Necklace,,,"-10% Skilling Interval
 +5% Double Resource",,,,,,,15 M,10 M,1500000,,D,0.05,-0.1,,,,,,,,,,,,,,,10,10,10,,,,,Miscellaneous
