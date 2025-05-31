@@ -3,7 +3,7 @@ import { getAtkCooldownFromAtkSpd, getPercentageDmgReduct } from "./combat-helpe
 import { logger } from "../../../utils/logger";
 import { SocketManager } from "../../../socket/socket-manager";
 import { FullMonster, setLastBattleEndTimestamp, setUserCombatHpByTelegramId } from "../../../sql-services/combat-service";
-import { COMBAT_EXP_UPDATE_EVENT, COMBAT_HP_CHANGE_EVENT, COMBAT_STARTED_EVENT, COMBAT_USER_DIED_EVENT, LEDGER_UPDATE_BALANCE_EVENT, USER_UPDATE_EVENT } from "../../../socket/events";
+import { COMBAT_EXP_UPDATE_EVENT, COMBAT_HP_CHANGE_EVENT, COMBAT_STARTED_EVENT, COMBAT_STOPPED_EVENT, COMBAT_USER_DIED_EVENT, LEDGER_UPDATE_BALANCE_EVENT, USER_UPDATE_EVENT } from "../../../socket/events";
 import { DEVELOPMENT_FUNDS_KEY, DITTO_DECIMALS, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
 import { getUserLevel, incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
@@ -71,112 +71,184 @@ export class Battle {
   }
 
   async startBattle() {
-    logger.info(`🚀 Entered startBattle for ${this.user.telegramId}`);
+    try {
+      logger.info(`🚀 Entered startBattle for ${this.user.telegramId}`);
 
-    const userLevel = await getUserLevel(this.user.telegramId);
-    if (
-      userLevel < (this.minCombatLevel ?? -Infinity) ||
-      userLevel > (this.maxCombatLevel ?? Infinity)
-    ) {
-      throw new Error(`User ${this.user.telegramId} does not meet battle level requirements.`);
-    }
+      const userLevel = await getUserLevel(this.user.telegramId);
+/*       if (
+        userLevel < (this.minCombatLevel ?? -Infinity) ||
+        userLevel > (this.maxCombatLevel ?? Infinity)
+      ) {
+        throw new Error(`User ${this.user.telegramId} does not meet battle level requirements.`);
+      } */
 
-    if (this.battleEnded) {
-      logger.warn(`❌ Tried to start battle for ${this.user.telegramId} but it was already ended.`);
-      return;
-    }
-
-    this.tickFlags = {
-      userAttack: true,
-      monsterAttack: true,
-      userRegen: true,
-      monsterRegen: true
-    };
-    logger.info(`✅ Reset tickFlags to true for ${this.user.telegramId}`);
-
-    this.socketManager.emitEvent(this.user.telegramId, COMBAT_STARTED_EVENT, {
-      userId: this.user.telegramId,
-      payload: {
-        monster: this.monster,
-        combatAreaType: this.combatAreaType,
-        combatAreaId: this.combatAreaId
+      if (this.battleEnded) {
+        logger.warn(`❌ Tried to start battle for ${this.user.telegramId} but it was already ended.`);
+        return;
       }
-    });
 
-    logger.info(`⚔️ Battle Start: User ${this.user.telegramId} vs ${this.monster.name}`);
-    logger.info(`👤 user combat: ${JSON.stringify(this.userCombat, null, 2)}`);
-    logger.info(`👾 monster combat: ${JSON.stringify(this.monster.combat, null, 2)}`);
+      this.tickFlags = {
+        userAttack: true,
+        monsterAttack: true,
+        userRegen: true,
+        monsterRegen: true
+      };
+      logger.info(`✅ Reset tickFlags to true for ${this.user.telegramId}`);
 
-    this.currentBattleStartTimestamp = Date.now();
+      this.socketManager.emitEvent(this.user.telegramId, COMBAT_STARTED_EVENT, {
+        userId: this.user.telegramId,
+        payload: {
+          monster: this.monster,
+          combatAreaType: this.combatAreaType,
+          combatAreaId: this.combatAreaId
+        }
+      });
 
-    const atkDelayUser = getAtkCooldownFromAtkSpd(this.userCombat.atkSpd) * 1000;
-    const atkDelayMonster = getAtkCooldownFromAtkSpd(this.monster.combat.atkSpd) * 1000;
-    const regenDelayUser = this.userCombat.hpRegenRate * 1000;
-    const regenDelayMonster = this.monster.combat.hpRegenRate * 1000;
+      logger.info(`⚔️ Battle Start: User ${this.user.telegramId} vs ${this.monster.name}`);
+      logger.info(`👤 user combat: ${JSON.stringify(this.userCombat, null, 2)}`);
+      logger.info(`👾 monster combat: ${JSON.stringify(this.monster.combat, null, 2)}`);
 
-    logger.info(`⏱️ Delays calculated — atkUser: ${atkDelayUser}ms, atkMonster: ${atkDelayMonster}ms, regenUser: ${regenDelayUser}ms, regenMonster: ${regenDelayMonster}ms`);
+      this.currentBattleStartTimestamp = Date.now();
 
-    if (this.battleEnded) {
-      logger.warn(`❌ Battle already ended after delay setup for ${this.user.telegramId}. Aborting start.`);
-      return;
+      const atkDelayUser = getAtkCooldownFromAtkSpd(this.userCombat.atkSpd) * 1000;
+      const atkDelayMonster = getAtkCooldownFromAtkSpd(this.monster.combat.atkSpd) * 1000;
+      const regenDelayUser = this.userCombat.hpRegenRate * 1000;
+      const regenDelayMonster = this.monster.combat.hpRegenRate * 1000;
+
+      logger.info(`⏱️ Delays calculated — atkUser: ${atkDelayUser}ms, atkMonster: ${atkDelayMonster}ms, regenUser: ${regenDelayUser}ms, regenMonster: ${regenDelayMonster}ms`);
+
+      if (this.battleEnded) {
+        logger.warn(`❌ Battle already ended after delay setup for ${this.user.telegramId}. Aborting start.`);
+        return;
+      }
+
+      logger.info(`✅ Starting battle loops for ${this.user.telegramId}`);
+      this.tickUserAttackLoop(atkDelayUser);
+      this.tickMonsterAttackLoop(atkDelayMonster);
+      this.tickUserRegenLoop(regenDelayUser);
+      this.tickMonsterRegenLoop(regenDelayMonster);
+    } catch (err) {
+      logger.error(`Error in Battle.startBattle: ${err}`);
+
+      await this.endBattle(true);
+
+      // Disable next battle to avoid race
+      this.onNextBattle = async () => {
+        logger.info(`🚫 onNextBattle skipped: user does not meet battle level requirements for ${this.user.telegramId}`);
+      };
+
+      // Call cleanup hook
+      if (this.onBattleEnd) {
+        logger.info(`calling this.onBattleEnd in catch block.`)
+        await this.onBattleEnd();
+      } else {
+        logger.error(`this.onBattleEnd is not defined`);
+      }
     }
-
-    logger.info(`✅ Starting battle loops for ${this.user.telegramId}`);
-    this.tickUserAttackLoop(atkDelayUser);
-    this.tickMonsterAttackLoop(atkDelayMonster);
-    this.tickUserRegenLoop(regenDelayUser);
-    this.tickMonsterRegenLoop(regenDelayMonster);
   }
 
   private async tickUserAttackLoop(delay: number) {
-    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.userAttack && this.userCombat.hp > 0) {
-      await sleep(delay);
-      if (this.battleEnded || this.userCombat.hp <= 0) break;
-      try {
-        await this.attack("user");
-      } catch (err) {
-        logger.error("Error in user attack loop: " + err);
+    try {
+      while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.userAttack && this.userCombat.hp > 0) {
+        await sleep(delay);
+        if (this.battleEnded || this.userCombat.hp <= 0) break;
+        try {
+          await this.attack("user");
+        } catch (err) {
+          logger.error("Error in user attack loop: " + err);
+        }
       }
+    } catch (err) {
+      logger.error(`Error in Battle.tickUserAttackLoop: ${err}`);
+
+      await this.endBattle(true);
+
+      // Disable next battle to avoid race
+      this.onNextBattle = async () => {
+        logger.info(`🚫 onNextBattle skipped: user does not meet battle level requirements for ${this.user.telegramId}`);
+      };
+
+      if (this.onBattleEnd) await this.onBattleEnd();
+
     }
   }
 
   private async tickMonsterAttackLoop(delay: number) {
-    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
-      await sleep(delay);
-      if (this.battleEnded || this.monster.combat.hp <= 0) break;
-      try {
-        await this.attack("monster");
-      } catch (err) {
-        logger.error("Error in monster attack loop: " + err);
+    try {
+      while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
+        await sleep(delay);
+        if (this.battleEnded || this.monster.combat.hp <= 0) break;
+        try {
+          await this.attack("monster");
+        } catch (err) {
+          logger.error("Error in monster attack loop: " + err);
+        }
       }
+    } catch (err) {
+      logger.error(`Error in Battle.tickMonsterAttackLoop: ${err}`);
+
+      await this.endBattle(true);
+
+      // Disable next battle to avoid race
+      this.onNextBattle = async () => {
+        logger.info(`🚫 onNextBattle skipped: user does not meet battle level requirements for ${this.user.telegramId}`);
+      };
+
+      if (this.onBattleEnd) await this.onBattleEnd();
     }
   }
 
   private async tickUserRegenLoop(delay: number) {
-    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.userAttack && this.userCombat.hp > 0) {
-      await sleep(delay);
-      if (this.battleEnded) break;
-      try {
-        await this.applyRegen(this.userCombat, 'user');
-      } catch (err) {
-        logger.error("Error in user regen loop: " + err);
+    try {
+      while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.userAttack && this.userCombat.hp > 0) {
+        await sleep(delay);
+        if (this.battleEnded) break;
+        try {
+          await this.applyRegen(this.userCombat, 'user');
+        } catch (err) {
+          logger.error("Error in user regen loop: " + err);
+        }
       }
+    } catch (err) {
+      logger.error(`Error in Battle.tickUserRegenLoop: ${err}`);
+
+      await this.endBattle(true);
+
+      // Disable next battle to avoid race
+      this.onNextBattle = async () => {
+        logger.info(`🚫 onNextBattle skipped: user does not meet battle level requirements for ${this.user.telegramId}`);
+      };
+
+      if (this.onBattleEnd) await this.onBattleEnd();
     }
   }
 
   private async tickMonsterRegenLoop(delay: number) {
-    while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
-      await sleep(delay);
-      if (this.battleEnded) break;
-      try {
-        await this.applyRegen(this.monster.combat, 'monster');
-      } catch (err) {
-        logger.error("Error in monster regen loop: " + err);
+    try {
+      while (!this.battleEnded && !this.battleStopRequested && this.tickFlags.monsterAttack && this.monster.combat.hp > 0) {
+        await sleep(delay);
+        if (this.battleEnded) break;
+        try {
+          await this.applyRegen(this.monster.combat, 'monster');
+        } catch (err) {
+          logger.error("Error in monster regen loop: " + err);
+        }
       }
+    } catch (err) {
+      logger.error(`Error in Battle.tickMonsterRegenLoop: ${err}`);
+
+      await this.endBattle(true);
+
+      // Disable next battle to avoid race
+      this.onNextBattle = async () => {
+        logger.info(`🚫 onNextBattle skipped: user does not meet battle level requirements for ${this.user.telegramId}`);
+      };
+
+      if (this.onBattleEnd) await this.onBattleEnd();
     }
   }
 
-  async endBattle() {
+  async endBattle(emitStopEvent: boolean = false) {
     logger.info(`Calling endBattle for user ${this.user.telegramId}. battleEnded = ${this.battleEnded}`);
 
     if (this.battleEnded || this.battleStopRequested) return;
@@ -210,41 +282,60 @@ export class Battle {
     } catch (err) {
       logger.error(`Failed to set last battle end timestamp: ${err}`);
     }
+
+    if (emitStopEvent) {
+      this.socketManager.emitEvent(this.user.telegramId, COMBAT_STOPPED_EVENT, {
+        userId: this.user.telegramId
+      });
+    }
   }
 
-  refreshUserHp(restTimeS: number) {
-    // Only allow if no regen loop is active
-    if (!this.battleEnded && this.tickFlags.userRegen) {
-      logger.info(`⛔ Skipping refreshUserHp — regen loop active for ${this.user.telegramId}`);
-      return;
-    }
-
-    if (this.userCombat.hp === this.userCombat.maxHp) return;
-
-    const regenIntervalS = this.userCombat.hpRegenRate;
-    const hpPerTick = Math.floor(this.userCombat.hpRegenAmount);
-
-    const ratio = restTimeS / regenIntervalS;
-    const totalRecovered = Math.floor(ratio * hpPerTick);
-
-    if (totalRecovered <= 0) return;
-
-    const prevHp = this.userCombat.hp;
-    this.userCombat.hp = Math.min(this.userCombat.maxHp, this.userCombat.hp + totalRecovered);
-
-    this.socketManager.emitEvent(this.user.telegramId, COMBAT_HP_CHANGE_EVENT, {
-      userId: this.user.telegramId,
-      payload: {
-        target: 'user',
-        hp: this.userCombat.hp,
-        maxHp: this.userCombat.maxHp,
-        dmg: this.userCombat.hp - prevHp
+  async refreshUserHp(restTimeS: number) {
+    try {
+      // Only allow if no regen loop is active
+      if (!this.battleEnded && this.tickFlags.userRegen) {
+        logger.info(`⛔ Skipping refreshUserHp — regen loop active for ${this.user.telegramId}`);
+        return;
       }
-    });
 
-    logger.info(
-      `🛏️ User ${this.user.telegramId} rested for ${restTimeS}s — recovered ${totalRecovered} HP. Current HP: ${this.userCombat.hp} / ${this.userCombat.maxHp}`
-    );
+      if (this.userCombat.hp === this.userCombat.maxHp) return;
+
+      const regenIntervalS = this.userCombat.hpRegenRate;
+      const hpPerTick = Math.floor(this.userCombat.hpRegenAmount);
+
+      const ratio = restTimeS / regenIntervalS;
+      const totalRecovered = Math.floor(ratio * hpPerTick);
+
+      if (totalRecovered <= 0) return;
+
+      const prevHp = this.userCombat.hp;
+      this.userCombat.hp = Math.min(this.userCombat.maxHp, this.userCombat.hp + totalRecovered);
+
+      this.socketManager.emitEvent(this.user.telegramId, COMBAT_HP_CHANGE_EVENT, {
+        userId: this.user.telegramId,
+        payload: {
+          target: 'user',
+          hp: this.userCombat.hp,
+          maxHp: this.userCombat.maxHp,
+          dmg: this.userCombat.hp - prevHp
+        }
+      });
+
+      logger.info(
+        `🛏️ User ${this.user.telegramId} rested for ${restTimeS}s — recovered ${totalRecovered} HP. Current HP: ${this.userCombat.hp} / ${this.userCombat.maxHp}`
+      );
+    } catch (err) {
+      logger.error(`Error in Battle.refreshUserHp: ${err}`);
+
+      await this.endBattle(true);
+
+      // Disable next battle to avoid race
+      this.onNextBattle = async () => {
+        logger.info(`🚫 onNextBattle skipped: user does not meet battle level requirements for ${this.user.telegramId}`);
+      };
+
+      if (this.onBattleEnd) await this.onBattleEnd();
+    }
   }
 
   updateUserCombat(userCombat: Combat, updatedHp?: number) {
@@ -270,7 +361,6 @@ export class Battle {
     } else {
       DungeonManager.updateDamage(this.user.telegramId, 0, Math.min(damage.dmg, defender.hp));
     }
-
 
     defender.hp = Math.max(0, defender.hp - damage.dmg); // Ensure HP does not drop below 0
 
@@ -314,7 +404,7 @@ export class Battle {
           });
         }
 
-        await this.endBattle();
+        await this.endBattle(false);
 
         // Call cleanup hook
         if (this.onNextBattle) {
@@ -332,7 +422,7 @@ export class Battle {
           userId: this.user.telegramId,
         });
 
-        await this.endBattle();
+        await this.endBattle(true);
 
         // Disable next battle to avoid race
         this.onNextBattle = async () => {

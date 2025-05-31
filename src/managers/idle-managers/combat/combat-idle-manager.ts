@@ -5,7 +5,7 @@ import { IdleManager } from '../idle-manager';
 import { logger } from '../../../utils/logger';
 import { DomainWithMonsters, DungeonWithMonsters, FullMonster, updateDungeonLeaderboard } from '../../../sql-services/combat-service';
 import { DomainManager } from './domain-manager';
-import { COMBAT_STARTED_EVENT, COMBAT_STOPPED_EVENT } from '../../../socket/events';
+import { COMBAT_STARTED_EVENT } from '../../../socket/events';
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { sleep } from '../../../utils/helpers';
 import { DungeonManager, DungeonState } from './dungeon-manager';
@@ -82,7 +82,7 @@ export class IdleCombatManager {
                     const newBattle = this.createDomainBattle(idleManager, user, battle.userCombat, nextMonster, domain, userId);
                     this.activeBattlesByUserId[userId] = newBattle;
 
-                    newBattle.refreshUserHp(30);
+                    await newBattle.refreshUserHp(30);
 
                     idleManager.updateCombatActivity(userId, {
                         userCombatState: newBattle.userCombat,
@@ -216,7 +216,7 @@ export class IdleCombatManager {
                     const newBattle = this.createDungeonBattle(idleManager, user, battle.userCombat, nextMonster, dungeon, userId);
                     this.activeBattlesByUserId[userId] = newBattle;
 
-                    newBattle.refreshUserHp(15); // 15s for dungeon
+                    await newBattle.refreshUserHp(15); // 15s for dungeon
 
                     idleManager.updateCombatActivity(userId, {
                         userCombatState: newBattle.userCombat,
@@ -275,14 +275,6 @@ export class IdleCombatManager {
     }
 
     async startDomainCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, domain: DomainWithMonsters, startTimestamp: number, monster?: FullMonster) {
-        const userLevel = await getUserLevel(userId);
-        if (
-            userLevel < (domain.minCombatLevel ?? -Infinity) ||
-            userLevel > (domain.maxCombatLevel ?? Infinity)
-        ) {
-            throw new Error(`User does not meet the combat level requirements for this domain.`)
-        }
-
         await idleManager.removeAllCombatActivities(userId);
 
         const firstMonster = (monster) ? monster : DomainManager.getRandomMonsterFromDomain(domain);
@@ -308,7 +300,7 @@ export class IdleCombatManager {
 
             const HEAL_THRESHOLD_MS = 10000;
             if (elapsedMs > HEAL_THRESHOLD_MS) {
-                battle.refreshUserHp(Math.floor(elapsedMs / 1000));
+                await battle.refreshUserHp(Math.floor(elapsedMs / 1000));
             }
         }
 
@@ -345,14 +337,6 @@ export class IdleCombatManager {
     }
 
     async startDungeonCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, dungeon: DungeonWithMonsters, startTimestamp: number, monster?: FullMonster, state?: DungeonState) {
-        const userLevel = await getUserLevel(userId);
-        if (
-            userLevel < (dungeon.minCombatLevel ?? -Infinity) ||
-            userLevel > (dungeon.maxCombatLevel ?? Infinity)
-        ) {
-            throw new Error(`User does not meet the combat level requirements for this dungeon.`);
-        }
-
         await idleManager.removeAllCombatActivities(userId);
 
         DungeonManager.initDungeonState(userId, startTimestamp, state);
@@ -393,7 +377,7 @@ export class IdleCombatManager {
 
             const HEAL_THRESHOLD_MS = 10000;
             if (elapsedMs > HEAL_THRESHOLD_MS) {
-                battle.refreshUserHp(Math.floor(elapsedMs / 1000));
+                await battle.refreshUserHp(Math.floor(elapsedMs / 1000));
             }
         }
 
@@ -450,14 +434,10 @@ export class IdleCombatManager {
         const endPromise = (async () => {
             try {
                 logger.info(`Calling endBattle for user ${userId}. battleEnded = ${battle.battleEnded}`);
-                await battle.endBattle();
+                await battle.endBattle(emitStopEvent);
 
                 delete this.activeBattlesByUserId[userId];
                 logger.info(`Deleted active battle cache for user: ${userId}`);
-
-                if (emitStopEvent) {
-                    this.socketManager.emitEvent(userId, COMBAT_STOPPED_EVENT, { userId });
-                }
             } catch (err) {
                 logger.error(`Error while stopping battle for user ${userId}: ${err}`);
                 throw err;
@@ -491,7 +471,7 @@ export class IdleCombatManager {
             // 🧯 Final race guard: manually end battle if still running
             if (battle && battle.battleEnded === false) {
                 logger.warn(`🧯 stopCombat found battle still running for user ${userId}, calling endBattle manually`);
-                await battle.endBattle();
+                await battle.endBattle(true);
 
                 if (battle.onBattleEnd) {
                     try {
