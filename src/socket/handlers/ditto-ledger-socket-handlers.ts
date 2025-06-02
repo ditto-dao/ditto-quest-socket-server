@@ -11,6 +11,9 @@ import { getDomainById, getDungeonById } from "../../sql-services/combat-service
 import { getSimpleUserData } from "../../sql-services/user-service";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
+import AsyncLock from 'async-lock';
+
+const lock = new AsyncLock();
 
 export interface UserBalanceUpdate {
     userId: string;
@@ -61,27 +64,29 @@ export async function setupDittoLedgerSocketServerHandlers(
     });
 
     ledgerSocket.on(LEDGER_BALANCE_UPDATE_RES_EVENT, async (res: { userId: string, payload: UserBalanceUpdateRes }) => {
-        try {
-            logger.info(`Received LEDGER_BALANCE_UPDATE_RES_EVENT for ${res.userId}: ${JSON.stringify(res.payload, null, 2)}`);
-            if (validateLoginManager.isUserAwaitingLogin(res.userId)) validateLoginManager.validateUserLogin(res.userId);
+        return await lock.acquire(res.userId, async () => {
+            try {
+                logger.info(`Received LEDGER_BALANCE_UPDATE_RES_EVENT for ${res.userId}: ${JSON.stringify(res.payload, null, 2)}`);
+                if (validateLoginManager.isUserAwaitingLogin(res.userId)) validateLoginManager.validateUserLogin(res.userId);
 
-            // Logic to run in socket server after successful ledger trx
-            if (res.payload.notes === SLIME_GACHA_PULL_TRX_NOTE) {
-                await handleMintSlime(res.userId, res.payload, socketManager, ledgerSocket);
-            } else if (res.payload.notes && res.payload.notes.includes(ENTER_DUNGEON_TRX_NOTE)) {
-                logger.info(`Entering dungeon after paying DITTO fee.`);
-                const dungeonId = res.payload.notes.split(" ").pop();
-                await handleDungeonEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(dungeonId));
-            } else if (res.payload.notes && res.payload.notes.includes(ENTER_DOMAIN_TRX_NOTE)) {
-                logger.info(`Entering domain after paying DITTO fee.`);
-                const domainId = res.payload.notes.split(" ").pop();
-                await handleDomainEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(domainId));
+                // Logic to run in socket server after successful ledger trx
+                if (res.payload.notes === SLIME_GACHA_PULL_TRX_NOTE) {
+                    await handleMintSlime(res.userId, res.payload, socketManager, ledgerSocket);
+                } else if (res.payload.notes && res.payload.notes.includes(ENTER_DUNGEON_TRX_NOTE)) {
+                    logger.info(`Entering dungeon after paying DITTO fee.`);
+                    const dungeonId = res.payload.notes.split(" ").pop();
+                    await handleDungeonEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(dungeonId));
+                } else if (res.payload.notes && res.payload.notes.includes(ENTER_DOMAIN_TRX_NOTE)) {
+                    logger.info(`Entering domain after paying DITTO fee.`);
+                    const domainId = res.payload.notes.split(" ").pop();
+                    await handleDomainEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(domainId));
+                }
+
+                socketManager.emitEvent(res.userId, LEDGER_BALANCE_UPDATE_RES_EVENT, res);
+            } catch (error) {
+                logger.error(`Error forwarding balance update to ${res.userId}: ${error}`);
             }
-
-            socketManager.emitEvent(res.userId, LEDGER_BALANCE_UPDATE_RES_EVENT, res);
-        } catch (error) {
-            logger.error(`Error forwarding balance update to ${res.userId}: ${error}`);
-        }
+        });
     });
 
     ledgerSocket.on(LEDGER_BALANCE_ERROR_RES_EVENT, (res: { userId: string, msg: string }) => {
