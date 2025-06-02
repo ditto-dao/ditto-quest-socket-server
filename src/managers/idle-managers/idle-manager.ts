@@ -288,15 +288,19 @@ export class IdleManager {
 
                 for (const activity of activities) {
                     if (activity.activity === 'farming') {
+                        logger.info(`Offline farming activity found.`)
                         const update = await IdleFarmingManager.handleLoadedFarmingActivity(this.socketManager, this, activity, userId);
                         progressUpdates.push({ update });
                     } else if (activity.activity === 'crafting') {
+                        logger.info(`Offline crafting activity found.`)
                         const update = await IdleCraftingManager.handleLoadedCraftingActivity(this.socketManager, this, activity, userId);
                         progressUpdates.push({ update });
                     } else if (activity.activity === 'breeding') {
+                        logger.info(`Offline breeding activity found.`)
                         const update = await IdleBreedingManager.handleLoadedBreedingActivity(this.socketManager, this, activity, userId);
                         progressUpdates.push({ update });
                     } else if (activity.activity === 'combat') {
+                        logger.info(`Offline combat activity found.`)
                         const combatUpdate = await OfflineCombatManager.handleLoadedCombatActivity(this.dittoLedgerSocket, activity);
                         progressUpdates.push({
                             update: combatUpdate.combatUpdate,
