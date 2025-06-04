@@ -3304,7 +3304,7 @@
     "name": "Slime Bronze Shield",
     "description": "Reinforced with slime-bronze, offering reliable protection.",
     "requiredLvlCraft": 4,
-    "requiredLvlCombat": 10,
+    "requiredLvlCombat": 4,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_02.png",
     "statEffect": {
       "maxHpMod": 1.05,
@@ -3344,7 +3344,7 @@
     "name": "Hardened Shield",
     "description": "Made with hardened materials to endure greater impacts.",
     "requiredLvlCraft": 7,
-    "requiredLvlCombat": 20,
+    "requiredLvlCombat": 7,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_03.png",
     "statEffect": {
       "maxHpMod": 1.08,
@@ -3384,7 +3384,7 @@
     "name": "Alloy Shield",
     "description": "A balanced shield forged with slime-alloy for versatility.",
     "requiredLvlCraft": 10,
-    "requiredLvlCombat": 30,
+    "requiredLvlCombat": 10,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_04.png",
     "statEffect": {
       "maxHpMod": 1.11,
@@ -3424,7 +3424,7 @@
     "name": "Veil Shield",
     "description": "Shadowy and sleek, ideal for silent defenders.",
     "requiredLvlCraft": 15,
-    "requiredLvlCombat": 40,
+    "requiredLvlCombat": 20,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_05.png",
     "statEffect": {
       "maxHpMod": 1.14,
@@ -3464,7 +3464,7 @@
     "name": "Muck Shield",
     "description": "Crafted from resilient muckstone, unusually tough.",
     "requiredLvlCraft": 20,
-    "requiredLvlCombat": 50,
+    "requiredLvlCombat": 30,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_06.png",
     "statEffect": {
       "maxHpMod": 1.17,
@@ -3504,7 +3504,7 @@
     "name": "Glow Shield",
     "description": "Radiates protective light, instilling courage in its wielder.",
     "requiredLvlCraft": 25,
-    "requiredLvlCombat": 60,
+    "requiredLvlCombat": 40,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_07.png",
     "statEffect": {
       "maxHpMod": 1.2,
@@ -3544,7 +3544,7 @@
     "name": "Frost Shield",
     "description": "A frosty shield that chills attackers upon impact.",
     "requiredLvlCraft": 30,
-    "requiredLvlCombat": 70,
+    "requiredLvlCombat": 50,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_08.png",
     "statEffect": {
       "maxHpMod": 1.23,
@@ -3584,7 +3584,7 @@
     "name": "Ember Shield",
     "description": "Burns brightly, deflecting attacks with fiery resilience.",
     "requiredLvlCraft": 35,
-    "requiredLvlCombat": 80,
+    "requiredLvlCombat": 60,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_09.png",
     "statEffect": {
       "maxHpMod": 1.26,
@@ -3624,7 +3624,7 @@
     "name": "Relic Shield",
     "description": "A relic of old, emanating ancient defensive power.",
     "requiredLvlCraft": 40,
-    "requiredLvlCombat": 90,
+    "requiredLvlCombat": 70,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_10.png",
     "statEffect": {
       "maxHpMod": 1.29,
@@ -3664,7 +3664,7 @@
     "name": "Fracture Shield",
     "description": "Forged with dragon’s magma shards, unbreakable and fierce.",
     "requiredLvlCraft": 45,
-    "requiredLvlCombat": 100,
+    "requiredLvlCombat": 80,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_11.png",
     "statEffect": {
       "maxHpMod": 1.32,
@@ -3704,7 +3704,7 @@
     "name": "Gleam Shield",
     "description": "Crafted from glittering Crystal, as tough as it is radiant.",
     "requiredLvlCraft": 50,
-    "requiredLvlCombat": 110,
+    "requiredLvlCombat": 90,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_12.png",
     "statEffect": {
       "maxHpMod": 1.35,
@@ -3744,7 +3744,7 @@
     "name": "Verdant Shield",
     "description": "Enriched with lush, green Crystal of unparalleled strength.",
     "requiredLvlCraft": 55,
-    "requiredLvlCombat": 120,
+    "requiredLvlCombat": 100,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_13.png",
     "statEffect": {
       "maxHpMod": 1.38,
@@ -3784,7 +3784,7 @@
     "name": "Sanctum Shield",
     "description": "A shield of holy power, blessed with sanctified slime.",
     "requiredLvlCraft": 60,
-    "requiredLvlCombat": 130,
+    "requiredLvlCombat": 110,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_14.png",
     "statEffect": {
       "maxHpMod": 1.41,
@@ -3824,7 +3824,7 @@
     "name": "Abyss Shield",
     "description": "A dark shield imbued with chaotic abyssal energies.",
     "requiredLvlCraft": 65,
-    "requiredLvlCombat": 140,
+    "requiredLvlCombat": 120,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_15.png",
     "statEffect": {
       "maxHpMod": 1.44,
@@ -3864,7 +3864,7 @@
     "name": "Wisp Shield",
     "description": "Flickering with faint light, mysterious and graceful.",
     "requiredLvlCraft": 70,
-    "requiredLvlCombat": 150,
+    "requiredLvlCombat": 130,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_16.png",
     "statEffect": {
       "maxHpMod": 1.47,
@@ -3904,7 +3904,7 @@
     "name": "Dusk Shield",
     "description": "Forged in twilight, carrying the essence of dusk.",
     "requiredLvlCraft": 75,
-    "requiredLvlCombat": 160,
+    "requiredLvlCombat": 140,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_17.png",
     "statEffect": {
       "maxHpMod": 1.5,
@@ -3944,7 +3944,7 @@
     "name": "Siphon Shield",
     "description": "Draws strength from those it deflects, eerie and powerful.",
     "requiredLvlCraft": 80,
-    "requiredLvlCombat": 170,
+    "requiredLvlCombat": 150,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_18.png",
     "statEffect": {
       "maxHpMod": 1.53,
@@ -3984,7 +3984,7 @@
     "name": "Rift Shield",
     "description": "Rips through reality, forged from the Nether’s essence.",
     "requiredLvlCraft": 85,
-    "requiredLvlCombat": 185,
+    "requiredLvlCombat": 160,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_19.png",
     "statEffect": {
       "maxHpMod": 1.56,
@@ -4024,7 +4024,7 @@
     "name": "Eternal Barrier",
     "description": "A legendary shield, said to be forged from the core of slimes.",
     "requiredLvlCraft": 90,
-    "requiredLvlCombat": 200,
+    "requiredLvlCombat": 170,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_20.png",
     "statEffect": {
       "maxHpMod": 1.59,
@@ -4061,8 +4061,8 @@
   },
   {
     "id": 101,
-    "name": "Sticky Mantle",
-    "description": "A slimy, flexible mantle offering basic protection.",
+    "name": "Mudmantle",
+    "description": "A coarse, earth-toned cloak worn by foragers of the rootways. Offers modest defense and maximum blend into bogs and thickets.",
     "requiredLvlCraft": 1,
     "requiredLvlCombat": 1,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-01.png",
@@ -4105,8 +4105,8 @@
   },
   {
     "id": 102,
-    "name": "Bronze Warden Cape",
-    "description": "Bronze-threaded and durable, guarding its wearer.",
+    "name": "Verdant Fringe",
+    "description": "Dyed in mossgreen threads and rimmed in forestleather, this cape hums faintly when the wind stirs. Beloved by glade scouts.",
     "requiredLvlCraft": 10,
     "requiredLvlCombat": 10,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-02.png",
@@ -4149,8 +4149,8 @@
   },
   {
     "id": 103,
-    "name": "Ironclad Wrap",
-    "description": "Iron-fortified fibers providing excellent defense.",
+    "name": "Crimson Houndhide",
+    "description": "Once worn by bloodtrackers during the war of Duskroot. Faint traces of rage remain soaked into its weft.",
     "requiredLvlCraft": 20,
     "requiredLvlCombat": 20,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-03.png",
@@ -4193,8 +4193,8 @@
   },
   {
     "id": 104,
-    "name": "Shroud of Shadows",
-    "description": "A dark and flowing cape, perfect for evasion.",
+    "name": "Drakeguard Wrap",
+    "description": "Gold-threaded and flame-hardened, it bears the heraldry of the Firewatch Order. Useful against both blade and glare.",
     "requiredLvlCraft": 30,
     "requiredLvlCombat": 30,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-04.png",
@@ -4237,8 +4237,8 @@
   },
   {
     "id": 105,
-    "name": "Verdant Aegis Cloak",
-    "description": "A lush, nature-inspired design, blending protection and grace.",
+    "name": "Blazemark Shawl",
+    "description": "A prestige garb woven for Sun-Chosen tacticians. Radiates faint warmth, even at night.",
     "requiredLvlCraft": 40,
     "requiredLvlCombat": 40,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-05.png",
@@ -4281,8 +4281,8 @@
   },
   {
     "id": 106,
-    "name": "Luminous Veil",
-    "description": "A glowing cape, guiding its wearer through the darkest paths.",
+    "name": "Glaciercoil",
+    "description": "Cut from frostsilk, its fabric stiffens in cold but never breaks. Trusted by Wind Temple archivists.",
     "requiredLvlCraft": 50,
     "requiredLvlCombat": 50,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-06.png",
@@ -4325,8 +4325,8 @@
   },
   {
     "id": 107,
-    "name": "Cryo Cloak",
-    "description": "A frosted design, resistant to the coldest environments.",
+    "name": "Emberwing Veil",
+    "description": "Decorative winged shoulders crafted from emberweave. Bestows fire resistance and flightless flair.",
     "requiredLvlCraft": 60,
     "requiredLvlCombat": 60,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-07.png",
@@ -4369,8 +4369,8 @@
   },
   {
     "id": 108,
-    "name": "Infernal Drape",
-    "description": "Ablaze with fiery hues, protecting against searing heat.",
+    "name": "Umbravine Mantle",
+    "description": "Etched with spirals of forgotten glyphs, this deep-violet cloak shimmers with sealed whispers.",
     "requiredLvlCraft": 70,
     "requiredLvlCombat": 70,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-08.png",
@@ -4413,8 +4413,8 @@
   },
   {
     "id": 109,
-    "name": "Wispweave Cape",
-    "description": "Ethereal and mysterious, its threads shimmer with light.",
+    "name": "Ashflame Drape",
+    "description": "Charred at the edges and stitched with phoenixgold. Said to be reborn anew every full moon.",
     "requiredLvlCraft": 80,
     "requiredLvlCombat": 80,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-09.png",
@@ -4457,8 +4457,8 @@
   },
   {
     "id": 110,
-    "name": "Mantle of Eternity",
-    "description": "A legendary artifact, radiating pure slime energy.",
+    "name": "Crownshroud",
+    "description": "A regal, front-facing cloak set with a soulstone clasp. Crafted for the Slime Regent, said to turn strikes to light.",
     "requiredLvlCraft": 90,
     "requiredLvlCombat": 90,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-10.png",

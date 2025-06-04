@@ -19,7 +19,7 @@
     "CraftingRecipeItems": [
       {
         "itemId": 26,
-        "quantity": 15
+        "quantity": 20
       }
     ]
   },
@@ -32,6 +32,10 @@
       {
         "itemId": 26,
         "quantity": 20
+      },
+      {
+        "itemId": 1,
+        "quantity": 10
       }
     ]
   },
@@ -42,12 +46,12 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 15
+        "itemId": 26,
+        "quantity": 20
       },
       {
-        "itemId": 26,
-        "quantity": 10
+        "itemId": 1,
+        "quantity": 20
       }
     ]
   },
@@ -59,11 +63,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 2,
-        "quantity": 20
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 10
+        "itemId": 25,
+        "quantity": 5
       }
     ]
   },
@@ -74,16 +78,16 @@
     "craftingExp": 190,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 15
+        "itemId": 27,
+        "quantity": 30
+      },
+      {
+        "itemId": 17,
+        "quantity": 30
       },
       {
         "itemId": 2,
-        "quantity": 15
-      },
-      {
-        "itemId": 26,
-        "quantity": 10
+        "quantity": 30
       }
     ]
   },
@@ -95,11 +99,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 3,
-        "quantity": 25
+        "quantity": 40
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 25,
+        "quantity": 10
       }
     ]
   },
@@ -110,12 +114,16 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 4,
-        "quantity": 35
+        "itemId": 27,
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 18,
+        "quantity": 30
+      },
+      {
+        "itemId": 3,
+        "quantity": 30
       }
     ]
   },
@@ -126,12 +134,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 5,
-        "quantity": 45
+        "itemId": 4,
+        "quantity": 50
       },
       {
-        "itemId": 26,
-        "quantity": 20
+        "itemId": 25,
+        "quantity": 15
       }
     ]
   },
@@ -142,11 +150,15 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 16,
+        "itemId": 27,
         "quantity": 40
       },
       {
-        "itemId": 25,
+        "itemId": 19,
+        "quantity": 30
+      },
+      {
+        "itemId": 4,
         "quantity": 30
       }
     ]
@@ -158,12 +170,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 17,
-        "quantity": 40
+        "itemId": 5,
+        "quantity": 60
       },
       {
         "itemId": 25,
-        "quantity": 30
+        "quantity": 20
       }
     ]
   },
@@ -174,12 +186,16 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 6,
-        "quantity": 40
+        "itemId": 28,
+        "quantity": 30
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 20,
+        "quantity": 30
+      },
+      {
+        "itemId": 5,
+        "quantity": 30
       }
     ]
   },
@@ -190,8 +206,12 @@
     "craftingExp": 710,
     "CraftingRecipeItems": [
       {
+        "itemId": 6,
+        "quantity": 60
+      },
+      {
         "itemId": 25,
-        "quantity": 75
+        "quantity": 25
       }
     ]
   },
@@ -202,12 +222,16 @@
     "craftingExp": 830,
     "CraftingRecipeItems": [
       {
-        "itemId": 19,
-        "quantity": 50
+        "itemId": 28,
+        "quantity": 40
       },
       {
-        "itemId": 25,
-        "quantity": 30
+        "itemId": 21,
+        "quantity": 40
+      },
+      {
+        "itemId": 6,
+        "quantity": 40
       }
     ]
   },
@@ -218,8 +242,8 @@
     "craftingExp": 950,
     "CraftingRecipeItems": [
       {
-        "itemId": 20,
-        "quantity": 55
+        "itemId": 7,
+        "quantity": 70
       },
       {
         "itemId": 25,
@@ -234,12 +258,16 @@
     "craftingExp": 1080,
     "CraftingRecipeItems": [
       {
-        "itemId": 10,
-        "quantity": 60
+        "itemId": 29,
+        "quantity": 40
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 22,
+        "quantity": 40
+      },
+      {
+        "itemId": 7,
+        "quantity": 40
       }
     ]
   },
@@ -250,12 +278,12 @@
     "craftingExp": 1230,
     "CraftingRecipeItems": [
       {
-        "itemId": 11,
+        "itemId": 8,
         "quantity": 70
       },
       {
         "itemId": 25,
-        "quantity": 40
+        "quantity": 50
       }
     ]
   },
@@ -266,12 +294,16 @@
     "craftingExp": 1380,
     "CraftingRecipeItems": [
       {
-        "itemId": 12,
-        "quantity": 60
+        "itemId": 29,
+        "quantity": 40
       },
       {
-        "itemId": 18,
-        "quantity": 35
+        "itemId": 23,
+        "quantity": 50
+      },
+      {
+        "itemId": 8,
+        "quantity": 50
       }
     ]
   },
@@ -282,12 +314,12 @@
     "craftingExp": 1550,
     "CraftingRecipeItems": [
       {
-        "itemId": 13,
-        "quantity": 65
+        "itemId": 9,
+        "quantity": 80
       },
       {
         "itemId": 25,
-        "quantity": 35
+        "quantity": 60
       }
     ]
   },
@@ -298,12 +330,12 @@
     "craftingExp": 1750,
     "CraftingRecipeItems": [
       {
-        "itemId": 14,
-        "quantity": 75
+        "itemId": 24,
+        "quantity": 50
       },
       {
-        "itemId": 25,
-        "quantity": 40
+        "itemId": 9,
+        "quantity": 50
       }
     ]
   },
@@ -327,7 +359,7 @@
     "CraftingRecipeItems": [
       {
         "itemId": 26,
-        "quantity": 15
+        "quantity": 20
       }
     ]
   },
@@ -340,6 +372,10 @@
       {
         "itemId": 26,
         "quantity": 20
+      },
+      {
+        "itemId": 1,
+        "quantity": 10
       }
     ]
   },
@@ -350,12 +386,12 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 15
+        "itemId": 26,
+        "quantity": 20
       },
       {
-        "itemId": 26,
-        "quantity": 10
+        "itemId": 1,
+        "quantity": 20
       }
     ]
   },
@@ -367,11 +403,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 2,
-        "quantity": 20
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 10
+        "itemId": 25,
+        "quantity": 5
       }
     ]
   },
@@ -382,16 +418,16 @@
     "craftingExp": 190,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 15
+        "itemId": 27,
+        "quantity": 30
+      },
+      {
+        "itemId": 17,
+        "quantity": 30
       },
       {
         "itemId": 2,
-        "quantity": 15
-      },
-      {
-        "itemId": 26,
-        "quantity": 10
+        "quantity": 30
       }
     ]
   },
@@ -403,11 +439,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 3,
-        "quantity": 25
+        "quantity": 40
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 25,
+        "quantity": 10
       }
     ]
   },
@@ -418,12 +454,16 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 4,
-        "quantity": 35
+        "itemId": 27,
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 18,
+        "quantity": 30
+      },
+      {
+        "itemId": 3,
+        "quantity": 30
       }
     ]
   },
@@ -434,12 +474,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 5,
-        "quantity": 45
+        "itemId": 4,
+        "quantity": 50
       },
       {
-        "itemId": 26,
-        "quantity": 20
+        "itemId": 25,
+        "quantity": 15
       }
     ]
   },
@@ -450,11 +490,15 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 16,
+        "itemId": 27,
         "quantity": 40
       },
       {
-        "itemId": 25,
+        "itemId": 19,
+        "quantity": 30
+      },
+      {
+        "itemId": 4,
         "quantity": 30
       }
     ]
@@ -466,12 +510,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 17,
-        "quantity": 40
+        "itemId": 5,
+        "quantity": 60
       },
       {
         "itemId": 25,
-        "quantity": 30
+        "quantity": 20
       }
     ]
   },
@@ -482,12 +526,16 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 6,
-        "quantity": 40
+        "itemId": 28,
+        "quantity": 30
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 20,
+        "quantity": 30
+      },
+      {
+        "itemId": 5,
+        "quantity": 30
       }
     ]
   },
@@ -498,8 +546,12 @@
     "craftingExp": 710,
     "CraftingRecipeItems": [
       {
+        "itemId": 6,
+        "quantity": 60
+      },
+      {
         "itemId": 25,
-        "quantity": 75
+        "quantity": 25
       }
     ]
   },
@@ -510,12 +562,16 @@
     "craftingExp": 830,
     "CraftingRecipeItems": [
       {
-        "itemId": 19,
-        "quantity": 50
+        "itemId": 28,
+        "quantity": 40
       },
       {
-        "itemId": 25,
-        "quantity": 30
+        "itemId": 21,
+        "quantity": 40
+      },
+      {
+        "itemId": 6,
+        "quantity": 40
       }
     ]
   },
@@ -526,8 +582,8 @@
     "craftingExp": 950,
     "CraftingRecipeItems": [
       {
-        "itemId": 20,
-        "quantity": 55
+        "itemId": 7,
+        "quantity": 70
       },
       {
         "itemId": 25,
@@ -542,12 +598,16 @@
     "craftingExp": 1080,
     "CraftingRecipeItems": [
       {
-        "itemId": 10,
-        "quantity": 60
+        "itemId": 29,
+        "quantity": 40
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 22,
+        "quantity": 40
+      },
+      {
+        "itemId": 7,
+        "quantity": 40
       }
     ]
   },
@@ -558,12 +618,12 @@
     "craftingExp": 1230,
     "CraftingRecipeItems": [
       {
-        "itemId": 11,
+        "itemId": 8,
         "quantity": 70
       },
       {
         "itemId": 25,
-        "quantity": 40
+        "quantity": 50
       }
     ]
   },
@@ -574,12 +634,16 @@
     "craftingExp": 1380,
     "CraftingRecipeItems": [
       {
-        "itemId": 12,
-        "quantity": 60
+        "itemId": 29,
+        "quantity": 40
       },
       {
-        "itemId": 18,
-        "quantity": 35
+        "itemId": 23,
+        "quantity": 50
+      },
+      {
+        "itemId": 8,
+        "quantity": 50
       }
     ]
   },
@@ -590,12 +654,12 @@
     "craftingExp": 1550,
     "CraftingRecipeItems": [
       {
-        "itemId": 13,
-        "quantity": 65
+        "itemId": 9,
+        "quantity": 80
       },
       {
         "itemId": 25,
-        "quantity": 35
+        "quantity": 60
       }
     ]
   },
@@ -606,12 +670,12 @@
     "craftingExp": 1750,
     "CraftingRecipeItems": [
       {
-        "itemId": 14,
-        "quantity": 75
+        "itemId": 24,
+        "quantity": 50
       },
       {
-        "itemId": 25,
-        "quantity": 40
+        "itemId": 9,
+        "quantity": 50
       }
     ]
   },
@@ -635,7 +699,7 @@
     "CraftingRecipeItems": [
       {
         "itemId": 26,
-        "quantity": 15
+        "quantity": 20
       }
     ]
   },
@@ -648,6 +712,10 @@
       {
         "itemId": 26,
         "quantity": 20
+      },
+      {
+        "itemId": 1,
+        "quantity": 10
       }
     ]
   },
@@ -658,12 +726,12 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 15
+        "itemId": 26,
+        "quantity": 20
       },
       {
-        "itemId": 26,
-        "quantity": 10
+        "itemId": 1,
+        "quantity": 20
       }
     ]
   },
@@ -675,11 +743,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 2,
-        "quantity": 20
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 10
+        "itemId": 25,
+        "quantity": 5
       }
     ]
   },
@@ -690,16 +758,16 @@
     "craftingExp": 190,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 15
+        "itemId": 27,
+        "quantity": 30
+      },
+      {
+        "itemId": 17,
+        "quantity": 30
       },
       {
         "itemId": 2,
-        "quantity": 15
-      },
-      {
-        "itemId": 26,
-        "quantity": 10
+        "quantity": 30
       }
     ]
   },
@@ -711,11 +779,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 3,
-        "quantity": 25
+        "quantity": 40
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 25,
+        "quantity": 10
       }
     ]
   },
@@ -726,12 +794,16 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 4,
-        "quantity": 35
+        "itemId": 27,
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 18,
+        "quantity": 30
+      },
+      {
+        "itemId": 3,
+        "quantity": 30
       }
     ]
   },
@@ -742,12 +814,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 5,
-        "quantity": 45
+        "itemId": 4,
+        "quantity": 50
       },
       {
-        "itemId": 26,
-        "quantity": 20
+        "itemId": 25,
+        "quantity": 15
       }
     ]
   },
@@ -758,11 +830,15 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 16,
+        "itemId": 27,
         "quantity": 40
       },
       {
-        "itemId": 25,
+        "itemId": 19,
+        "quantity": 30
+      },
+      {
+        "itemId": 4,
         "quantity": 30
       }
     ]
@@ -774,12 +850,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 17,
-        "quantity": 40
+        "itemId": 5,
+        "quantity": 60
       },
       {
         "itemId": 25,
-        "quantity": 30
+        "quantity": 20
       }
     ]
   },
@@ -790,12 +866,16 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 6,
-        "quantity": 40
+        "itemId": 28,
+        "quantity": 30
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 20,
+        "quantity": 30
+      },
+      {
+        "itemId": 5,
+        "quantity": 30
       }
     ]
   },
@@ -806,8 +886,12 @@
     "craftingExp": 710,
     "CraftingRecipeItems": [
       {
+        "itemId": 6,
+        "quantity": 60
+      },
+      {
         "itemId": 25,
-        "quantity": 75
+        "quantity": 25
       }
     ]
   },
@@ -818,12 +902,16 @@
     "craftingExp": 830,
     "CraftingRecipeItems": [
       {
-        "itemId": 19,
-        "quantity": 50
+        "itemId": 28,
+        "quantity": 40
       },
       {
-        "itemId": 25,
-        "quantity": 30
+        "itemId": 21,
+        "quantity": 40
+      },
+      {
+        "itemId": 6,
+        "quantity": 40
       }
     ]
   },
@@ -834,8 +922,8 @@
     "craftingExp": 950,
     "CraftingRecipeItems": [
       {
-        "itemId": 20,
-        "quantity": 55
+        "itemId": 7,
+        "quantity": 70
       },
       {
         "itemId": 25,
@@ -850,12 +938,16 @@
     "craftingExp": 1080,
     "CraftingRecipeItems": [
       {
-        "itemId": 10,
-        "quantity": 60
+        "itemId": 29,
+        "quantity": 40
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 22,
+        "quantity": 40
+      },
+      {
+        "itemId": 7,
+        "quantity": 40
       }
     ]
   },
@@ -866,12 +958,12 @@
     "craftingExp": 1230,
     "CraftingRecipeItems": [
       {
-        "itemId": 11,
+        "itemId": 8,
         "quantity": 70
       },
       {
         "itemId": 25,
-        "quantity": 40
+        "quantity": 50
       }
     ]
   },
@@ -882,12 +974,16 @@
     "craftingExp": 1380,
     "CraftingRecipeItems": [
       {
-        "itemId": 12,
-        "quantity": 60
+        "itemId": 29,
+        "quantity": 40
       },
       {
-        "itemId": 18,
-        "quantity": 35
+        "itemId": 23,
+        "quantity": 50
+      },
+      {
+        "itemId": 8,
+        "quantity": 50
       }
     ]
   },
@@ -898,12 +994,12 @@
     "craftingExp": 1550,
     "CraftingRecipeItems": [
       {
-        "itemId": 13,
-        "quantity": 65
+        "itemId": 9,
+        "quantity": 80
       },
       {
         "itemId": 25,
-        "quantity": 35
+        "quantity": 60
       }
     ]
   },
@@ -914,12 +1010,12 @@
     "craftingExp": 1750,
     "CraftingRecipeItems": [
       {
-        "itemId": 14,
-        "quantity": 75
+        "itemId": 24,
+        "quantity": 50
       },
       {
-        "itemId": 25,
-        "quantity": 40
+        "itemId": 9,
+        "quantity": 50
       }
     ]
   },
@@ -930,12 +1026,12 @@
     "craftingExp": 80,
     "CraftingRecipeItems": [
       {
-        "itemId": 3,
-        "quantity": 32
+        "itemId": 25,
+        "quantity": 10
       },
       {
-        "itemId": 25,
-        "quantity": 20
+        "itemId": 2,
+        "quantity": 10
       }
     ]
   },
@@ -946,12 +1042,12 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 7,
-        "quantity": 40
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 24
+        "itemId": 3,
+        "quantity": 20
       }
     ]
   },
@@ -962,12 +1058,12 @@
     "craftingExp": 150,
     "CraftingRecipeItems": [
       {
-        "itemId": 7,
-        "quantity": 48
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 28
+        "itemId": 4,
+        "quantity": 30
       }
     ]
   },
@@ -978,12 +1074,12 @@
     "craftingExp": 190,
     "CraftingRecipeItems": [
       {
-        "itemId": 8,
-        "quantity": 56
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 32
+        "itemId": 5,
+        "quantity": 40
       }
     ]
   },
@@ -994,12 +1090,12 @@
     "craftingExp": 240,
     "CraftingRecipeItems": [
       {
-        "itemId": 8,
-        "quantity": 60
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 36
+        "itemId": 6,
+        "quantity": 50
       }
     ]
   },
@@ -1010,12 +1106,12 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 9,
-        "quantity": 52
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 28
+        "itemId": 7,
+        "quantity": 60
       }
     ]
   },
@@ -1026,12 +1122,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 21,
-        "quantity": 64
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 40
+        "itemId": 8,
+        "quantity": 70
       }
     ]
   },
@@ -1042,12 +1138,12 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 22,
-        "quantity": 60
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 16,
-        "quantity": 36
+        "itemId": 9,
+        "quantity": 80
       }
     ]
   },
@@ -1058,12 +1154,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 23,
-        "quantity": 68
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 25,
-        "quantity": 44
+        "itemId": 10,
+        "quantity": 90
       }
     ]
   },
@@ -1074,12 +1170,12 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 24,
-        "quantity": 72
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 17,
-        "quantity": 48
+        "itemId": 11,
+        "quantity": 100
       }
     ]
   },
@@ -1091,11 +1187,7 @@
     "CraftingRecipeItems": [
       {
         "itemId": 3,
-        "quantity": 40
-      },
-      {
-        "itemId": 25,
-        "quantity": 25
+        "quantity": 10
       }
     ]
   },
@@ -1106,12 +1198,12 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 7,
-        "quantity": 50
+        "itemId": 17,
+        "quantity": 12
       },
       {
-        "itemId": 25,
-        "quantity": 30
+        "itemId": 26,
+        "quantity": 8
       }
     ]
   },
@@ -1122,12 +1214,12 @@
     "craftingExp": 150,
     "CraftingRecipeItems": [
       {
-        "itemId": 7,
-        "quantity": 60
+        "itemId": 4,
+        "quantity": 18
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 5,
+        "quantity": 12
       }
     ]
   },
@@ -1138,12 +1230,12 @@
     "craftingExp": 190,
     "CraftingRecipeItems": [
       {
-        "itemId": 8,
-        "quantity": 70
+        "itemId": 18,
+        "quantity": 24
       },
       {
-        "itemId": 25,
-        "quantity": 40
+        "itemId": 27,
+        "quantity": 16
       }
     ]
   },
@@ -1154,12 +1246,12 @@
     "craftingExp": 240,
     "CraftingRecipeItems": [
       {
-        "itemId": 8,
-        "quantity": 75
+        "itemId": 6,
+        "quantity": 54
       },
       {
-        "itemId": 25,
-        "quantity": 45
+        "itemId": 7,
+        "quantity": 36
       }
     ]
   },
@@ -1170,12 +1262,12 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 9,
-        "quantity": 65
+        "itemId": 19,
+        "quantity": 60
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 28,
+        "quantity": 40
       }
     ]
   },
@@ -1186,12 +1278,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 21,
-        "quantity": 80
+        "itemId": 8,
+        "quantity": 66
       },
       {
-        "itemId": 25,
-        "quantity": 50
+        "itemId": 9,
+        "quantity": 44
       }
     ]
   },
@@ -1202,12 +1294,12 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 22,
-        "quantity": 75
+        "itemId": 20,
+        "quantity": 60
       },
       {
-        "itemId": 16,
-        "quantity": 45
+        "itemId": 29,
+        "quantity": 40
       }
     ]
   },
@@ -1218,12 +1310,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 23,
-        "quantity": 85
+        "itemId": 11,
+        "quantity": 90
       },
       {
-        "itemId": 25,
-        "quantity": 55
+        "itemId": 21,
+        "quantity": 60
       }
     ]
   },
@@ -1234,12 +1326,12 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 24,
-        "quantity": 90
+        "itemId": 13,
+        "quantity": 60
       },
       {
-        "itemId": 17,
-        "quantity": 60
+        "itemId": 23,
+        "quantity": 40
       }
     ]
   },
@@ -1251,7 +1343,7 @@
     "CraftingRecipeItems": [
       {
         "itemId": 26,
-        "quantity": 7
+        "quantity": 10
       }
     ]
   },
@@ -1262,12 +1354,8 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 1,
-        "quantity": 12
-      },
-      {
         "itemId": 26,
-        "quantity": 7
+        "quantity": 20
       }
     ]
   },
@@ -1278,12 +1366,12 @@
     "craftingExp": 150,
     "CraftingRecipeItems": [
       {
-        "itemId": 2,
-        "quantity": 17
+        "itemId": 26,
+        "quantity": 18
       },
       {
-        "itemId": 26,
-        "quantity": 7
+        "itemId": 1,
+        "quantity": 12
       }
     ]
   },
@@ -1295,15 +1383,11 @@
     "CraftingRecipeItems": [
       {
         "itemId": 1,
-        "quantity": 12
+        "quantity": 24
       },
       {
         "itemId": 2,
-        "quantity": 12
-      },
-      {
-        "itemId": 26,
-        "quantity": 7
+        "quantity": 16
       }
     ]
   },
@@ -1314,12 +1398,12 @@
     "craftingExp": 240,
     "CraftingRecipeItems": [
       {
-        "itemId": 3,
-        "quantity": 20
+        "itemId": 2,
+        "quantity": 21
       },
       {
-        "itemId": 26,
-        "quantity": 12
+        "itemId": 27,
+        "quantity": 14
       }
     ]
   },
@@ -1330,12 +1414,12 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 4,
-        "quantity": 30
+        "itemId": 27,
+        "quantity": 54
       },
       {
-        "itemId": 26,
-        "quantity": 12
+        "itemId": 17,
+        "quantity": 36
       }
     ]
   },
@@ -1346,12 +1430,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 5,
-        "quantity": 40
+        "itemId": 3,
+        "quantity": 30
       },
       {
-        "itemId": 26,
-        "quantity": 15
+        "itemId": 27,
+        "quantity": 20
       }
     ]
   },
@@ -1362,12 +1446,12 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 16,
-        "quantity": 35
+        "itemId": 3,
+        "quantity": 54
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 18,
+        "quantity": 36
       }
     ]
   },
@@ -1378,12 +1462,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 17,
-        "quantity": 35
+        "itemId": 4,
+        "quantity": 39
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 27,
+        "quantity": 26
       }
     ]
   },
@@ -1394,12 +1478,12 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 6,
-        "quantity": 35
+        "itemId": 4,
+        "quantity": 60
       },
       {
-        "itemId": 25,
-        "quantity": 20
+        "itemId": 19,
+        "quantity": 40
       }
     ]
   },
@@ -1410,12 +1494,12 @@
     "craftingExp": 710,
     "CraftingRecipeItems": [
       {
-        "itemId": 26,
-        "quantity": 40
+        "itemId": 5,
+        "quantity": 48
       },
       {
-        "itemId": 25,
-        "quantity": 20
+        "itemId": 28,
+        "quantity": 32
       }
     ]
   },
@@ -1426,12 +1510,12 @@
     "craftingExp": 830,
     "CraftingRecipeItems": [
       {
-        "itemId": 19,
-        "quantity": 45
+        "itemId": 5,
+        "quantity": 54
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 20,
+        "quantity": 36
       }
     ]
   },
@@ -1442,12 +1526,12 @@
     "craftingExp": 950,
     "CraftingRecipeItems": [
       {
-        "itemId": 20,
-        "quantity": 50
+        "itemId": 6,
+        "quantity": 51
       },
       {
-        "itemId": 25,
-        "quantity": 25
+        "itemId": 28,
+        "quantity": 34
       }
     ]
   },
@@ -1458,12 +1542,12 @@
     "craftingExp": 1080,
     "CraftingRecipeItems": [
       {
-        "itemId": 10,
-        "quantity": 55
+        "itemId": 6,
+        "quantity": 72
       },
       {
-        "itemId": 25,
-        "quantity": 30
+        "itemId": 21,
+        "quantity": 48
       }
     ]
   },
@@ -1474,12 +1558,12 @@
     "craftingExp": 1230,
     "CraftingRecipeItems": [
       {
-        "itemId": 11,
-        "quantity": 65
+        "itemId": 7,
+        "quantity": 60
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 29,
+        "quantity": 40
       }
     ]
   },
@@ -1490,12 +1574,12 @@
     "craftingExp": 1380,
     "CraftingRecipeItems": [
       {
-        "itemId": 12,
-        "quantity": 55
+        "itemId": 7,
+        "quantity": 72
       },
       {
-        "itemId": 18,
-        "quantity": 30
+        "itemId": 22,
+        "quantity": 48
       }
     ]
   },
@@ -1506,12 +1590,12 @@
     "craftingExp": 1550,
     "CraftingRecipeItems": [
       {
-        "itemId": 13,
-        "quantity": 60
+        "itemId": 8,
+        "quantity": 72
       },
       {
-        "itemId": 25,
-        "quantity": 30
+        "itemId": 29,
+        "quantity": 48
       }
     ]
   },
@@ -1522,12 +1606,12 @@
     "craftingExp": 1750,
     "CraftingRecipeItems": [
       {
-        "itemId": 14,
-        "quantity": 70
+        "itemId": 8,
+        "quantity": 84
       },
       {
-        "itemId": 25,
-        "quantity": 35
+        "itemId": 23,
+        "quantity": 56
       }
     ]
   },
@@ -1538,12 +1622,12 @@
     "craftingExp": 2200,
     "CraftingRecipeItems": [
       {
-        "itemId": 15,
-        "quantity": 80
+        "itemId": 9,
+        "quantity": 84
       },
       {
-        "itemId": 25,
-        "quantity": 40
+        "itemId": 24,
+        "quantity": 56
       }
     ]
   },
@@ -1554,8 +1638,12 @@
     "craftingExp": 4000,
     "CraftingRecipeItems": [
       {
-        "itemId": 25,
-        "quantity": 100
+        "itemId": 9,
+        "quantity": 60
+      },
+      {
+        "itemId": 24,
+        "quantity": 40
       }
     ]
   },
@@ -1566,8 +1654,8 @@
     "craftingExp": 80,
     "CraftingRecipeItems": [
       {
-        "itemId": 26,
-        "quantity": 100
+        "itemId": 25,
+        "quantity": 10
       }
     ]
   },
@@ -1578,12 +1666,8 @@
     "craftingExp": 110,
     "CraftingRecipeItems": [
       {
-        "itemId": 26,
-        "quantity": 100
-      },
-      {
-        "itemId": 27,
-        "quantity": 50
+        "itemId": 25,
+        "quantity": 20
       }
     ]
   },
@@ -1594,12 +1678,12 @@
     "craftingExp": 150,
     "CraftingRecipeItems": [
       {
-        "itemId": 26,
-        "quantity": 200
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 27,
-        "quantity": 100
+        "itemId": 17,
+        "quantity": 10
       }
     ]
   },
@@ -1610,8 +1694,12 @@
     "craftingExp": 190,
     "CraftingRecipeItems": [
       {
-        "itemId": 27,
-        "quantity": 100
+        "itemId": 25,
+        "quantity": 20
+      },
+      {
+        "itemId": 18,
+        "quantity": 20
       }
     ]
   },
@@ -1622,12 +1710,12 @@
     "craftingExp": 240,
     "CraftingRecipeItems": [
       {
-        "itemId": 27,
-        "quantity": 100
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 28,
-        "quantity": 50
+        "itemId": 19,
+        "quantity": 30
       }
     ]
   },
@@ -1638,12 +1726,12 @@
     "craftingExp": 300,
     "CraftingRecipeItems": [
       {
-        "itemId": 27,
-        "quantity": 200
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 28,
-        "quantity": 100
+        "itemId": 20,
+        "quantity": 40
       }
     ]
   },
@@ -1654,8 +1742,12 @@
     "craftingExp": 360,
     "CraftingRecipeItems": [
       {
-        "itemId": 28,
-        "quantity": 100
+        "itemId": 25,
+        "quantity": 20
+      },
+      {
+        "itemId": 21,
+        "quantity": 50
       }
     ]
   },
@@ -1666,12 +1758,12 @@
     "craftingExp": 430,
     "CraftingRecipeItems": [
       {
-        "itemId": 28,
-        "quantity": 100
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 29,
-        "quantity": 50
+        "itemId": 22,
+        "quantity": 60
       }
     ]
   },
@@ -1682,12 +1774,12 @@
     "craftingExp": 520,
     "CraftingRecipeItems": [
       {
-        "itemId": 28,
-        "quantity": 200
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 29,
-        "quantity": 100
+        "itemId": 23,
+        "quantity": 70
       }
     ]
   },
@@ -1698,20 +1790,12 @@
     "craftingExp": 610,
     "CraftingRecipeItems": [
       {
-        "itemId": 26,
-        "quantity": 100
+        "itemId": 25,
+        "quantity": 20
       },
       {
-        "itemId": 27,
-        "quantity": 100
-      },
-      {
-        "itemId": 28,
-        "quantity": 100
-      },
-      {
-        "itemId": 29,
-        "quantity": 100
+        "itemId": 24,
+        "quantity": 80
       }
     ]
   }
