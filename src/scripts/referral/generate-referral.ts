@@ -3,8 +3,8 @@ import { logger } from "../../utils/logger";
 
 async function generate() {
     try {
-        const telegramId = process.argv[2] || undefined;
-        const externalReferrer = process.argv[3] || undefined;
+        const telegramId = process.argv[2] !== "undefined" ? process.argv[2] : undefined;
+        const externalReferrer = process.argv[3] !== "undefined" ? process.argv[3] : undefined;
 
         if (!telegramId && !externalReferrer) {
             logger.error("❌ Please provide either a telegramId or an externalReferrer.");
