@@ -15,6 +15,7 @@ import { calculateHpExpGained } from "../../../utils/helpers";
 import { CombatActivityInput, logCombatActivities } from "../../../sql-services/user-activity-log";
 import { DungeonManager, DungeonState } from "./dungeon-manager";
 import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
+import { updateCombatMissions } from "../../../sql-services/missions";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -124,6 +125,7 @@ export class OfflineCombatManager {
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
     const combatActivities: CombatActivityInput[] = [];
+    const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
 
     for (let t = 0; t < totalTicks; t++) {
       // User attacks
@@ -201,6 +203,12 @@ export class OfflineCombatManager {
             drops: currDrops
           });
 
+          missionUpdates.push({
+            telegramId: activity.userId,
+            monsterId: monster.id,
+            quantity: 1
+          });
+
           // Replace monster
           monster = DomainManager.getRandomMonsterFromDomain(domain)!;
           if (!monster) break;
@@ -260,6 +268,7 @@ export class OfflineCombatManager {
     }
 
     await logCombatActivities(combatActivities);
+    await updateCombatMissions(missionUpdates);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
 
@@ -370,6 +379,7 @@ export class OfflineCombatManager {
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
     const combatActivities: CombatActivityInput[] = [];
+    const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
 
     for (let t = 0; t < totalTicks; t++) {
       // User attacks
@@ -447,6 +457,12 @@ export class OfflineCombatManager {
             goldEarned: goldGained,
             dittoEarned: dittoGained.toString(),
             drops: currDrops
+          });
+
+          missionUpdates.push({
+            telegramId: activity.userId,
+            monsterId: monster.id,
+            quantity: 1
           });
 
           // handle monster and floor increment
@@ -529,6 +545,7 @@ export class OfflineCombatManager {
     }
 
     await logCombatActivities(combatActivities);
+    await updateCombatMissions(missionUpdates);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
 

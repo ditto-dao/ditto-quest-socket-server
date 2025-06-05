@@ -7,6 +7,7 @@ import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { FarmingUpdate, IdleActivityIntervalElement, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
 import { logFarmingActivity } from "../../sql-services/user-activity-log";
+import { emitMissionUpdate, updateFarmMission } from "../../sql-services/missions";
 
 export class IdleFarmingManager {
 
@@ -178,6 +179,7 @@ export class IdleFarmingManager {
             expRes = await addFarmingExp(userId, farming.item.farmingExp * repetitions);
 
             await logFarmingActivity(userId, farming.item.id, repetitions);
+            await updateFarmMission(userId, farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
 
             return {
                 type: 'farming',
@@ -218,6 +220,8 @@ export class IdleFarmingManager {
             });
 
             await logFarmingActivity(userId, itemId, 1);
+            await updateFarmMission(userId, itemId, FARM_REPS_MULTIPLIER);
+            await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
         } catch (error) {
             logger.error(`Error during farming complete callback for user ${userId}: ${error}`);

@@ -216,7 +216,7 @@ export async function getSlimeTraitById(traitId: number): Promise<Prisma.SlimeTr
 }
 
 interface GachaPullRes {
-  slime: Slime,
+  slime: SlimeWithTraits,
   rankPull: string,
   slimeNoBg: Buffer
 }

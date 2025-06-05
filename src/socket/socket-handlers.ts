@@ -13,6 +13,7 @@ import { ValidateLoginManager } from "../managers/validate-login/validate-login-
 import { IdleCombatManager } from "../managers/idle-managers/combat/combat-idle-manager"
 import { setupCombatSocketHandlers } from "./handlers/combat-handlers"
 import AsyncLock from "async-lock"
+import { setupMissionSocketHandlers } from "./handlers/mission-handlers"
 
 export const globalIdleSocketUserLock = new AsyncLock()
 
@@ -46,6 +47,8 @@ export async function setupSocketHandlers(
         setupSlimeSocketHandlers(socket, socketManager, idleManager)
 
         setupCombatSocketHandlers(socket, socketManager, idleManager, combatManager)
+
+        setupMissionSocketHandlers(socket, dittoLedgerSocket)
 
         setupDittoLedgerUserSocketHandlers(socket, dittoLedgerSocket)
 

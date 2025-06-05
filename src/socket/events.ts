@@ -83,3 +83,8 @@ export const LEDGER_BALANCE_UPDATE_RES_EVENT = 'ditto-ledger-socket-balance-upda
 export const LEDGER_BALANCE_ERROR_RES_EVENT = 'ditto-ledger-socket-balance-error';
 
 export const LEDGER_USER_ERROR_RES_EVENT = 'ditto-ledger-socket-user-error';
+
+// Missions
+export const MISSION_UPDATE = 'mission-update';
+
+export const GET_NEXT_MISSION = 'refresh-mission';

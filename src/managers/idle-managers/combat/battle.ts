@@ -14,6 +14,7 @@ import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
 import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
 import { DungeonManager } from "./dungeon-manager";
 import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
+import { emitMissionUpdate, updateCombatMission } from "../../../sql-services/missions";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -105,8 +106,8 @@ export class Battle {
       });
 
       logger.info(`⚔️ Battle Start: User ${this.user.telegramId} vs ${this.monster.name}`);
-      logger.info(`👤 user combat: ${JSON.stringify(this.userCombat, null, 2)}`);
-      logger.info(`👾 monster combat: ${JSON.stringify(this.monster.combat, null, 2)}`);
+      //logger.info(`👤 user combat: ${JSON.stringify(this.userCombat, null, 2)}`);
+      //logger.info(`👾 monster combat: ${JSON.stringify(this.monster.combat, null, 2)}`);
 
       this.currentBattleStartTimestamp = Date.now();
 
@@ -402,6 +403,10 @@ export class Battle {
             dittoEarned: (dittoDrop && dittoDrop > 0n) ? dittoDrop.toString() : undefined,
             drops: drops,
           });
+
+          await updateCombatMission(this.user.telegramId, this.monster.id, 1);
+
+          await emitMissionUpdate(this.socketManager.getSocketByUserId(this.user.telegramId), this.user.telegramId);
         }
 
         await this.endBattle(false);

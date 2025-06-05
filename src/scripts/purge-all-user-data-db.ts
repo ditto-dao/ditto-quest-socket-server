@@ -62,6 +62,10 @@ async function purgeUserData() {
     logger.info("🗑️ Deleted User");
     await resetAutoIncrement("User");
 
+    await prisma.userMission.deleteMany();
+    logger.info("🗑️ Deleted UserMission");
+    await resetAutoIncrement("UserMission");
+
     await prisma.combat.deleteMany({
       where: {
         user: { none: {} },

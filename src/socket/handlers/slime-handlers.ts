@@ -8,6 +8,8 @@ import { IdleBreedingManager } from "../../managers/idle-managers/breeding-idle-
 import { SLIME_GACHA_PRICE_GOLD } from "../../utils/transaction-config"
 import { incrementUserGoldBalance } from "../../sql-services/user-service"
 import { globalIdleSocketUserLock } from "../socket-handlers"
+import { emitMissionUpdate, updateGachaMission } from "../../sql-services/missions"
+import { getHighestDominantTraitRarity } from "../../utils/helpers"
 
 interface BurnSlimeRequest {
     userId: string,
@@ -39,7 +41,7 @@ export async function setupSlimeSocketHandlers(
                 throw err
             })
 
-            await slimeGachaPull(userId).then(res => {
+            await slimeGachaPull(userId).then(async (res) => {
                 socket.emit("update-slime-inventory", {
                     userId: userId,
                     payload: res.slime
@@ -53,6 +55,9 @@ export async function setupSlimeSocketHandlers(
                         slimeNoBg: res.slimeNoBg
                     }
                 })
+                
+                await updateGachaMission(userId, getHighestDominantTraitRarity(res.slime), 1);
+                await emitMissionUpdate(socket, userId);
             }).catch(async err => {
                 logger.error(`Error processing mint-gen-0-slime: ${err}`)
                 socket.emit('mint-slime-error', {

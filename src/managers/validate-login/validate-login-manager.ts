@@ -5,7 +5,7 @@ import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { createUser, getUserData, userExists } from "../../sql-services/user-service";
-import { BETA_TESTER_LOGIN_EVENT, DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LEDGER_REMOVE_USER_SOCKET_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
+import { BETA_TESTER_LOGIN_EVENT, DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LEDGER_REMOVE_USER_SOCKET_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, MISSION_UPDATE, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
 import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
@@ -13,6 +13,7 @@ import { slimeGachaPull } from "../../sql-services/slime";
 import { mintItemToUser } from "../../sql-services/item-inventory-service";
 import { handleBetaTesterClaim, isUnclaimedBetaTester } from "../../sql-services/beta-testers";
 import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
+import { generateNewMission, getUserMissionByUserId } from "../../sql-services/missions";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -170,16 +171,8 @@ export class ValidateLoginManager {
                     userId: user.telegramId,
                 });
             }
-
         } else {
             user = await getUserData(data.loginPayload.userData.id.toString());
-/* 
-            // TO REMOVE
-            data.socket.emit(FIRST_LOGIN_EVENT, {
-                userId: data.loginPayload.userData.id.toString(),
-                payload: {
-                }
-            }); */
         }
 
         if (!user) throw new Error(`Error processing login. User data not fetched or created.`);
@@ -203,6 +196,20 @@ export class ValidateLoginManager {
             userId: data.loginPayload.userData.id,
             payload: await getUserData(data.loginPayload.userData.id.toString())
         });
+
+        let currMission = await getUserMissionByUserId(data.loginPayload.userData.id.toString())
+        if (!currMission) currMission = await generateNewMission(data.loginPayload.userData.id.toString(), currMission)
+        if (currMission && currMission.round < 6) {
+            setTimeout(() => {
+                data.socket.emit(MISSION_UPDATE, {
+                    userId: data.loginPayload.userData.id,
+                    payload: {
+                        ...currMission,
+                        rewardDitto: currMission.rewardDitto?.toString(),
+                    },
+                });
+            }, 10000); // 10 seconds
+        }
 
         this.cleanUpQueueAndTimer(data.loginPayload.userData.id.toString());
     }

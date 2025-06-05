@@ -859,3 +859,36 @@ model BetaTester {
   telegramId String  @id
   claimed    Boolean @default(false)
 }
+
+model UserMission {
+  id         Int    @id @default(autoincrement())
+  telegramId String // No foreign key constraint
+
+  label String
+
+  type MissionType
+
+  // Optional foreign targets
+  itemId      Int? // for farm
+  equipmentId Int? // for craft
+  monsterId   Int? // for combat
+  slimeRarity Rarity? // for breeding
+
+  quantity    Int
+  progress    Int      @default(0)
+  rewardDitto Decimal? @db.Decimal(65, 0)
+  imgsrc      String? // frontend display (optional)
+
+  round     Int      @default(0) // mission refresh round
+  claimed   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum MissionType {
+  FARM
+  CRAFT
+  COMBAT
+  GACHA
+  BREED
+}

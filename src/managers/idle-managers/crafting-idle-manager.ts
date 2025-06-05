@@ -9,6 +9,7 @@ import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { CraftingUpdate, IdleActivityIntervalElement, IdleCraftingIntervalElement, TimerHandle } from "./idle-manager-types";
 import { logCraftingActivity } from "../../sql-services/user-activity-log";
+import { emitMissionUpdate, updateCraftMission } from "../../sql-services/missions";
 
 export class IdleCraftingManager {
 
@@ -200,6 +201,7 @@ export class IdleCraftingManager {
                     quantity: item.quantity * repetitions,
                 }))
             );
+            await updateCraftMission(userId, crafting.equipment.id, repetitions);
 
             return {
                 type: 'crafting',
@@ -255,6 +257,8 @@ export class IdleCraftingManager {
                     quantity: item.quantity,
                 }))
             );
+            await updateCraftMission(userId, recipe.equipmentId, 1);
+            await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
             if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
                 throw new Error(`User does not have all the required items for subsequent iteration.`);

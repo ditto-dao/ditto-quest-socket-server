@@ -1,4 +1,5 @@
 import { SocketManager } from "../../socket/socket-manager";
+import { emitMissionUpdate, updateBreedMission } from "../../sql-services/missions";
 import { breedSlimes, getEquippedSlimeId, SlimeWithTraits } from "../../sql-services/slime";
 import { logBreedingActivity } from "../../sql-services/user-activity-log";
 import { canUserMintSlime } from "../../sql-services/user-service";
@@ -195,6 +196,8 @@ export class IdleBreedingManager {
                         childGeneration: slime.generation,
                         childRarity: getHighestDominantTraitRarity(slime),
                     });
+
+                    await updateBreedMission(userId, getHighestDominantTraitRarity(slime), 1);
                 } catch (err) {
                     logger.error(`Failed to breed slime in loaded breeding activity: ${err}`);
                 }
@@ -244,6 +247,8 @@ export class IdleBreedingManager {
                 childGeneration: slime.generation,
                 childRarity: getHighestDominantTraitRarity(slime),
             });
+            await updateBreedMission(userId, getHighestDominantTraitRarity(slime), 1);
+            await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
         } catch (error) {
             logger.error(`Error during breeding complete callback for user ${userId}: ${error}`);
