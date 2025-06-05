@@ -12,6 +12,8 @@ import { getSimpleUserData } from "../../sql-services/user-service";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import AsyncLock from 'async-lock';
+import { emitMissionUpdate, updateGachaMission } from "../../sql-services/missions";
+import { getHighestDominantTraitRarity } from "../../utils/helpers";
 
 const lock = new AsyncLock();
 
@@ -142,6 +144,9 @@ async function handleMintSlime(userId: string, payload: UserBalanceUpdateRes, so
                 slimeNoBg: res.slimeNoBg
             }
         });
+
+        await updateGachaMission(userId, getHighestDominantTraitRarity(res.slime), 1);
+        await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
     } catch (err) {
         logger.error(`Error minting gen 0 slime: ${err}`);
         socketManager.emitEvent(userId, 'mint-slime-error', {

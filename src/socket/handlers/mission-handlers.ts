@@ -1,7 +1,7 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { GET_NEXT_MISSION, LEDGER_UPDATE_BALANCE_EVENT } from "../events"
+import { GET_NEXT_MISSION, LEDGER_UPDATE_BALANCE_EVENT, MISSION_UPDATE } from "../events"
 import { emitMissionUpdate, generateNewMission, getUserMissionByUserId, isMissionComplete } from "../../sql-services/missions"
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { DEVELOPMENT_FUNDS_KEY } from "../../utils/config"
@@ -21,9 +21,16 @@ export async function setupMissionSocketHandlers(
                 if (isCompleted && currMision.rewardDitto) creditDittoFromDevFunds(dittoLedgerSocket, userId, BigInt(currMision.rewardDitto.toString()));
             }
 
-            if (currMision && currMision.round <= 5) await generateNewMission(userId, currMision);
+            const nextMission = await generateNewMission(userId, currMision);
 
-            await emitMissionUpdate(socket, userId);
+            if (nextMission && nextMission.round < 6) {
+                await emitMissionUpdate(socket, userId);
+            } else {
+                socket.emit(MISSION_UPDATE, {
+                    userId: userId,
+                    payload: null
+                });
+            }
 
         } catch (error) {
             logger.error(`Error processing mint-gen-0-slime: ${error}`);
