@@ -221,6 +221,11 @@ export async function emitMissionUpdate(socket: Socket<DefaultEventsMap, Default
         return;
     }
 
+    if (mission.round >= 5) {
+        logger.warn(`User has cleared tutorial missions`);
+        return;
+    }
+
     socket.emit(MISSION_UPDATE, {
         userId: userId,
         payload: {
