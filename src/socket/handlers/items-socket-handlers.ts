@@ -1,12 +1,14 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { mintItemToUser } from "../../sql-services/item-inventory-service"
+import { deleteItemsFromUserInventory, mintItemToUser } from "../../sql-services/item-inventory-service"
 import { IdleFarmingManager } from "../../managers/idle-managers/farming-idle-manager"
 import { SocketManager } from "../socket-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
 import { getItemById } from "../../sql-services/item-service"
 import { globalIdleSocketUserLock } from "../socket-handlers"
+import { incrementUserGoldBalance } from "../../sql-services/user-service"
+import { USER_UPDATE_EVENT } from "../events"
 
 interface MintItemPayload {
     userId: string,
@@ -17,6 +19,12 @@ interface MintItemPayload {
 interface FarmItemPayload {
     userId: string;
     itemId: number
+}
+
+interface SellItemPayload {
+    userId: string;
+    itemId: number;
+    quantity: number;
 }
 
 export async function setupItemsSocketHandlers(
@@ -76,6 +84,39 @@ export async function setupItemsSocketHandlers(
                 socket.emit('error', {
                     userId: data.userId,
                     msg: 'Failed to stop farm item'
+                })
+            }
+        })
+    });
+
+    socket.on("sell-item", async (data: SellItemPayload) => {
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received sell-item event from user ${data.userId}`);
+
+                const item = await getItemById(data.itemId);
+                if (!item) throw new Error(`Unable to find item`);
+
+                const goldBalance = await incrementUserGoldBalance(data.userId, item.sellPriceGP * data.quantity);
+
+                const inv = await deleteItemsFromUserInventory(data.userId, [data.itemId], [data.quantity]);
+
+                socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
+                    userId: data.userId,
+                    payload: {
+                        goldBalance
+                    }
+                });
+
+                socket.emit("update-inventory", {
+                    userId: data.userId,
+                    payload: inv
+                });
+            } catch (error) {
+                logger.error(`Error processing sell-item: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to sell items'
                 })
             }
         })
