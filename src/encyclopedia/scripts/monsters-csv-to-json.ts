@@ -8,7 +8,7 @@ import { AttackType, Equipment, Item, StatEffect } from '@prisma/client';
 import { getEquipmentById } from '../../sql-services/equipment-service';
 import { getItemById } from '../../sql-services/item-service';
 import { getSlimeTraitById } from '../../sql-services/slime';
-import { getBaseAccFromDex, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromLuk, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../../managers/idle-managers/combat/combat-helpers';
+import { getBaseAccFromLuk, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromDex, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../../managers/idle-managers/combat/combat-helpers';
 import { parseUnits } from 'ethers';
 import { DITTO_DECIMALS } from '../../utils/config';
 
@@ -114,8 +114,8 @@ function parseBaseCombat(
     return {
         maxHp: getBaseMaxHpFromHpLvl(hpLevel),
         atkSpd: getBaseAtkSpdFromLuk(luk),
-        acc: getBaseAccFromDex(dex),
-        eva: getBaseEvaFromLuk(luk),
+        acc: getBaseAccFromLuk(luk),
+        eva: getBaseEvaFromDex(dex),
         maxMeleeDmg: getBaseMaxDmg(str),
         maxRangedDmg: getBaseMaxDmg(dex),
         maxMagicDmg: getBaseMaxDmg(magic),

@@ -1,3 +1,6 @@
+import { Combat } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
+
 /**
  * MAX HP = HPLVL * A
  */
@@ -73,33 +76,33 @@ export function getAtkCooldownFromAtkOld(atkSpd: number): number {
 
 export function getAtkCooldownFromAtkSpd(atkSpd: number): number {
     if (atkSpd < 10) return 4;
-  
+
     if (atkSpd <= 500) {
-      return 4 - ((atkSpd - 10) / (500 - 10)) * (4 - 3.5); // 4 → 3.5
+        return 4 - ((atkSpd - 10) / (500 - 10)) * (4 - 3.5); // 4 → 3.5
     }
-  
+
     if (atkSpd <= 2000) {
-      return 3.5 - ((atkSpd - 500) / (2000 - 500)) * (3.5 - 2.5); // 3.5 → 2.5
+        return 3.5 - ((atkSpd - 500) / (2000 - 500)) * (3.5 - 2.5); // 3.5 → 2.5
     }
-  
+
     if (atkSpd <= 5000) {
-      return 2.5 - ((atkSpd - 2000) / (5000 - 2000)) * (2.5 - 1.5); // 2.5 → 1.5
+        return 2.5 - ((atkSpd - 2000) / (5000 - 2000)) * (2.5 - 1.5); // 2.5 → 1.5
     }
-  
+
     if (atkSpd <= 10000) {
-      return 1.5 - ((atkSpd - 5000) / (10000 - 5000)) * (1.5 - 1.0); // 1.5 → 1.0
+        return 1.5 - ((atkSpd - 5000) / (10000 - 5000)) * (1.5 - 1.0); // 1.5 → 1.0
     }
-  
+
     // Late game: 10k+ scales slowly toward 0.85s
     return 0.85 + 0.15 * Math.exp(-0.001 * (atkSpd - 10000));
-  }
+}
 
 /**
  * ACC = (DEX ^ A) * B
  */
-export function getBaseAccFromDex(dex: number): number {
+export function getBaseAccFromLuk(dex: number): number {
     const A = 1.1;
-    const B = 100;
+    const B = 10;
 
     return Math.pow(dex, A) * B;
 }
@@ -107,9 +110,9 @@ export function getBaseAccFromDex(dex: number): number {
 /**
  * EVA = (LUK ^ A) * B
  */
-export function getBaseEvaFromLuk(luk: number): number {
+export function getBaseEvaFromDex(luk: number): number {
     const A = 1.05;
-    const B = 100;
+    const B = 10;
 
     return Math.pow(luk, A) * B;
 }
@@ -166,4 +169,66 @@ export function getBaseMagicDmgReductionFromDefAndMagic(def: number, magic: numb
 
 export function getPercentageDmgReduct(dmgReduction: number): number {
     return 1 / (1 + dmgReduction / 5000);
+}
+
+export function calculateCombatPower(c: Combat): Decimal {
+    const maxMeleeDmg = new Decimal(c.maxMeleeDmg);
+    const maxRangedDmg = new Decimal(c.maxRangedDmg);
+    const maxMagicDmg = new Decimal(c.maxMagicDmg);
+
+    const atkSpd = new Decimal(c.atkSpd);
+    const critChance = new Decimal(c.critChance);
+    const critMultiplier = new Decimal(c.critMultiplier);
+    const acc = new Decimal(c.acc);
+    const eva = new Decimal(c.eva);
+    const dmgReduction = new Decimal(c.dmgReduction);
+    const magicDmgReduction = new Decimal(c.magicDmgReduction);
+    const hpRegenRate = new Decimal(c.hpRegenRate);
+    const hpRegenAmount = new Decimal(c.hpRegenAmount);
+    const maxHp = new Decimal(c.maxHp);
+
+    const relevantMaxDmg =
+        c.attackType === "Melee"
+            ? maxMeleeDmg
+            : c.attackType === "Ranged"
+                ? maxRangedDmg
+                : c.attackType === "Magic"
+                    ? maxMagicDmg
+                    : new Decimal(0);
+
+    // === OFFENSE SCORE ===
+    const cooldown = new Decimal(getAtkCooldownFromAtkSpd(atkSpd.toNumber())); // seconds
+    const attacksPerSecond = new Decimal(1).div(cooldown);
+    const averageHitDmg = relevantMaxDmg.mul(Decimal.add(1, critChance.mul(critMultiplier.minus(1))));
+    const dps = averageHitDmg.mul(attacksPerSecond);
+
+    // === ACCURACY & EVASION SCORE ===
+    const accuracyScore = acc.sqrt();
+    const evasionScore = eva.sqrt();
+
+    // === DEFENSE SCORE ===
+    const physMitigation = new Decimal(1).minus(
+        new Decimal(getPercentageDmgReduct(dmgReduction.toNumber()))
+    );
+    const magicMitigation = new Decimal(1).minus(
+        new Decimal(getPercentageDmgReduct(magicDmgReduction.toNumber()))
+    );
+    const avgMitigation = physMitigation.plus(magicMitigation).div(2);
+    const defenseScore = avgMitigation.mul(100); // scale to readable number
+
+    // === SUSTAIN SCORE ===
+    const sustainScore = hpRegenAmount.div(hpRegenRate); // heals per second
+
+    // === HP SCORE ===
+    const hpScore = maxHp.sqrt();
+
+    // === FINAL SCORE ===
+    const totalScore = dps.mul(10)
+        .plus(accuracyScore.mul(5))
+        .plus(evasionScore.mul(5))
+        .plus(defenseScore.mul(3))
+        .plus(sustainScore.mul(3))
+        .plus(hpScore.mul(2));
+
+    return totalScore.round();
 }

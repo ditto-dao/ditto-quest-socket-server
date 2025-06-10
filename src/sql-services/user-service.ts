@@ -1,9 +1,9 @@
 import { logger } from '../utils/logger';
-import { calculateCombatPower, calculateExpForNextLevel, calculateHpExpGained } from '../utils/helpers';
+import { calculateExpForNextLevel, calculateHpExpGained } from '../utils/helpers';
 import { prisma } from './client';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
 import { ABILITY_POINTS_PER_LEVEL, MAX_INITIAL_INVENTORY_SLOTS, MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
-import { getBaseMaxHpFromHpLvl, getBaseAccFromDex, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseEvaFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef } from '../managers/idle-managers/combat/combat-helpers';
+import { getBaseMaxHpFromHpLvl, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef, getBaseAccFromLuk, getBaseEvaFromDex, calculateCombatPower } from '../managers/idle-managers/combat/combat-helpers';
 
 // Interface for user input
 interface CreateUserInput {
@@ -1638,8 +1638,8 @@ export async function recalculateAndUpdateUserBaseStats(
         const newBaseStats = {
             maxHp: getBaseMaxHpFromHpLvl(hpLevel),
             atkSpd: getBaseAtkSpdFromLuk(luk),
-            acc: getBaseAccFromDex(dex),
-            eva: getBaseEvaFromLuk(luk),
+            acc: getBaseAccFromLuk(luk),
+            eva: getBaseEvaFromDex(dex),
             maxMeleeDmg: getBaseMaxDmg(str),
             maxRangedDmg: getBaseMaxDmg(dex),
             maxMagicDmg: getBaseMaxDmg(magic),

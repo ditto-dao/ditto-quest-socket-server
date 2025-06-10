@@ -1,7 +1,7 @@
 import { Combat } from "@prisma/client";
 import { DungeonWithMonsters, FullMonster } from "../../../sql-services/combat-service";
-import { calculateCombatPower } from "../../../utils/helpers";
 import { logger } from "../../../utils/logger";
+import { calculateCombatPower } from "./combat-helpers";
 
 export type DungeonState = {
     floor: number;

@@ -121,49 +121,6 @@ export function getColourHexByRarity(rarity: Rarity): string {
     return colourHex;
 }
 
-export function calculateCombatPower(c: Combat): Decimal {
-    const maxMeleeDmg = new Decimal(c.maxMeleeDmg);
-    const maxRangedDmg = new Decimal(c.maxRangedDmg);
-    const maxMagicDmg = new Decimal(c.maxMagicDmg);
-
-    const atkSpd = new Decimal(c.atkSpd);
-    const critChance = new Decimal(c.critChance);
-    const critMultiplier = new Decimal(c.critMultiplier);
-    const acc = new Decimal(c.acc);
-    const eva = new Decimal(c.eva);
-    const dmgReduction = new Decimal(c.dmgReduction);
-    const magicDmgReduction = new Decimal(c.magicDmgReduction);
-    const hpRegenRate = new Decimal(c.hpRegenRate);
-    const hpRegenAmount = new Decimal(c.hpRegenAmount);
-    const maxHp = new Decimal(c.maxHp);
-
-    const relevantMaxDmg =
-        c.attackType === "Melee" ? maxMeleeDmg :
-            c.attackType === "Ranged" ? maxRangedDmg :
-                c.attackType === "Magic" ? maxMagicDmg :
-                    new Decimal(0);
-
-    const critBonus = critChance.mul(critMultiplier.minus(1));
-    const offenseScore = relevantMaxDmg
-        .mul(new Decimal(1).plus(critBonus))
-        .mul(new Decimal(1).plus(atkSpd.div(10)));
-
-    const accuracyScore = acc.sqrt();
-    const evasionScore = eva.sqrt();
-    const defenseScore = dmgReduction.plus(magicDmgReduction);
-    const sustainScore = hpRegenRate.mul(hpRegenAmount).mul(0.1);
-    const hpScore = maxHp.sqrt();
-
-    const totalScore = offenseScore.mul(12)
-        .plus(accuracyScore.mul(5))
-        .plus(evasionScore.mul(5))
-        .plus(defenseScore.mul(4))
-        .plus(sustainScore.mul(2))
-        .plus(hpScore.mul(1.5));
-
-    return totalScore.round(); // return as Decimal
-}
-
 export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, userId: string, res: Partial<FullUserData> | UserDataEquipped | Prisma.UserGetPayload<{ include: { combat: true } }>) {
     socket.emit(USER_UPDATE_EVENT, {
         userId: userId,

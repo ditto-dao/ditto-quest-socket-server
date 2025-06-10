@@ -131,13 +131,13 @@ model Combat {
   id Int @id @default(autoincrement())
 
   attackType AttackType @default(Melee)
-  cp         Decimal    @default(699) @db.Decimal(65, 0)
+  cp         Decimal    @default(129) @db.Decimal(65, 0)
 
   hp                Float @default(100)
   maxHp             Float @default(100) @map("max_hp")
   atkSpd            Float @default(10) @map("atk_spd")
-  acc               Float @default(100) @map("acc")
-  eva               Float @default(100) @map("eva")
+  acc               Float @default(10) @map("acc")
+  eva               Float @default(10) @map("eva")
   maxMeleeDmg       Float @default(30) @map("max_melee_dmg")
   maxRangedDmg      Float @default(30) @map("max_ranged_dmg")
   maxMagicDmg       Float @default(30) @map("max_magic_dmg")

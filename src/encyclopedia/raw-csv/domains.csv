@@ -43,7 +43,7 @@ Domain_ID,Name,Description,Image Src,Min Level,Max Level,Avg GP/Kill,Sets to BE,
 22*0.1
 23*0.075
 24*0.05"
-5,Serpent’s Den,A nest of scaled horrors coils beneath the earth.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_4_Serpents_Den.png,,,695,107.914,8,468.750,75000,3750,"25*0.325
+5,Serpent’s Den,A nest of scaled horrors coils beneath the earth.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_4_Serpents_Den.png,,,695,143.885,8,625.000,100000,5000,"25*0.325
 26*0.225
 27*0.225
 28*0.1
@@ -54,7 +54,7 @@ Domain_ID,Name,Description,Image Src,Min Level,Max Level,Avg GP/Kill,Sets to BE,
 28*0.1
 29*0.075
 30*0.05"
-6,Humanoid Beasts,Savage lands stalked by cursed raiders and tribal warlords.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_5_Humanoid_Beasts.png,,,1180,105.932,10,625.000,125000,6250,"31*0.325
+6,Humanoid Beasts,Savage lands stalked by cursed raiders and tribal warlords.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_5_Humanoid_Beasts.png,,,1180,169.492,10,1000.000,200000,10000,"31*0.325
 32*0.225
 33*0.225
 34*0.1
@@ -65,7 +65,7 @@ Domain_ID,Name,Description,Image Src,Min Level,Max Level,Avg GP/Kill,Sets to BE,
 34*0.1
 35*0.075
 36*0.05"
-7,Ashen Ruins,Charred remnants of a lost empire guarded by flame and fury.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_6_Ashen_Waste.png,,,1376.666667,145.278,12,16666.667,200000,200000,"37*0.325
+7,Ashen Ruins,Charred remnants of a lost empire guarded by flame and fury.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_6_Ashen_Waste.png,,,1376.666667,290.557,12,1666.667,400000,20000,"37*0.325
 38*0.225
 39*0.225
 40*0.1

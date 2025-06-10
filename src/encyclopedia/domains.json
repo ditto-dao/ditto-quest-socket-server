@@ -4714,8 +4714,8 @@
     "name": "Serpent’s Den",
     "description": "A nest of scaled horrors coils beneath the earth.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_4_Serpents_Den.png",
-    "entryPriceGP": 75000,
-    "entryPriceDittoWei": "3750000000000",
+    "entryPriceGP": 100000,
+    "entryPriceDittoWei": "5000000000000",
     "minCombatLevel": null,
     "maxCombatLevel": null,
     "monsters": [
@@ -6088,8 +6088,8 @@
     "name": "Humanoid Beasts",
     "description": "Savage lands stalked by cursed raiders and tribal warlords.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_5_Humanoid_Beasts.png",
-    "entryPriceGP": 125000,
-    "entryPriceDittoWei": "6250000000000",
+    "entryPriceGP": 200000,
+    "entryPriceDittoWei": "10000000000000",
     "minCombatLevel": null,
     "maxCombatLevel": null,
     "monsters": [
@@ -7324,8 +7324,8 @@
     "name": "Ashen Ruins",
     "description": "Charred remnants of a lost empire guarded by flame and fury.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/domain-bg/dq-domains/Domain_6_Ashen_Waste.png",
-    "entryPriceGP": 200000,
-    "entryPriceDittoWei": "200000000000000",
+    "entryPriceGP": 400000,
+    "entryPriceDittoWei": "20000000000000",
     "minCombatLevel": null,
     "maxCombatLevel": null,
     "monsters": [

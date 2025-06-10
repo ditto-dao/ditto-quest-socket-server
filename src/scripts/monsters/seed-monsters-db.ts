@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { prisma } from "../../sql-services/client";
 import { logger } from "../../utils/logger";
-import { calculateCombatPower } from "../../utils/helpers";
+import { calculateCombatPower } from "../../managers/idle-managers/combat/combat-helpers";
 
 async function seedMonsters() {
   const monstersPath = path.join(__dirname, '../../encyclopedia/monsters.json');
