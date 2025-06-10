@@ -1,7 +1,7 @@
 import { logger } from "../../utils/logger";
 import { Socket as UserSocket, DefaultEventsMap } from "socket.io";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
-import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT } from "../events";
+import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT, ON_CHAIN_PRICE_UPDATE_RES_EVENT, READ_ON_CHAIN_PRICE_EVENT } from "../events";
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { SocketManager } from "../socket-manager";
 import { ENTER_DOMAIN_TRX_NOTE, ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
@@ -47,6 +47,15 @@ export async function setupDittoLedgerUserSocketHandlers(
             logger.error(`Failed to forward LEDGER_UPDATE_BALANCE_EVENT event: ${error}`);
         }
     });
+
+    userSocket.on(READ_ON_CHAIN_PRICE_EVENT, (userId: string) => {
+        try {
+            logger.info(`Received READ_ON_CHAIN_PRICE_EVENT for ${userId}`);
+            ledgerSocket.emit(READ_ON_CHAIN_PRICE_EVENT, userId);
+        } catch (error) {
+            logger.error(`Failed to forward READ_ON_CHAIN_PRICE_EVENT event: ${error}`);
+        }
+    });
 }
 
 export async function setupDittoLedgerSocketServerHandlers(
@@ -89,6 +98,15 @@ export async function setupDittoLedgerSocketServerHandlers(
                 logger.error(`Error forwarding balance update to ${res.userId}: ${error}`);
             }
         });
+    });
+
+    ledgerSocket.on(ON_CHAIN_PRICE_UPDATE_RES_EVENT, (res: { userId: string, payload: any }) => {
+        try {
+            logger.info(`Received ON_CHAIN_PRICE_UPDATE_RES_EVENT for ${res.userId}`);
+            socketManager.emitEvent(res.userId, ON_CHAIN_PRICE_UPDATE_RES_EVENT, res);
+        } catch (error) {
+            logger.error(`Failed to forward on-chain price from ledger socket for user ${res.userId}: ${error}`);
+        }
     });
 
     ledgerSocket.on(LEDGER_BALANCE_ERROR_RES_EVENT, (res: { userId: string, msg: string }) => {

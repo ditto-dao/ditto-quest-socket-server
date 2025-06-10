@@ -88,3 +88,8 @@ export const LEDGER_USER_ERROR_RES_EVENT = 'ditto-ledger-socket-user-error';
 export const MISSION_UPDATE = 'mission-update';
 
 export const GET_NEXT_MISSION = 'refresh-mission';
+
+// On-chain price
+export const READ_ON_CHAIN_PRICE_EVENT = 'ditto-ledger-read-on-chain-price';
+
+export const ON_CHAIN_PRICE_UPDATE_RES_EVENT = 'ditto-ledger-on-chain-price-update';
