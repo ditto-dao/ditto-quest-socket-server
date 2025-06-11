@@ -129,8 +129,9 @@ export async function setupDittoLedgerSocketServerHandlers(
 
     ledgerSocket.on("disconnect", async () => {
         try {
-            socketManager.disconnectAllUsers();
             await idleManager.saveAllUsersIdleActivities();
+            
+            socketManager.disconnectAllUsers();
         } catch (error) {
             logger.error(`Error disconnecting all users`);
         }

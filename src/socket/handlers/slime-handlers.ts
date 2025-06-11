@@ -1,7 +1,7 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { burnSlime, fetchSlimeObjectWithTraits, slimeGachaPull } from "../../sql-services/slime"
+import { burnSlime, fetchSlimeObjectWithTraits, getSlimeWithTraitsById, slimeGachaPull, SlimeWithTraits } from "../../sql-services/slime"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
 import { SocketManager } from "../socket-manager"
 import { IdleBreedingManager } from "../../managers/idle-managers/breeding-idle-manager"
@@ -9,7 +9,8 @@ import { SLIME_GACHA_PRICE_GOLD } from "../../utils/transaction-config"
 import { incrementUserGoldBalance } from "../../sql-services/user-service"
 import { globalIdleSocketUserLock } from "../socket-handlers"
 import { emitMissionUpdate, updateGachaMission } from "../../sql-services/missions"
-import { getHighestDominantTraitRarity } from "../../utils/helpers"
+import { getHighestDominantTraitRarity, getSlimeSellAmountGP } from "../../utils/helpers"
+import { USER_UPDATE_EVENT } from "../events"
 
 interface BurnSlimeRequest {
     userId: string,
@@ -55,9 +56,9 @@ export async function setupSlimeSocketHandlers(
                         slimeNoBg: res.slimeNoBg
                     }
                 })
-                
-                await updateGachaMission(userId, getHighestDominantTraitRarity(res.slime), 1);
-                await emitMissionUpdate(socket, userId);
+
+                await updateGachaMission(userId, getHighestDominantTraitRarity(res.slime), 1)
+                await emitMissionUpdate(socket, userId)
             }).catch(async err => {
                 logger.error(`Error processing mint-gen-0-slime: ${err}`)
                 socket.emit('mint-slime-error', {
@@ -73,17 +74,41 @@ export async function setupSlimeSocketHandlers(
     })
 
     socket.on("burn-slime", async (data: BurnSlimeRequest) => {
+        let slime: SlimeWithTraits | null = null
+
         try {
             logger.info(`Received burn-slime event from user ${data.userId}`)
 
-            const res = await burnSlime(data.userId.toString(), data.slimeId)
+            slime = await getSlimeWithTraitsById(data.slimeId)
+            if (slime === null) throw new Error(`Slime not found`)
 
-            socket.emit("slime-burn-update", {
-                userId: data.userId,
-                payload: res
+            await incrementUserGoldBalance(data.userId, getSlimeSellAmountGP(slime)).catch(err => {
+                logger.error(`Error deducting ${SLIME_GACHA_PRICE_GOLD} gold from user balance: ${err}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: `Failed to increment gold balance`
+                })
+                throw err
+            }).then(goldBalance => {
+                socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
+                    userId: data.userId,
+                    payload: {
+                        goldBalance
+                    }
+                });
             })
+
+            await burnSlime(data.userId.toString(), data.slimeId)
         } catch (error) {
             logger.error(`Error processing burn-slime: ${error}`)
+
+            if (slime) {
+                socket.emit("update-slime-inventory", {
+                    userId: data.userId,
+                    payload: slime
+                })
+            }
+
             socket.emit('error', {
                 userId: data.userId,
                 msg: 'Failed to burn slime'
@@ -96,27 +121,11 @@ export async function setupSlimeSocketHandlers(
             try {
                 logger.info(`Received breed-slimes event from user ${data.userId}`)
 
-                const sire = await fetchSlimeObjectWithTraits(data.sireId);
-                const dame = await fetchSlimeObjectWithTraits(data.dameId);
+                const sire = await fetchSlimeObjectWithTraits(data.sireId)
+                const dame = await fetchSlimeObjectWithTraits(data.dameId)
 
-                IdleBreedingManager.startBreeding(socketManager, idleManager, data.userId, sire, dame, Date.now());
+                IdleBreedingManager.startBreeding(socketManager, idleManager, data.userId, sire, dame, Date.now())
 
-            } catch (error) {
-                logger.error(`Error processing breed-slime: ${error}`)
-                socket.emit('error', {
-                    userId: data.userId,
-                    msg: 'Failed to breed slime'
-                })
-            }
-        });
-    })
-
-    socket.on("stop-breed-slimes", async (data: BreedSlimeRequest) => {
-        await globalIdleSocketUserLock.acquire(data.userId, async () => {
-            try {
-                logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
-
-                IdleBreedingManager.stopBreeding(idleManager, data.userId);
             } catch (error) {
                 logger.error(`Error processing breed-slime: ${error}`)
                 socket.emit('error', {
@@ -125,5 +134,21 @@ export async function setupSlimeSocketHandlers(
                 })
             }
         })
-    });
+    })
+
+    socket.on("stop-breed-slimes", async (data: BreedSlimeRequest) => {
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
+
+                IdleBreedingManager.stopBreeding(idleManager, data.userId)
+            } catch (error) {
+                logger.error(`Error processing breed-slime: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to breed slime'
+                })
+            }
+        })
+    })
 }

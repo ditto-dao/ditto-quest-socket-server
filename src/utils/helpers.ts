@@ -97,6 +97,48 @@ export function getHighestDominantTraitRarity(slime: SlimeWithTraits): Rarity {
     return highestRarity;
 }
 
+export function getSRankDominantTraitCount(slime: SlimeWithTraits): number {
+    const rarityRank: Record<Rarity, number> = {
+        [Rarity.S]: 5,
+        [Rarity.A]: 4,
+        [Rarity.B]: 3,
+        [Rarity.C]: 2,
+        [Rarity.D]: 1,
+    };
+
+    const dominantTraits = [
+        slime.BodyDominant,
+        slime.PatternDominant,
+        slime.PrimaryColourDominant,
+        slime.AccentDominant,
+        slime.DetailDominant,
+        slime.EyeColourDominant,
+        slime.EyeShapeDominant,
+        slime.MouthDominant,
+    ];
+
+    let sRankCount = 0;
+
+    for (const trait of dominantTraits) {
+        if (trait.rarity === Rarity.S) sRankCount++;
+    }
+
+    return sRankCount;
+}
+
+export function getSlimeSellAmountGP(slime: SlimeWithTraits) {
+    const rarity = getHighestDominantTraitRarity(slime);
+    if (rarity == "S") {
+        if (getSRankDominantTraitCount(slime) >= 3) return 50000;
+        else return 25000;
+    }
+    else if (rarity == "A") return 10000;
+    else if (rarity == "B") return 5000;
+    else if (rarity == "C") return 2500;
+    else if (rarity == "D") return 1000;
+    else return 0;
+}
+
 export function toCamelCase(input: string): string {
     return input
         .toLowerCase() // Convert the string to lowercase
@@ -186,4 +228,4 @@ export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, Default
 
 export function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}

@@ -1,14 +1,18 @@
 import { logger } from '../utils/logger'
 import { Server as SocketServer } from "socket.io"
-import { DISCONNECT_USER_EVENT } from './events'
+import { DISCONNECT_USER_EVENT, LEDGER_REMOVE_USER_SOCKET_EVENT } from './events'
+import { Socket as DittoLedgerSocket } from "socket.io-client"
 
 export class SocketManager {
     private io: SocketServer
+    private dittoLedgerSocket: DittoLedgerSocket
+
     private socketIdByUser: Record<string, string> = {}
     private botIds: string[] = []
 
-    constructor(io: SocketServer) {
+    constructor(io: SocketServer, dittoLedgerSocket: DittoLedgerSocket) {
         this.io = io
+        this.dittoLedgerSocket = dittoLedgerSocket
     }
 
     isUserSocketCached(userId: string) {
@@ -69,21 +73,37 @@ export class SocketManager {
         }
     }
 
-    disconnectAllUsers() {
+    async disconnectAllUsers() {
         for (const userId of Object.keys(this.socketIdByUser)) {
             this.emitEvent(userId, DISCONNECT_USER_EVENT, userId);
             this.removeSocketIdCacheForUser(userId);
+            this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString())
         }
     }
 
-    disconnectUsersBySocketId(socketId: string) {
-        // Find and remove userId from cache
-        const userId = Object.entries(this.socketIdByUser).find(([, sid]) => sid === socketId)?.[0];
-        if (userId) {
-            this.emitEvent(userId, DISCONNECT_USER_EVENT, userId);
-            this.removeSocketIdCacheForUser(userId);
-            logger.info(`Removed socketId cache for user ${userId} during disconnect.`);
+    async disconnectUsersBySocketId(socketId: string) {
+        // Find all userIds matching this socketId
+        const userIds = Object.entries(this.socketIdByUser)
+            .filter(([, sid]) => sid === socketId)
+            .map(([userId]) => userId);
+
+        if (userIds.length === 0) {
+            logger.warn(`No users found for socketId ${socketId}`);
+            return [];
         }
+
+        for (const userId of userIds) {
+            try {
+                this.emitEvent(userId, DISCONNECT_USER_EVENT, userId);
+                this.removeSocketIdCacheForUser(userId);
+                this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+                logger.info(`Removed socketId cache for user ${userId} during disconnect.`);
+            } catch (err) {
+                logger.error(`Failed to disconnect user ${userId} for socketId ${socketId}: ${err}`);
+            }
+        }
+
+        return userIds;
     }
 
     emitEvent(userId: string, name: string, params: any) {

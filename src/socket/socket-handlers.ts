@@ -55,7 +55,10 @@ export async function setupSocketHandlers(
         socket.on("disconnect", async () => {
             try {
                 logger.info(`Adapter disconnected.`);
-                socketManager.disconnectUsersBySocketId(socket.id);
+                const userIds = await socketManager.disconnectUsersBySocketId(socket.id);
+                for (const userId of userIds) {
+                    await idleManager.saveAllIdleActivitiesOnLogout(userId);
+                }
             } catch (error) {
                 logger.error(`Error disconnecting all users associated with adapter.`);
             }

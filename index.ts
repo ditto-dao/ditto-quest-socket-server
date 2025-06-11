@@ -51,11 +51,11 @@ async function main() {
     })
 
     // Socket manager
-    const socketManager = new SocketManager(dqIo)
+    const socketManager = new SocketManager(dqIo, dittoLedgerSocket)
 
     // Idle manager
     const combatManager = new IdleCombatManager(socketManager, dittoLedgerSocket)
-    const idleManager = new IdleManager(redisClient, socketManager, dittoLedgerSocket);
+    const idleManager = new IdleManager(redisClient, socketManager, dittoLedgerSocket)
 
     // Validate login manager
     const validateLoginManager = new ValidateLoginManager(dittoLedgerSocket, socketManager, idleManager, combatManager)
