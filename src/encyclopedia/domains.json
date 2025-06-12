@@ -24,8 +24,8 @@
           "hpLevel": 1,
           "maxHp": 100,
           "atkSpd": 10,
-          "acc": 100,
-          "eva": 100,
+          "acc": 10,
+          "eva": 10,
           "maxMeleeDmg": 30,
           "maxRangedDmg": 30,
           "maxMagicDmg": 30,
@@ -44,12 +44,12 @@
           "combat": {
             "id": 1,
             "attackType": "Melee",
-            "cp": "979",
+            "cp": "129",
             "hp": 100,
             "maxHp": 100,
             "atkSpd": 10,
-            "acc": 100,
-            "eva": 100,
+            "acc": 10,
+            "eva": 10,
             "maxMeleeDmg": 30,
             "maxRangedDmg": 30,
             "maxMagicDmg": 30,
@@ -70,7 +70,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 255,
+              "id": 509,
               "monsterId": 1,
               "itemId": 25,
               "equipmentId": null,
@@ -111,8 +111,8 @@
           "hpLevel": 2,
           "maxHp": 200,
           "atkSpd": 10,
-          "acc": 214.3546925072586,
-          "eva": 100,
+          "acc": 10,
+          "eva": 20.70529847682755,
           "maxMeleeDmg": 42.49009585424942,
           "maxRangedDmg": 42.49009585424942,
           "maxMagicDmg": 42.49009585424942,
@@ -131,12 +131,12 @@
           "combat": {
             "id": 2,
             "attackType": "Ranged",
-            "cp": "1469",
+            "cp": "177",
             "hp": 200,
             "maxHp": 200,
             "atkSpd": 10,
-            "acc": 214.3546925072586,
-            "eva": 100,
+            "acc": 10,
+            "eva": 20.70529847682755,
             "maxMeleeDmg": 42.49009585424942,
             "maxRangedDmg": 42.49009585424942,
             "maxMagicDmg": 42.49009585424942,
@@ -157,7 +157,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 256,
+              "id": 510,
               "monsterId": 2,
               "itemId": 25,
               "equipmentId": null,
@@ -198,8 +198,8 @@
           "hpLevel": 2,
           "maxHp": 200,
           "atkSpd": 30,
-          "acc": 214.3546925072586,
-          "eva": 316.9401925648613,
+          "acc": 33.48369522101714,
+          "eva": 20.70529847682755,
           "maxMeleeDmg": 42.49009585424942,
           "maxRangedDmg": 42.49009585424942,
           "maxMagicDmg": 53.15338559949186,
@@ -218,12 +218,12 @@
           "combat": {
             "id": 3,
             "attackType": "Magic",
-            "cp": "3188",
+            "cp": "219",
             "hp": 200,
             "maxHp": 200,
             "atkSpd": 30,
-            "acc": 214.3546925072586,
-            "eva": 316.9401925648613,
+            "acc": 33.48369522101714,
+            "eva": 20.70529847682755,
             "maxMeleeDmg": 42.49009585424942,
             "maxRangedDmg": 42.49009585424942,
             "maxMagicDmg": 53.15338559949186,
@@ -244,7 +244,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 257,
+              "id": 511,
               "monsterId": 3,
               "itemId": 25,
               "equipmentId": null,
@@ -285,8 +285,8 @@
           "hpLevel": 3,
           "maxHp": 300,
           "atkSpd": 70,
-          "acc": 334.8369522101714,
-          "eva": 771.5302207814954,
+          "acc": 85.03698308273471,
+          "eva": 31.69401925648614,
           "maxMeleeDmg": 53.15338559949186,
           "maxRangedDmg": 53.15338559949186,
           "maxMagicDmg": 53.15338559949186,
@@ -305,12 +305,12 @@
           "combat": {
             "id": 4,
             "attackType": "Melee",
-            "cp": "6116",
+            "cp": "252",
             "hp": 300,
             "maxHp": 300,
             "atkSpd": 70,
-            "acc": 334.8369522101714,
-            "eva": 771.5302207814954,
+            "acc": 85.03698308273471,
+            "eva": 31.69401925648614,
             "maxMeleeDmg": 53.15338559949186,
             "maxRangedDmg": 53.15338559949186,
             "maxMagicDmg": 53.15338559949186,
@@ -331,7 +331,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 258,
+              "id": 512,
               "monsterId": 4,
               "itemId": 25,
               "equipmentId": null,
@@ -372,8 +372,8 @@
           "hpLevel": 4,
           "maxHp": 400,
           "atkSpd": 70,
-          "acc": 587.3094715440095,
-          "eva": 771.5302207814954,
+          "acc": 85.03698308273471,
+          "eva": 54.18991933671841,
           "maxMeleeDmg": 62.78031643091577,
           "maxRangedDmg": 71.70338627200096,
           "maxMagicDmg": 62.78031643091577,
@@ -392,12 +392,12 @@
           "combat": {
             "id": 5,
             "attackType": "Ranged",
-            "cp": "8341",
+            "cp": "317",
             "hp": 400,
             "maxHp": 400,
             "atkSpd": 70,
-            "acc": 587.3094715440095,
-            "eva": 771.5302207814954,
+            "acc": 85.03698308273471,
+            "eva": 54.18991933671841,
             "maxMeleeDmg": 62.78031643091577,
             "maxRangedDmg": 71.70338627200096,
             "maxMagicDmg": 62.78031643091577,
@@ -418,7 +418,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 259,
+              "id": 513,
               "monsterId": 5,
               "itemId": 25,
               "equipmentId": null,
@@ -459,8 +459,8 @@
           "hpLevel": 5,
           "maxHp": 500,
           "atkSpd": 110,
-          "acc": 587.3094715440095,
-          "eva": 1240.116024573616,
+          "acc": 139.8079776731155,
+          "eva": 54.18991933671841,
           "maxMeleeDmg": 71.70338627200096,
           "maxRangedDmg": 71.70338627200096,
           "maxMagicDmg": 88.09057554245443,
@@ -479,12 +479,12 @@
           "combat": {
             "id": 6,
             "attackType": "Magic",
-            "cp": "14583",
+            "cp": "383",
             "hp": 500,
             "maxHp": 500,
             "atkSpd": 110,
-            "acc": 587.3094715440095,
-            "eva": 1240.116024573616,
+            "acc": 139.8079776731155,
+            "eva": 54.18991933671841,
             "maxMeleeDmg": 71.70338627200096,
             "maxRangedDmg": 71.70338627200096,
             "maxMagicDmg": 88.09057554245443,
@@ -505,7 +505,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 260,
+              "id": 514,
               "monsterId": 6,
               "itemId": 25,
               "equipmentId": null,
@@ -558,8 +558,8 @@
           "hpLevel": 1,
           "maxHp": 100,
           "atkSpd": 10,
-          "acc": 100,
-          "eva": 100,
+          "acc": 10,
+          "eva": 10,
           "maxMeleeDmg": 30,
           "maxRangedDmg": 30,
           "maxMagicDmg": 30,
@@ -578,12 +578,12 @@
           "combat": {
             "id": 7,
             "attackType": "Melee",
-            "cp": "1397",
+            "cp": "165",
             "hp": 129,
             "maxHp": 129,
             "atkSpd": 11.9,
-            "acc": 114,
-            "eva": 123,
+            "acc": 11.4,
+            "eva": 12.3,
             "maxMeleeDmg": 42.00000000000001,
             "maxRangedDmg": 34.8,
             "maxMagicDmg": 38.99999999999999,
@@ -604,7 +604,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 265,
+              "id": 519,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 81,
@@ -628,7 +628,7 @@
               }
             },
             {
-              "id": 266,
+              "id": 520,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 82,
@@ -652,7 +652,7 @@
               }
             },
             {
-              "id": 267,
+              "id": 521,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 101,
@@ -676,7 +676,7 @@
               }
             },
             {
-              "id": 268,
+              "id": 522,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 102,
@@ -700,7 +700,7 @@
               }
             },
             {
-              "id": 261,
+              "id": 515,
               "monsterId": 7,
               "itemId": 1,
               "equipmentId": null,
@@ -723,7 +723,7 @@
               "equipment": null
             },
             {
-              "id": 262,
+              "id": 516,
               "monsterId": 7,
               "itemId": 2,
               "equipmentId": null,
@@ -746,7 +746,7 @@
               "equipment": null
             },
             {
-              "id": 264,
+              "id": 518,
               "monsterId": 7,
               "itemId": 25,
               "equipmentId": null,
@@ -769,7 +769,7 @@
               "equipment": null
             },
             {
-              "id": 263,
+              "id": 517,
               "monsterId": 7,
               "itemId": 26,
               "equipmentId": null,
@@ -810,8 +810,8 @@
           "hpLevel": 1,
           "maxHp": 100,
           "atkSpd": 20,
-          "acc": 214.3546925072586,
-          "eva": 207.0529847682755,
+          "acc": 21.43546925072586,
+          "eva": 20.70529847682755,
           "maxMeleeDmg": 42.49009585424942,
           "maxRangedDmg": 42.49009585424942,
           "maxMagicDmg": 42.49009585424942,
@@ -830,12 +830,12 @@
           "combat": {
             "id": 8,
             "attackType": "Ranged",
-            "cp": "2640",
+            "cp": "210",
             "hp": 129,
             "maxHp": 129,
             "atkSpd": 24.8,
-            "acc": 287.2352879597266,
-            "eva": 262.9572906557099,
+            "acc": 28.72352879597266,
+            "eva": 26.29572906557099,
             "maxMeleeDmg": 67.98415336679908,
             "maxRangedDmg": 51.83791694218429,
             "maxMagicDmg": 56.51182748615172,
@@ -856,7 +856,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 273,
+              "id": 527,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 81,
@@ -880,7 +880,7 @@
               }
             },
             {
-              "id": 274,
+              "id": 528,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 82,
@@ -904,7 +904,7 @@
               }
             },
             {
-              "id": 275,
+              "id": 529,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 101,
@@ -928,7 +928,7 @@
               }
             },
             {
-              "id": 276,
+              "id": 530,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 102,
@@ -952,7 +952,7 @@
               }
             },
             {
-              "id": 269,
+              "id": 523,
               "monsterId": 8,
               "itemId": 1,
               "equipmentId": null,
@@ -975,7 +975,7 @@
               "equipment": null
             },
             {
-              "id": 270,
+              "id": 524,
               "monsterId": 8,
               "itemId": 2,
               "equipmentId": null,
@@ -998,7 +998,7 @@
               "equipment": null
             },
             {
-              "id": 272,
+              "id": 526,
               "monsterId": 8,
               "itemId": 25,
               "equipmentId": null,
@@ -1021,7 +1021,7 @@
               "equipment": null
             },
             {
-              "id": 271,
+              "id": 525,
               "monsterId": 8,
               "itemId": 26,
               "equipmentId": null,
@@ -1062,8 +1062,8 @@
           "hpLevel": 1,
           "maxHp": 100,
           "atkSpd": 20,
-          "acc": 214.3546925072586,
-          "eva": 207.0529847682755,
+          "acc": 21.43546925072586,
+          "eva": 20.70529847682755,
           "maxMeleeDmg": 42.49009585424942,
           "maxRangedDmg": 42.49009585424942,
           "maxMagicDmg": 42.49009585424942,
@@ -1082,12 +1082,12 @@
           "combat": {
             "id": 9,
             "attackType": "Magic",
-            "cp": "2515",
+            "cp": "221",
             "hp": 133,
             "maxHp": 133,
             "atkSpd": 20,
-            "acc": 317.2449449107428,
-            "eva": 308.5089473047305,
+            "acc": 31.72449449107428,
+            "eva": 30.85089473047305,
             "maxMeleeDmg": 52.26281790072678,
             "maxRangedDmg": 56.93672844469423,
             "maxMagicDmg": 54.81222365198175,
@@ -1108,7 +1108,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 281,
+              "id": 535,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 81,
@@ -1132,7 +1132,7 @@
               }
             },
             {
-              "id": 282,
+              "id": 536,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 82,
@@ -1156,7 +1156,7 @@
               }
             },
             {
-              "id": 283,
+              "id": 537,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 101,
@@ -1180,7 +1180,7 @@
               }
             },
             {
-              "id": 284,
+              "id": 538,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 102,
@@ -1204,7 +1204,7 @@
               }
             },
             {
-              "id": 277,
+              "id": 531,
               "monsterId": 9,
               "itemId": 1,
               "equipmentId": null,
@@ -1227,7 +1227,7 @@
               "equipment": null
             },
             {
-              "id": 278,
+              "id": 532,
               "monsterId": 9,
               "itemId": 2,
               "equipmentId": null,
@@ -1250,7 +1250,7 @@
               "equipment": null
             },
             {
-              "id": 280,
+              "id": 534,
               "monsterId": 9,
               "itemId": 25,
               "equipmentId": null,
@@ -1273,7 +1273,7 @@
               "equipment": null
             },
             {
-              "id": 279,
+              "id": 533,
               "monsterId": 9,
               "itemId": 26,
               "equipmentId": null,
@@ -1314,8 +1314,8 @@
           "hpLevel": 2,
           "maxHp": 200,
           "atkSpd": 30,
-          "acc": 214.3546925072586,
-          "eva": 316.9401925648613,
+          "acc": 33.48369522101714,
+          "eva": 20.70529847682755,
           "maxMeleeDmg": 71.70338627200096,
           "maxRangedDmg": 42.49009585424942,
           "maxMagicDmg": 42.49009585424942,
@@ -1334,12 +1334,12 @@
           "combat": {
             "id": 10,
             "attackType": "Melee",
-            "cp": "5675",
+            "cp": "343",
             "hp": 278,
             "maxHp": 278,
             "atkSpd": 33,
-            "acc": 308.6707572104525,
-            "eva": 450.0550734421031,
+            "acc": 48.21652111826468,
+            "eva": 29.40152383709512,
             "maxMeleeDmg": 96.08253760448129,
             "maxRangedDmg": 56.51182748615173,
             "maxMagicDmg": 62.88534186428913,
@@ -1360,7 +1360,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 289,
+              "id": 543,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 81,
@@ -1384,7 +1384,7 @@
               }
             },
             {
-              "id": 290,
+              "id": 544,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 82,
@@ -1408,7 +1408,7 @@
               }
             },
             {
-              "id": 291,
+              "id": 545,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 101,
@@ -1432,7 +1432,7 @@
               }
             },
             {
-              "id": 292,
+              "id": 546,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 102,
@@ -1456,7 +1456,7 @@
               }
             },
             {
-              "id": 285,
+              "id": 539,
               "monsterId": 10,
               "itemId": 1,
               "equipmentId": null,
@@ -1479,7 +1479,7 @@
               "equipment": null
             },
             {
-              "id": 286,
+              "id": 540,
               "monsterId": 10,
               "itemId": 2,
               "equipmentId": null,
@@ -1502,7 +1502,7 @@
               "equipment": null
             },
             {
-              "id": 288,
+              "id": 542,
               "monsterId": 10,
               "itemId": 25,
               "equipmentId": null,
@@ -1525,7 +1525,7 @@
               "equipment": null
             },
             {
-              "id": 287,
+              "id": 541,
               "monsterId": 10,
               "itemId": 26,
               "equipmentId": null,
@@ -1566,8 +1566,8 @@
           "hpLevel": 2,
           "maxHp": 200,
           "atkSpd": 40,
-          "acc": 717.7387193107894,
-          "eva": 428.7093850145172,
+          "acc": 45.9479341998814,
+          "eva": 65.62341286358655,
           "maxMeleeDmg": 53.15338559949186,
           "maxRangedDmg": 80.10288172814386,
           "maxMagicDmg": 53.15338559949186,
@@ -1586,12 +1586,12 @@
           "combat": {
             "id": 11,
             "attackType": "Ranged",
-            "cp": "8064",
+            "cp": "382",
             "hp": 294,
             "maxHp": 294,
             "atkSpd": 49.59999999999999,
-            "acc": 968.9472710695658,
-            "eva": 630.2027959713404,
+            "acc": 62.0297111698399,
+            "eva": 96.46641690947224,
             "maxMeleeDmg": 89.82922166314125,
             "maxRangedDmg": 99.32757334289839,
             "maxMagicDmg": 72.82013827130385,
@@ -1612,7 +1612,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 297,
+              "id": 551,
               "monsterId": 11,
               "itemId": null,
               "equipmentId": 83,
@@ -1636,7 +1636,7 @@
               }
             },
             {
-              "id": 298,
+              "id": 552,
               "monsterId": 11,
               "itemId": null,
               "equipmentId": 103,
@@ -1660,7 +1660,7 @@
               }
             },
             {
-              "id": 293,
+              "id": 547,
               "monsterId": 11,
               "itemId": 1,
               "equipmentId": null,
@@ -1683,7 +1683,7 @@
               "equipment": null
             },
             {
-              "id": 294,
+              "id": 548,
               "monsterId": 11,
               "itemId": 2,
               "equipmentId": null,
@@ -1706,7 +1706,7 @@
               "equipment": null
             },
             {
-              "id": 296,
+              "id": 550,
               "monsterId": 11,
               "itemId": 25,
               "equipmentId": null,
@@ -1729,7 +1729,7 @@
               "equipment": null
             },
             {
-              "id": 295,
+              "id": 549,
               "monsterId": 11,
               "itemId": 26,
               "equipmentId": null,
@@ -1770,8 +1770,8 @@
           "hpLevel": 3,
           "maxHp": 300,
           "atkSpd": 50,
-          "acc": 459.479341998814,
-          "eva": 541.8991933671841,
+          "acc": 58.73094715440096,
+          "eva": 42.87093850145173,
           "maxMeleeDmg": 62.78031643091577,
           "maxRangedDmg": 62.78031643091577,
           "maxMagicDmg": 88.09057554245443,
@@ -1790,12 +1790,12 @@
           "combat": {
             "id": 12,
             "attackType": "Magic",
-            "cp": "12420",
+            "cp": "502",
             "hp": 354,
             "maxHp": 354,
             "atkSpd": 55,
-            "acc": 675.4346327382568,
-            "eva": 845.3627416528074,
+            "acc": 86.33449231696942,
+            "eva": 66.8786640622647,
             "maxMeleeDmg": 84.75342718173628,
             "maxRangedDmg": 93.5426714820645,
             "maxMagicDmg": 143.5876381342007,
@@ -1816,7 +1816,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 303,
+              "id": 557,
               "monsterId": 12,
               "itemId": null,
               "equipmentId": 83,
@@ -1840,7 +1840,7 @@
               }
             },
             {
-              "id": 304,
+              "id": 558,
               "monsterId": 12,
               "itemId": null,
               "equipmentId": 103,
@@ -1864,7 +1864,7 @@
               }
             },
             {
-              "id": 299,
+              "id": 553,
               "monsterId": 12,
               "itemId": 1,
               "equipmentId": null,
@@ -1887,7 +1887,7 @@
               "equipment": null
             },
             {
-              "id": 300,
+              "id": 554,
               "monsterId": 12,
               "itemId": 2,
               "equipmentId": null,
@@ -1910,7 +1910,7 @@
               "equipment": null
             },
             {
-              "id": 302,
+              "id": 556,
               "monsterId": 12,
               "itemId": 25,
               "equipmentId": null,
@@ -1933,7 +1933,7 @@
               "equipment": null
             },
             {
-              "id": 301,
+              "id": 555,
               "monsterId": 12,
               "itemId": 26,
               "equipmentId": null,
@@ -1986,8 +1986,8 @@
           "hpLevel": 3,
           "maxHp": 300,
           "atkSpd": 50,
-          "acc": 587.3094715440095,
-          "eva": 541.8991933671841,
+          "acc": 58.73094715440096,
+          "eva": 54.18991933671841,
           "maxMeleeDmg": 71.70338627200096,
           "maxRangedDmg": 71.70338627200096,
           "maxMagicDmg": 71.70338627200096,
@@ -2006,12 +2006,12 @@
           "combat": {
             "id": 13,
             "attackType": "Melee",
-            "cp": "14305",
+            "cp": "578",
             "hp": 477,
             "maxHp": 477,
             "atkSpd": 54,
-            "acc": 863.3449231696941,
-            "eva": 747.8208868467142,
+            "acc": 86.3344923169694,
+            "eva": 74.78208868467141,
             "maxMeleeDmg": 170.4039778198414,
             "maxRangedDmg": 91.78033442816123,
             "maxMagicDmg": 91.78033442816123,
@@ -2032,7 +2032,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 310,
+              "id": 564,
               "monsterId": 13,
               "itemId": null,
               "equipmentId": 83,
@@ -2056,7 +2056,7 @@
               }
             },
             {
-              "id": 311,
+              "id": 565,
               "monsterId": 13,
               "itemId": null,
               "equipmentId": 103,
@@ -2080,7 +2080,7 @@
               }
             },
             {
-              "id": 305,
+              "id": 559,
               "monsterId": 13,
               "itemId": 3,
               "equipmentId": null,
@@ -2103,7 +2103,7 @@
               "equipment": null
             },
             {
-              "id": 306,
+              "id": 560,
               "monsterId": 13,
               "itemId": 4,
               "equipmentId": null,
@@ -2126,7 +2126,7 @@
               "equipment": null
             },
             {
-              "id": 307,
+              "id": 561,
               "monsterId": 13,
               "itemId": 17,
               "equipmentId": null,
@@ -2149,7 +2149,7 @@
               "equipment": null
             },
             {
-              "id": 309,
+              "id": 563,
               "monsterId": 13,
               "itemId": 25,
               "equipmentId": null,
@@ -2172,7 +2172,7 @@
               "equipment": null
             },
             {
-              "id": 308,
+              "id": 562,
               "monsterId": 13,
               "itemId": 27,
               "equipmentId": null,
@@ -2213,8 +2213,8 @@
           "hpLevel": 4,
           "maxHp": 400,
           "atkSpd": 70,
-          "acc": 850.3698308273471,
-          "eva": 771.5302207814954,
+          "acc": 85.03698308273471,
+          "eva": 77.15302207814953,
           "maxMeleeDmg": 88.09057554245443,
           "maxRangedDmg": 88.09057554245443,
           "maxMagicDmg": 88.09057554245443,
@@ -2233,12 +2233,12 @@
           "combat": {
             "id": 14,
             "attackType": "Ranged",
-            "cp": "32784",
+            "cp": "709",
             "hp": 436,
             "maxHp": 436,
             "atkSpd": 114.1,
-            "acc": 1352.088031015482,
-            "eva": 1273.024864289468,
+            "acc": 135.2088031015482,
+            "eva": 127.3024864289467,
             "maxMeleeDmg": 200.6840884931626,
             "maxRangedDmg": 205.9449208679271,
             "maxMagicDmg": 141.8258266233516,
@@ -2259,7 +2259,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 317,
+              "id": 571,
               "monsterId": 14,
               "itemId": null,
               "equipmentId": 83,
@@ -2283,7 +2283,7 @@
               }
             },
             {
-              "id": 318,
+              "id": 572,
               "monsterId": 14,
               "itemId": null,
               "equipmentId": 103,
@@ -2307,7 +2307,7 @@
               }
             },
             {
-              "id": 312,
+              "id": 566,
               "monsterId": 14,
               "itemId": 3,
               "equipmentId": null,
@@ -2330,7 +2330,7 @@
               "equipment": null
             },
             {
-              "id": 313,
+              "id": 567,
               "monsterId": 14,
               "itemId": 4,
               "equipmentId": null,
@@ -2353,7 +2353,7 @@
               "equipment": null
             },
             {
-              "id": 314,
+              "id": 568,
               "monsterId": 14,
               "itemId": 17,
               "equipmentId": null,
@@ -2376,7 +2376,7 @@
               "equipment": null
             },
             {
-              "id": 316,
+              "id": 570,
               "monsterId": 14,
               "itemId": 25,
               "equipmentId": null,
@@ -2399,7 +2399,7 @@
               "equipment": null
             },
             {
-              "id": 315,
+              "id": 569,
               "monsterId": 14,
               "itemId": 27,
               "equipmentId": null,
@@ -2440,8 +2440,8 @@
           "hpLevel": 4,
           "maxHp": 400,
           "atkSpd": 70,
-          "acc": 850.3698308273471,
-          "eva": 771.5302207814954,
+          "acc": 85.03698308273471,
+          "eva": 77.15302207814953,
           "maxMeleeDmg": 88.09057554245443,
           "maxRangedDmg": 88.09057554245443,
           "maxMagicDmg": 88.09057554245443,
@@ -2460,12 +2460,12 @@
           "combat": {
             "id": 15,
             "attackType": "Magic",
-            "cp": "18341",
+            "cp": "573",
             "hp": 500,
             "maxHp": 500,
             "atkSpd": 77,
-            "acc": 1173.510366541739,
-            "eva": 1095.572913509724,
+            "acc": 117.3510366541739,
+            "eva": 109.5572913509723,
             "maxMeleeDmg": 147.1112611558989,
             "maxRangedDmg": 201.5649942485871,
             "maxMagicDmg": 157.4705021617944,
@@ -2486,7 +2486,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 324,
+              "id": 578,
               "monsterId": 15,
               "itemId": null,
               "equipmentId": 83,
@@ -2510,7 +2510,7 @@
               }
             },
             {
-              "id": 325,
+              "id": 579,
               "monsterId": 15,
               "itemId": null,
               "equipmentId": 103,
@@ -2534,7 +2534,7 @@
               }
             },
             {
-              "id": 319,
+              "id": 573,
               "monsterId": 15,
               "itemId": 3,
               "equipmentId": null,
@@ -2557,7 +2557,7 @@
               "equipment": null
             },
             {
-              "id": 320,
+              "id": 574,
               "monsterId": 15,
               "itemId": 4,
               "equipmentId": null,
@@ -2580,7 +2580,7 @@
               "equipment": null
             },
             {
-              "id": 321,
+              "id": 575,
               "monsterId": 15,
               "itemId": 17,
               "equipmentId": null,
@@ -2603,7 +2603,7 @@
               "equipment": null
             },
             {
-              "id": 323,
+              "id": 577,
               "monsterId": 15,
               "itemId": 25,
               "equipmentId": null,
@@ -2626,7 +2626,7 @@
               "equipment": null
             },
             {
-              "id": 322,
+              "id": 576,
               "monsterId": 15,
               "itemId": 27,
               "equipmentId": null,
@@ -2667,8 +2667,8 @@
           "hpLevel": 6,
           "maxHp": 600,
           "atkSpd": 110,
-          "acc": 1398.079776731155,
-          "eva": 1240.116024573616,
+          "acc": 139.8079776731155,
+          "eva": 124.0116024573616,
           "maxMeleeDmg": 117.1531333896823,
           "maxRangedDmg": 117.1531333896823,
           "maxMagicDmg": 117.1531333896823,
@@ -2687,12 +2687,12 @@
           "combat": {
             "id": 16,
             "attackType": "Melee",
-            "cp": "61541",
+            "cp": "939",
             "hp": 1062,
             "maxHp": 1062,
             "atkSpd": 173.8,
-            "acc": 2754.217160160375,
-            "eva": 2306.615805706926,
+            "acc": 275.4217160160375,
+            "eva": 230.6615805706927,
             "maxMeleeDmg": 259.4742014268726,
             "maxRangedDmg": 200.3318580963567,
             "maxMagicDmg": 307.5069861166423,
@@ -2713,7 +2713,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 331,
+              "id": 585,
               "monsterId": 16,
               "itemId": null,
               "equipmentId": 83,
@@ -2737,7 +2737,7 @@
               }
             },
             {
-              "id": 332,
+              "id": 586,
               "monsterId": 16,
               "itemId": null,
               "equipmentId": 103,
@@ -2761,7 +2761,7 @@
               }
             },
             {
-              "id": 326,
+              "id": 580,
               "monsterId": 16,
               "itemId": 3,
               "equipmentId": null,
@@ -2784,7 +2784,7 @@
               "equipment": null
             },
             {
-              "id": 327,
+              "id": 581,
               "monsterId": 16,
               "itemId": 4,
               "equipmentId": null,
@@ -2807,7 +2807,7 @@
               "equipment": null
             },
             {
-              "id": 328,
+              "id": 582,
               "monsterId": 16,
               "itemId": 17,
               "equipmentId": null,
@@ -2830,7 +2830,7 @@
               "equipment": null
             },
             {
-              "id": 330,
+              "id": 584,
               "monsterId": 16,
               "itemId": 25,
               "equipmentId": null,
@@ -2853,7 +2853,7 @@
               "equipment": null
             },
             {
-              "id": 329,
+              "id": 583,
               "monsterId": 16,
               "itemId": 27,
               "equipmentId": null,
@@ -2894,8 +2894,8 @@
           "hpLevel": 7,
           "maxHp": 700,
           "atkSpd": 130,
-          "acc": 1680.109887015082,
-          "eva": 1477.884587212278,
+          "acc": 168.0109887015082,
+          "eva": 147.7884587212278,
           "maxMeleeDmg": 130.4454343950954,
           "maxRangedDmg": 130.4454343950954,
           "maxMagicDmg": 130.4454343950954,
@@ -2914,12 +2914,12 @@
           "combat": {
             "id": 17,
             "attackType": "Ranged",
-            "cp": "112311",
+            "cp": "1076",
             "hp": 1197,
             "maxHp": 1197,
             "atkSpd": 288.6,
-            "acc": 2889.789005665941,
-            "eva": 2556.740335877242,
+            "acc": 288.9789005665941,
+            "eva": 255.6740335877241,
             "maxMeleeDmg": 327.4180403316896,
             "maxRangedDmg": 280.2349667519075,
             "maxMagicDmg": 306.5467708284743,
@@ -2940,7 +2940,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 338,
+              "id": 592,
               "monsterId": 17,
               "itemId": null,
               "equipmentId": 84,
@@ -2964,7 +2964,7 @@
               }
             },
             {
-              "id": 339,
+              "id": 593,
               "monsterId": 17,
               "itemId": null,
               "equipmentId": 104,
@@ -2988,7 +2988,7 @@
               }
             },
             {
-              "id": 333,
+              "id": 587,
               "monsterId": 17,
               "itemId": 3,
               "equipmentId": null,
@@ -3011,7 +3011,7 @@
               "equipment": null
             },
             {
-              "id": 334,
+              "id": 588,
               "monsterId": 17,
               "itemId": 4,
               "equipmentId": null,
@@ -3034,7 +3034,7 @@
               "equipment": null
             },
             {
-              "id": 335,
+              "id": 589,
               "monsterId": 17,
               "itemId": 17,
               "equipmentId": null,
@@ -3057,7 +3057,7 @@
               "equipment": null
             },
             {
-              "id": 337,
+              "id": 591,
               "monsterId": 17,
               "itemId": 25,
               "equipmentId": null,
@@ -3080,7 +3080,7 @@
               "equipment": null
             },
             {
-              "id": 336,
+              "id": 590,
               "monsterId": 17,
               "itemId": 27,
               "equipmentId": null,
@@ -3121,8 +3121,8 @@
           "hpLevel": 8,
           "maxHp": 800,
           "atkSpd": 150,
-          "acc": 1966.529134559625,
-          "eva": 1717.496346965384,
+          "acc": 196.6529134559625,
+          "eva": 171.7496346965384,
           "maxMeleeDmg": 143.1355010295025,
           "maxRangedDmg": 143.1355010295025,
           "maxMagicDmg": 143.1355010295025,
@@ -3141,12 +3141,12 @@
           "combat": {
             "id": 18,
             "attackType": "Magic",
-            "cp": "141521",
+            "cp": "1292",
             "hp": 2000,
             "maxHp": 2000,
             "atkSpd": 304.5,
-            "acc": 3913.392977773654,
-            "eva": 3314.767949643192,
+            "acc": 391.3392977773654,
+            "eva": 331.4767949643191,
             "maxMeleeDmg": 249.0557717913343,
             "maxRangedDmg": 314.0557717913343,
             "maxMagicDmg": 349.8396470487099,
@@ -3167,7 +3167,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 345,
+              "id": 599,
               "monsterId": 18,
               "itemId": null,
               "equipmentId": 84,
@@ -3191,7 +3191,7 @@
               }
             },
             {
-              "id": 346,
+              "id": 600,
               "monsterId": 18,
               "itemId": null,
               "equipmentId": 104,
@@ -3215,7 +3215,7 @@
               }
             },
             {
-              "id": 340,
+              "id": 594,
               "monsterId": 18,
               "itemId": 3,
               "equipmentId": null,
@@ -3238,7 +3238,7 @@
               "equipment": null
             },
             {
-              "id": 341,
+              "id": 595,
               "monsterId": 18,
               "itemId": 4,
               "equipmentId": null,
@@ -3261,7 +3261,7 @@
               "equipment": null
             },
             {
-              "id": 342,
+              "id": 596,
               "monsterId": 18,
               "itemId": 17,
               "equipmentId": null,
@@ -3284,7 +3284,7 @@
               "equipment": null
             },
             {
-              "id": 344,
+              "id": 598,
               "monsterId": 18,
               "itemId": 25,
               "equipmentId": null,
@@ -3307,7 +3307,7 @@
               "equipment": null
             },
             {
-              "id": 343,
+              "id": 597,
               "monsterId": 18,
               "itemId": 27,
               "equipmentId": null,
@@ -3360,8 +3360,8 @@
           "hpLevel": 8,
           "maxHp": 800,
           "atkSpd": 150,
-          "acc": 1966.529134559625,
-          "eva": 1717.496346965384,
+          "acc": 196.6529134559625,
+          "eva": 171.7496346965384,
           "maxMeleeDmg": 143.1355010295025,
           "maxRangedDmg": 143.1355010295025,
           "maxMagicDmg": 143.1355010295025,
@@ -3380,12 +3380,12 @@
           "combat": {
             "id": 19,
             "attackType": "Melee",
-            "cp": "131981",
+            "cp": "1158",
             "hp": 1296,
             "maxHp": 1296,
             "atkSpd": 316.5,
-            "acc": 3087.450741258612,
-            "eva": 2885.393862901846,
+            "acc": 308.7450741258612,
+            "eva": 288.5393862901846,
             "maxMeleeDmg": 306.1540916266139,
             "maxRangedDmg": 214.7032515442537,
             "maxMagicDmg": 239.0362867192691,
@@ -3406,7 +3406,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 352,
+              "id": 606,
               "monsterId": 19,
               "itemId": null,
               "equipmentId": 84,
@@ -3430,7 +3430,7 @@
               }
             },
             {
-              "id": 353,
+              "id": 607,
               "monsterId": 19,
               "itemId": null,
               "equipmentId": 104,
@@ -3454,7 +3454,7 @@
               }
             },
             {
-              "id": 347,
+              "id": 601,
               "monsterId": 19,
               "itemId": 5,
               "equipmentId": null,
@@ -3477,7 +3477,7 @@
               "equipment": null
             },
             {
-              "id": 348,
+              "id": 602,
               "monsterId": 19,
               "itemId": 6,
               "equipmentId": null,
@@ -3500,7 +3500,7 @@
               "equipment": null
             },
             {
-              "id": 349,
+              "id": 603,
               "monsterId": 19,
               "itemId": 18,
               "equipmentId": null,
@@ -3523,7 +3523,7 @@
               "equipment": null
             },
             {
-              "id": 351,
+              "id": 605,
               "monsterId": 19,
               "itemId": 25,
               "equipmentId": null,
@@ -3546,7 +3546,7 @@
               "equipment": null
             },
             {
-              "id": 350,
+              "id": 604,
               "monsterId": 19,
               "itemId": 28,
               "equipmentId": null,
@@ -3587,8 +3587,8 @@
           "hpLevel": 9,
           "maxHp": 900,
           "atkSpd": 180,
-          "acc": 2403.254452572564,
-          "eva": 2079.869710974852,
+          "acc": 240.3254452572564,
+          "eva": 207.9869710974852,
           "maxMeleeDmg": 161.2588343425082,
           "maxRangedDmg": 161.2588343425082,
           "maxMagicDmg": 161.2588343425082,
@@ -3607,12 +3607,12 @@
           "combat": {
             "id": 20,
             "attackType": "Ranged",
-            "cp": "206358",
+            "cp": "1458",
             "hp": 1728,
             "maxHp": 1728,
             "atkSpd": 401.4,
-            "acc": 4782.476360619403,
-            "eva": 3806.161571083979,
+            "acc": 478.2476360619403,
+            "eva": 380.6161571083979,
             "maxMeleeDmg": 272.5274300388389,
             "maxRangedDmg": 394.454726967891,
             "maxMagicDmg": 421.3820238969431,
@@ -3633,7 +3633,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 359,
+              "id": 613,
               "monsterId": 20,
               "itemId": null,
               "equipmentId": 84,
@@ -3657,7 +3657,7 @@
               }
             },
             {
-              "id": 360,
+              "id": 614,
               "monsterId": 20,
               "itemId": null,
               "equipmentId": 104,
@@ -3681,7 +3681,7 @@
               }
             },
             {
-              "id": 354,
+              "id": 608,
               "monsterId": 20,
               "itemId": 5,
               "equipmentId": null,
@@ -3704,7 +3704,7 @@
               "equipment": null
             },
             {
-              "id": 355,
+              "id": 609,
               "monsterId": 20,
               "itemId": 6,
               "equipmentId": null,
@@ -3727,7 +3727,7 @@
               "equipment": null
             },
             {
-              "id": 356,
+              "id": 610,
               "monsterId": 20,
               "itemId": 18,
               "equipmentId": null,
@@ -3750,7 +3750,7 @@
               "equipment": null
             },
             {
-              "id": 358,
+              "id": 612,
               "monsterId": 20,
               "itemId": 25,
               "equipmentId": null,
@@ -3773,7 +3773,7 @@
               "equipment": null
             },
             {
-              "id": 357,
+              "id": 611,
               "monsterId": 20,
               "itemId": 28,
               "equipmentId": null,
@@ -3814,8 +3814,8 @@
           "hpLevel": 9,
           "maxHp": 900,
           "atkSpd": 180,
-          "acc": 2403.254452572564,
-          "eva": 2079.869710974852,
+          "acc": 240.3254452572564,
+          "eva": 207.9869710974852,
           "maxMeleeDmg": 161.2588343425082,
           "maxRangedDmg": 161.2588343425082,
           "maxMagicDmg": 161.2588343425082,
@@ -3834,12 +3834,12 @@
           "combat": {
             "id": 21,
             "attackType": "Magic",
-            "cp": "212310",
+            "cp": "1676",
             "hp": 1314,
             "maxHp": 1314,
             "atkSpd": 334.8,
-            "acc": 4446.020737259244,
-            "eva": 3681.369388425488,
+            "acc": 444.6020737259244,
+            "eva": 368.1369388425489,
             "maxMeleeDmg": 312.8421386244659,
             "maxRangedDmg": 341.8687288061174,
             "maxMagicDmg": 445.5708490483194,
@@ -3860,7 +3860,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 366,
+              "id": 620,
               "monsterId": 21,
               "itemId": null,
               "equipmentId": 84,
@@ -3884,7 +3884,7 @@
               }
             },
             {
-              "id": 367,
+              "id": 621,
               "monsterId": 21,
               "itemId": null,
               "equipmentId": 104,
@@ -3908,7 +3908,7 @@
               }
             },
             {
-              "id": 361,
+              "id": 615,
               "monsterId": 21,
               "itemId": 5,
               "equipmentId": null,
@@ -3931,7 +3931,7 @@
               "equipment": null
             },
             {
-              "id": 362,
+              "id": 616,
               "monsterId": 21,
               "itemId": 6,
               "equipmentId": null,
@@ -3954,7 +3954,7 @@
               "equipment": null
             },
             {
-              "id": 363,
+              "id": 617,
               "monsterId": 21,
               "itemId": 18,
               "equipmentId": null,
@@ -3977,7 +3977,7 @@
               "equipment": null
             },
             {
-              "id": 365,
+              "id": 619,
               "monsterId": 21,
               "itemId": 25,
               "equipmentId": null,
@@ -4000,7 +4000,7 @@
               "equipment": null
             },
             {
-              "id": 364,
+              "id": 618,
               "monsterId": 21,
               "itemId": 28,
               "equipmentId": null,
@@ -4041,8 +4041,8 @@
           "hpLevel": 11,
           "maxHp": 1100,
           "atkSpd": 210,
-          "acc": 2847.352424057079,
-          "eva": 2445.289367440972,
+          "acc": 284.7352424057079,
+          "eva": 244.5289367440972,
           "maxMeleeDmg": 178.4936359034892,
           "maxRangedDmg": 178.4936359034892,
           "maxMagicDmg": 178.4936359034892,
@@ -4061,12 +4061,12 @@
           "combat": {
             "id": 22,
             "attackType": "Melee",
-            "cp": "263165",
+            "cp": "1776",
             "hp": 2101,
             "maxHp": 2101,
             "atkSpd": 415.8,
-            "acc": 6548.910575331281,
-            "eva": 4988.390309579583,
+            "acc": 654.8910575331282,
+            "eva": 498.8390309579583,
             "maxMeleeDmg": 460.1914444744321,
             "maxRangedDmg": 454.8366353973274,
             "maxMagicDmg": 437.3094079635487,
@@ -4087,7 +4087,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 373,
+              "id": 627,
               "monsterId": 22,
               "itemId": null,
               "equipmentId": 84,
@@ -4111,7 +4111,7 @@
               }
             },
             {
-              "id": 374,
+              "id": 628,
               "monsterId": 22,
               "itemId": null,
               "equipmentId": 104,
@@ -4135,7 +4135,7 @@
               }
             },
             {
-              "id": 368,
+              "id": 622,
               "monsterId": 22,
               "itemId": 5,
               "equipmentId": null,
@@ -4158,7 +4158,7 @@
               "equipment": null
             },
             {
-              "id": 369,
+              "id": 623,
               "monsterId": 22,
               "itemId": 6,
               "equipmentId": null,
@@ -4181,7 +4181,7 @@
               "equipment": null
             },
             {
-              "id": 370,
+              "id": 624,
               "monsterId": 22,
               "itemId": 18,
               "equipmentId": null,
@@ -4204,7 +4204,7 @@
               "equipment": null
             },
             {
-              "id": 372,
+              "id": 626,
               "monsterId": 22,
               "itemId": 25,
               "equipmentId": null,
@@ -4227,7 +4227,7 @@
               "equipment": null
             },
             {
-              "id": 371,
+              "id": 625,
               "monsterId": 22,
               "itemId": 28,
               "equipmentId": null,
@@ -4268,8 +4268,8 @@
           "hpLevel": 12,
           "maxHp": 1200,
           "atkSpd": 240,
-          "acc": 3297.86114475993,
-          "eva": 2813.337297130195,
+          "acc": 329.786114475993,
+          "eva": 281.3337297130195,
           "maxMeleeDmg": 195.0026140165248,
           "maxRangedDmg": 195.0026140165248,
           "maxMagicDmg": 195.0026140165248,
@@ -4288,12 +4288,12 @@
           "combat": {
             "id": 23,
             "attackType": "Ranged",
-            "cp": "361267",
+            "cp": "2141",
             "hp": 3468,
             "maxHp": 3468,
             "atkSpd": 480,
-            "acc": 7321.251741367043,
-            "eva": 6583.209275284657,
+            "acc": 732.1251741367043,
+            "eva": 658.3209275284655,
             "maxMeleeDmg": 507.0067964429645,
             "maxRangedDmg": 530.4560383781725,
             "maxMagicDmg": 468.0062736396595,
@@ -4314,7 +4314,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 380,
+              "id": 634,
               "monsterId": 23,
               "itemId": null,
               "equipmentId": 85,
@@ -4338,7 +4338,7 @@
               }
             },
             {
-              "id": 381,
+              "id": 635,
               "monsterId": 23,
               "itemId": null,
               "equipmentId": 105,
@@ -4362,7 +4362,7 @@
               }
             },
             {
-              "id": 375,
+              "id": 629,
               "monsterId": 23,
               "itemId": 5,
               "equipmentId": null,
@@ -4385,7 +4385,7 @@
               "equipment": null
             },
             {
-              "id": 376,
+              "id": 630,
               "monsterId": 23,
               "itemId": 6,
               "equipmentId": null,
@@ -4408,7 +4408,7 @@
               "equipment": null
             },
             {
-              "id": 377,
+              "id": 631,
               "monsterId": 23,
               "itemId": 18,
               "equipmentId": null,
@@ -4431,7 +4431,7 @@
               "equipment": null
             },
             {
-              "id": 379,
+              "id": 633,
               "monsterId": 23,
               "itemId": 25,
               "equipmentId": null,
@@ -4454,7 +4454,7 @@
               "equipment": null
             },
             {
-              "id": 378,
+              "id": 632,
               "monsterId": 23,
               "itemId": 28,
               "equipmentId": null,
@@ -4495,8 +4495,8 @@
           "hpLevel": 15,
           "maxHp": 1500,
           "atkSpd": 300,
-          "acc": 4215.347479450939,
-          "eva": 3556.127449677924,
+          "acc": 421.534747945094,
+          "eva": 355.6127449677924,
           "maxMeleeDmg": 226.2792595026029,
           "maxRangedDmg": 226.2792595026029,
           "maxMagicDmg": 226.2792595026029,
@@ -4515,12 +4515,12 @@
           "combat": {
             "id": 24,
             "attackType": "Magic",
-            "cp": "564578",
+            "cp": "2676",
             "hp": 4605,
             "maxHp": 4605,
             "atkSpd": 603,
-            "acc": 8051.313685751294,
-            "eva": 7716.796565801096,
+            "acc": 805.1313685751295,
+            "eva": 771.6796565801096,
             "maxMeleeDmg": 475.1864449554662,
             "maxRangedDmg": 574.7493191366113,
             "maxMagicDmg": 578.6539190709086,
@@ -4541,7 +4541,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 387,
+              "id": 641,
               "monsterId": 24,
               "itemId": null,
               "equipmentId": 85,
@@ -4565,7 +4565,7 @@
               }
             },
             {
-              "id": 388,
+              "id": 642,
               "monsterId": 24,
               "itemId": null,
               "equipmentId": 105,
@@ -4589,7 +4589,7 @@
               }
             },
             {
-              "id": 382,
+              "id": 636,
               "monsterId": 24,
               "itemId": 5,
               "equipmentId": null,
@@ -4612,7 +4612,7 @@
               "equipment": null
             },
             {
-              "id": 383,
+              "id": 637,
               "monsterId": 24,
               "itemId": 6,
               "equipmentId": null,
@@ -4635,7 +4635,7 @@
               "equipment": null
             },
             {
-              "id": 384,
+              "id": 638,
               "monsterId": 24,
               "itemId": 18,
               "equipmentId": null,
@@ -4658,7 +4658,7 @@
               "equipment": null
             },
             {
-              "id": 386,
+              "id": 640,
               "monsterId": 24,
               "itemId": 25,
               "equipmentId": null,
@@ -4681,7 +4681,7 @@
               "equipment": null
             },
             {
-              "id": 385,
+              "id": 639,
               "monsterId": 24,
               "itemId": 28,
               "equipmentId": null,
@@ -4734,8 +4734,8 @@
           "hpLevel": 15,
           "maxHp": 1500,
           "atkSpd": 300,
-          "acc": 4215.347479450939,
-          "eva": 3556.127449677924,
+          "acc": 421.534747945094,
+          "eva": 355.6127449677924,
           "maxMeleeDmg": 226.2792595026029,
           "maxRangedDmg": 226.2792595026029,
           "maxMagicDmg": 226.2792595026029,
@@ -4754,12 +4754,12 @@
           "combat": {
             "id": 25,
             "attackType": "Melee",
-            "cp": "321425",
+            "cp": "2158",
             "hp": 2955,
             "maxHp": 2955,
             "atkSpd": 411,
-            "acc": 8177.774110134823,
-            "eva": 6365.468134923484,
+            "acc": 817.7774110134824,
+            "eva": 636.5468134923485,
             "maxMeleeDmg": 516.3538374847894,
             "maxRangedDmg": 445.7701412201278,
             "maxMagicDmg": 418.6166300798154,
@@ -4780,7 +4780,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 394,
+              "id": 648,
               "monsterId": 25,
               "itemId": null,
               "equipmentId": 85,
@@ -4804,7 +4804,7 @@
               }
             },
             {
-              "id": 395,
+              "id": 649,
               "monsterId": 25,
               "itemId": null,
               "equipmentId": 105,
@@ -4828,7 +4828,7 @@
               }
             },
             {
-              "id": 389,
+              "id": 643,
               "monsterId": 25,
               "itemId": 7,
               "equipmentId": null,
@@ -4851,7 +4851,7 @@
               "equipment": null
             },
             {
-              "id": 390,
+              "id": 644,
               "monsterId": 25,
               "itemId": 8,
               "equipmentId": null,
@@ -4874,7 +4874,7 @@
               "equipment": null
             },
             {
-              "id": 391,
+              "id": 645,
               "monsterId": 25,
               "itemId": 19,
               "equipmentId": null,
@@ -4897,7 +4897,7 @@
               "equipment": null
             },
             {
-              "id": 393,
+              "id": 647,
               "monsterId": 25,
               "itemId": 25,
               "equipmentId": null,
@@ -4920,7 +4920,7 @@
               "equipment": null
             },
             {
-              "id": 392,
+              "id": 646,
               "monsterId": 25,
               "itemId": 29,
               "equipmentId": null,
@@ -4961,8 +4961,8 @@
           "hpLevel": 18,
           "maxHp": 1800,
           "atkSpd": 350,
-          "acc": 4994.30255960178,
-          "eva": 4180.916042998977,
+          "acc": 499.430255960178,
+          "eva": 418.0916042998978,
           "maxMeleeDmg": 250.9226473449468,
           "maxRangedDmg": 250.9226473449468,
           "maxMagicDmg": 250.9226473449468,
@@ -4981,12 +4981,12 @@
           "combat": {
             "id": 26,
             "attackType": "Ranged",
-            "cp": "447417",
+            "cp": "2457",
             "hp": 3150,
             "maxHp": 3150,
             "atkSpd": 514.5,
-            "acc": 9089.630658475238,
-            "eva": 7692.885519118116,
+            "acc": 908.9630658475239,
+            "eva": 769.2885519118119,
             "maxMeleeDmg": 496.8268417429948,
             "maxRangedDmg": 539.114632853657,
             "maxMagicDmg": 581.9006535305904,
@@ -5007,7 +5007,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 401,
+              "id": 655,
               "monsterId": 26,
               "itemId": null,
               "equipmentId": 85,
@@ -5031,7 +5031,7 @@
               }
             },
             {
-              "id": 402,
+              "id": 656,
               "monsterId": 26,
               "itemId": null,
               "equipmentId": 105,
@@ -5055,7 +5055,7 @@
               }
             },
             {
-              "id": 396,
+              "id": 650,
               "monsterId": 26,
               "itemId": 7,
               "equipmentId": null,
@@ -5078,7 +5078,7 @@
               "equipment": null
             },
             {
-              "id": 397,
+              "id": 651,
               "monsterId": 26,
               "itemId": 8,
               "equipmentId": null,
@@ -5101,7 +5101,7 @@
               "equipment": null
             },
             {
-              "id": 398,
+              "id": 652,
               "monsterId": 26,
               "itemId": 19,
               "equipmentId": null,
@@ -5124,7 +5124,7 @@
               "equipment": null
             },
             {
-              "id": 400,
+              "id": 654,
               "monsterId": 26,
               "itemId": 25,
               "equipmentId": null,
@@ -5147,7 +5147,7 @@
               "equipment": null
             },
             {
-              "id": 399,
+              "id": 653,
               "monsterId": 26,
               "itemId": 29,
               "equipmentId": null,
@@ -5188,8 +5188,8 @@
           "hpLevel": 18,
           "maxHp": 1800,
           "atkSpd": 350,
-          "acc": 4994.30255960178,
-          "eva": 4180.916042998977,
+          "acc": 499.430255960178,
+          "eva": 418.0916042998978,
           "maxMeleeDmg": 250.9226473449468,
           "maxRangedDmg": 250.9226473449468,
           "maxMagicDmg": 250.9226473449468,
@@ -5208,12 +5208,12 @@
           "combat": {
             "id": 27,
             "attackType": "Magic",
-            "cp": "531641",
+            "cp": "3284",
             "hp": 4950,
             "maxHp": 4950,
             "atkSpd": 427,
-            "acc": 9189.516709667274,
-            "eva": 8110.977123418015,
+            "acc": 918.9516709667273,
+            "eva": 811.0977123418018,
             "maxMeleeDmg": 494.3176152695453,
             "maxRangedDmg": 654.6128624199282,
             "maxMagicDmg": 697.2697124685692,
@@ -5234,7 +5234,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 408,
+              "id": 662,
               "monsterId": 27,
               "itemId": null,
               "equipmentId": 85,
@@ -5258,7 +5258,7 @@
               }
             },
             {
-              "id": 409,
+              "id": 663,
               "monsterId": 27,
               "itemId": null,
               "equipmentId": 105,
@@ -5282,7 +5282,7 @@
               }
             },
             {
-              "id": 403,
+              "id": 657,
               "monsterId": 27,
               "itemId": 7,
               "equipmentId": null,
@@ -5305,7 +5305,7 @@
               "equipment": null
             },
             {
-              "id": 404,
+              "id": 658,
               "monsterId": 27,
               "itemId": 8,
               "equipmentId": null,
@@ -5328,7 +5328,7 @@
               "equipment": null
             },
             {
-              "id": 405,
+              "id": 659,
               "monsterId": 27,
               "itemId": 19,
               "equipmentId": null,
@@ -5351,7 +5351,7 @@
               "equipment": null
             },
             {
-              "id": 407,
+              "id": 661,
               "monsterId": 27,
               "itemId": 25,
               "equipmentId": null,
@@ -5374,7 +5374,7 @@
               "equipment": null
             },
             {
-              "id": 406,
+              "id": 660,
               "monsterId": 27,
               "itemId": 29,
               "equipmentId": null,
@@ -5415,8 +5415,8 @@
           "hpLevel": 20,
           "maxHp": 2000,
           "atkSpd": 400,
-          "acc": 5784.502198367701,
-          "eva": 4810.198415187341,
+          "acc": 578.4502198367701,
+          "eva": 481.0198415187341,
           "maxMeleeDmg": 274.5282078198273,
           "maxRangedDmg": 274.5282078198273,
           "maxMagicDmg": 274.5282078198273,
@@ -5435,12 +5435,12 @@
           "combat": {
             "id": 28,
             "attackType": "Melee",
-            "cp": "1012584",
+            "cp": "4264",
             "hp": 5620,
             "maxHp": 5620,
             "atkSpd": 656,
-            "acc": 13709.27021013145,
-            "eva": 10822.94643417152,
+            "acc": 1370.927021013145,
+            "eva": 1082.294643417152,
             "maxMeleeDmg": 668.2733901870428,
             "maxRangedDmg": 760.4431356609217,
             "maxMagicDmg": 820.8393413812836,
@@ -5461,7 +5461,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 415,
+              "id": 669,
               "monsterId": 28,
               "itemId": null,
               "equipmentId": 85,
@@ -5485,7 +5485,7 @@
               }
             },
             {
-              "id": 416,
+              "id": 670,
               "monsterId": 28,
               "itemId": null,
               "equipmentId": 105,
@@ -5509,7 +5509,7 @@
               }
             },
             {
-              "id": 410,
+              "id": 664,
               "monsterId": 28,
               "itemId": 7,
               "equipmentId": null,
@@ -5532,7 +5532,7 @@
               "equipment": null
             },
             {
-              "id": 411,
+              "id": 665,
               "monsterId": 28,
               "itemId": 8,
               "equipmentId": null,
@@ -5555,7 +5555,7 @@
               "equipment": null
             },
             {
-              "id": 412,
+              "id": 666,
               "monsterId": 28,
               "itemId": 19,
               "equipmentId": null,
@@ -5578,7 +5578,7 @@
               "equipment": null
             },
             {
-              "id": 414,
+              "id": 668,
               "monsterId": 28,
               "itemId": 25,
               "equipmentId": null,
@@ -5601,7 +5601,7 @@
               "equipment": null
             },
             {
-              "id": 413,
+              "id": 667,
               "monsterId": 28,
               "itemId": 29,
               "equipmentId": null,
@@ -5642,8 +5642,8 @@
           "hpLevel": 23,
           "maxHp": 2300,
           "atkSpd": 450,
-          "acc": 6584.666218484509,
-          "eva": 5443.436229366547,
+          "acc": 658.4666218484508,
+          "eva": 544.3436229366547,
           "maxMeleeDmg": 297.2623806453833,
           "maxRangedDmg": 297.2623806453833,
           "maxMagicDmg": 297.2623806453833,
@@ -5662,12 +5662,12 @@
           "combat": {
             "id": 29,
             "attackType": "Ranged",
-            "cp": "1725362",
+            "cp": "4973",
             "hp": 6440,
             "maxHp": 6440,
             "atkSpd": 1035,
-            "acc": 17712.75212772334,
-            "eva": 11757.82225543175,
+            "acc": 1771.275212772333,
+            "eva": 1175.782225543174,
             "maxMeleeDmg": 924.4860038071422,
             "maxRangedDmg": 935.3072896135272,
             "maxMagicDmg": 998.801598968488,
@@ -5688,7 +5688,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 422,
+              "id": 676,
               "monsterId": 29,
               "itemId": null,
               "equipmentId": 86,
@@ -5712,7 +5712,7 @@
               }
             },
             {
-              "id": 423,
+              "id": 677,
               "monsterId": 29,
               "itemId": null,
               "equipmentId": 106,
@@ -5736,7 +5736,7 @@
               }
             },
             {
-              "id": 417,
+              "id": 671,
               "monsterId": 29,
               "itemId": 7,
               "equipmentId": null,
@@ -5759,7 +5759,7 @@
               "equipment": null
             },
             {
-              "id": 418,
+              "id": 672,
               "monsterId": 29,
               "itemId": 8,
               "equipmentId": null,
@@ -5782,7 +5782,7 @@
               "equipment": null
             },
             {
-              "id": 419,
+              "id": 673,
               "monsterId": 29,
               "itemId": 19,
               "equipmentId": null,
@@ -5805,7 +5805,7 @@
               "equipment": null
             },
             {
-              "id": 421,
+              "id": 675,
               "monsterId": 29,
               "itemId": 25,
               "equipmentId": null,
@@ -5828,7 +5828,7 @@
               "equipment": null
             },
             {
-              "id": 420,
+              "id": 674,
               "monsterId": 29,
               "itemId": 29,
               "equipmentId": null,
@@ -5869,8 +5869,8 @@
           "hpLevel": 25,
           "maxHp": 2500,
           "atkSpd": 500,
-          "acc": 7393.788183141571,
-          "eva": 6080.208953293288,
+          "acc": 739.3788183141571,
+          "eva": 608.0208953293287,
           "maxMeleeDmg": 319.2494947109917,
           "maxRangedDmg": 319.2494947109917,
           "maxMagicDmg": 319.2494947109917,
@@ -5889,12 +5889,12 @@
           "combat": {
             "id": 30,
             "attackType": "Magic",
-            "cp": "4215025",
+            "cp": "9746",
             "hp": 9150,
             "maxHp": 9150,
             "atkSpd": 1300,
-            "acc": 20406.85538547074,
-            "eva": 17511.00178548467,
+            "acc": 2040.685538547074,
+            "eva": 1751.100178548467,
             "maxMeleeDmg": 1130.143211276911,
             "maxRangedDmg": 1178.03063548356,
             "maxMagicDmg": 1213.335706224021,
@@ -5915,7 +5915,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 429,
+              "id": 683,
               "monsterId": 30,
               "itemId": null,
               "equipmentId": 86,
@@ -5939,7 +5939,7 @@
               }
             },
             {
-              "id": 430,
+              "id": 684,
               "monsterId": 30,
               "itemId": null,
               "equipmentId": 106,
@@ -5963,7 +5963,7 @@
               }
             },
             {
-              "id": 424,
+              "id": 678,
               "monsterId": 30,
               "itemId": 7,
               "equipmentId": null,
@@ -5986,7 +5986,7 @@
               "equipment": null
             },
             {
-              "id": 425,
+              "id": 679,
               "monsterId": 30,
               "itemId": 8,
               "equipmentId": null,
@@ -6009,7 +6009,7 @@
               "equipment": null
             },
             {
-              "id": 426,
+              "id": 680,
               "monsterId": 30,
               "itemId": 19,
               "equipmentId": null,
@@ -6032,7 +6032,7 @@
               "equipment": null
             },
             {
-              "id": 428,
+              "id": 682,
               "monsterId": 30,
               "itemId": 25,
               "equipmentId": null,
@@ -6055,7 +6055,7 @@
               "equipment": null
             },
             {
-              "id": 427,
+              "id": 681,
               "monsterId": 30,
               "itemId": 29,
               "equipmentId": null,
@@ -6108,8 +6108,8 @@
           "hpLevel": 25,
           "maxHp": 2500,
           "atkSpd": 500,
-          "acc": 7393.788183141571,
-          "eva": 6080.208953293288,
+          "acc": 739.3788183141571,
+          "eva": 608.0208953293287,
           "maxMeleeDmg": 319.2494947109917,
           "maxRangedDmg": 319.2494947109917,
           "maxMagicDmg": 319.2494947109917,
@@ -6128,12 +6128,12 @@
           "combat": {
             "id": 31,
             "attackType": "Melee",
-            "cp": "2279795",
+            "cp": "5664",
             "hp": 4100,
             "maxHp": 4100,
             "atkSpd": 1220,
-            "acc": 15083.32789360881,
-            "eva": 12099.61581705364,
+            "acc": 1508.332789360881,
+            "eva": 1209.961581705364,
             "maxMeleeDmg": 874.6963529939513,
             "maxRangedDmg": 967.3259689743048,
             "maxMagicDmg": 798.1237367774792,
@@ -6154,7 +6154,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 435,
+              "id": 689,
               "monsterId": 31,
               "itemId": null,
               "equipmentId": 86,
@@ -6178,7 +6178,7 @@
               }
             },
             {
-              "id": 436,
+              "id": 690,
               "monsterId": 31,
               "itemId": null,
               "equipmentId": 106,
@@ -6202,7 +6202,7 @@
               }
             },
             {
-              "id": 431,
+              "id": 685,
               "monsterId": 31,
               "itemId": 9,
               "equipmentId": null,
@@ -6225,7 +6225,7 @@
               "equipment": null
             },
             {
-              "id": 432,
+              "id": 686,
               "monsterId": 31,
               "itemId": 10,
               "equipmentId": null,
@@ -6248,7 +6248,7 @@
               "equipment": null
             },
             {
-              "id": 433,
+              "id": 687,
               "monsterId": 31,
               "itemId": 20,
               "equipmentId": null,
@@ -6271,7 +6271,7 @@
               "equipment": null
             },
             {
-              "id": 434,
+              "id": 688,
               "monsterId": 31,
               "itemId": 25,
               "equipmentId": null,
@@ -6312,8 +6312,8 @@
           "hpLevel": 28,
           "maxHp": 2800,
           "atkSpd": 550,
-          "acc": 8211.054948483416,
-          "eva": 6720.178733981618,
+          "acc": 821.1054948483416,
+          "eva": 672.0178733981618,
           "maxMeleeDmg": 340.5855589899404,
           "maxRangedDmg": 340.5855589899404,
           "maxMagicDmg": 340.5855589899404,
@@ -6332,12 +6332,12 @@
           "combat": {
             "id": 32,
             "attackType": "Ranged",
-            "cp": "2729554",
+            "cp": "7214",
             "hp": 5628,
             "maxHp": 5628,
             "atkSpd": 1105.5,
-            "acc": 21266.63231657205,
-            "eva": 14246.77891604103,
+            "acc": 2126.663231657205,
+            "eva": 1424.677891604103,
             "maxMeleeDmg": 1018.350821379922,
             "maxRangedDmg": 1076.392720452638,
             "maxMagicDmg": 1223.932344666803,
@@ -6358,7 +6358,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 441,
+              "id": 695,
               "monsterId": 32,
               "itemId": null,
               "equipmentId": 86,
@@ -6382,7 +6382,7 @@
               }
             },
             {
-              "id": 442,
+              "id": 696,
               "monsterId": 32,
               "itemId": null,
               "equipmentId": 106,
@@ -6406,7 +6406,7 @@
               }
             },
             {
-              "id": 437,
+              "id": 691,
               "monsterId": 32,
               "itemId": 9,
               "equipmentId": null,
@@ -6429,7 +6429,7 @@
               "equipment": null
             },
             {
-              "id": 438,
+              "id": 692,
               "monsterId": 32,
               "itemId": 10,
               "equipmentId": null,
@@ -6452,7 +6452,7 @@
               "equipment": null
             },
             {
-              "id": 439,
+              "id": 693,
               "monsterId": 32,
               "itemId": 20,
               "equipmentId": null,
@@ -6475,7 +6475,7 @@
               "equipment": null
             },
             {
-              "id": 440,
+              "id": 694,
               "monsterId": 32,
               "itemId": 25,
               "equipmentId": null,
@@ -6516,8 +6516,8 @@
           "hpLevel": 28,
           "maxHp": 2800,
           "atkSpd": 550,
-          "acc": 8211.054948483416,
-          "eva": 6720.178733981618,
+          "acc": 821.1054948483416,
+          "eva": 672.0178733981618,
           "maxMeleeDmg": 340.5855589899404,
           "maxRangedDmg": 340.5855589899404,
           "maxMagicDmg": 340.5855589899404,
@@ -6536,12 +6536,12 @@
           "combat": {
             "id": 33,
             "attackType": "Magic",
-            "cp": "3679751",
+            "cp": "8431",
             "hp": 5264,
             "maxHp": 5264,
             "atkSpd": 1314.5,
-            "acc": 17900.09978769385,
-            "eva": 12969.94495658453,
+            "acc": 1790.009978769385,
+            "eva": 1296.994495658452,
             "maxMeleeDmg": 899.1458757334427,
             "maxRangedDmg": 957.0454207617325,
             "maxMagicDmg": 1174.509832250626,
@@ -6562,7 +6562,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 447,
+              "id": 701,
               "monsterId": 33,
               "itemId": null,
               "equipmentId": 86,
@@ -6586,7 +6586,7 @@
               }
             },
             {
-              "id": 448,
+              "id": 702,
               "monsterId": 33,
               "itemId": null,
               "equipmentId": 106,
@@ -6610,7 +6610,7 @@
               }
             },
             {
-              "id": 443,
+              "id": 697,
               "monsterId": 33,
               "itemId": 9,
               "equipmentId": null,
@@ -6633,7 +6633,7 @@
               "equipment": null
             },
             {
-              "id": 444,
+              "id": 698,
               "monsterId": 33,
               "itemId": 10,
               "equipmentId": null,
@@ -6656,7 +6656,7 @@
               "equipment": null
             },
             {
-              "id": 445,
+              "id": 699,
               "monsterId": 33,
               "itemId": 20,
               "equipmentId": null,
@@ -6679,7 +6679,7 @@
               "equipment": null
             },
             {
-              "id": 446,
+              "id": 700,
               "monsterId": 33,
               "itemId": 25,
               "equipmentId": null,
@@ -6720,8 +6720,8 @@
           "hpLevel": 30,
           "maxHp": 3000,
           "atkSpd": 600,
-          "acc": 9035.79512768954,
-          "eva": 7363.068026722097,
+          "acc": 903.5795127689539,
+          "eva": 736.3068026722096,
           "maxMeleeDmg": 361.3466936262827,
           "maxRangedDmg": 361.3466936262827,
           "maxMagicDmg": 361.3466936262827,
@@ -6740,12 +6740,12 @@
           "combat": {
             "id": 34,
             "attackType": "Melee",
-            "cp": "4231837",
+            "cp": "9973",
             "hp": 11910,
             "maxHp": 11910,
             "atkSpd": 1272,
-            "acc": 23131.63552688522,
-            "eva": 19585.76095108078,
+            "acc": 2313.163552688522,
+            "eva": 1958.576095108078,
             "maxMeleeDmg": 1252.107415560162,
             "maxRangedDmg": 1105.720882496425,
             "maxMagicDmg": 1368.326894628252,
@@ -6766,7 +6766,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 453,
+              "id": 707,
               "monsterId": 34,
               "itemId": null,
               "equipmentId": 86,
@@ -6790,7 +6790,7 @@
               }
             },
             {
-              "id": 454,
+              "id": 708,
               "monsterId": 34,
               "itemId": null,
               "equipmentId": 106,
@@ -6814,7 +6814,7 @@
               }
             },
             {
-              "id": 449,
+              "id": 703,
               "monsterId": 34,
               "itemId": 9,
               "equipmentId": null,
@@ -6837,7 +6837,7 @@
               "equipment": null
             },
             {
-              "id": 450,
+              "id": 704,
               "monsterId": 34,
               "itemId": 10,
               "equipmentId": null,
@@ -6860,7 +6860,7 @@
               "equipment": null
             },
             {
-              "id": 451,
+              "id": 705,
               "monsterId": 34,
               "itemId": 20,
               "equipmentId": null,
@@ -6883,7 +6883,7 @@
               "equipment": null
             },
             {
-              "id": 452,
+              "id": 706,
               "monsterId": 34,
               "itemId": 25,
               "equipmentId": null,
@@ -6924,8 +6924,8 @@
           "hpLevel": 35,
           "maxHp": 3500,
           "atkSpd": 700,
-          "acc": 10705.52189451654,
-          "eva": 8656.71145768506,
+          "acc": 1070.552189451654,
+          "eva": 865.671145768506,
           "maxMeleeDmg": 401.3799952848427,
           "maxRangedDmg": 401.3799952848427,
           "maxMagicDmg": 401.3799952848427,
@@ -6944,12 +6944,12 @@
           "combat": {
             "id": 35,
             "attackType": "Ranged",
-            "cp": "6756482",
+            "cp": "13086",
             "hp": 10955,
             "maxHp": 10955,
             "atkSpd": 1673,
-            "acc": 22160.43032164926,
-            "eva": 21988.04710252005,
+            "acc": 2216.043032164925,
+            "eva": 2198.804710252006,
             "maxMeleeDmg": 1320.540184487133,
             "maxRangedDmg": 1566.871383355495,
             "maxMagicDmg": 1464.760983732707,
@@ -6970,7 +6970,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 459,
+              "id": 713,
               "monsterId": 35,
               "itemId": null,
               "equipmentId": 87,
@@ -6994,7 +6994,7 @@
               }
             },
             {
-              "id": 460,
+              "id": 714,
               "monsterId": 35,
               "itemId": null,
               "equipmentId": 107,
@@ -7018,7 +7018,7 @@
               }
             },
             {
-              "id": 455,
+              "id": 709,
               "monsterId": 35,
               "itemId": 9,
               "equipmentId": null,
@@ -7041,7 +7041,7 @@
               "equipment": null
             },
             {
-              "id": 456,
+              "id": 710,
               "monsterId": 35,
               "itemId": 10,
               "equipmentId": null,
@@ -7064,7 +7064,7 @@
               "equipment": null
             },
             {
-              "id": 457,
+              "id": 711,
               "monsterId": 35,
               "itemId": 20,
               "equipmentId": null,
@@ -7087,7 +7087,7 @@
               "equipment": null
             },
             {
-              "id": 458,
+              "id": 712,
               "monsterId": 35,
               "itemId": 25,
               "equipmentId": null,
@@ -7128,8 +7128,8 @@
           "hpLevel": 40,
           "maxHp": 4000,
           "atkSpd": 800,
-          "acc": 12399.3519003867,
-          "eva": 9959.659391921674,
+          "acc": 1239.93519003867,
+          "eva": 995.9659391921674,
           "maxMeleeDmg": 439.7273414109501,
           "maxRangedDmg": 439.7273414109501,
           "maxMagicDmg": 439.7273414109501,
@@ -7148,12 +7148,12 @@
           "combat": {
             "id": 36,
             "attackType": "Magic",
-            "cp": "16389113",
+            "cp": "25967",
             "hp": 9800,
             "maxHp": 9800,
             "atkSpd": 2240,
-            "acc": 35462.14643510596,
-            "eva": 27787.44970346148,
+            "acc": 3546.214643510598,
+            "eva": 2778.744970346147,
             "maxMeleeDmg": 1640.182983462844,
             "maxRangedDmg": 1844.087552956676,
             "maxMagicDmg": 1963.484826370785,
@@ -7174,7 +7174,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 465,
+              "id": 719,
               "monsterId": 36,
               "itemId": null,
               "equipmentId": 87,
@@ -7198,7 +7198,7 @@
               }
             },
             {
-              "id": 466,
+              "id": 720,
               "monsterId": 36,
               "itemId": null,
               "equipmentId": 107,
@@ -7222,7 +7222,7 @@
               }
             },
             {
-              "id": 461,
+              "id": 715,
               "monsterId": 36,
               "itemId": 9,
               "equipmentId": null,
@@ -7245,7 +7245,7 @@
               "equipment": null
             },
             {
-              "id": 462,
+              "id": 716,
               "monsterId": 36,
               "itemId": 10,
               "equipmentId": null,
@@ -7268,7 +7268,7 @@
               "equipment": null
             },
             {
-              "id": 463,
+              "id": 717,
               "monsterId": 36,
               "itemId": 20,
               "equipmentId": null,
@@ -7291,7 +7291,7 @@
               "equipment": null
             },
             {
-              "id": 464,
+              "id": 718,
               "monsterId": 36,
               "itemId": 25,
               "equipmentId": null,
@@ -7344,8 +7344,8 @@
           "hpLevel": 40,
           "maxHp": 4000,
           "atkSpd": 800,
-          "acc": 12399.3519003867,
-          "eva": 9959.659391921674,
+          "acc": 1239.93519003867,
+          "eva": 995.9659391921674,
           "maxMeleeDmg": 439.7273414109501,
           "maxRangedDmg": 439.7273414109501,
           "maxMagicDmg": 439.7273414109501,
@@ -7364,12 +7364,12 @@
           "combat": {
             "id": 37,
             "attackType": "Melee",
-            "cp": "13930805",
+            "cp": "20207",
             "hp": 14520,
             "maxHp": 14520,
             "atkSpd": 2608,
-            "acc": 34470.19828307503,
-            "eva": 25197.93826156184,
+            "acc": 3447.019828307503,
+            "eva": 2519.793826156184,
             "maxMeleeDmg": 1744.292046898464,
             "maxRangedDmg": 1780.895732714348,
             "maxMagicDmg": 1736.922998573252,
@@ -7390,7 +7390,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 472,
+              "id": 726,
               "monsterId": 37,
               "itemId": null,
               "equipmentId": 87,
@@ -7414,7 +7414,7 @@
               }
             },
             {
-              "id": 473,
+              "id": 727,
               "monsterId": 37,
               "itemId": null,
               "equipmentId": 107,
@@ -7438,7 +7438,7 @@
               }
             },
             {
-              "id": 467,
+              "id": 721,
               "monsterId": 37,
               "itemId": 11,
               "equipmentId": null,
@@ -7461,7 +7461,7 @@
               "equipment": null
             },
             {
-              "id": 468,
+              "id": 722,
               "monsterId": 37,
               "itemId": 12,
               "equipmentId": null,
@@ -7484,7 +7484,7 @@
               "equipment": null
             },
             {
-              "id": 469,
+              "id": 723,
               "monsterId": 37,
               "itemId": 21,
               "equipmentId": null,
@@ -7507,7 +7507,7 @@
               "equipment": null
             },
             {
-              "id": 470,
+              "id": 724,
               "monsterId": 37,
               "itemId": 22,
               "equipmentId": null,
@@ -7530,7 +7530,7 @@
               "equipment": null
             },
             {
-              "id": 471,
+              "id": 725,
               "monsterId": 37,
               "itemId": 25,
               "equipmentId": null,
@@ -7571,8 +7571,8 @@
           "hpLevel": 43,
           "maxHp": 4300,
           "atkSpd": 850,
-          "acc": 13254.42274942408,
-          "eva": 10614.26367536178,
+          "acc": 1325.442274942408,
+          "eva": 1061.426367536178,
           "maxMeleeDmg": 458.3562660485026,
           "maxRangedDmg": 458.3562660485026,
           "maxMagicDmg": 458.3562660485026,
@@ -7591,12 +7591,12 @@
           "combat": {
             "id": 38,
             "attackType": "Ranged",
-            "cp": "20135656",
+            "cp": "27342",
             "hp": 16297,
             "maxHp": 16297,
             "atkSpd": 2873,
-            "acc": 42281.60857066281,
-            "eva": 31312.07784231727,
+            "acc": 4228.16085706628,
+            "eva": 3131.207784231726,
             "maxMeleeDmg": 1705.08530970043,
             "maxRangedDmg": 2218.847005385166,
             "maxMagicDmg": 2050.931944008561,
@@ -7617,7 +7617,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 479,
+              "id": 733,
               "monsterId": 38,
               "itemId": null,
               "equipmentId": 87,
@@ -7641,7 +7641,7 @@
               }
             },
             {
-              "id": 480,
+              "id": 734,
               "monsterId": 38,
               "itemId": null,
               "equipmentId": 107,
@@ -7665,7 +7665,7 @@
               }
             },
             {
-              "id": 474,
+              "id": 728,
               "monsterId": 38,
               "itemId": 11,
               "equipmentId": null,
@@ -7688,7 +7688,7 @@
               "equipment": null
             },
             {
-              "id": 475,
+              "id": 729,
               "monsterId": 38,
               "itemId": 12,
               "equipmentId": null,
@@ -7711,7 +7711,7 @@
               "equipment": null
             },
             {
-              "id": 476,
+              "id": 730,
               "monsterId": 38,
               "itemId": 21,
               "equipmentId": null,
@@ -7734,7 +7734,7 @@
               "equipment": null
             },
             {
-              "id": 477,
+              "id": 731,
               "monsterId": 38,
               "itemId": 22,
               "equipmentId": null,
@@ -7757,7 +7757,7 @@
               "equipment": null
             },
             {
-              "id": 478,
+              "id": 732,
               "monsterId": 38,
               "itemId": 25,
               "equipmentId": null,
@@ -7798,8 +7798,8 @@
           "hpLevel": 43,
           "maxHp": 4300,
           "atkSpd": 850,
-          "acc": 13254.42274942408,
-          "eva": 10614.26367536178,
+          "acc": 1325.442274942408,
+          "eva": 1061.426367536178,
           "maxMeleeDmg": 458.3562660485026,
           "maxRangedDmg": 458.3562660485026,
           "maxMagicDmg": 458.3562660485026,
@@ -7818,12 +7818,12 @@
           "combat": {
             "id": 39,
             "attackType": "Magic",
-            "cp": "19541229",
+            "cp": "26899",
             "hp": 15910,
             "maxHp": 15910,
             "atkSpd": 2805,
-            "acc": 40558.53361323768,
-            "eva": 29932.22356452024,
+            "acc": 4055.853361323767,
+            "eva": 2993.222356452024,
             "maxMeleeDmg": 1705.08530970043,
             "maxRangedDmg": 1938.847005385166,
             "maxMagicDmg": 2185.931944008561,
@@ -7844,7 +7844,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 486,
+              "id": 740,
               "monsterId": 39,
               "itemId": null,
               "equipmentId": 87,
@@ -7868,7 +7868,7 @@
               }
             },
             {
-              "id": 487,
+              "id": 741,
               "monsterId": 39,
               "itemId": null,
               "equipmentId": 107,
@@ -7892,7 +7892,7 @@
               }
             },
             {
-              "id": 481,
+              "id": 735,
               "monsterId": 39,
               "itemId": 11,
               "equipmentId": null,
@@ -7915,7 +7915,7 @@
               "equipment": null
             },
             {
-              "id": 482,
+              "id": 736,
               "monsterId": 39,
               "itemId": 12,
               "equipmentId": null,
@@ -7938,7 +7938,7 @@
               "equipment": null
             },
             {
-              "id": 483,
+              "id": 737,
               "monsterId": 39,
               "itemId": 21,
               "equipmentId": null,
@@ -7961,7 +7961,7 @@
               "equipment": null
             },
             {
-              "id": 484,
+              "id": 738,
               "monsterId": 39,
               "itemId": 22,
               "equipmentId": null,
@@ -7984,7 +7984,7 @@
               "equipment": null
             },
             {
-              "id": 485,
+              "id": 739,
               "monsterId": 39,
               "itemId": 25,
               "equipmentId": null,
@@ -8025,8 +8025,8 @@
           "hpLevel": 45,
           "maxHp": 4500,
           "atkSpd": 900,
-          "acc": 14114.54102526181,
-          "eva": 11270.79718686111,
+          "acc": 1411.454102526181,
+          "eva": 1127.079718686111,
           "maxMeleeDmg": 476.6591141244194,
           "maxRangedDmg": 476.6591141244194,
           "maxMagicDmg": 476.6591141244194,
@@ -8045,12 +8045,12 @@
           "combat": {
             "id": 40,
             "attackType": "Melee",
-            "cp": "35899067",
+            "cp": "43337",
             "hp": 21690,
             "maxHp": 21690,
             "atkSpd": 3582,
-            "acc": 51941.51097296346,
-            "eva": 38095.29449159055,
+            "acc": 5194.151097296346,
+            "eva": 3809.529449159055,
             "maxMeleeDmg": 2424.966013559887,
             "maxRangedDmg": 2430.764654102283,
             "maxMagicDmg": 2316.563294644678,
@@ -8071,7 +8071,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 493,
+              "id": 747,
               "monsterId": 40,
               "itemId": null,
               "equipmentId": 87,
@@ -8095,7 +8095,7 @@
               }
             },
             {
-              "id": 494,
+              "id": 748,
               "monsterId": 40,
               "itemId": null,
               "equipmentId": 107,
@@ -8119,7 +8119,7 @@
               }
             },
             {
-              "id": 488,
+              "id": 742,
               "monsterId": 40,
               "itemId": 11,
               "equipmentId": null,
@@ -8142,7 +8142,7 @@
               "equipment": null
             },
             {
-              "id": 489,
+              "id": 743,
               "monsterId": 40,
               "itemId": 12,
               "equipmentId": null,
@@ -8165,7 +8165,7 @@
               "equipment": null
             },
             {
-              "id": 490,
+              "id": 744,
               "monsterId": 40,
               "itemId": 21,
               "equipmentId": null,
@@ -8188,7 +8188,7 @@
               "equipment": null
             },
             {
-              "id": 491,
+              "id": 745,
               "monsterId": 40,
               "itemId": 22,
               "equipmentId": null,
@@ -8211,7 +8211,7 @@
               "equipment": null
             },
             {
-              "id": 492,
+              "id": 746,
               "monsterId": 40,
               "itemId": 25,
               "equipmentId": null,
@@ -8252,8 +8252,8 @@
           "hpLevel": 50,
           "maxHp": 5000,
           "atkSpd": 1000,
-          "acc": 15848.93192461114,
-          "eva": 12589.25411794167,
+          "acc": 1584.893192461114,
+          "eva": 1258.925411794168,
           "maxMeleeDmg": 512.3772863019159,
           "maxRangedDmg": 512.3772863019159,
           "maxMagicDmg": 512.3772863019159,
@@ -8272,12 +8272,12 @@
           "combat": {
             "id": 41,
             "attackType": "Ranged",
-            "cp": "41853621",
+            "cp": "49996",
             "hp": 23750,
             "maxHp": 23750,
             "atkSpd": 3660,
-            "acc": 53727.87922443179,
-            "eva": 44440.06703633411,
+            "acc": 5372.787922443176,
+            "eva": 4444.006703633413,
             "maxMeleeDmg": 2300.574015495603,
             "maxRangedDmg": 2986.76265864656,
             "maxMagicDmg": 2708.866797317885,
@@ -8298,7 +8298,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 500,
+              "id": 754,
               "monsterId": 41,
               "itemId": null,
               "equipmentId": 88,
@@ -8322,7 +8322,7 @@
               }
             },
             {
-              "id": 501,
+              "id": 755,
               "monsterId": 41,
               "itemId": null,
               "equipmentId": 108,
@@ -8346,7 +8346,7 @@
               }
             },
             {
-              "id": 495,
+              "id": 749,
               "monsterId": 41,
               "itemId": 11,
               "equipmentId": null,
@@ -8369,7 +8369,7 @@
               "equipment": null
             },
             {
-              "id": 496,
+              "id": 750,
               "monsterId": 41,
               "itemId": 12,
               "equipmentId": null,
@@ -8392,7 +8392,7 @@
               "equipment": null
             },
             {
-              "id": 497,
+              "id": 751,
               "monsterId": 41,
               "itemId": 21,
               "equipmentId": null,
@@ -8415,7 +8415,7 @@
               "equipment": null
             },
             {
-              "id": 498,
+              "id": 752,
               "monsterId": 41,
               "itemId": 22,
               "equipmentId": null,
@@ -8438,7 +8438,7 @@
               "equipment": null
             },
             {
-              "id": 499,
+              "id": 753,
               "monsterId": 41,
               "itemId": 25,
               "equipmentId": null,
@@ -8479,8 +8479,8 @@
           "hpLevel": 55,
           "maxHp": 5500,
           "atkSpd": 1100,
-          "acc": 17600.78158642367,
-          "eva": 13914.33065047185,
+          "acc": 1760.078158642367,
+          "eva": 1391.433065047185,
           "maxMeleeDmg": 547.0378249806895,
           "maxRangedDmg": 547.0378249806895,
           "maxMagicDmg": 547.0378249806895,
@@ -8499,12 +8499,12 @@
           "combat": {
             "id": 42,
             "attackType": "Magic",
-            "cp": "66004627",
+            "cp": "74614",
             "hp": 29315,
             "maxHp": 29315,
             "atkSpd": 4433,
-            "acc": 68467.04037118808,
-            "eva": 50509.02026121282,
+            "acc": 6846.704037118809,
+            "eva": 5050.902026121284,
             "maxMeleeDmg": 2582.018533908855,
             "maxRangedDmg": 3205.537446399199,
             "maxMagicDmg": 3136.181985396882,
@@ -8525,7 +8525,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 507,
+              "id": 761,
               "monsterId": 42,
               "itemId": null,
               "equipmentId": 88,
@@ -8549,7 +8549,7 @@
               }
             },
             {
-              "id": 508,
+              "id": 762,
               "monsterId": 42,
               "itemId": null,
               "equipmentId": 108,
@@ -8573,7 +8573,7 @@
               }
             },
             {
-              "id": 502,
+              "id": 756,
               "monsterId": 42,
               "itemId": 11,
               "equipmentId": null,
@@ -8596,7 +8596,7 @@
               "equipment": null
             },
             {
-              "id": 503,
+              "id": 757,
               "monsterId": 42,
               "itemId": 12,
               "equipmentId": null,
@@ -8619,7 +8619,7 @@
               "equipment": null
             },
             {
-              "id": 504,
+              "id": 758,
               "monsterId": 42,
               "itemId": 21,
               "equipmentId": null,
@@ -8642,7 +8642,7 @@
               "equipment": null
             },
             {
-              "id": 505,
+              "id": 759,
               "monsterId": 42,
               "itemId": 22,
               "equipmentId": null,
@@ -8665,7 +8665,7 @@
               "equipment": null
             },
             {
-              "id": 506,
+              "id": 760,
               "monsterId": 42,
               "itemId": 25,
               "equipmentId": null,
