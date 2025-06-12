@@ -19,7 +19,7 @@ export interface GachaOddsDominantTraits {
 export const DOMINANT_TRAITS_GACHA_SPECS: Record<string, GachaOddsDominantTraits> = {
     SS: {
         chanceS: 0.30,
-        minS: 2,
+        minS: 3,
         maxS: 4,
         chanceA: 0.30,
         minA: 0,
