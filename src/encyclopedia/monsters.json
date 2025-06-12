@@ -2654,7 +2654,7 @@
     "dex": 5,
     "luk": 5,
     "magic": 5,
-    "hpLevel": 3,
+    "hpLevel": 8,
     "exp": 45,
     "minGoldDrop": 50,
     "maxGoldDrop": 90,
@@ -2899,8 +2899,8 @@
       }
     ],
     "combat": {
-      "hp": 477,
-      "maxHp": 477,
+      "hp": 1272,
+      "maxHp": 1272,
       "attackType": "Melee",
       "atkSpd": 54,
       "acc": 86.3344923169694,
@@ -2912,8 +2912,8 @@
       "critMultiplier": 1.5337865513731497,
       "dmgReduction": 167.5,
       "magicDmgReduction": 98.70000000000002,
-      "hpRegenRate": 14.973657718120805,
-      "hpRegenAmount": 17.69,
+      "hpRegenRate": 14.77986577181208,
+      "hpRegenAmount": 20.740000000000002,
       "meleeFactor": 4,
       "rangeFactor": 0,
       "magicFactor": 0,
@@ -2922,7 +2922,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 300,
+    "maxHp": 800,
     "atkSpd": 50,
     "acc": 58.73094715440096,
     "eva": 54.18991933671841,
@@ -2933,8 +2933,8 @@
     "critMultiplier": 1.433445375115093,
     "dmgReduction": 125,
     "magicDmgReduction": 70,
-    "hpRegenRate": 19.446308724832214,
-    "hpRegenAmount": 14.5
+    "hpRegenRate": 19.19463087248322,
+    "hpRegenAmount": 17
   },
   {
     "id": 14,
@@ -2947,7 +2947,7 @@
     "dex": 7,
     "luk": 7,
     "magic": 7,
-    "hpLevel": 4,
+    "hpLevel": 9,
     "exp": 65,
     "minGoldDrop": 90,
     "maxGoldDrop": 130,
@@ -3192,8 +3192,8 @@
       }
     ],
     "combat": {
-      "hp": 436,
-      "maxHp": 436,
+      "hp": 981,
+      "maxHp": 981,
       "attackType": "Ranged",
       "atkSpd": 114.1,
       "acc": 135.2088031015482,
@@ -3205,8 +3205,8 @@
       "critMultiplier": 1.559182615863438,
       "dmgReduction": 257.3,
       "magicDmgReduction": 153,
-      "hpRegenRate": 11.191275167785237,
-      "hpRegenAmount": 28.08,
+      "hpRegenRate": 11.04530201342282,
+      "hpRegenAmount": 32.580000000000005,
       "meleeFactor": 5,
       "rangeFactor": 4,
       "magicFactor": 0,
@@ -3215,7 +3215,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 400,
+    "maxHp": 900,
     "atkSpd": 70,
     "acc": 85.03698308273471,
     "eva": 77.15302207814953,
@@ -3226,8 +3226,8 @@
     "critMultiplier": 1.470926996097583,
     "dmgReduction": 155,
     "magicDmgReduction": 90,
-    "hpRegenRate": 19.29530201342282,
-    "hpRegenAmount": 15.6
+    "hpRegenRate": 19.043624161073826,
+    "hpRegenAmount": 18.1
   },
   {
     "id": 15,
@@ -3240,7 +3240,7 @@
     "dex": 7,
     "luk": 7,
     "magic": 7,
-    "hpLevel": 4,
+    "hpLevel": 9,
     "exp": 65,
     "minGoldDrop": 90,
     "maxGoldDrop": 130,
@@ -3485,8 +3485,8 @@
       }
     ],
     "combat": {
-      "hp": 500,
-      "maxHp": 500,
+      "hp": 1125,
+      "maxHp": 1125,
       "attackType": "Magic",
       "atkSpd": 77,
       "acc": 117.35103665417391,
@@ -3498,8 +3498,8 @@
       "critMultiplier": 1.7798216652780754,
       "dmgReduction": 241.8,
       "magicDmgReduction": 139.5,
-      "hpRegenRate": 15.0503355704698,
-      "hpRegenAmount": 21.996000000000002,
+      "hpRegenRate": 14.854026845637584,
+      "hpRegenAmount": 25.521000000000004,
       "meleeFactor": 0,
       "rangeFactor": 5,
       "magicFactor": 3,
@@ -3508,7 +3508,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 400,
+    "maxHp": 900,
     "atkSpd": 70,
     "acc": 85.03698308273471,
     "eva": 77.15302207814953,
@@ -3519,8 +3519,8 @@
     "critMultiplier": 1.470926996097583,
     "dmgReduction": 155,
     "magicDmgReduction": 90,
-    "hpRegenRate": 19.29530201342282,
-    "hpRegenAmount": 15.6
+    "hpRegenRate": 19.043624161073826,
+    "hpRegenAmount": 18.1
   },
   {
     "id": 16,
@@ -3533,7 +3533,7 @@
     "dex": 11,
     "luk": 11,
     "magic": 11,
-    "hpLevel": 6,
+    "hpLevel": 11,
     "exp": 100,
     "minGoldDrop": 160,
     "maxGoldDrop": 200,
@@ -3778,8 +3778,8 @@
       }
     ],
     "combat": {
-      "hp": 1062,
-      "maxHp": 1062,
+      "hp": 1947,
+      "maxHp": 1947,
       "attackType": "Melee",
       "atkSpd": 173.8,
       "acc": 275.4217160160375,
@@ -3791,8 +3791,8 @@
       "critMultiplier": 1.6304171799812877,
       "dmgReduction": 466.55,
       "magicDmgReduction": 180.70000000000002,
-      "hpRegenRate": 17.283892617449666,
-      "hpRegenAmount": 27.768000000000008,
+      "hpRegenRate": 17.054865771812082,
+      "hpRegenAmount": 31.668,
       "meleeFactor": 34,
       "rangeFactor": 30,
       "magicFactor": 34,
@@ -3801,7 +3801,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 600,
+    "maxHp": 1100,
     "atkSpd": 110,
     "acc": 139.8079776731155,
     "eva": 124.01160245736165,
@@ -3812,8 +3812,8 @@
     "critMultiplier": 1.5237543738142874,
     "dmgReduction": 215,
     "magicDmgReduction": 130,
-    "hpRegenRate": 18.993288590604028,
-    "hpRegenAmount": 17.8
+    "hpRegenRate": 18.741610738255034,
+    "hpRegenAmount": 20.3
   },
   {
     "id": 17,
@@ -3826,7 +3826,7 @@
     "dex": 13,
     "luk": 13,
     "magic": 13,
-    "hpLevel": 7,
+    "hpLevel": 12,
     "exp": 115,
     "minGoldDrop": 190,
     "maxGoldDrop": 230,
@@ -4071,8 +4071,8 @@
       }
     ],
     "combat": {
-      "hp": 1197,
-      "maxHp": 1197,
+      "hp": 2052,
+      "maxHp": 2052,
       "attackType": "Ranged",
       "atkSpd": 288.6,
       "acc": 288.97890056659406,
@@ -4084,8 +4084,8 @@
       "critMultiplier": 2.362072768376311,
       "dmgReduction": 394.44999999999993,
       "magicDmgReduction": 378,
-      "hpRegenRate": 18.84228187919463,
-      "hpRegenAmount": 29.483999999999998,
+      "hpRegenRate": 18.59060402684564,
+      "hpRegenAmount": 33.384,
       "meleeFactor": 33,
       "rangeFactor": 37,
       "magicFactor": 33,
@@ -4094,7 +4094,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 700,
+    "maxHp": 1200,
     "atkSpd": 130,
     "acc": 168.01098870150815,
     "eva": 147.78845872122784,
@@ -4105,8 +4105,8 @@
     "critMultiplier": 1.5438384107034713,
     "dmgReduction": 245,
     "magicDmgReduction": 150,
-    "hpRegenRate": 18.84228187919463,
-    "hpRegenAmount": 18.9
+    "hpRegenRate": 18.59060402684564,
+    "hpRegenAmount": 21.4
   },
   {
     "id": 18,
@@ -4119,7 +4119,7 @@
     "dex": 15,
     "luk": 15,
     "magic": 15,
-    "hpLevel": 8,
+    "hpLevel": 13,
     "exp": 135,
     "minGoldDrop": 230,
     "maxGoldDrop": 270,
@@ -4364,8 +4364,8 @@
       }
     ],
     "combat": {
-      "hp": 2000,
-      "maxHp": 2000,
+      "hp": 3250,
+      "maxHp": 3250,
       "attackType": "Magic",
       "atkSpd": 304.5,
       "acc": 391.3392977773654,
@@ -4377,8 +4377,8 @@
       "critMultiplier": 1.7017472343284874,
       "dmgReduction": 517,
       "magicDmgReduction": 368.90000000000003,
-      "hpRegenRate": 18.691275167785236,
-      "hpRegenAmount": 32.4,
+      "hpRegenRate": 18.43959731543624,
+      "hpRegenAmount": 36.45,
       "meleeFactor": 80,
       "rangeFactor": 84,
       "magicFactor": 84,
@@ -4387,7 +4387,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 800,
+    "maxHp": 1300,
     "atkSpd": 150,
     "acc": 196.6529134559625,
     "eva": 171.7496346965384,
@@ -4398,8 +4398,8 @@
     "critMultiplier": 1.5612359947967773,
     "dmgReduction": 275,
     "magicDmgReduction": 170,
-    "hpRegenRate": 18.691275167785236,
-    "hpRegenAmount": 20
+    "hpRegenRate": 18.43959731543624,
+    "hpRegenAmount": 22.5
   },
   {
     "id": 19,
@@ -4412,7 +4412,7 @@
     "dex": 15,
     "luk": 15,
     "magic": 15,
-    "hpLevel": 8,
+    "hpLevel": 10,
     "exp": 110,
     "minGoldDrop": 270,
     "maxGoldDrop": 330,
@@ -4657,8 +4657,8 @@
       }
     ],
     "combat": {
-      "hp": 1296,
-      "maxHp": 1296,
+      "hp": 1620,
+      "maxHp": 1620,
       "attackType": "Melee",
       "atkSpd": 316.5,
       "acc": 308.74507412586115,
@@ -4670,8 +4670,8 @@
       "critMultiplier": 1.8890955537041005,
       "dmgReduction": 679.25,
       "magicDmgReduction": 406.59999999999997,
-      "hpRegenRate": 18.43959731543624,
-      "hpRegenAmount": 35.26,
+      "hpRegenRate": 18.338926174496645,
+      "hpRegenAmount": 36.9,
       "meleeFactor": 35,
       "rangeFactor": 30,
       "magicFactor": 30,
@@ -4680,7 +4680,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 800,
+    "maxHp": 1000,
     "atkSpd": 150,
     "acc": 196.6529134559625,
     "eva": 171.7496346965384,
@@ -4691,8 +4691,8 @@
     "critMultiplier": 1.5612359947967773,
     "dmgReduction": 325,
     "magicDmgReduction": 190,
-    "hpRegenRate": 18.43959731543624,
-    "hpRegenAmount": 21.5
+    "hpRegenRate": 18.338926174496645,
+    "hpRegenAmount": 22.5
   },
   {
     "id": 20,
@@ -4705,7 +4705,7 @@
     "dex": 18,
     "luk": 18,
     "magic": 18,
-    "hpLevel": 9,
+    "hpLevel": 19,
     "exp": 130,
     "minGoldDrop": 330,
     "maxGoldDrop": 390,
@@ -4950,8 +4950,8 @@
       }
     ],
     "combat": {
-      "hp": 1728,
-      "maxHp": 1728,
+      "hp": 3648,
+      "maxHp": 3648,
       "attackType": "Ranged",
       "atkSpd": 401.4,
       "acc": 478.2476360619403,
@@ -4963,8 +4963,8 @@
       "critMultiplier": 1.5836260802858486,
       "dmgReduction": 710.4,
       "magicDmgReduction": 343.20000000000005,
-      "hpRegenRate": 12.037248322147653,
-      "hpRegenAmount": 35.953,
+      "hpRegenRate": 11.705033557046981,
+      "hpRegenAmount": 43.803000000000004,
       "meleeFactor": 30,
       "rangeFactor": 35,
       "magicFactor": 34,
@@ -4973,7 +4973,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 900,
+    "maxHp": 1900,
     "atkSpd": 180,
     "acc": 240.3254452572564,
     "eva": 207.9869710974852,
@@ -4984,8 +4984,8 @@
     "critMultiplier": 1.5836260802858486,
     "dmgReduction": 370,
     "magicDmgReduction": 220,
-    "hpRegenRate": 18.238255033557046,
-    "hpRegenAmount": 22.9
+    "hpRegenRate": 17.73489932885906,
+    "hpRegenAmount": 27.9
   },
   {
     "id": 21,
@@ -4998,7 +4998,7 @@
     "dex": 18,
     "luk": 18,
     "magic": 18,
-    "hpLevel": 9,
+    "hpLevel": 19,
     "exp": 130,
     "minGoldDrop": 330,
     "maxGoldDrop": 390,
@@ -5243,8 +5243,8 @@
       }
     ],
     "combat": {
-      "hp": 1314,
-      "maxHp": 1314,
+      "hp": 2774,
+      "maxHp": 2774,
       "attackType": "Magic",
       "atkSpd": 334.79999999999995,
       "acc": 444.6020737259244,
@@ -5256,8 +5256,8 @@
       "critMultiplier": 2.454620424443066,
       "dmgReduction": 669.6999999999999,
       "magicDmgReduction": 437.79999999999995,
-      "hpRegenRate": 13.678691275167784,
-      "hpRegenAmount": 39.38799999999999,
+      "hpRegenRate": 13.301174496644297,
+      "hpRegenAmount": 47.98799999999999,
       "meleeFactor": 33,
       "rangeFactor": 33,
       "magicFactor": 37,
@@ -5266,7 +5266,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 900,
+    "maxHp": 1900,
     "atkSpd": 180,
     "acc": 240.3254452572564,
     "eva": 207.9869710974852,
@@ -5277,8 +5277,8 @@
     "critMultiplier": 1.5836260802858486,
     "dmgReduction": 370,
     "magicDmgReduction": 220,
-    "hpRegenRate": 18.238255033557046,
-    "hpRegenAmount": 22.9
+    "hpRegenRate": 17.73489932885906,
+    "hpRegenAmount": 27.9
   },
   {
     "id": 22,
@@ -5291,7 +5291,7 @@
     "dex": 21,
     "luk": 21,
     "magic": 21,
-    "hpLevel": 11,
+    "hpLevel": 21,
     "exp": 160,
     "minGoldDrop": 420,
     "maxGoldDrop": 480,
@@ -5536,8 +5536,8 @@
       }
     ],
     "combat": {
-      "hp": 2101,
-      "maxHp": 2101,
+      "hp": 4011,
+      "maxHp": 4011,
       "attackType": "Melee",
       "atkSpd": 415.79999999999995,
       "acc": 654.8910575331282,
@@ -5549,8 +5549,8 @@
       "critMultiplier": 1.9873812372658608,
       "dmgReduction": 805.1000000000001,
       "magicDmgReduction": 645,
-      "hpRegenRate": 13.130201342281879,
-      "hpRegenAmount": 41.416000000000004,
+      "hpRegenRate": 12.762751677852348,
+      "hpRegenAmount": 49.766000000000005,
       "meleeFactor": 38,
       "rangeFactor": 38,
       "magicFactor": 33,
@@ -5559,7 +5559,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1100,
+    "maxHp": 2100,
     "atkSpd": 210,
     "acc": 284.7352424057079,
     "eva": 244.52893674409717,
@@ -5570,8 +5570,8 @@
     "critMultiplier": 1.6027268042466618,
     "dmgReduction": 415,
     "magicDmgReduction": 250,
-    "hpRegenRate": 17.986577181208055,
-    "hpRegenAmount": 24.799999999999997
+    "hpRegenRate": 17.483221476510067,
+    "hpRegenAmount": 29.799999999999997
   },
   {
     "id": 23,
@@ -5584,7 +5584,7 @@
     "dex": 24,
     "luk": 24,
     "magic": 24,
-    "hpLevel": 12,
+    "hpLevel": 22,
     "exp": 180,
     "minGoldDrop": 480,
     "maxGoldDrop": 540,
@@ -5829,8 +5829,8 @@
       }
     ],
     "combat": {
-      "hp": 3468,
-      "maxHp": 3468,
+      "hp": 6358,
+      "maxHp": 6358,
       "attackType": "Ranged",
       "atkSpd": 480,
       "acc": 732.1251741367043,
@@ -5842,8 +5842,8 @@
       "critMultiplier": 2.024227503252014,
       "dmgReduction": 1439.8,
       "magicDmgReduction": 775.6,
-      "hpRegenRate": 14.583892617449663,
-      "hpRegenAmount": 51.352000000000004,
+      "hpRegenRate": 14.171140939597313,
+      "hpRegenAmount": 61.152,
       "meleeFactor": 36,
       "rangeFactor": 41,
       "magicFactor": 36,
@@ -5852,7 +5852,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1200,
+    "maxHp": 2200,
     "atkSpd": 240,
     "acc": 329.786114475993,
     "eva": 281.3337297130195,
@@ -5863,8 +5863,8 @@
     "critMultiplier": 1.6193820026016112,
     "dmgReduction": 460,
     "magicDmgReduction": 280,
-    "hpRegenRate": 17.78523489932886,
-    "hpRegenAmount": 26.2
+    "hpRegenRate": 17.28187919463087,
+    "hpRegenAmount": 31.2
   },
   {
     "id": 24,
@@ -5877,7 +5877,7 @@
     "dex": 30,
     "luk": 30,
     "magic": 30,
-    "hpLevel": 15,
+    "hpLevel": 25,
     "exp": 220,
     "minGoldDrop": 600,
     "maxGoldDrop": 660,
@@ -6122,8 +6122,8 @@
       }
     ],
     "combat": {
-      "hp": 4605,
-      "maxHp": 4605,
+      "hp": 7675,
+      "maxHp": 7675,
       "attackType": "Magic",
       "atkSpd": 603,
       "acc": 805.1313685751295,
@@ -6135,8 +6135,8 @@
       "critMultiplier": 2.5699572727144395,
       "dmgReduction": 1534.5,
       "magicDmgReduction": 887.3999999999997,
-      "hpRegenRate": 16.46560402684564,
-      "hpRegenAmount": 59.59,
+      "hpRegenRate": 15.98741610738255,
+      "hpRegenAmount": 69.68999999999998,
       "meleeFactor": 88,
       "rangeFactor": 101,
       "magicFactor": 98,
@@ -6145,7 +6145,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1500,
+    "maxHp": 2500,
     "atkSpd": 300,
     "acc": 421.53474794509395,
     "eva": 355.6127449677924,
@@ -6156,8 +6156,8 @@
     "critMultiplier": 1.6474085081502818,
     "dmgReduction": 550,
     "magicDmgReduction": 340,
-    "hpRegenRate": 17.332214765100673,
-    "hpRegenAmount": 29.5
+    "hpRegenRate": 16.828859060402685,
+    "hpRegenAmount": 34.5
   },
   {
     "id": 25,
@@ -6170,7 +6170,7 @@
     "dex": 30,
     "luk": 30,
     "magic": 30,
-    "hpLevel": 15,
+    "hpLevel": 30,
     "exp": 190,
     "minGoldDrop": 490,
     "maxGoldDrop": 570,
@@ -6415,8 +6415,8 @@
       }
     ],
     "combat": {
-      "hp": 2955,
-      "maxHp": 2955,
+      "hp": 5910,
+      "maxHp": 5910,
       "attackType": "Melee",
       "atkSpd": 411,
       "acc": 817.7774110134824,
@@ -6428,8 +6428,8 @@
       "critMultiplier": 2.1745792307583716,
       "dmgReduction": 1218,
       "magicDmgReduction": 799.1999999999999,
-      "hpRegenRate": 14.34765100671141,
-      "hpRegenAmount": 50.529999999999994,
+      "hpRegenRate": 13.713422818791944,
+      "hpRegenAmount": 62.755,
       "meleeFactor": 12,
       "rangeFactor": 6,
       "magicFactor": 6,
@@ -6438,7 +6438,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1500,
+    "maxHp": 3000,
     "atkSpd": 300,
     "acc": 421.53474794509395,
     "eva": 355.6127449677924,
@@ -6449,8 +6449,8 @@
     "critMultiplier": 1.6474085081502818,
     "dmgReduction": 600,
     "magicDmgReduction": 360,
-    "hpRegenRate": 17.08053691275168,
-    "hpRegenAmount": 31
+    "hpRegenRate": 16.325503355704697,
+    "hpRegenAmount": 38.5
   },
   {
     "id": 26,
@@ -6463,7 +6463,7 @@
     "dex": 35,
     "luk": 35,
     "magic": 35,
-    "hpLevel": 18,
+    "hpLevel": 33,
     "exp": 220,
     "minGoldDrop": 580,
     "maxGoldDrop": 660,
@@ -6708,8 +6708,8 @@
       }
     ],
     "combat": {
-      "hp": 3150,
-      "maxHp": 3150,
+      "hp": 5775,
+      "maxHp": 5775,
       "attackType": "Ranged",
       "atkSpd": 514.5,
       "acc": 908.9630658475239,
@@ -6721,8 +6721,8 @@
       "critMultiplier": 2.900389905400524,
       "dmgReduction": 1687.5,
       "magicDmgReduction": 1254.6000000000004,
-      "hpRegenRate": 15.343624161073825,
-      "hpRegenAmount": 57.46,
+      "hpRegenRate": 14.648993288590605,
+      "hpRegenAmount": 70.135,
       "meleeFactor": 6,
       "rangeFactor": 12,
       "magicFactor": 10,
@@ -6731,7 +6731,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1800,
+    "maxHp": 3300,
     "atkSpd": 350,
     "acc": 499.430255960178,
     "eva": 418.09160429989777,
@@ -6742,8 +6742,8 @@
     "critMultiplier": 1.6668907502301862,
     "dmgReduction": 675,
     "magicDmgReduction": 410,
-    "hpRegenRate": 16.677852348993287,
-    "hpRegenAmount": 34
+    "hpRegenRate": 15.922818791946309,
+    "hpRegenAmount": 41.5
   },
   {
     "id": 27,
@@ -6756,7 +6756,7 @@
     "dex": 35,
     "luk": 35,
     "magic": 35,
-    "hpLevel": 18,
+    "hpLevel": 33,
     "exp": 220,
     "minGoldDrop": 580,
     "maxGoldDrop": 660,
@@ -7001,8 +7001,8 @@
       }
     ],
     "combat": {
-      "hp": 4950,
-      "maxHp": 4950,
+      "hp": 9075,
+      "maxHp": 9075,
       "attackType": "Magic",
       "atkSpd": 427,
       "acc": 918.9516709667273,
@@ -7014,8 +7014,8 @@
       "critMultiplier": 2.7170319228752033,
       "dmgReduction": 1653.75,
       "magicDmgReduction": 934.8,
-      "hpRegenRate": 10.673825503355701,
-      "hpRegenAmount": 53.38,
+      "hpRegenRate": 10.190604026845637,
+      "hpRegenAmount": 65.155,
       "meleeFactor": 6,
       "rangeFactor": 11,
       "magicFactor": 11,
@@ -7024,7 +7024,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1800,
+    "maxHp": 3300,
     "atkSpd": 350,
     "acc": 499.430255960178,
     "eva": 418.09160429989777,
@@ -7035,8 +7035,8 @@
     "critMultiplier": 1.6668907502301862,
     "dmgReduction": 675,
     "magicDmgReduction": 410,
-    "hpRegenRate": 16.677852348993287,
-    "hpRegenAmount": 34
+    "hpRegenRate": 15.922818791946309,
+    "hpRegenAmount": 41.5
   },
   {
     "id": 28,
@@ -7049,7 +7049,7 @@
     "dex": 40,
     "luk": 40,
     "magic": 40,
-    "hpLevel": 20,
+    "hpLevel": 35,
     "exp": 250,
     "minGoldDrop": 670,
     "maxGoldDrop": 750,
@@ -7294,8 +7294,8 @@
       }
     ],
     "combat": {
-      "hp": 5620,
-      "maxHp": 5620,
+      "hp": 9835,
+      "maxHp": 9835,
       "attackType": "Melee",
       "atkSpd": 656,
       "acc": 1370.9270210131453,
@@ -7307,8 +7307,8 @@
       "critMultiplier": 3.8054674548559797,
       "dmgReduction": 2130,
       "magicDmgReduction": 1518.0000000000002,
-      "hpRegenRate": 13.386912751677851,
-      "hpRegenAmount": 73.00000000000003,
+      "hpRegenRate": 12.767785234899328,
+      "hpRegenAmount": 88.00000000000001,
       "meleeFactor": 21,
       "rangeFactor": 15,
       "magicFactor": 15,
@@ -7317,7 +7317,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 2000,
+    "maxHp": 3500,
     "atkSpd": 400,
     "acc": 578.4502198367701,
     "eva": 481.0198415187341,
@@ -7328,8 +7328,8 @@
     "critMultiplier": 1.6838351570159205,
     "dmgReduction": 750,
     "magicDmgReduction": 460,
-    "hpRegenRate": 16.325503355704697,
-    "hpRegenAmount": 36.5
+    "hpRegenRate": 15.570469798657719,
+    "hpRegenAmount": 44
   },
   {
     "id": 29,
@@ -7342,7 +7342,7 @@
     "dex": 45,
     "luk": 45,
     "magic": 45,
-    "hpLevel": 23,
+    "hpLevel": 38,
     "exp": 280,
     "minGoldDrop": 760,
     "maxGoldDrop": 840,
@@ -7587,8 +7587,8 @@
       }
     ],
     "combat": {
-      "hp": 6440,
-      "maxHp": 6440,
+      "hp": 10640,
+      "maxHp": 10640,
       "attackType": "Ranged",
       "atkSpd": 1035,
       "acc": 1771.2752127723327,
@@ -7600,8 +7600,8 @@
       "critMultiplier": 2.650170665226976,
       "dmgReduction": 2384.25,
       "magicDmgReduction": 1662.6000000000004,
-      "hpRegenRate": 11.782885906040269,
-      "hpRegenAmount": 71.10000000000005,
+      "hpRegenRate": 11.224161073825503,
+      "hpRegenAmount": 84.60000000000001,
       "meleeFactor": 15,
       "rangeFactor": 21,
       "magicFactor": 15,
@@ -7610,7 +7610,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 2300,
+    "maxHp": 3800,
     "atkSpd": 450,
     "acc": 658.4666218484508,
     "eva": 544.3436229366547,
@@ -7621,8 +7621,8 @@
     "critMultiplier": 1.6988273495044721,
     "dmgReduction": 825,
     "magicDmgReduction": 510,
-    "hpRegenRate": 15.922818791946309,
-    "hpRegenAmount": 39.5
+    "hpRegenRate": 15.167785234899329,
+    "hpRegenAmount": 47
   },
   {
     "id": 30,
@@ -7635,7 +7635,7 @@
     "dex": 50,
     "luk": 50,
     "magic": 50,
-    "hpLevel": 25,
+    "hpLevel": 40,
     "exp": 310,
     "minGoldDrop": 850,
     "maxGoldDrop": 930,
@@ -7880,8 +7880,8 @@
       }
     ],
     "combat": {
-      "hp": 9150,
-      "maxHp": 9150,
+      "hp": 14640,
+      "maxHp": 14640,
       "attackType": "Magic",
       "atkSpd": 1300,
       "acc": 2040.6855385470735,
@@ -7893,8 +7893,8 @@
       "critMultiplier": 3.9553461320358694,
       "dmgReduction": 3906,
       "magicDmgReduction": 2788.8,
-      "hpRegenRate": 10.587919463087248,
-      "hpRegenAmount": 105.42000000000002,
+      "hpRegenRate": 10.074496644295303,
+      "hpRegenAmount": 124.24499999999998,
       "meleeFactor": 82,
       "rangeFactor": 72,
       "magicFactor": 77,
@@ -7903,7 +7903,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 2500,
+    "maxHp": 4000,
     "atkSpd": 500,
     "acc": 739.3788183141571,
     "eva": 608.0208953293287,
@@ -7914,8 +7914,8 @@
     "critMultiplier": 1.7122710528293807,
     "dmgReduction": 900,
     "magicDmgReduction": 560,
-    "hpRegenRate": 15.570469798657719,
-    "hpRegenAmount": 42
+    "hpRegenRate": 14.815436241610739,
+    "hpRegenAmount": 49.5
   },
   {
     "id": 31,
@@ -7928,7 +7928,7 @@
     "dex": 50,
     "luk": 50,
     "magic": 50,
-    "hpLevel": 25,
+    "hpLevel": 45,
     "exp": 250,
     "minGoldDrop": 880,
     "maxGoldDrop": 1000,
@@ -8153,8 +8153,8 @@
       }
     ],
     "combat": {
-      "hp": 4100,
-      "maxHp": 4100,
+      "hp": 7380,
+      "maxHp": 7380,
       "attackType": "Melee",
       "atkSpd": 1220,
       "acc": 1508.332789360881,
@@ -8166,8 +8166,8 @@
       "critMultiplier": 2.979351631923122,
       "dmgReduction": 2137.5,
       "magicDmgReduction": 1513.7999999999995,
-      "hpRegenRate": 13.020973154362416,
-      "hpRegenAmount": 76.99500000000002,
+      "hpRegenRate": 12.16526845637584,
+      "hpRegenAmount": 94.69500000000002,
       "meleeFactor": 18,
       "rangeFactor": 9,
       "magicFactor": 9,
@@ -8176,7 +8176,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 2500,
+    "maxHp": 4500,
     "atkSpd": 500,
     "acc": 739.3788183141571,
     "eva": 608.0208953293287,
@@ -8187,8 +8187,8 @@
     "critMultiplier": 1.7122710528293807,
     "dmgReduction": 950,
     "magicDmgReduction": 580,
-    "hpRegenRate": 15.318791946308725,
-    "hpRegenAmount": 43.5
+    "hpRegenRate": 14.312080536912752,
+    "hpRegenAmount": 53.5
   },
   {
     "id": 32,
@@ -8201,7 +8201,7 @@
     "dex": 55,
     "luk": 55,
     "magic": 55,
-    "hpLevel": 28,
+    "hpLevel": 48,
     "exp": 280,
     "minGoldDrop": 1000,
     "maxGoldDrop": 1120,
@@ -8426,8 +8426,8 @@
       }
     ],
     "combat": {
-      "hp": 5628,
-      "maxHp": 5628,
+      "hp": 9648,
+      "maxHp": 9648,
       "attackType": "Ranged",
       "atkSpd": 1105.5,
       "acc": 2126.663231657205,
@@ -8439,8 +8439,8 @@
       "critMultiplier": 3.172999790907423,
       "dmgReduction": 3105.75,
       "magicDmgReduction": 1908.8999999999999,
-      "hpRegenRate": 13.72281879194631,
-      "hpRegenAmount": 90.67500000000001,
+      "hpRegenRate": 12.796644295302015,
+      "hpRegenAmount": 110.17500000000001,
       "meleeFactor": 9,
       "rangeFactor": 18,
       "magicFactor": 15,
@@ -8449,7 +8449,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 2800,
+    "maxHp": 4800,
     "atkSpd": 550,
     "acc": 821.1054948483416,
     "eva": 672.0178733981618,
@@ -8460,8 +8460,8 @@
     "critMultiplier": 1.72445640810186,
     "dmgReduction": 1025,
     "magicDmgReduction": 630,
-    "hpRegenRate": 14.916107382550337,
-    "hpRegenAmount": 46.5
+    "hpRegenRate": 13.909395973154362,
+    "hpRegenAmount": 56.5
   },
   {
     "id": 33,
@@ -8474,7 +8474,7 @@
     "dex": 55,
     "luk": 55,
     "magic": 55,
-    "hpLevel": 28,
+    "hpLevel": 48,
     "exp": 280,
     "minGoldDrop": 1000,
     "maxGoldDrop": 1120,
@@ -8699,8 +8699,8 @@
       }
     ],
     "combat": {
-      "hp": 5264,
-      "maxHp": 5264,
+      "hp": 9024,
+      "maxHp": 9024,
       "attackType": "Magic",
       "atkSpd": 1314.5,
       "acc": 1790.0099787693848,
@@ -8712,8 +8712,8 @@
       "critMultiplier": 3.7938040978240926,
       "dmgReduction": 2890.5,
       "magicDmgReduction": 1669.5,
-      "hpRegenRate": 11.48540268456376,
-      "hpRegenAmount": 88.35000000000001,
+      "hpRegenRate": 10.71023489932886,
+      "hpRegenAmount": 107.35000000000001,
       "meleeFactor": 9,
       "rangeFactor": 9,
       "magicFactor": 20,
@@ -8722,7 +8722,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 2800,
+    "maxHp": 4800,
     "atkSpd": 550,
     "acc": 821.1054948483416,
     "eva": 672.0178733981618,
@@ -8733,8 +8733,8 @@
     "critMultiplier": 1.72445640810186,
     "dmgReduction": 1025,
     "magicDmgReduction": 630,
-    "hpRegenRate": 14.916107382550337,
-    "hpRegenAmount": 46.5
+    "hpRegenRate": 13.909395973154362,
+    "hpRegenAmount": 56.5
   },
   {
     "id": 34,
@@ -8747,7 +8747,7 @@
     "dex": 60,
     "luk": 60,
     "magic": 60,
-    "hpLevel": 30,
+    "hpLevel": 50,
     "exp": 300,
     "minGoldDrop": 1080,
     "maxGoldDrop": 1200,
@@ -8972,8 +8972,8 @@
       }
     ],
     "combat": {
-      "hp": 11910,
-      "maxHp": 11910,
+      "hp": 19850,
+      "maxHp": 19850,
       "attackType": "Melee",
       "atkSpd": 1272,
       "acc": 2313.1635526885225,
@@ -8985,8 +8985,8 @@
       "critMultiplier": 4.043945554672526,
       "dmgReduction": 3938,
       "magicDmgReduction": 2767.6,
-      "hpRegenRate": 12.233557046979868,
-      "hpRegenAmount": 118.58000000000004,
+      "hpRegenRate": 11.387919463087249,
+      "hpRegenAmount": 142.78000000000003,
       "meleeFactor": 68,
       "rangeFactor": 59,
       "magicFactor": 65,
@@ -8995,7 +8995,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 3000,
+    "maxHp": 5000,
     "atkSpd": 600,
     "acc": 903.5795127689539,
     "eva": 736.3068026722096,
@@ -9006,8 +9006,8 @@
     "critMultiplier": 1.73559895050323,
     "dmgReduction": 1100,
     "magicDmgReduction": 680,
-    "hpRegenRate": 14.563758389261746,
-    "hpRegenAmount": 49
+    "hpRegenRate": 13.557046979865772,
+    "hpRegenAmount": 59
   },
   {
     "id": 35,
@@ -9020,7 +9020,7 @@
     "dex": 70,
     "luk": 70,
     "magic": 70,
-    "hpLevel": 35,
+    "hpLevel": 55,
     "exp": 350,
     "minGoldDrop": 1280,
     "maxGoldDrop": 1400,
@@ -9245,8 +9245,8 @@
       }
     ],
     "combat": {
-      "hp": 10955,
-      "maxHp": 10955,
+      "hp": 17215,
+      "maxHp": 17215,
       "attackType": "Ranged",
       "atkSpd": 1673,
       "acc": 2216.0430321649246,
@@ -9258,8 +9258,8 @@
       "critMultiplier": 3.4756474591391306,
       "dmgReduction": 4712.5,
       "magicDmgReduction": 2730,
-      "hpRegenRate": 9.942281879194631,
-      "hpRegenAmount": 131.34500000000003,
+      "hpRegenRate": 9.217449664429529,
+      "hpRegenAmount": 155.44499999999996,
       "meleeFactor": 14,
       "rangeFactor": 36,
       "magicFactor": 25,
@@ -9268,7 +9268,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 3500,
+    "maxHp": 5500,
     "atkSpd": 700,
     "acc": 1070.5521894516544,
     "eva": 865.671145768506,
@@ -9279,8 +9279,8 @@
     "critMultiplier": 1.7553775046157225,
     "dmgReduction": 1250,
     "magicDmgReduction": 780,
-    "hpRegenRate": 13.808724832214764,
-    "hpRegenAmount": 54.5
+    "hpRegenRate": 12.802013422818792,
+    "hpRegenAmount": 64.5
   },
   {
     "id": 36,
@@ -9293,7 +9293,7 @@
     "dex": 80,
     "luk": 80,
     "magic": 80,
-    "hpLevel": 40,
+    "hpLevel": 60,
     "exp": 400,
     "minGoldDrop": 1480,
     "maxGoldDrop": 1600,
@@ -9518,8 +9518,8 @@
       }
     ],
     "combat": {
-      "hp": 9800,
-      "maxHp": 9800,
+      "hp": 14700,
+      "maxHp": 14700,
       "attackType": "Magic",
       "atkSpd": 2240,
       "acc": 3546.2146435105983,
@@ -9531,8 +9531,8 @@
       "critMultiplier": 4.360461943932443,
       "dmgReduction": 4788,
       "magicDmgReduction": 3564,
-      "hpRegenRate": 7.310067114093961,
-      "hpRegenAmount": 136.79999999999995,
+      "hpRegenRate": 6.746308724832215,
+      "hpRegenAmount": 159.6,
       "meleeFactor": 29,
       "rangeFactor": 22,
       "magicFactor": 29,
@@ -9541,7 +9541,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 4000,
+    "maxHp": 6000,
     "atkSpd": 800,
     "acc": 1239.9351900386703,
     "eva": 995.9659391921674,
@@ -9552,8 +9552,8 @@
     "critMultiplier": 1.7725455056635948,
     "dmgReduction": 1400,
     "magicDmgReduction": 880,
-    "hpRegenRate": 13.053691275167786,
-    "hpRegenAmount": 60
+    "hpRegenRate": 12.046979865771812,
+    "hpRegenAmount": 70
   },
   {
     "id": 37,
@@ -9566,7 +9566,7 @@
     "dex": 80,
     "luk": 80,
     "magic": 80,
-    "hpLevel": 40,
+    "hpLevel": 65,
     "exp": 320,
     "minGoldDrop": 1100,
     "maxGoldDrop": 1280,
@@ -9811,8 +9811,8 @@
       }
     ],
     "combat": {
-      "hp": 14520,
-      "maxHp": 14520,
+      "hp": 23595,
+      "maxHp": 23595,
       "attackType": "Melee",
       "atkSpd": 2608,
       "acc": 3447.0198283075033,
@@ -9824,8 +9824,8 @@
       "critMultiplier": 3.456463736044009,
       "dmgReduction": 5162,
       "magicDmgReduction": 3474,
-      "hpRegenRate": 9.857550335570469,
-      "hpRegenAmount": 152.51999999999998,
+      "hpRegenRate": 8.888590604026847,
+      "hpRegenAmount": 183.51999999999998,
       "meleeFactor": 82,
       "rangeFactor": 65,
       "magicFactor": 65,
@@ -9834,7 +9834,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 4000,
+    "maxHp": 6500,
     "atkSpd": 800,
     "acc": 1239.9351900386703,
     "eva": 995.9659391921674,
@@ -9845,8 +9845,8 @@
     "critMultiplier": 1.7725455056635948,
     "dmgReduction": 1450,
     "magicDmgReduction": 900,
-    "hpRegenRate": 12.802013422818792,
-    "hpRegenAmount": 61.5
+    "hpRegenRate": 11.543624161073826,
+    "hpRegenAmount": 74
   },
   {
     "id": 38,
@@ -9859,7 +9859,7 @@
     "dex": 85,
     "luk": 85,
     "magic": 85,
-    "hpLevel": 43,
+    "hpLevel": 68,
     "exp": 340,
     "minGoldDrop": 1180,
     "maxGoldDrop": 1360,
@@ -10104,8 +10104,8 @@
       }
     ],
     "combat": {
-      "hp": 16297,
-      "maxHp": 16297,
+      "hp": 25772,
+      "maxHp": 25772,
       "attackType": "Ranged",
       "atkSpd": 2873,
       "acc": 4228.16085706628,
@@ -10117,8 +10117,8 @@
       "critMultiplier": 3.471681593977486,
       "dmgReduction": 6328.75,
       "magicDmgReduction": 4256,
-      "hpRegenRate": 9.547483221476512,
-      "hpRegenAmount": 170.27999999999997,
+      "hpRegenRate": 8.578523489932886,
+      "hpRegenAmount": 203.28,
       "meleeFactor": 65,
       "rangeFactor": 82,
       "magicFactor": 70,
@@ -10127,7 +10127,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 4300,
+    "maxHp": 6800,
     "atkSpd": 850,
     "acc": 1325.4422749424077,
     "eva": 1061.4263675361783,
@@ -10138,8 +10138,8 @@
     "critMultiplier": 1.7803495353730703,
     "dmgReduction": 1525,
     "magicDmgReduction": 950,
-    "hpRegenRate": 12.399328859060404,
-    "hpRegenAmount": 64.5
+    "hpRegenRate": 11.140939597315436,
+    "hpRegenAmount": 77
   },
   {
     "id": 39,
@@ -10152,7 +10152,7 @@
     "dex": 85,
     "luk": 85,
     "magic": 85,
-    "hpLevel": 43,
+    "hpLevel": 68,
     "exp": 340,
     "minGoldDrop": 1180,
     "maxGoldDrop": 1360,
@@ -10397,8 +10397,8 @@
       }
     ],
     "combat": {
-      "hp": 15910,
-      "maxHp": 15910,
+      "hp": 25160,
+      "maxHp": 25160,
       "attackType": "Magic",
       "atkSpd": 2805,
       "acc": 4055.853361323767,
@@ -10410,8 +10410,8 @@
       "critMultiplier": 3.5072885846849475,
       "dmgReduction": 6084.75,
       "magicDmgReduction": 4104,
-      "hpRegenRate": 8.92751677852349,
-      "hpRegenAmount": 161.89499999999998,
+      "hpRegenRate": 8.021476510067114,
+      "hpRegenAmount": 193.27,
       "meleeFactor": 70,
       "rangeFactor": 83,
       "magicFactor": 89,
@@ -10420,7 +10420,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 4300,
+    "maxHp": 6800,
     "atkSpd": 850,
     "acc": 1325.4422749424077,
     "eva": 1061.4263675361783,
@@ -10431,8 +10431,8 @@
     "critMultiplier": 1.7803495353730703,
     "dmgReduction": 1525,
     "magicDmgReduction": 950,
-    "hpRegenRate": 12.399328859060404,
-    "hpRegenAmount": 64.5
+    "hpRegenRate": 11.140939597315436,
+    "hpRegenAmount": 77
   },
   {
     "id": 40,
@@ -10445,7 +10445,7 @@
     "dex": 90,
     "luk": 90,
     "magic": 90,
-    "hpLevel": 45,
+    "hpLevel": 70,
     "exp": 360,
     "minGoldDrop": 1260,
     "maxGoldDrop": 1440,
@@ -10690,8 +10690,8 @@
       }
     ],
     "combat": {
-      "hp": 21690,
-      "maxHp": 21690,
+      "hp": 33740,
+      "maxHp": 33740,
       "attackType": "Melee",
       "atkSpd": 3582,
       "acc": 5194.151097296346,
@@ -10703,8 +10703,8 @@
       "critMultiplier": 4.165369933232444,
       "dmgReduction": 7872,
       "magicDmgReduction": 5180,
-      "hpRegenRate": 9.276174496644295,
-      "hpRegenAmount": 203.01,
+      "hpRegenRate": 8.307214765100673,
+      "hpRegenAmount": 240.885,
       "meleeFactor": 132,
       "rangeFactor": 127,
       "magicFactor": 115,
@@ -10713,7 +10713,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 4500,
+    "maxHp": 7000,
     "atkSpd": 900,
     "acc": 1411.4541025261806,
     "eva": 1127.0797186861107,
@@ -10724,8 +10724,8 @@
     "critMultiplier": 1.7877124176963282,
     "dmgReduction": 1600,
     "magicDmgReduction": 1000,
-    "hpRegenRate": 12.046979865771812,
-    "hpRegenAmount": 67
+    "hpRegenRate": 10.788590604026847,
+    "hpRegenAmount": 79.5
   },
   {
     "id": 41,
@@ -10738,7 +10738,7 @@
     "dex": 100,
     "luk": 100,
     "magic": 100,
-    "hpLevel": 50,
+    "hpLevel": 75,
     "exp": 400,
     "minGoldDrop": 1420,
     "maxGoldDrop": 1600,
@@ -10983,8 +10983,8 @@
       }
     ],
     "combat": {
-      "hp": 23750,
-      "maxHp": 23750,
+      "hp": 35625,
+      "maxHp": 35625,
       "attackType": "Ranged",
       "atkSpd": 3660,
       "acc": 5372.787922443176,
@@ -10996,8 +10996,8 @@
       "critMultiplier": 3.674644680754977,
       "dmgReduction": 8662.5,
       "magicDmgReduction": 5401,
-      "hpRegenRate": 8.130201342281879,
-      "hpRegenAmount": 220.4,
+      "hpRegenRate": 7.224161073825503,
+      "hpRegenAmount": 258.40000000000003,
       "meleeFactor": 70,
       "rangeFactor": 109,
       "magicFactor": 80,
@@ -11006,7 +11006,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 5000,
+    "maxHp": 7500,
     "atkSpd": 1000,
     "acc": 1584.8931924611143,
     "eva": 1258.9254117941675,
@@ -11017,8 +11017,8 @@
     "critMultiplier": 1.8012964121347927,
     "dmgReduction": 1750,
     "magicDmgReduction": 1100,
-    "hpRegenRate": 11.291946308724832,
-    "hpRegenAmount": 72.5
+    "hpRegenRate": 10.033557046979865,
+    "hpRegenAmount": 85
   },
   {
     "id": 42,
@@ -11031,7 +11031,7 @@
     "dex": 110,
     "luk": 110,
     "magic": 110,
-    "hpLevel": 55,
+    "hpLevel": 80,
     "exp": 440,
     "minGoldDrop": 1580,
     "maxGoldDrop": 1760,
@@ -11276,8 +11276,8 @@
       }
     ],
     "combat": {
-      "hp": 29315,
-      "maxHp": 29315,
+      "hp": 42640,
+      "maxHp": 42640,
       "attackType": "Magic",
       "atkSpd": 4433,
       "acc": 6846.704037118809,
@@ -11289,8 +11289,8 @@
       "critMultiplier": 4.515856265153633,
       "dmgReduction": 10678,
       "magicDmgReduction": 6780,
-      "hpRegenRate": 6.638255033557046,
-      "hpRegenAmount": 265.98,
+      "hpRegenRate": 5.845469798657718,
+      "hpRegenAmount": 308.605,
       "meleeFactor": 95,
       "rangeFactor": 106,
       "magicFactor": 108,
@@ -11299,7 +11299,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 5500,
+    "maxHp": 8000,
     "atkSpd": 1100,
     "acc": 1760.078158642367,
     "eva": 1391.4330650471852,
@@ -11310,8 +11310,8 @@
     "critMultiplier": 1.8135968936359972,
     "dmgReduction": 1900,
     "magicDmgReduction": 1200,
-    "hpRegenRate": 10.536912751677853,
-    "hpRegenAmount": 78
+    "hpRegenRate": 9.278523489932885,
+    "hpRegenAmount": 90.5
   },
   {
     "id": 43,

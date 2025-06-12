@@ -70,7 +70,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 509,
+              "id": 763,
               "monsterId": 1,
               "itemId": 25,
               "equipmentId": null,
@@ -157,7 +157,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 510,
+              "id": 764,
               "monsterId": 2,
               "itemId": 25,
               "equipmentId": null,
@@ -244,7 +244,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 511,
+              "id": 765,
               "monsterId": 3,
               "itemId": 25,
               "equipmentId": null,
@@ -331,7 +331,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 512,
+              "id": 766,
               "monsterId": 4,
               "itemId": 25,
               "equipmentId": null,
@@ -418,7 +418,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 513,
+              "id": 767,
               "monsterId": 5,
               "itemId": 25,
               "equipmentId": null,
@@ -505,7 +505,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 514,
+              "id": 768,
               "monsterId": 6,
               "itemId": 25,
               "equipmentId": null,
@@ -604,7 +604,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 519,
+              "id": 773,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 81,
@@ -628,7 +628,7 @@
               }
             },
             {
-              "id": 520,
+              "id": 774,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 82,
@@ -652,7 +652,7 @@
               }
             },
             {
-              "id": 521,
+              "id": 775,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 101,
@@ -676,7 +676,7 @@
               }
             },
             {
-              "id": 522,
+              "id": 776,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 102,
@@ -700,7 +700,7 @@
               }
             },
             {
-              "id": 515,
+              "id": 769,
               "monsterId": 7,
               "itemId": 1,
               "equipmentId": null,
@@ -723,7 +723,7 @@
               "equipment": null
             },
             {
-              "id": 516,
+              "id": 770,
               "monsterId": 7,
               "itemId": 2,
               "equipmentId": null,
@@ -746,7 +746,7 @@
               "equipment": null
             },
             {
-              "id": 518,
+              "id": 772,
               "monsterId": 7,
               "itemId": 25,
               "equipmentId": null,
@@ -769,7 +769,7 @@
               "equipment": null
             },
             {
-              "id": 517,
+              "id": 771,
               "monsterId": 7,
               "itemId": 26,
               "equipmentId": null,
@@ -856,7 +856,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 527,
+              "id": 781,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 81,
@@ -880,7 +880,7 @@
               }
             },
             {
-              "id": 528,
+              "id": 782,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 82,
@@ -904,7 +904,7 @@
               }
             },
             {
-              "id": 529,
+              "id": 783,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 101,
@@ -928,7 +928,7 @@
               }
             },
             {
-              "id": 530,
+              "id": 784,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 102,
@@ -952,7 +952,7 @@
               }
             },
             {
-              "id": 523,
+              "id": 777,
               "monsterId": 8,
               "itemId": 1,
               "equipmentId": null,
@@ -975,7 +975,7 @@
               "equipment": null
             },
             {
-              "id": 524,
+              "id": 778,
               "monsterId": 8,
               "itemId": 2,
               "equipmentId": null,
@@ -998,7 +998,7 @@
               "equipment": null
             },
             {
-              "id": 526,
+              "id": 780,
               "monsterId": 8,
               "itemId": 25,
               "equipmentId": null,
@@ -1021,7 +1021,7 @@
               "equipment": null
             },
             {
-              "id": 525,
+              "id": 779,
               "monsterId": 8,
               "itemId": 26,
               "equipmentId": null,
@@ -1108,7 +1108,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 535,
+              "id": 789,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 81,
@@ -1132,7 +1132,7 @@
               }
             },
             {
-              "id": 536,
+              "id": 790,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 82,
@@ -1156,7 +1156,7 @@
               }
             },
             {
-              "id": 537,
+              "id": 791,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 101,
@@ -1180,7 +1180,7 @@
               }
             },
             {
-              "id": 538,
+              "id": 792,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 102,
@@ -1204,7 +1204,7 @@
               }
             },
             {
-              "id": 531,
+              "id": 785,
               "monsterId": 9,
               "itemId": 1,
               "equipmentId": null,
@@ -1227,7 +1227,7 @@
               "equipment": null
             },
             {
-              "id": 532,
+              "id": 786,
               "monsterId": 9,
               "itemId": 2,
               "equipmentId": null,
@@ -1250,7 +1250,7 @@
               "equipment": null
             },
             {
-              "id": 534,
+              "id": 788,
               "monsterId": 9,
               "itemId": 25,
               "equipmentId": null,
@@ -1273,7 +1273,7 @@
               "equipment": null
             },
             {
-              "id": 533,
+              "id": 787,
               "monsterId": 9,
               "itemId": 26,
               "equipmentId": null,
@@ -1360,7 +1360,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 543,
+              "id": 797,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 81,
@@ -1384,7 +1384,7 @@
               }
             },
             {
-              "id": 544,
+              "id": 798,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 82,
@@ -1408,7 +1408,7 @@
               }
             },
             {
-              "id": 545,
+              "id": 799,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 101,
@@ -1432,7 +1432,7 @@
               }
             },
             {
-              "id": 546,
+              "id": 800,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 102,
@@ -1456,7 +1456,7 @@
               }
             },
             {
-              "id": 539,
+              "id": 793,
               "monsterId": 10,
               "itemId": 1,
               "equipmentId": null,
@@ -1479,7 +1479,7 @@
               "equipment": null
             },
             {
-              "id": 540,
+              "id": 794,
               "monsterId": 10,
               "itemId": 2,
               "equipmentId": null,
@@ -1502,7 +1502,7 @@
               "equipment": null
             },
             {
-              "id": 542,
+              "id": 796,
               "monsterId": 10,
               "itemId": 25,
               "equipmentId": null,
@@ -1525,7 +1525,7 @@
               "equipment": null
             },
             {
-              "id": 541,
+              "id": 795,
               "monsterId": 10,
               "itemId": 26,
               "equipmentId": null,
@@ -1612,7 +1612,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 551,
+              "id": 805,
               "monsterId": 11,
               "itemId": null,
               "equipmentId": 83,
@@ -1636,7 +1636,7 @@
               }
             },
             {
-              "id": 552,
+              "id": 806,
               "monsterId": 11,
               "itemId": null,
               "equipmentId": 103,
@@ -1660,7 +1660,7 @@
               }
             },
             {
-              "id": 547,
+              "id": 801,
               "monsterId": 11,
               "itemId": 1,
               "equipmentId": null,
@@ -1683,7 +1683,7 @@
               "equipment": null
             },
             {
-              "id": 548,
+              "id": 802,
               "monsterId": 11,
               "itemId": 2,
               "equipmentId": null,
@@ -1706,7 +1706,7 @@
               "equipment": null
             },
             {
-              "id": 550,
+              "id": 804,
               "monsterId": 11,
               "itemId": 25,
               "equipmentId": null,
@@ -1729,7 +1729,7 @@
               "equipment": null
             },
             {
-              "id": 549,
+              "id": 803,
               "monsterId": 11,
               "itemId": 26,
               "equipmentId": null,
@@ -1816,7 +1816,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 557,
+              "id": 811,
               "monsterId": 12,
               "itemId": null,
               "equipmentId": 83,
@@ -1840,7 +1840,7 @@
               }
             },
             {
-              "id": 558,
+              "id": 812,
               "monsterId": 12,
               "itemId": null,
               "equipmentId": 103,
@@ -1864,7 +1864,7 @@
               }
             },
             {
-              "id": 553,
+              "id": 807,
               "monsterId": 12,
               "itemId": 1,
               "equipmentId": null,
@@ -1887,7 +1887,7 @@
               "equipment": null
             },
             {
-              "id": 554,
+              "id": 808,
               "monsterId": 12,
               "itemId": 2,
               "equipmentId": null,
@@ -1910,7 +1910,7 @@
               "equipment": null
             },
             {
-              "id": 556,
+              "id": 810,
               "monsterId": 12,
               "itemId": 25,
               "equipmentId": null,
@@ -1933,7 +1933,7 @@
               "equipment": null
             },
             {
-              "id": 555,
+              "id": 809,
               "monsterId": 12,
               "itemId": 26,
               "equipmentId": null,
@@ -1979,7 +1979,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/015_A.png",
           "level": 5,
           "str": 5,
-          "def": 5,
+          "def": 10,
           "dex": 5,
           "luk": 5,
           "magic": 5,
@@ -1993,10 +1993,10 @@
           "maxMagicDmg": 71.70338627200096,
           "critChance": 0.0196078431372549,
           "critMultiplier": 1.433445375115093,
-          "dmgReduction": 75,
-          "magicDmgReduction": 50,
-          "hpRegenRate": 19.69798657718121,
-          "hpRegenAmount": 13,
+          "dmgReduction": 125,
+          "magicDmgReduction": 70,
+          "hpRegenRate": 19.44630872483221,
+          "hpRegenAmount": 14.5,
           "exp": 45,
           "minGoldDrop": 50,
           "maxGoldDrop": 90,
@@ -2006,7 +2006,7 @@
           "combat": {
             "id": 13,
             "attackType": "Melee",
-            "cp": "578",
+            "cp": "581",
             "hp": 477,
             "maxHp": 477,
             "atkSpd": 54,
@@ -2017,10 +2017,10 @@
             "maxMagicDmg": 91.78033442816123,
             "critChance": 0.02431372549019608,
             "critMultiplier": 1.53378655137315,
-            "dmgReduction": 100.5,
-            "magicDmgReduction": 70.5,
-            "hpRegenRate": 15.16744966442953,
-            "hpRegenAmount": 15.86,
+            "dmgReduction": 167.5,
+            "magicDmgReduction": 98.70000000000002,
+            "hpRegenRate": 14.9736577181208,
+            "hpRegenAmount": 17.69,
             "meleeFactor": 4,
             "rangeFactor": 0,
             "magicFactor": 0,
@@ -2032,7 +2032,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 564,
+              "id": 818,
               "monsterId": 13,
               "itemId": null,
               "equipmentId": 83,
@@ -2056,7 +2056,7 @@
               }
             },
             {
-              "id": 565,
+              "id": 819,
               "monsterId": 13,
               "itemId": null,
               "equipmentId": 103,
@@ -2080,7 +2080,7 @@
               }
             },
             {
-              "id": 559,
+              "id": 813,
               "monsterId": 13,
               "itemId": 3,
               "equipmentId": null,
@@ -2103,7 +2103,7 @@
               "equipment": null
             },
             {
-              "id": 560,
+              "id": 814,
               "monsterId": 13,
               "itemId": 4,
               "equipmentId": null,
@@ -2126,7 +2126,7 @@
               "equipment": null
             },
             {
-              "id": 561,
+              "id": 815,
               "monsterId": 13,
               "itemId": 17,
               "equipmentId": null,
@@ -2149,7 +2149,7 @@
               "equipment": null
             },
             {
-              "id": 563,
+              "id": 817,
               "monsterId": 13,
               "itemId": 25,
               "equipmentId": null,
@@ -2172,7 +2172,7 @@
               "equipment": null
             },
             {
-              "id": 562,
+              "id": 816,
               "monsterId": 13,
               "itemId": 27,
               "equipmentId": null,
@@ -2206,7 +2206,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/023_A.png",
           "level": 7,
           "str": 7,
-          "def": 7,
+          "def": 12,
           "dex": 7,
           "luk": 7,
           "magic": 7,
@@ -2220,10 +2220,10 @@
           "maxMagicDmg": 88.09057554245443,
           "critChance": 0.02723735408560311,
           "critMultiplier": 1.470926996097583,
-          "dmgReduction": 105,
-          "magicDmgReduction": 70,
-          "hpRegenRate": 19.54697986577181,
-          "hpRegenAmount": 14.1,
+          "dmgReduction": 155,
+          "magicDmgReduction": 90,
+          "hpRegenRate": 19.29530201342282,
+          "hpRegenAmount": 15.6,
           "exp": 65,
           "minGoldDrop": 90,
           "maxGoldDrop": 130,
@@ -2233,7 +2233,7 @@
           "combat": {
             "id": 14,
             "attackType": "Ranged",
-            "cp": "709",
+            "cp": "713",
             "hp": 436,
             "maxHp": 436,
             "atkSpd": 114.1,
@@ -2244,10 +2244,10 @@
             "maxMagicDmg": 141.8258266233516,
             "critChance": 0.02859922178988327,
             "critMultiplier": 1.559182615863438,
-            "dmgReduction": 174.3,
-            "magicDmgReduction": 119,
-            "hpRegenRate": 11.33724832214765,
-            "hpRegenAmount": 25.38,
+            "dmgReduction": 257.3,
+            "magicDmgReduction": 153,
+            "hpRegenRate": 11.19127516778524,
+            "hpRegenAmount": 28.08,
             "meleeFactor": 5,
             "rangeFactor": 4,
             "magicFactor": 0,
@@ -2259,7 +2259,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 571,
+              "id": 825,
               "monsterId": 14,
               "itemId": null,
               "equipmentId": 83,
@@ -2283,7 +2283,7 @@
               }
             },
             {
-              "id": 572,
+              "id": 826,
               "monsterId": 14,
               "itemId": null,
               "equipmentId": 103,
@@ -2307,7 +2307,7 @@
               }
             },
             {
-              "id": 566,
+              "id": 820,
               "monsterId": 14,
               "itemId": 3,
               "equipmentId": null,
@@ -2330,7 +2330,7 @@
               "equipment": null
             },
             {
-              "id": 567,
+              "id": 821,
               "monsterId": 14,
               "itemId": 4,
               "equipmentId": null,
@@ -2353,7 +2353,7 @@
               "equipment": null
             },
             {
-              "id": 568,
+              "id": 822,
               "monsterId": 14,
               "itemId": 17,
               "equipmentId": null,
@@ -2376,7 +2376,7 @@
               "equipment": null
             },
             {
-              "id": 570,
+              "id": 824,
               "monsterId": 14,
               "itemId": 25,
               "equipmentId": null,
@@ -2399,7 +2399,7 @@
               "equipment": null
             },
             {
-              "id": 569,
+              "id": 823,
               "monsterId": 14,
               "itemId": 27,
               "equipmentId": null,
@@ -2433,7 +2433,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/013_A.png",
           "level": 7,
           "str": 7,
-          "def": 7,
+          "def": 12,
           "dex": 7,
           "luk": 7,
           "magic": 7,
@@ -2447,10 +2447,10 @@
           "maxMagicDmg": 88.09057554245443,
           "critChance": 0.02723735408560311,
           "critMultiplier": 1.470926996097583,
-          "dmgReduction": 105,
-          "magicDmgReduction": 70,
-          "hpRegenRate": 19.54697986577181,
-          "hpRegenAmount": 14.1,
+          "dmgReduction": 155,
+          "magicDmgReduction": 90,
+          "hpRegenRate": 19.29530201342282,
+          "hpRegenAmount": 15.6,
           "exp": 65,
           "minGoldDrop": 90,
           "maxGoldDrop": 130,
@@ -2460,7 +2460,7 @@
           "combat": {
             "id": 15,
             "attackType": "Magic",
-            "cp": "573",
+            "cp": "576",
             "hp": 500,
             "maxHp": 500,
             "atkSpd": 77,
@@ -2471,10 +2471,10 @@
             "maxMagicDmg": 157.4705021617944,
             "critChance": 0.0296887159533074,
             "critMultiplier": 1.779821665278075,
-            "dmgReduction": 163.8,
-            "magicDmgReduction": 108.5,
-            "hpRegenRate": 15.24664429530202,
-            "hpRegenAmount": 19.881,
+            "dmgReduction": 241.8,
+            "magicDmgReduction": 139.5,
+            "hpRegenRate": 15.0503355704698,
+            "hpRegenAmount": 21.996,
             "meleeFactor": 0,
             "rangeFactor": 5,
             "magicFactor": 3,
@@ -2486,7 +2486,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 578,
+              "id": 832,
               "monsterId": 15,
               "itemId": null,
               "equipmentId": 83,
@@ -2510,7 +2510,7 @@
               }
             },
             {
-              "id": 579,
+              "id": 833,
               "monsterId": 15,
               "itemId": null,
               "equipmentId": 103,
@@ -2534,7 +2534,7 @@
               }
             },
             {
-              "id": 573,
+              "id": 827,
               "monsterId": 15,
               "itemId": 3,
               "equipmentId": null,
@@ -2557,7 +2557,7 @@
               "equipment": null
             },
             {
-              "id": 574,
+              "id": 828,
               "monsterId": 15,
               "itemId": 4,
               "equipmentId": null,
@@ -2580,7 +2580,7 @@
               "equipment": null
             },
             {
-              "id": 575,
+              "id": 829,
               "monsterId": 15,
               "itemId": 17,
               "equipmentId": null,
@@ -2603,7 +2603,7 @@
               "equipment": null
             },
             {
-              "id": 577,
+              "id": 831,
               "monsterId": 15,
               "itemId": 25,
               "equipmentId": null,
@@ -2626,7 +2626,7 @@
               "equipment": null
             },
             {
-              "id": 576,
+              "id": 830,
               "monsterId": 15,
               "itemId": 27,
               "equipmentId": null,
@@ -2660,7 +2660,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/021_A.png",
           "level": 11,
           "str": 11,
-          "def": 11,
+          "def": 16,
           "dex": 11,
           "luk": 11,
           "magic": 11,
@@ -2674,10 +2674,10 @@
           "maxMagicDmg": 117.1531333896823,
           "critChance": 0.0421455938697318,
           "critMultiplier": 1.523754373814287,
-          "dmgReduction": 165,
-          "magicDmgReduction": 110,
-          "hpRegenRate": 19.24496644295302,
-          "hpRegenAmount": 16.3,
+          "dmgReduction": 215,
+          "magicDmgReduction": 130,
+          "hpRegenRate": 18.99328859060403,
+          "hpRegenAmount": 17.8,
           "exp": 100,
           "minGoldDrop": 160,
           "maxGoldDrop": 200,
@@ -2687,7 +2687,7 @@
           "combat": {
             "id": 16,
             "attackType": "Melee",
-            "cp": "939",
+            "cp": "943",
             "hp": 1062,
             "maxHp": 1062,
             "atkSpd": 173.8,
@@ -2698,10 +2698,10 @@
             "maxMagicDmg": 307.5069861166423,
             "critChance": 0.04509578544061303,
             "critMultiplier": 1.630417179981288,
-            "dmgReduction": 358.05,
-            "magicDmgReduction": 152.9,
-            "hpRegenRate": 17.51291946308725,
-            "hpRegenAmount": 25.42800000000001,
+            "dmgReduction": 466.55,
+            "magicDmgReduction": 180.7,
+            "hpRegenRate": 17.28389261744967,
+            "hpRegenAmount": 27.76800000000001,
             "meleeFactor": 34,
             "rangeFactor": 30,
             "magicFactor": 34,
@@ -2713,7 +2713,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 585,
+              "id": 839,
               "monsterId": 16,
               "itemId": null,
               "equipmentId": 83,
@@ -2737,7 +2737,7 @@
               }
             },
             {
-              "id": 586,
+              "id": 840,
               "monsterId": 16,
               "itemId": null,
               "equipmentId": 103,
@@ -2761,7 +2761,7 @@
               }
             },
             {
-              "id": 580,
+              "id": 834,
               "monsterId": 16,
               "itemId": 3,
               "equipmentId": null,
@@ -2784,7 +2784,7 @@
               "equipment": null
             },
             {
-              "id": 581,
+              "id": 835,
               "monsterId": 16,
               "itemId": 4,
               "equipmentId": null,
@@ -2807,7 +2807,7 @@
               "equipment": null
             },
             {
-              "id": 582,
+              "id": 836,
               "monsterId": 16,
               "itemId": 17,
               "equipmentId": null,
@@ -2830,7 +2830,7 @@
               "equipment": null
             },
             {
-              "id": 584,
+              "id": 838,
               "monsterId": 16,
               "itemId": 25,
               "equipmentId": null,
@@ -2853,7 +2853,7 @@
               "equipment": null
             },
             {
-              "id": 583,
+              "id": 837,
               "monsterId": 16,
               "itemId": 27,
               "equipmentId": null,
@@ -2887,7 +2887,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/014_A.png",
           "level": 13,
           "str": 13,
-          "def": 13,
+          "def": 18,
           "dex": 13,
           "luk": 13,
           "magic": 13,
@@ -2901,10 +2901,10 @@
           "maxMagicDmg": 130.4454343950954,
           "critChance": 0.04942965779467681,
           "critMultiplier": 1.543838410703471,
-          "dmgReduction": 195,
-          "magicDmgReduction": 130,
-          "hpRegenRate": 19.09395973154362,
-          "hpRegenAmount": 17.4,
+          "dmgReduction": 245,
+          "magicDmgReduction": 150,
+          "hpRegenRate": 18.84228187919463,
+          "hpRegenAmount": 18.9,
           "exp": 115,
           "minGoldDrop": 190,
           "maxGoldDrop": 230,
@@ -2914,7 +2914,7 @@
           "combat": {
             "id": 17,
             "attackType": "Ranged",
-            "cp": "1076",
+            "cp": "1080",
             "hp": 1197,
             "maxHp": 1197,
             "atkSpd": 288.6,
@@ -2925,10 +2925,10 @@
             "maxMagicDmg": 306.5467708284743,
             "critChance": 0.0632699619771863,
             "critMultiplier": 2.362072768376311,
-            "dmgReduction": 313.95,
-            "magicDmgReduction": 327.6,
-            "hpRegenRate": 19.09395973154362,
-            "hpRegenAmount": 27.144,
+            "dmgReduction": 394.4499999999999,
+            "magicDmgReduction": 378,
+            "hpRegenRate": 18.84228187919463,
+            "hpRegenAmount": 29.484,
             "meleeFactor": 33,
             "rangeFactor": 37,
             "magicFactor": 33,
@@ -2940,7 +2940,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 592,
+              "id": 846,
               "monsterId": 17,
               "itemId": null,
               "equipmentId": 84,
@@ -2964,7 +2964,7 @@
               }
             },
             {
-              "id": 593,
+              "id": 847,
               "monsterId": 17,
               "itemId": null,
               "equipmentId": 104,
@@ -2988,7 +2988,7 @@
               }
             },
             {
-              "id": 587,
+              "id": 841,
               "monsterId": 17,
               "itemId": 3,
               "equipmentId": null,
@@ -3011,7 +3011,7 @@
               "equipment": null
             },
             {
-              "id": 588,
+              "id": 842,
               "monsterId": 17,
               "itemId": 4,
               "equipmentId": null,
@@ -3034,7 +3034,7 @@
               "equipment": null
             },
             {
-              "id": 589,
+              "id": 843,
               "monsterId": 17,
               "itemId": 17,
               "equipmentId": null,
@@ -3057,7 +3057,7 @@
               "equipment": null
             },
             {
-              "id": 591,
+              "id": 845,
               "monsterId": 17,
               "itemId": 25,
               "equipmentId": null,
@@ -3080,7 +3080,7 @@
               "equipment": null
             },
             {
-              "id": 590,
+              "id": 844,
               "monsterId": 17,
               "itemId": 27,
               "equipmentId": null,
@@ -3114,7 +3114,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/017_A.png",
           "level": 15,
           "str": 15,
-          "def": 15,
+          "def": 20,
           "dex": 15,
           "luk": 15,
           "magic": 15,
@@ -3128,10 +3128,10 @@
           "maxMagicDmg": 143.1355010295025,
           "critChance": 0.05660377358490566,
           "critMultiplier": 1.561235994796777,
-          "dmgReduction": 225,
-          "magicDmgReduction": 150,
-          "hpRegenRate": 18.94295302013423,
-          "hpRegenAmount": 18.5,
+          "dmgReduction": 275,
+          "magicDmgReduction": 170,
+          "hpRegenRate": 18.69127516778524,
+          "hpRegenAmount": 20,
           "exp": 135,
           "minGoldDrop": 230,
           "maxGoldDrop": 270,
@@ -3141,7 +3141,7 @@
           "combat": {
             "id": 18,
             "attackType": "Magic",
-            "cp": "1292",
+            "cp": "1296",
             "hp": 2000,
             "maxHp": 2000,
             "atkSpd": 304.5,
@@ -3152,10 +3152,10 @@
             "maxMagicDmg": 349.8396470487099,
             "critChance": 0.06169811320754717,
             "critMultiplier": 1.701747234328487,
-            "dmgReduction": 423.0000000000001,
-            "magicDmgReduction": 325.5,
-            "hpRegenRate": 18.94295302013423,
-            "hpRegenAmount": 29.97,
+            "dmgReduction": 517,
+            "magicDmgReduction": 368.9,
+            "hpRegenRate": 18.69127516778524,
+            "hpRegenAmount": 32.4,
             "meleeFactor": 80,
             "rangeFactor": 84,
             "magicFactor": 84,
@@ -3167,7 +3167,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 599,
+              "id": 853,
               "monsterId": 18,
               "itemId": null,
               "equipmentId": 84,
@@ -3191,7 +3191,7 @@
               }
             },
             {
-              "id": 600,
+              "id": 854,
               "monsterId": 18,
               "itemId": null,
               "equipmentId": 104,
@@ -3215,7 +3215,7 @@
               }
             },
             {
-              "id": 594,
+              "id": 848,
               "monsterId": 18,
               "itemId": 3,
               "equipmentId": null,
@@ -3238,7 +3238,7 @@
               "equipment": null
             },
             {
-              "id": 595,
+              "id": 849,
               "monsterId": 18,
               "itemId": 4,
               "equipmentId": null,
@@ -3261,7 +3261,7 @@
               "equipment": null
             },
             {
-              "id": 596,
+              "id": 850,
               "monsterId": 18,
               "itemId": 17,
               "equipmentId": null,
@@ -3284,7 +3284,7 @@
               "equipment": null
             },
             {
-              "id": 598,
+              "id": 852,
               "monsterId": 18,
               "itemId": 25,
               "equipmentId": null,
@@ -3307,7 +3307,7 @@
               "equipment": null
             },
             {
-              "id": 597,
+              "id": 851,
               "monsterId": 18,
               "itemId": 27,
               "equipmentId": null,
@@ -3353,7 +3353,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/080_A.png",
           "level": 15,
           "str": 15,
-          "def": 15,
+          "def": 25,
           "dex": 15,
           "luk": 15,
           "magic": 15,
@@ -3367,10 +3367,10 @@
           "maxMagicDmg": 143.1355010295025,
           "critChance": 0.05660377358490566,
           "critMultiplier": 1.561235994796777,
-          "dmgReduction": 225,
-          "magicDmgReduction": 150,
-          "hpRegenRate": 18.94295302013423,
-          "hpRegenAmount": 18.5,
+          "dmgReduction": 325,
+          "magicDmgReduction": 190,
+          "hpRegenRate": 18.43959731543624,
+          "hpRegenAmount": 21.5,
           "exp": 110,
           "minGoldDrop": 270,
           "maxGoldDrop": 330,
@@ -3380,7 +3380,7 @@
           "combat": {
             "id": 19,
             "attackType": "Melee",
-            "cp": "1158",
+            "cp": "1166",
             "hp": 1296,
             "maxHp": 1296,
             "atkSpd": 316.5,
@@ -3391,10 +3391,10 @@
             "maxMagicDmg": 239.0362867192691,
             "critChance": 0.07641509433962265,
             "critMultiplier": 1.889095553704101,
-            "dmgReduction": 470.25,
-            "magicDmgReduction": 321,
-            "hpRegenRate": 18.94295302013423,
-            "hpRegenAmount": 30.34,
+            "dmgReduction": 679.25,
+            "magicDmgReduction": 406.6,
+            "hpRegenRate": 18.43959731543624,
+            "hpRegenAmount": 35.26,
             "meleeFactor": 35,
             "rangeFactor": 30,
             "magicFactor": 30,
@@ -3406,7 +3406,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 606,
+              "id": 860,
               "monsterId": 19,
               "itemId": null,
               "equipmentId": 84,
@@ -3430,7 +3430,7 @@
               }
             },
             {
-              "id": 607,
+              "id": 861,
               "monsterId": 19,
               "itemId": null,
               "equipmentId": 104,
@@ -3454,7 +3454,7 @@
               }
             },
             {
-              "id": 601,
+              "id": 855,
               "monsterId": 19,
               "itemId": 5,
               "equipmentId": null,
@@ -3477,7 +3477,7 @@
               "equipment": null
             },
             {
-              "id": 602,
+              "id": 856,
               "monsterId": 19,
               "itemId": 6,
               "equipmentId": null,
@@ -3500,7 +3500,7 @@
               "equipment": null
             },
             {
-              "id": 603,
+              "id": 857,
               "monsterId": 19,
               "itemId": 18,
               "equipmentId": null,
@@ -3523,7 +3523,7 @@
               "equipment": null
             },
             {
-              "id": 605,
+              "id": 859,
               "monsterId": 19,
               "itemId": 25,
               "equipmentId": null,
@@ -3546,7 +3546,7 @@
               "equipment": null
             },
             {
-              "id": 604,
+              "id": 858,
               "monsterId": 19,
               "itemId": 28,
               "equipmentId": null,
@@ -3580,7 +3580,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/078_A.png",
           "level": 18,
           "str": 18,
-          "def": 18,
+          "def": 28,
           "dex": 18,
           "luk": 18,
           "magic": 18,
@@ -3594,10 +3594,10 @@
           "maxMagicDmg": 161.2588343425082,
           "critChance": 0.06716417910447761,
           "critMultiplier": 1.583626080285849,
-          "dmgReduction": 270,
-          "magicDmgReduction": 180,
-          "hpRegenRate": 18.74161073825503,
-          "hpRegenAmount": 19.9,
+          "dmgReduction": 370,
+          "magicDmgReduction": 220,
+          "hpRegenRate": 18.23825503355705,
+          "hpRegenAmount": 22.9,
           "exp": 130,
           "minGoldDrop": 330,
           "maxGoldDrop": 390,
@@ -3607,7 +3607,7 @@
           "combat": {
             "id": 20,
             "attackType": "Ranged",
-            "cp": "1458",
+            "cp": "1466",
             "hp": 1728,
             "maxHp": 1728,
             "atkSpd": 401.4,
@@ -3618,10 +3618,10 @@
             "maxMagicDmg": 421.3820238969431,
             "critChance": 0.06716417910447761,
             "critMultiplier": 1.583626080285849,
-            "dmgReduction": 518.3999999999999,
-            "magicDmgReduction": 280.8000000000001,
-            "hpRegenRate": 12.36946308724832,
-            "hpRegenAmount": 31.24300000000001,
+            "dmgReduction": 710.4,
+            "magicDmgReduction": 343.2,
+            "hpRegenRate": 12.03724832214765,
+            "hpRegenAmount": 35.953,
             "meleeFactor": 30,
             "rangeFactor": 35,
             "magicFactor": 34,
@@ -3633,7 +3633,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 613,
+              "id": 867,
               "monsterId": 20,
               "itemId": null,
               "equipmentId": 84,
@@ -3657,7 +3657,7 @@
               }
             },
             {
-              "id": 614,
+              "id": 868,
               "monsterId": 20,
               "itemId": null,
               "equipmentId": 104,
@@ -3681,7 +3681,7 @@
               }
             },
             {
-              "id": 608,
+              "id": 862,
               "monsterId": 20,
               "itemId": 5,
               "equipmentId": null,
@@ -3704,7 +3704,7 @@
               "equipment": null
             },
             {
-              "id": 609,
+              "id": 863,
               "monsterId": 20,
               "itemId": 6,
               "equipmentId": null,
@@ -3727,7 +3727,7 @@
               "equipment": null
             },
             {
-              "id": 610,
+              "id": 864,
               "monsterId": 20,
               "itemId": 18,
               "equipmentId": null,
@@ -3750,7 +3750,7 @@
               "equipment": null
             },
             {
-              "id": 612,
+              "id": 866,
               "monsterId": 20,
               "itemId": 25,
               "equipmentId": null,
@@ -3773,7 +3773,7 @@
               "equipment": null
             },
             {
-              "id": 611,
+              "id": 865,
               "monsterId": 20,
               "itemId": 28,
               "equipmentId": null,
@@ -3807,7 +3807,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/053_A.png",
           "level": 18,
           "str": 18,
-          "def": 18,
+          "def": 28,
           "dex": 18,
           "luk": 18,
           "magic": 18,
@@ -3821,10 +3821,10 @@
           "maxMagicDmg": 161.2588343425082,
           "critChance": 0.06716417910447761,
           "critMultiplier": 1.583626080285849,
-          "dmgReduction": 270,
-          "magicDmgReduction": 180,
-          "hpRegenRate": 18.74161073825503,
-          "hpRegenAmount": 19.9,
+          "dmgReduction": 370,
+          "magicDmgReduction": 220,
+          "hpRegenRate": 18.23825503355705,
+          "hpRegenAmount": 22.9,
           "exp": 130,
           "minGoldDrop": 330,
           "maxGoldDrop": 390,
@@ -3834,7 +3834,7 @@
           "combat": {
             "id": 21,
             "attackType": "Magic",
-            "cp": "1676",
+            "cp": "1683",
             "hp": 1314,
             "maxHp": 1314,
             "atkSpd": 334.8,
@@ -3845,10 +3845,10 @@
             "maxMagicDmg": 445.5708490483194,
             "critChance": 0.08865671641791044,
             "critMultiplier": 2.454620424443066,
-            "dmgReduction": 488.6999999999999,
-            "magicDmgReduction": 358.2,
-            "hpRegenRate": 14.05620805369128,
-            "hpRegenAmount": 34.228,
+            "dmgReduction": 669.6999999999999,
+            "magicDmgReduction": 437.8,
+            "hpRegenRate": 13.67869127516778,
+            "hpRegenAmount": 39.38799999999999,
             "meleeFactor": 33,
             "rangeFactor": 33,
             "magicFactor": 37,
@@ -3860,7 +3860,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 620,
+              "id": 874,
               "monsterId": 21,
               "itemId": null,
               "equipmentId": 84,
@@ -3884,7 +3884,7 @@
               }
             },
             {
-              "id": 621,
+              "id": 875,
               "monsterId": 21,
               "itemId": null,
               "equipmentId": 104,
@@ -3908,7 +3908,7 @@
               }
             },
             {
-              "id": 615,
+              "id": 869,
               "monsterId": 21,
               "itemId": 5,
               "equipmentId": null,
@@ -3931,7 +3931,7 @@
               "equipment": null
             },
             {
-              "id": 616,
+              "id": 870,
               "monsterId": 21,
               "itemId": 6,
               "equipmentId": null,
@@ -3954,7 +3954,7 @@
               "equipment": null
             },
             {
-              "id": 617,
+              "id": 871,
               "monsterId": 21,
               "itemId": 18,
               "equipmentId": null,
@@ -3977,7 +3977,7 @@
               "equipment": null
             },
             {
-              "id": 619,
+              "id": 873,
               "monsterId": 21,
               "itemId": 25,
               "equipmentId": null,
@@ -4000,7 +4000,7 @@
               "equipment": null
             },
             {
-              "id": 618,
+              "id": 872,
               "monsterId": 21,
               "itemId": 28,
               "equipmentId": null,
@@ -4034,7 +4034,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/022_A.png",
           "level": 21,
           "str": 21,
-          "def": 21,
+          "def": 31,
           "dex": 21,
           "luk": 21,
           "magic": 21,
@@ -4048,10 +4048,10 @@
           "maxMagicDmg": 178.4936359034892,
           "critChance": 0.07749077490774908,
           "critMultiplier": 1.602726804246662,
-          "dmgReduction": 315,
-          "magicDmgReduction": 210,
-          "hpRegenRate": 18.48993288590604,
-          "hpRegenAmount": 21.8,
+          "dmgReduction": 415,
+          "magicDmgReduction": 250,
+          "hpRegenRate": 17.98657718120806,
+          "hpRegenAmount": 24.8,
           "exp": 160,
           "minGoldDrop": 420,
           "maxGoldDrop": 480,
@@ -4061,7 +4061,7 @@
           "combat": {
             "id": 22,
             "attackType": "Melee",
-            "cp": "1776",
+            "cp": "1785",
             "hp": 2101,
             "maxHp": 2101,
             "atkSpd": 415.8,
@@ -4072,10 +4072,10 @@
             "maxMagicDmg": 437.3094079635487,
             "critChance": 0.09686346863468635,
             "critMultiplier": 1.987381237265861,
-            "dmgReduction": 611.1000000000001,
-            "magicDmgReduction": 541.8000000000001,
-            "hpRegenRate": 13.49765100671141,
-            "hpRegenAmount": 36.40600000000001,
+            "dmgReduction": 805.1000000000001,
+            "magicDmgReduction": 645,
+            "hpRegenRate": 13.13020134228188,
+            "hpRegenAmount": 41.416,
             "meleeFactor": 38,
             "rangeFactor": 38,
             "magicFactor": 33,
@@ -4087,7 +4087,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 627,
+              "id": 881,
               "monsterId": 22,
               "itemId": null,
               "equipmentId": 84,
@@ -4111,7 +4111,7 @@
               }
             },
             {
-              "id": 628,
+              "id": 882,
               "monsterId": 22,
               "itemId": null,
               "equipmentId": 104,
@@ -4135,7 +4135,7 @@
               }
             },
             {
-              "id": 622,
+              "id": 876,
               "monsterId": 22,
               "itemId": 5,
               "equipmentId": null,
@@ -4158,7 +4158,7 @@
               "equipment": null
             },
             {
-              "id": 623,
+              "id": 877,
               "monsterId": 22,
               "itemId": 6,
               "equipmentId": null,
@@ -4181,7 +4181,7 @@
               "equipment": null
             },
             {
-              "id": 624,
+              "id": 878,
               "monsterId": 22,
               "itemId": 18,
               "equipmentId": null,
@@ -4204,7 +4204,7 @@
               "equipment": null
             },
             {
-              "id": 626,
+              "id": 880,
               "monsterId": 22,
               "itemId": 25,
               "equipmentId": null,
@@ -4227,7 +4227,7 @@
               "equipment": null
             },
             {
-              "id": 625,
+              "id": 879,
               "monsterId": 22,
               "itemId": 28,
               "equipmentId": null,
@@ -4261,7 +4261,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/027_A.png",
           "level": 24,
           "str": 24,
-          "def": 24,
+          "def": 34,
           "dex": 24,
           "luk": 24,
           "magic": 24,
@@ -4275,10 +4275,10 @@
           "maxMagicDmg": 195.0026140165248,
           "critChance": 0.08759124087591241,
           "critMultiplier": 1.619382002601611,
-          "dmgReduction": 360,
-          "magicDmgReduction": 240,
-          "hpRegenRate": 18.28859060402684,
-          "hpRegenAmount": 23.2,
+          "dmgReduction": 460,
+          "magicDmgReduction": 280,
+          "hpRegenRate": 17.78523489932886,
+          "hpRegenAmount": 26.2,
           "exp": 180,
           "minGoldDrop": 480,
           "maxGoldDrop": 540,
@@ -4288,7 +4288,7 @@
           "combat": {
             "id": 23,
             "attackType": "Ranged",
-            "cp": "2141",
+            "cp": "2151",
             "hp": 3468,
             "maxHp": 3468,
             "atkSpd": 480,
@@ -4299,10 +4299,10 @@
             "maxMagicDmg": 468.0062736396595,
             "critChance": 0.1287591240875912,
             "critMultiplier": 2.024227503252014,
-            "dmgReduction": 1126.8,
-            "magicDmgReduction": 664.8,
-            "hpRegenRate": 14.99664429530201,
-            "hpRegenAmount": 45.47199999999999,
+            "dmgReduction": 1439.8,
+            "magicDmgReduction": 775.6,
+            "hpRegenRate": 14.58389261744966,
+            "hpRegenAmount": 51.352,
             "meleeFactor": 36,
             "rangeFactor": 41,
             "magicFactor": 36,
@@ -4314,7 +4314,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 634,
+              "id": 888,
               "monsterId": 23,
               "itemId": null,
               "equipmentId": 85,
@@ -4338,7 +4338,7 @@
               }
             },
             {
-              "id": 635,
+              "id": 889,
               "monsterId": 23,
               "itemId": null,
               "equipmentId": 105,
@@ -4362,7 +4362,7 @@
               }
             },
             {
-              "id": 629,
+              "id": 883,
               "monsterId": 23,
               "itemId": 5,
               "equipmentId": null,
@@ -4385,7 +4385,7 @@
               "equipment": null
             },
             {
-              "id": 630,
+              "id": 884,
               "monsterId": 23,
               "itemId": 6,
               "equipmentId": null,
@@ -4408,7 +4408,7 @@
               "equipment": null
             },
             {
-              "id": 631,
+              "id": 885,
               "monsterId": 23,
               "itemId": 18,
               "equipmentId": null,
@@ -4431,7 +4431,7 @@
               "equipment": null
             },
             {
-              "id": 633,
+              "id": 887,
               "monsterId": 23,
               "itemId": 25,
               "equipmentId": null,
@@ -4454,7 +4454,7 @@
               "equipment": null
             },
             {
-              "id": 632,
+              "id": 886,
               "monsterId": 23,
               "itemId": 28,
               "equipmentId": null,
@@ -4488,7 +4488,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/046_A.png",
           "level": 30,
           "str": 30,
-          "def": 30,
+          "def": 40,
           "dex": 30,
           "luk": 30,
           "magic": 30,
@@ -4502,10 +4502,10 @@
           "maxMagicDmg": 226.2792595026029,
           "critChance": 0.1071428571428571,
           "critMultiplier": 1.647408508150282,
-          "dmgReduction": 450,
-          "magicDmgReduction": 300,
-          "hpRegenRate": 17.83557046979866,
-          "hpRegenAmount": 26.5,
+          "dmgReduction": 550,
+          "magicDmgReduction": 340,
+          "hpRegenRate": 17.33221476510067,
+          "hpRegenAmount": 29.5,
           "exp": 220,
           "minGoldDrop": 600,
           "maxGoldDrop": 660,
@@ -4515,7 +4515,7 @@
           "combat": {
             "id": 24,
             "attackType": "Magic",
-            "cp": "2676",
+            "cp": "2685",
             "hp": 4605,
             "maxHp": 4605,
             "atkSpd": 603,
@@ -4526,10 +4526,10 @@
             "maxMagicDmg": 578.6539190709086,
             "critChance": 0.1939285714285714,
             "critMultiplier": 2.56995727271444,
-            "dmgReduction": 1255.5,
-            "magicDmgReduction": 783,
-            "hpRegenRate": 16.94379194630872,
-            "hpRegenAmount": 53.52999999999999,
+            "dmgReduction": 1534.5,
+            "magicDmgReduction": 887.3999999999997,
+            "hpRegenRate": 16.46560402684564,
+            "hpRegenAmount": 59.59,
             "meleeFactor": 88,
             "rangeFactor": 101,
             "magicFactor": 98,
@@ -4541,7 +4541,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 641,
+              "id": 895,
               "monsterId": 24,
               "itemId": null,
               "equipmentId": 85,
@@ -4565,7 +4565,7 @@
               }
             },
             {
-              "id": 642,
+              "id": 896,
               "monsterId": 24,
               "itemId": null,
               "equipmentId": 105,
@@ -4589,7 +4589,7 @@
               }
             },
             {
-              "id": 636,
+              "id": 890,
               "monsterId": 24,
               "itemId": 5,
               "equipmentId": null,
@@ -4612,7 +4612,7 @@
               "equipment": null
             },
             {
-              "id": 637,
+              "id": 891,
               "monsterId": 24,
               "itemId": 6,
               "equipmentId": null,
@@ -4635,7 +4635,7 @@
               "equipment": null
             },
             {
-              "id": 638,
+              "id": 892,
               "monsterId": 24,
               "itemId": 18,
               "equipmentId": null,
@@ -4658,7 +4658,7 @@
               "equipment": null
             },
             {
-              "id": 640,
+              "id": 894,
               "monsterId": 24,
               "itemId": 25,
               "equipmentId": null,
@@ -4681,7 +4681,7 @@
               "equipment": null
             },
             {
-              "id": 639,
+              "id": 893,
               "monsterId": 24,
               "itemId": 28,
               "equipmentId": null,
@@ -4727,7 +4727,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/019_A.png",
           "level": 30,
           "str": 30,
-          "def": 30,
+          "def": 45,
           "dex": 30,
           "luk": 30,
           "magic": 30,
@@ -4741,10 +4741,10 @@
           "maxMagicDmg": 226.2792595026029,
           "critChance": 0.1071428571428571,
           "critMultiplier": 1.647408508150282,
-          "dmgReduction": 450,
-          "magicDmgReduction": 300,
-          "hpRegenRate": 17.83557046979866,
-          "hpRegenAmount": 26.5,
+          "dmgReduction": 600,
+          "magicDmgReduction": 360,
+          "hpRegenRate": 17.08053691275168,
+          "hpRegenAmount": 31,
           "exp": 190,
           "minGoldDrop": 490,
           "maxGoldDrop": 570,
@@ -4754,7 +4754,7 @@
           "combat": {
             "id": 25,
             "attackType": "Melee",
-            "cp": "2158",
+            "cp": "2170",
             "hp": 2955,
             "maxHp": 2955,
             "atkSpd": 411,
@@ -4765,10 +4765,10 @@
             "maxMagicDmg": 418.6166300798154,
             "critChance": 0.1735714285714285,
             "critMultiplier": 2.174579230758372,
-            "dmgReduction": 913.5,
-            "magicDmgReduction": 666,
-            "hpRegenRate": 14.98187919463087,
-            "hpRegenAmount": 43.19500000000001,
+            "dmgReduction": 1218,
+            "magicDmgReduction": 799.1999999999999,
+            "hpRegenRate": 14.34765100671141,
+            "hpRegenAmount": 50.52999999999999,
             "meleeFactor": 12,
             "rangeFactor": 6,
             "magicFactor": 6,
@@ -4780,7 +4780,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 648,
+              "id": 902,
               "monsterId": 25,
               "itemId": null,
               "equipmentId": 85,
@@ -4804,7 +4804,7 @@
               }
             },
             {
-              "id": 649,
+              "id": 903,
               "monsterId": 25,
               "itemId": null,
               "equipmentId": 105,
@@ -4828,7 +4828,7 @@
               }
             },
             {
-              "id": 643,
+              "id": 897,
               "monsterId": 25,
               "itemId": 7,
               "equipmentId": null,
@@ -4851,7 +4851,7 @@
               "equipment": null
             },
             {
-              "id": 644,
+              "id": 898,
               "monsterId": 25,
               "itemId": 8,
               "equipmentId": null,
@@ -4874,7 +4874,7 @@
               "equipment": null
             },
             {
-              "id": 645,
+              "id": 899,
               "monsterId": 25,
               "itemId": 19,
               "equipmentId": null,
@@ -4897,7 +4897,7 @@
               "equipment": null
             },
             {
-              "id": 647,
+              "id": 901,
               "monsterId": 25,
               "itemId": 25,
               "equipmentId": null,
@@ -4920,7 +4920,7 @@
               "equipment": null
             },
             {
-              "id": 646,
+              "id": 900,
               "monsterId": 25,
               "itemId": 29,
               "equipmentId": null,
@@ -4954,7 +4954,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/077_A.png",
           "level": 35,
           "str": 35,
-          "def": 35,
+          "def": 50,
           "dex": 35,
           "luk": 35,
           "magic": 35,
@@ -4968,10 +4968,10 @@
           "maxMagicDmg": 250.9226473449468,
           "critChance": 0.1228070175438596,
           "critMultiplier": 1.666890750230186,
-          "dmgReduction": 525,
-          "magicDmgReduction": 350,
-          "hpRegenRate": 17.43288590604027,
-          "hpRegenAmount": 29.5,
+          "dmgReduction": 675,
+          "magicDmgReduction": 410,
+          "hpRegenRate": 16.67785234899329,
+          "hpRegenAmount": 34,
           "exp": 220,
           "minGoldDrop": 580,
           "maxGoldDrop": 660,
@@ -4981,7 +4981,7 @@
           "combat": {
             "id": 26,
             "attackType": "Ranged",
-            "cp": "2457",
+            "cp": "2469",
             "hp": 3150,
             "maxHp": 3150,
             "atkSpd": 514.5,
@@ -4992,10 +4992,10 @@
             "maxMagicDmg": 581.9006535305904,
             "critChance": 0.1510526315789474,
             "critMultiplier": 2.900389905400524,
-            "dmgReduction": 1312.5,
-            "magicDmgReduction": 1071,
-            "hpRegenRate": 16.03825503355705,
-            "hpRegenAmount": 49.855,
+            "dmgReduction": 1687.5,
+            "magicDmgReduction": 1254.6,
+            "hpRegenRate": 15.34362416107382,
+            "hpRegenAmount": 57.46,
             "meleeFactor": 6,
             "rangeFactor": 12,
             "magicFactor": 10,
@@ -5007,7 +5007,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 655,
+              "id": 909,
               "monsterId": 26,
               "itemId": null,
               "equipmentId": 85,
@@ -5031,7 +5031,7 @@
               }
             },
             {
-              "id": 656,
+              "id": 910,
               "monsterId": 26,
               "itemId": null,
               "equipmentId": 105,
@@ -5055,7 +5055,7 @@
               }
             },
             {
-              "id": 650,
+              "id": 904,
               "monsterId": 26,
               "itemId": 7,
               "equipmentId": null,
@@ -5078,7 +5078,7 @@
               "equipment": null
             },
             {
-              "id": 651,
+              "id": 905,
               "monsterId": 26,
               "itemId": 8,
               "equipmentId": null,
@@ -5101,7 +5101,7 @@
               "equipment": null
             },
             {
-              "id": 652,
+              "id": 906,
               "monsterId": 26,
               "itemId": 19,
               "equipmentId": null,
@@ -5124,7 +5124,7 @@
               "equipment": null
             },
             {
-              "id": 654,
+              "id": 908,
               "monsterId": 26,
               "itemId": 25,
               "equipmentId": null,
@@ -5147,7 +5147,7 @@
               "equipment": null
             },
             {
-              "id": 653,
+              "id": 907,
               "monsterId": 26,
               "itemId": 29,
               "equipmentId": null,
@@ -5181,7 +5181,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/079_A.png",
           "level": 35,
           "str": 35,
-          "def": 35,
+          "def": 50,
           "dex": 35,
           "luk": 35,
           "magic": 35,
@@ -5195,10 +5195,10 @@
           "maxMagicDmg": 250.9226473449468,
           "critChance": 0.1228070175438596,
           "critMultiplier": 1.666890750230186,
-          "dmgReduction": 525,
-          "magicDmgReduction": 350,
-          "hpRegenRate": 17.43288590604027,
-          "hpRegenAmount": 29.5,
+          "dmgReduction": 675,
+          "magicDmgReduction": 410,
+          "hpRegenRate": 16.67785234899329,
+          "hpRegenAmount": 34,
           "exp": 220,
           "minGoldDrop": 580,
           "maxGoldDrop": 660,
@@ -5208,7 +5208,7 @@
           "combat": {
             "id": 27,
             "attackType": "Magic",
-            "cp": "3284",
+            "cp": "3296",
             "hp": 4950,
             "maxHp": 4950,
             "atkSpd": 427,
@@ -5219,10 +5219,10 @@
             "maxMagicDmg": 697.2697124685692,
             "critChance": 0.249298245614035,
             "critMultiplier": 2.717031922875203,
-            "dmgReduction": 1286.25,
-            "magicDmgReduction": 798,
-            "hpRegenRate": 11.15704697986577,
-            "hpRegenAmount": 46.315,
+            "dmgReduction": 1653.75,
+            "magicDmgReduction": 934.8,
+            "hpRegenRate": 10.6738255033557,
+            "hpRegenAmount": 53.38,
             "meleeFactor": 6,
             "rangeFactor": 11,
             "magicFactor": 11,
@@ -5234,7 +5234,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 662,
+              "id": 916,
               "monsterId": 27,
               "itemId": null,
               "equipmentId": 85,
@@ -5258,7 +5258,7 @@
               }
             },
             {
-              "id": 663,
+              "id": 917,
               "monsterId": 27,
               "itemId": null,
               "equipmentId": 105,
@@ -5282,7 +5282,7 @@
               }
             },
             {
-              "id": 657,
+              "id": 911,
               "monsterId": 27,
               "itemId": 7,
               "equipmentId": null,
@@ -5305,7 +5305,7 @@
               "equipment": null
             },
             {
-              "id": 658,
+              "id": 912,
               "monsterId": 27,
               "itemId": 8,
               "equipmentId": null,
@@ -5328,7 +5328,7 @@
               "equipment": null
             },
             {
-              "id": 659,
+              "id": 913,
               "monsterId": 27,
               "itemId": 19,
               "equipmentId": null,
@@ -5351,7 +5351,7 @@
               "equipment": null
             },
             {
-              "id": 661,
+              "id": 915,
               "monsterId": 27,
               "itemId": 25,
               "equipmentId": null,
@@ -5374,7 +5374,7 @@
               "equipment": null
             },
             {
-              "id": 660,
+              "id": 914,
               "monsterId": 27,
               "itemId": 29,
               "equipmentId": null,
@@ -5408,7 +5408,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/086_A.png",
           "level": 40,
           "str": 40,
-          "def": 40,
+          "def": 55,
           "dex": 40,
           "luk": 40,
           "magic": 40,
@@ -5422,10 +5422,10 @@
           "maxMagicDmg": 274.5282078198273,
           "critChance": 0.1379310344827586,
           "critMultiplier": 1.68383515701592,
-          "dmgReduction": 600,
-          "magicDmgReduction": 400,
-          "hpRegenRate": 17.08053691275168,
-          "hpRegenAmount": 32,
+          "dmgReduction": 750,
+          "magicDmgReduction": 460,
+          "hpRegenRate": 16.3255033557047,
+          "hpRegenAmount": 36.5,
           "exp": 250,
           "minGoldDrop": 670,
           "maxGoldDrop": 750,
@@ -5435,7 +5435,7 @@
           "combat": {
             "id": 28,
             "attackType": "Melee",
-            "cp": "4264",
+            "cp": "4277",
             "hp": 5620,
             "maxHp": 5620,
             "atkSpd": 656,
@@ -5446,10 +5446,10 @@
             "maxMagicDmg": 820.8393413812836,
             "critChance": 0.3103448275862069,
             "critMultiplier": 3.80546745485598,
-            "dmgReduction": 1704,
-            "magicDmgReduction": 1320,
-            "hpRegenRate": 14.00604026845638,
-            "hpRegenAmount": 64,
+            "dmgReduction": 2130,
+            "magicDmgReduction": 1518,
+            "hpRegenRate": 13.38691275167785,
+            "hpRegenAmount": 73.00000000000003,
             "meleeFactor": 21,
             "rangeFactor": 15,
             "magicFactor": 15,
@@ -5461,7 +5461,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 669,
+              "id": 923,
               "monsterId": 28,
               "itemId": null,
               "equipmentId": 85,
@@ -5485,7 +5485,7 @@
               }
             },
             {
-              "id": 670,
+              "id": 924,
               "monsterId": 28,
               "itemId": null,
               "equipmentId": 105,
@@ -5509,7 +5509,7 @@
               }
             },
             {
-              "id": 664,
+              "id": 918,
               "monsterId": 28,
               "itemId": 7,
               "equipmentId": null,
@@ -5532,7 +5532,7 @@
               "equipment": null
             },
             {
-              "id": 665,
+              "id": 919,
               "monsterId": 28,
               "itemId": 8,
               "equipmentId": null,
@@ -5555,7 +5555,7 @@
               "equipment": null
             },
             {
-              "id": 666,
+              "id": 920,
               "monsterId": 28,
               "itemId": 19,
               "equipmentId": null,
@@ -5578,7 +5578,7 @@
               "equipment": null
             },
             {
-              "id": 668,
+              "id": 922,
               "monsterId": 28,
               "itemId": 25,
               "equipmentId": null,
@@ -5601,7 +5601,7 @@
               "equipment": null
             },
             {
-              "id": 667,
+              "id": 921,
               "monsterId": 28,
               "itemId": 29,
               "equipmentId": null,
@@ -5635,7 +5635,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/061_A.png",
           "level": 45,
           "str": 45,
-          "def": 45,
+          "def": 60,
           "dex": 45,
           "luk": 45,
           "magic": 45,
@@ -5649,10 +5649,10 @@
           "maxMagicDmg": 297.2623806453833,
           "critChance": 0.1525423728813559,
           "critMultiplier": 1.698827349504472,
-          "dmgReduction": 675,
-          "magicDmgReduction": 450,
-          "hpRegenRate": 16.67785234899329,
-          "hpRegenAmount": 35,
+          "dmgReduction": 825,
+          "magicDmgReduction": 510,
+          "hpRegenRate": 15.92281879194631,
+          "hpRegenAmount": 39.5,
           "exp": 280,
           "minGoldDrop": 760,
           "maxGoldDrop": 840,
@@ -5662,7 +5662,7 @@
           "combat": {
             "id": 29,
             "attackType": "Ranged",
-            "cp": "4973",
+            "cp": "4985",
             "hp": 6440,
             "maxHp": 6440,
             "atkSpd": 1035,
@@ -5673,10 +5673,10 @@
             "maxMagicDmg": 998.801598968488,
             "critChance": 0.2776271186440678,
             "critMultiplier": 2.650170665226976,
-            "dmgReduction": 1950.75,
-            "magicDmgReduction": 1467,
-            "hpRegenRate": 12.34161073825503,
-            "hpRegenAmount": 63.00000000000004,
+            "dmgReduction": 2384.25,
+            "magicDmgReduction": 1662.6,
+            "hpRegenRate": 11.78288590604027,
+            "hpRegenAmount": 71.10000000000005,
             "meleeFactor": 15,
             "rangeFactor": 21,
             "magicFactor": 15,
@@ -5688,7 +5688,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 676,
+              "id": 930,
               "monsterId": 29,
               "itemId": null,
               "equipmentId": 86,
@@ -5712,7 +5712,7 @@
               }
             },
             {
-              "id": 677,
+              "id": 931,
               "monsterId": 29,
               "itemId": null,
               "equipmentId": 106,
@@ -5736,7 +5736,7 @@
               }
             },
             {
-              "id": 671,
+              "id": 925,
               "monsterId": 29,
               "itemId": 7,
               "equipmentId": null,
@@ -5759,7 +5759,7 @@
               "equipment": null
             },
             {
-              "id": 672,
+              "id": 926,
               "monsterId": 29,
               "itemId": 8,
               "equipmentId": null,
@@ -5782,7 +5782,7 @@
               "equipment": null
             },
             {
-              "id": 673,
+              "id": 927,
               "monsterId": 29,
               "itemId": 19,
               "equipmentId": null,
@@ -5805,7 +5805,7 @@
               "equipment": null
             },
             {
-              "id": 675,
+              "id": 929,
               "monsterId": 29,
               "itemId": 25,
               "equipmentId": null,
@@ -5828,7 +5828,7 @@
               "equipment": null
             },
             {
-              "id": 674,
+              "id": 928,
               "monsterId": 29,
               "itemId": 29,
               "equipmentId": null,
@@ -5862,7 +5862,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/042_A.png",
           "level": 50,
           "str": 50,
-          "def": 50,
+          "def": 65,
           "dex": 50,
           "luk": 50,
           "magic": 50,
@@ -5876,10 +5876,10 @@
           "maxMagicDmg": 319.2494947109917,
           "critChance": 0.1666666666666667,
           "critMultiplier": 1.712271052829381,
-          "dmgReduction": 750,
-          "magicDmgReduction": 500,
-          "hpRegenRate": 16.3255033557047,
-          "hpRegenAmount": 37.5,
+          "dmgReduction": 900,
+          "magicDmgReduction": 560,
+          "hpRegenRate": 15.57046979865772,
+          "hpRegenAmount": 42,
           "exp": 310,
           "minGoldDrop": 850,
           "maxGoldDrop": 930,
@@ -5889,7 +5889,7 @@
           "combat": {
             "id": 30,
             "attackType": "Magic",
-            "cp": "9746",
+            "cp": "9761",
             "hp": 9150,
             "maxHp": 9150,
             "atkSpd": 1300,
@@ -5900,10 +5900,10 @@
             "maxMagicDmg": 1213.335706224021,
             "critChance": 0.405,
             "critMultiplier": 3.955346132035869,
-            "dmgReduction": 3255,
-            "magicDmgReduction": 2490,
-            "hpRegenRate": 11.10134228187919,
-            "hpRegenAmount": 94.125,
+            "dmgReduction": 3906,
+            "magicDmgReduction": 2788.8,
+            "hpRegenRate": 10.58791946308725,
+            "hpRegenAmount": 105.42,
             "meleeFactor": 82,
             "rangeFactor": 72,
             "magicFactor": 77,
@@ -5915,7 +5915,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 683,
+              "id": 937,
               "monsterId": 30,
               "itemId": null,
               "equipmentId": 86,
@@ -5939,7 +5939,7 @@
               }
             },
             {
-              "id": 684,
+              "id": 938,
               "monsterId": 30,
               "itemId": null,
               "equipmentId": 106,
@@ -5963,7 +5963,7 @@
               }
             },
             {
-              "id": 678,
+              "id": 932,
               "monsterId": 30,
               "itemId": 7,
               "equipmentId": null,
@@ -5986,7 +5986,7 @@
               "equipment": null
             },
             {
-              "id": 679,
+              "id": 933,
               "monsterId": 30,
               "itemId": 8,
               "equipmentId": null,
@@ -6009,7 +6009,7 @@
               "equipment": null
             },
             {
-              "id": 680,
+              "id": 934,
               "monsterId": 30,
               "itemId": 19,
               "equipmentId": null,
@@ -6032,7 +6032,7 @@
               "equipment": null
             },
             {
-              "id": 682,
+              "id": 936,
               "monsterId": 30,
               "itemId": 25,
               "equipmentId": null,
@@ -6055,7 +6055,7 @@
               "equipment": null
             },
             {
-              "id": 681,
+              "id": 935,
               "monsterId": 30,
               "itemId": 29,
               "equipmentId": null,
@@ -6101,7 +6101,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/063_A.png",
           "level": 50,
           "str": 50,
-          "def": 50,
+          "def": 70,
           "dex": 50,
           "luk": 50,
           "magic": 50,
@@ -6115,10 +6115,10 @@
           "maxMagicDmg": 319.2494947109917,
           "critChance": 0.1666666666666667,
           "critMultiplier": 1.712271052829381,
-          "dmgReduction": 750,
-          "magicDmgReduction": 500,
-          "hpRegenRate": 16.3255033557047,
-          "hpRegenAmount": 37.5,
+          "dmgReduction": 950,
+          "magicDmgReduction": 580,
+          "hpRegenRate": 15.31879194630872,
+          "hpRegenAmount": 43.5,
           "exp": 250,
           "minGoldDrop": 880,
           "maxGoldDrop": 1000,
@@ -6128,7 +6128,7 @@
           "combat": {
             "id": 31,
             "attackType": "Melee",
-            "cp": "5664",
+            "cp": "5678",
             "hp": 4100,
             "maxHp": 4100,
             "atkSpd": 1220,
@@ -6139,10 +6139,10 @@
             "maxMagicDmg": 798.1237367774792,
             "critChance": 0.3816666666666666,
             "critMultiplier": 2.979351631923122,
-            "dmgReduction": 1687.5,
-            "magicDmgReduction": 1305,
-            "hpRegenRate": 13.87667785234899,
-            "hpRegenAmount": 66.375,
+            "dmgReduction": 2137.5,
+            "magicDmgReduction": 1513.799999999999,
+            "hpRegenRate": 13.02097315436242,
+            "hpRegenAmount": 76.99500000000002,
             "meleeFactor": 18,
             "rangeFactor": 9,
             "magicFactor": 9,
@@ -6154,7 +6154,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 689,
+              "id": 943,
               "monsterId": 31,
               "itemId": null,
               "equipmentId": 86,
@@ -6178,7 +6178,7 @@
               }
             },
             {
-              "id": 690,
+              "id": 944,
               "monsterId": 31,
               "itemId": null,
               "equipmentId": 106,
@@ -6202,7 +6202,7 @@
               }
             },
             {
-              "id": 685,
+              "id": 939,
               "monsterId": 31,
               "itemId": 9,
               "equipmentId": null,
@@ -6225,7 +6225,7 @@
               "equipment": null
             },
             {
-              "id": 686,
+              "id": 940,
               "monsterId": 31,
               "itemId": 10,
               "equipmentId": null,
@@ -6248,7 +6248,7 @@
               "equipment": null
             },
             {
-              "id": 687,
+              "id": 941,
               "monsterId": 31,
               "itemId": 20,
               "equipmentId": null,
@@ -6271,7 +6271,7 @@
               "equipment": null
             },
             {
-              "id": 688,
+              "id": 942,
               "monsterId": 31,
               "itemId": 25,
               "equipmentId": null,
@@ -6305,7 +6305,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/076_A.png",
           "level": 55,
           "str": 55,
-          "def": 55,
+          "def": 75,
           "dex": 55,
           "luk": 55,
           "magic": 55,
@@ -6319,10 +6319,10 @@
           "maxMagicDmg": 340.5855589899404,
           "critChance": 0.180327868852459,
           "critMultiplier": 1.72445640810186,
-          "dmgReduction": 825,
-          "magicDmgReduction": 550,
-          "hpRegenRate": 15.92281879194631,
-          "hpRegenAmount": 40.5,
+          "dmgReduction": 1025,
+          "magicDmgReduction": 630,
+          "hpRegenRate": 14.91610738255034,
+          "hpRegenAmount": 46.5,
           "exp": 280,
           "minGoldDrop": 1000,
           "maxGoldDrop": 1120,
@@ -6332,7 +6332,7 @@
           "combat": {
             "id": 32,
             "attackType": "Ranged",
-            "cp": "7214",
+            "cp": "7229",
             "hp": 5628,
             "maxHp": 5628,
             "atkSpd": 1105.5,
@@ -6343,10 +6343,10 @@
             "maxMagicDmg": 1223.932344666803,
             "critChance": 0.4057377049180328,
             "critMultiplier": 3.172999790907423,
-            "dmgReduction": 2499.75,
-            "magicDmgReduction": 1666.5,
-            "hpRegenRate": 14.6489932885906,
-            "hpRegenAmount": 78.97500000000002,
+            "dmgReduction": 3105.75,
+            "magicDmgReduction": 1908.9,
+            "hpRegenRate": 13.72281879194631,
+            "hpRegenAmount": 90.67500000000001,
             "meleeFactor": 9,
             "rangeFactor": 18,
             "magicFactor": 15,
@@ -6358,7 +6358,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 695,
+              "id": 949,
               "monsterId": 32,
               "itemId": null,
               "equipmentId": 86,
@@ -6382,7 +6382,7 @@
               }
             },
             {
-              "id": 696,
+              "id": 950,
               "monsterId": 32,
               "itemId": null,
               "equipmentId": 106,
@@ -6406,7 +6406,7 @@
               }
             },
             {
-              "id": 691,
+              "id": 945,
               "monsterId": 32,
               "itemId": 9,
               "equipmentId": null,
@@ -6429,7 +6429,7 @@
               "equipment": null
             },
             {
-              "id": 692,
+              "id": 946,
               "monsterId": 32,
               "itemId": 10,
               "equipmentId": null,
@@ -6452,7 +6452,7 @@
               "equipment": null
             },
             {
-              "id": 693,
+              "id": 947,
               "monsterId": 32,
               "itemId": 20,
               "equipmentId": null,
@@ -6475,7 +6475,7 @@
               "equipment": null
             },
             {
-              "id": 694,
+              "id": 948,
               "monsterId": 32,
               "itemId": 25,
               "equipmentId": null,
@@ -6509,7 +6509,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/060_A.png",
           "level": 55,
           "str": 55,
-          "def": 55,
+          "def": 75,
           "dex": 55,
           "luk": 55,
           "magic": 55,
@@ -6523,10 +6523,10 @@
           "maxMagicDmg": 340.5855589899404,
           "critChance": 0.180327868852459,
           "critMultiplier": 1.72445640810186,
-          "dmgReduction": 825,
-          "magicDmgReduction": 550,
-          "hpRegenRate": 15.92281879194631,
-          "hpRegenAmount": 40.5,
+          "dmgReduction": 1025,
+          "magicDmgReduction": 630,
+          "hpRegenRate": 14.91610738255034,
+          "hpRegenAmount": 46.5,
           "exp": 280,
           "minGoldDrop": 1000,
           "maxGoldDrop": 1120,
@@ -6536,7 +6536,7 @@
           "combat": {
             "id": 33,
             "attackType": "Magic",
-            "cp": "8431",
+            "cp": "8446",
             "hp": 5264,
             "maxHp": 5264,
             "atkSpd": 1314.5,
@@ -6547,10 +6547,10 @@
             "maxMagicDmg": 1174.509832250626,
             "critChance": 0.3444262295081967,
             "critMultiplier": 3.793804097824093,
-            "dmgReduction": 2326.5,
-            "magicDmgReduction": 1457.5,
-            "hpRegenRate": 12.26057046979866,
-            "hpRegenAmount": 76.95000000000002,
+            "dmgReduction": 2890.5,
+            "magicDmgReduction": 1669.5,
+            "hpRegenRate": 11.48540268456376,
+            "hpRegenAmount": 88.35000000000001,
             "meleeFactor": 9,
             "rangeFactor": 9,
             "magicFactor": 20,
@@ -6562,7 +6562,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 701,
+              "id": 955,
               "monsterId": 33,
               "itemId": null,
               "equipmentId": 86,
@@ -6586,7 +6586,7 @@
               }
             },
             {
-              "id": 702,
+              "id": 956,
               "monsterId": 33,
               "itemId": null,
               "equipmentId": 106,
@@ -6610,7 +6610,7 @@
               }
             },
             {
-              "id": 697,
+              "id": 951,
               "monsterId": 33,
               "itemId": 9,
               "equipmentId": null,
@@ -6633,7 +6633,7 @@
               "equipment": null
             },
             {
-              "id": 698,
+              "id": 952,
               "monsterId": 33,
               "itemId": 10,
               "equipmentId": null,
@@ -6656,7 +6656,7 @@
               "equipment": null
             },
             {
-              "id": 699,
+              "id": 953,
               "monsterId": 33,
               "itemId": 20,
               "equipmentId": null,
@@ -6679,7 +6679,7 @@
               "equipment": null
             },
             {
-              "id": 700,
+              "id": 954,
               "monsterId": 33,
               "itemId": 25,
               "equipmentId": null,
@@ -6713,7 +6713,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/062_A.png",
           "level": 60,
           "str": 60,
-          "def": 60,
+          "def": 80,
           "dex": 60,
           "luk": 60,
           "magic": 60,
@@ -6727,10 +6727,10 @@
           "maxMagicDmg": 361.3466936262827,
           "critChance": 0.1935483870967742,
           "critMultiplier": 1.73559895050323,
-          "dmgReduction": 900,
-          "magicDmgReduction": 600,
-          "hpRegenRate": 15.57046979865772,
-          "hpRegenAmount": 43,
+          "dmgReduction": 1100,
+          "magicDmgReduction": 680,
+          "hpRegenRate": 14.56375838926175,
+          "hpRegenAmount": 49,
           "exp": 300,
           "minGoldDrop": 1080,
           "maxGoldDrop": 1200,
@@ -6740,7 +6740,7 @@
           "combat": {
             "id": 34,
             "attackType": "Melee",
-            "cp": "9973",
+            "cp": "9990",
             "hp": 11910,
             "maxHp": 11910,
             "atkSpd": 1272,
@@ -6751,10 +6751,10 @@
             "maxMagicDmg": 1368.326894628252,
             "critChance": 0.3890322580645162,
             "critMultiplier": 4.043945554672526,
-            "dmgReduction": 3222,
-            "magicDmgReduction": 2442,
-            "hpRegenRate": 13.07919463087249,
-            "hpRegenAmount": 104.06,
+            "dmgReduction": 3938,
+            "magicDmgReduction": 2767.6,
+            "hpRegenRate": 12.23355704697987,
+            "hpRegenAmount": 118.58,
             "meleeFactor": 68,
             "rangeFactor": 59,
             "magicFactor": 65,
@@ -6766,7 +6766,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 707,
+              "id": 961,
               "monsterId": 34,
               "itemId": null,
               "equipmentId": 86,
@@ -6790,7 +6790,7 @@
               }
             },
             {
-              "id": 708,
+              "id": 962,
               "monsterId": 34,
               "itemId": null,
               "equipmentId": 106,
@@ -6814,7 +6814,7 @@
               }
             },
             {
-              "id": 703,
+              "id": 957,
               "monsterId": 34,
               "itemId": 9,
               "equipmentId": null,
@@ -6837,7 +6837,7 @@
               "equipment": null
             },
             {
-              "id": 704,
+              "id": 958,
               "monsterId": 34,
               "itemId": 10,
               "equipmentId": null,
@@ -6860,7 +6860,7 @@
               "equipment": null
             },
             {
-              "id": 705,
+              "id": 959,
               "monsterId": 34,
               "itemId": 20,
               "equipmentId": null,
@@ -6883,7 +6883,7 @@
               "equipment": null
             },
             {
-              "id": 706,
+              "id": 960,
               "monsterId": 34,
               "itemId": 25,
               "equipmentId": null,
@@ -6917,7 +6917,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/090_A.png",
           "level": 70,
           "str": 70,
-          "def": 70,
+          "def": 90,
           "dex": 70,
           "luk": 70,
           "magic": 70,
@@ -6931,10 +6931,10 @@
           "maxMagicDmg": 401.3799952848427,
           "critChance": 0.21875,
           "critMultiplier": 1.755377504615723,
-          "dmgReduction": 1050,
-          "magicDmgReduction": 700,
-          "hpRegenRate": 14.81543624161074,
-          "hpRegenAmount": 48.5,
+          "dmgReduction": 1250,
+          "magicDmgReduction": 780,
+          "hpRegenRate": 13.80872483221476,
+          "hpRegenAmount": 54.5,
           "exp": 350,
           "minGoldDrop": 1280,
           "maxGoldDrop": 1400,
@@ -6944,7 +6944,7 @@
           "combat": {
             "id": 35,
             "attackType": "Ranged",
-            "cp": "13086",
+            "cp": "13103",
             "hp": 10955,
             "maxHp": 10955,
             "atkSpd": 1673,
@@ -6955,10 +6955,10 @@
             "maxMagicDmg": 1464.760983732707,
             "critChance": 0.455,
             "critMultiplier": 3.475647459139131,
-            "dmgReduction": 3958.5,
-            "magicDmgReduction": 2450,
-            "hpRegenRate": 10.66711409395973,
-            "hpRegenAmount": 116.885,
+            "dmgReduction": 4712.5,
+            "magicDmgReduction": 2730,
+            "hpRegenRate": 9.942281879194631,
+            "hpRegenAmount": 131.345,
             "meleeFactor": 14,
             "rangeFactor": 36,
             "magicFactor": 25,
@@ -6970,7 +6970,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 713,
+              "id": 967,
               "monsterId": 35,
               "itemId": null,
               "equipmentId": 87,
@@ -6994,7 +6994,7 @@
               }
             },
             {
-              "id": 714,
+              "id": 968,
               "monsterId": 35,
               "itemId": null,
               "equipmentId": 107,
@@ -7018,7 +7018,7 @@
               }
             },
             {
-              "id": 709,
+              "id": 963,
               "monsterId": 35,
               "itemId": 9,
               "equipmentId": null,
@@ -7041,7 +7041,7 @@
               "equipment": null
             },
             {
-              "id": 710,
+              "id": 964,
               "monsterId": 35,
               "itemId": 10,
               "equipmentId": null,
@@ -7064,7 +7064,7 @@
               "equipment": null
             },
             {
-              "id": 711,
+              "id": 965,
               "monsterId": 35,
               "itemId": 20,
               "equipmentId": null,
@@ -7087,7 +7087,7 @@
               "equipment": null
             },
             {
-              "id": 712,
+              "id": 966,
               "monsterId": 35,
               "itemId": 25,
               "equipmentId": null,
@@ -7121,7 +7121,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/087_A.png",
           "level": 80,
           "str": 80,
-          "def": 80,
+          "def": 100,
           "dex": 80,
           "luk": 80,
           "magic": 80,
@@ -7135,10 +7135,10 @@
           "maxMagicDmg": 439.7273414109501,
           "critChance": 0.2424242424242424,
           "critMultiplier": 1.772545505663595,
-          "dmgReduction": 1200,
-          "magicDmgReduction": 800,
-          "hpRegenRate": 14.06040268456376,
-          "hpRegenAmount": 54,
+          "dmgReduction": 1400,
+          "magicDmgReduction": 880,
+          "hpRegenRate": 13.05369127516779,
+          "hpRegenAmount": 60,
           "exp": 400,
           "minGoldDrop": 1480,
           "maxGoldDrop": 1600,
@@ -7148,7 +7148,7 @@
           "combat": {
             "id": 36,
             "attackType": "Magic",
-            "cp": "25967",
+            "cp": "25986",
             "hp": 9800,
             "maxHp": 9800,
             "atkSpd": 2240,
@@ -7159,10 +7159,10 @@
             "maxMagicDmg": 1963.484826370785,
             "critChance": 0.6206060606060606,
             "critMultiplier": 4.360461943932443,
-            "dmgReduction": 4104,
-            "magicDmgReduction": 3240,
-            "hpRegenRate": 7.873825503355706,
-            "hpRegenAmount": 123.12,
+            "dmgReduction": 4788,
+            "magicDmgReduction": 3564,
+            "hpRegenRate": 7.310067114093961,
+            "hpRegenAmount": 136.8,
             "meleeFactor": 29,
             "rangeFactor": 22,
             "magicFactor": 29,
@@ -7174,7 +7174,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 719,
+              "id": 973,
               "monsterId": 36,
               "itemId": null,
               "equipmentId": 87,
@@ -7198,7 +7198,7 @@
               }
             },
             {
-              "id": 720,
+              "id": 974,
               "monsterId": 36,
               "itemId": null,
               "equipmentId": 107,
@@ -7222,7 +7222,7 @@
               }
             },
             {
-              "id": 715,
+              "id": 969,
               "monsterId": 36,
               "itemId": 9,
               "equipmentId": null,
@@ -7245,7 +7245,7 @@
               "equipment": null
             },
             {
-              "id": 716,
+              "id": 970,
               "monsterId": 36,
               "itemId": 10,
               "equipmentId": null,
@@ -7268,7 +7268,7 @@
               "equipment": null
             },
             {
-              "id": 717,
+              "id": 971,
               "monsterId": 36,
               "itemId": 20,
               "equipmentId": null,
@@ -7291,7 +7291,7 @@
               "equipment": null
             },
             {
-              "id": 718,
+              "id": 972,
               "monsterId": 36,
               "itemId": 25,
               "equipmentId": null,
@@ -7337,7 +7337,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/016_A.png",
           "level": 80,
           "str": 80,
-          "def": 80,
+          "def": 105,
           "dex": 80,
           "luk": 80,
           "magic": 80,
@@ -7351,10 +7351,10 @@
           "maxMagicDmg": 439.7273414109501,
           "critChance": 0.2424242424242424,
           "critMultiplier": 1.772545505663595,
-          "dmgReduction": 1200,
-          "magicDmgReduction": 800,
-          "hpRegenRate": 14.06040268456376,
-          "hpRegenAmount": 54,
+          "dmgReduction": 1450,
+          "magicDmgReduction": 900,
+          "hpRegenRate": 12.80201342281879,
+          "hpRegenAmount": 61.5,
           "exp": 320,
           "minGoldDrop": 1100,
           "maxGoldDrop": 1280,
@@ -7364,7 +7364,7 @@
           "combat": {
             "id": 37,
             "attackType": "Melee",
-            "cp": "20207",
+            "cp": "20228",
             "hp": 14520,
             "maxHp": 14520,
             "atkSpd": 2608,
@@ -7375,10 +7375,10 @@
             "maxMagicDmg": 1736.922998573252,
             "critChance": 0.6254545454545454,
             "critMultiplier": 3.456463736044009,
-            "dmgReduction": 4272,
-            "magicDmgReduction": 3088,
-            "hpRegenRate": 10.82651006711409,
-            "hpRegenAmount": 133.92,
+            "dmgReduction": 5162,
+            "magicDmgReduction": 3474,
+            "hpRegenRate": 9.857550335570469,
+            "hpRegenAmount": 152.52,
             "meleeFactor": 82,
             "rangeFactor": 65,
             "magicFactor": 65,
@@ -7390,7 +7390,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 726,
+              "id": 980,
               "monsterId": 37,
               "itemId": null,
               "equipmentId": 87,
@@ -7414,7 +7414,7 @@
               }
             },
             {
-              "id": 727,
+              "id": 981,
               "monsterId": 37,
               "itemId": null,
               "equipmentId": 107,
@@ -7438,7 +7438,7 @@
               }
             },
             {
-              "id": 721,
+              "id": 975,
               "monsterId": 37,
               "itemId": 11,
               "equipmentId": null,
@@ -7461,7 +7461,7 @@
               "equipment": null
             },
             {
-              "id": 722,
+              "id": 976,
               "monsterId": 37,
               "itemId": 12,
               "equipmentId": null,
@@ -7484,7 +7484,7 @@
               "equipment": null
             },
             {
-              "id": 723,
+              "id": 977,
               "monsterId": 37,
               "itemId": 21,
               "equipmentId": null,
@@ -7507,7 +7507,7 @@
               "equipment": null
             },
             {
-              "id": 724,
+              "id": 978,
               "monsterId": 37,
               "itemId": 22,
               "equipmentId": null,
@@ -7530,7 +7530,7 @@
               "equipment": null
             },
             {
-              "id": 725,
+              "id": 979,
               "monsterId": 37,
               "itemId": 25,
               "equipmentId": null,
@@ -7564,7 +7564,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/028_A.png",
           "level": 85,
           "str": 85,
-          "def": 85,
+          "def": 110,
           "dex": 85,
           "luk": 85,
           "magic": 85,
@@ -7578,10 +7578,10 @@
           "maxMagicDmg": 458.3562660485026,
           "critChance": 0.2537313432835821,
           "critMultiplier": 1.78034953537307,
-          "dmgReduction": 1275,
-          "magicDmgReduction": 850,
-          "hpRegenRate": 13.65771812080537,
-          "hpRegenAmount": 57,
+          "dmgReduction": 1525,
+          "magicDmgReduction": 950,
+          "hpRegenRate": 12.3993288590604,
+          "hpRegenAmount": 64.5,
           "exp": 340,
           "minGoldDrop": 1180,
           "maxGoldDrop": 1360,
@@ -7591,7 +7591,7 @@
           "combat": {
             "id": 38,
             "attackType": "Ranged",
-            "cp": "27342",
+            "cp": "27363",
             "hp": 16297,
             "maxHp": 16297,
             "atkSpd": 2873,
@@ -7602,10 +7602,10 @@
             "maxMagicDmg": 2050.931944008561,
             "critChance": 0.6546268656716417,
             "critMultiplier": 3.471681593977486,
-            "dmgReduction": 5291.25,
-            "magicDmgReduction": 3808,
-            "hpRegenRate": 10.51644295302014,
-            "hpRegenAmount": 150.48,
+            "dmgReduction": 6328.75,
+            "magicDmgReduction": 4256,
+            "hpRegenRate": 9.547483221476512,
+            "hpRegenAmount": 170.28,
             "meleeFactor": 65,
             "rangeFactor": 82,
             "magicFactor": 70,
@@ -7617,7 +7617,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 733,
+              "id": 987,
               "monsterId": 38,
               "itemId": null,
               "equipmentId": 87,
@@ -7641,7 +7641,7 @@
               }
             },
             {
-              "id": 734,
+              "id": 988,
               "monsterId": 38,
               "itemId": null,
               "equipmentId": 107,
@@ -7665,7 +7665,7 @@
               }
             },
             {
-              "id": 728,
+              "id": 982,
               "monsterId": 38,
               "itemId": 11,
               "equipmentId": null,
@@ -7688,7 +7688,7 @@
               "equipment": null
             },
             {
-              "id": 729,
+              "id": 983,
               "monsterId": 38,
               "itemId": 12,
               "equipmentId": null,
@@ -7711,7 +7711,7 @@
               "equipment": null
             },
             {
-              "id": 730,
+              "id": 984,
               "monsterId": 38,
               "itemId": 21,
               "equipmentId": null,
@@ -7734,7 +7734,7 @@
               "equipment": null
             },
             {
-              "id": 731,
+              "id": 985,
               "monsterId": 38,
               "itemId": 22,
               "equipmentId": null,
@@ -7757,7 +7757,7 @@
               "equipment": null
             },
             {
-              "id": 732,
+              "id": 986,
               "monsterId": 38,
               "itemId": 25,
               "equipmentId": null,
@@ -7791,7 +7791,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/084_A.png",
           "level": 85,
           "str": 85,
-          "def": 85,
+          "def": 110,
           "dex": 85,
           "luk": 85,
           "magic": 85,
@@ -7805,10 +7805,10 @@
           "maxMagicDmg": 458.3562660485026,
           "critChance": 0.2537313432835821,
           "critMultiplier": 1.78034953537307,
-          "dmgReduction": 1275,
-          "magicDmgReduction": 850,
-          "hpRegenRate": 13.65771812080537,
-          "hpRegenAmount": 57,
+          "dmgReduction": 1525,
+          "magicDmgReduction": 950,
+          "hpRegenRate": 12.3993288590604,
+          "hpRegenAmount": 64.5,
           "exp": 340,
           "minGoldDrop": 1180,
           "maxGoldDrop": 1360,
@@ -7818,7 +7818,7 @@
           "combat": {
             "id": 39,
             "attackType": "Magic",
-            "cp": "26899",
+            "cp": "26921",
             "hp": 15910,
             "maxHp": 15910,
             "atkSpd": 2805,
@@ -7829,10 +7829,10 @@
             "maxMagicDmg": 2185.931944008561,
             "critChance": 0.6546268656716417,
             "critMultiplier": 3.507288584684948,
-            "dmgReduction": 5087.25,
-            "magicDmgReduction": 3672,
-            "hpRegenRate": 9.833557046979866,
-            "hpRegenAmount": 143.07,
+            "dmgReduction": 6084.75,
+            "magicDmgReduction": 4104,
+            "hpRegenRate": 8.92751677852349,
+            "hpRegenAmount": 161.895,
             "meleeFactor": 70,
             "rangeFactor": 83,
             "magicFactor": 89,
@@ -7844,7 +7844,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 740,
+              "id": 994,
               "monsterId": 39,
               "itemId": null,
               "equipmentId": 87,
@@ -7868,7 +7868,7 @@
               }
             },
             {
-              "id": 741,
+              "id": 995,
               "monsterId": 39,
               "itemId": null,
               "equipmentId": 107,
@@ -7892,7 +7892,7 @@
               }
             },
             {
-              "id": 735,
+              "id": 989,
               "monsterId": 39,
               "itemId": 11,
               "equipmentId": null,
@@ -7915,7 +7915,7 @@
               "equipment": null
             },
             {
-              "id": 736,
+              "id": 990,
               "monsterId": 39,
               "itemId": 12,
               "equipmentId": null,
@@ -7938,7 +7938,7 @@
               "equipment": null
             },
             {
-              "id": 737,
+              "id": 991,
               "monsterId": 39,
               "itemId": 21,
               "equipmentId": null,
@@ -7961,7 +7961,7 @@
               "equipment": null
             },
             {
-              "id": 738,
+              "id": 992,
               "monsterId": 39,
               "itemId": 22,
               "equipmentId": null,
@@ -7984,7 +7984,7 @@
               "equipment": null
             },
             {
-              "id": 739,
+              "id": 993,
               "monsterId": 39,
               "itemId": 25,
               "equipmentId": null,
@@ -8018,7 +8018,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/055_A.png",
           "level": 90,
           "str": 90,
-          "def": 90,
+          "def": 115,
           "dex": 90,
           "luk": 90,
           "magic": 90,
@@ -8032,10 +8032,10 @@
           "maxMagicDmg": 476.6591141244194,
           "critChance": 0.2647058823529412,
           "critMultiplier": 1.787712417696328,
-          "dmgReduction": 1350,
-          "magicDmgReduction": 900,
-          "hpRegenRate": 13.30536912751678,
-          "hpRegenAmount": 59.5,
+          "dmgReduction": 1600,
+          "magicDmgReduction": 1000,
+          "hpRegenRate": 12.04697986577181,
+          "hpRegenAmount": 67,
           "exp": 360,
           "minGoldDrop": 1260,
           "maxGoldDrop": 1440,
@@ -8045,7 +8045,7 @@
           "combat": {
             "id": 40,
             "attackType": "Melee",
-            "cp": "43337",
+            "cp": "43360",
             "hp": 21690,
             "maxHp": 21690,
             "atkSpd": 3582,
@@ -8056,10 +8056,10 @@
             "maxMagicDmg": 2316.563294644678,
             "critChance": 0.7676470588235293,
             "critMultiplier": 4.165369933232444,
-            "dmgReduction": 6642,
-            "magicDmgReduction": 4662,
-            "hpRegenRate": 10.24513422818792,
-            "hpRegenAmount": 180.285,
+            "dmgReduction": 7872,
+            "magicDmgReduction": 5180,
+            "hpRegenRate": 9.276174496644295,
+            "hpRegenAmount": 203.01,
             "meleeFactor": 132,
             "rangeFactor": 127,
             "magicFactor": 115,
@@ -8071,7 +8071,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 747,
+              "id": 1001,
               "monsterId": 40,
               "itemId": null,
               "equipmentId": 87,
@@ -8095,7 +8095,7 @@
               }
             },
             {
-              "id": 748,
+              "id": 1002,
               "monsterId": 40,
               "itemId": null,
               "equipmentId": 107,
@@ -8119,7 +8119,7 @@
               }
             },
             {
-              "id": 742,
+              "id": 996,
               "monsterId": 40,
               "itemId": 11,
               "equipmentId": null,
@@ -8142,7 +8142,7 @@
               "equipment": null
             },
             {
-              "id": 743,
+              "id": 997,
               "monsterId": 40,
               "itemId": 12,
               "equipmentId": null,
@@ -8165,7 +8165,7 @@
               "equipment": null
             },
             {
-              "id": 744,
+              "id": 998,
               "monsterId": 40,
               "itemId": 21,
               "equipmentId": null,
@@ -8188,7 +8188,7 @@
               "equipment": null
             },
             {
-              "id": 745,
+              "id": 999,
               "monsterId": 40,
               "itemId": 22,
               "equipmentId": null,
@@ -8211,7 +8211,7 @@
               "equipment": null
             },
             {
-              "id": 746,
+              "id": 1000,
               "monsterId": 40,
               "itemId": 25,
               "equipmentId": null,
@@ -8245,7 +8245,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/064_A.png",
           "level": 100,
           "str": 100,
-          "def": 100,
+          "def": 125,
           "dex": 100,
           "luk": 100,
           "magic": 100,
@@ -8259,10 +8259,10 @@
           "maxMagicDmg": 512.3772863019159,
           "critChance": 0.2857142857142857,
           "critMultiplier": 1.801296412134793,
-          "dmgReduction": 1500,
-          "magicDmgReduction": 1000,
-          "hpRegenRate": 12.5503355704698,
-          "hpRegenAmount": 65,
+          "dmgReduction": 1750,
+          "magicDmgReduction": 1100,
+          "hpRegenRate": 11.29194630872483,
+          "hpRegenAmount": 72.5,
           "exp": 400,
           "minGoldDrop": 1420,
           "maxGoldDrop": 1600,
@@ -8272,7 +8272,7 @@
           "combat": {
             "id": 41,
             "attackType": "Ranged",
-            "cp": "49996",
+            "cp": "50021",
             "hp": 23750,
             "maxHp": 23750,
             "atkSpd": 3660,
@@ -8283,10 +8283,10 @@
             "maxMagicDmg": 2708.866797317885,
             "critChance": 0.8142857142857143,
             "critMultiplier": 3.674644680754977,
-            "dmgReduction": 7425,
-            "magicDmgReduction": 4910,
-            "hpRegenRate": 9.036241610738255,
-            "hpRegenAmount": 197.6,
+            "dmgReduction": 8662.5,
+            "magicDmgReduction": 5401,
+            "hpRegenRate": 8.130201342281879,
+            "hpRegenAmount": 220.4,
             "meleeFactor": 70,
             "rangeFactor": 109,
             "magicFactor": 80,
@@ -8298,7 +8298,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 754,
+              "id": 1008,
               "monsterId": 41,
               "itemId": null,
               "equipmentId": 88,
@@ -8322,7 +8322,7 @@
               }
             },
             {
-              "id": 755,
+              "id": 1009,
               "monsterId": 41,
               "itemId": null,
               "equipmentId": 108,
@@ -8346,7 +8346,7 @@
               }
             },
             {
-              "id": 749,
+              "id": 1003,
               "monsterId": 41,
               "itemId": 11,
               "equipmentId": null,
@@ -8369,7 +8369,7 @@
               "equipment": null
             },
             {
-              "id": 750,
+              "id": 1004,
               "monsterId": 41,
               "itemId": 12,
               "equipmentId": null,
@@ -8392,7 +8392,7 @@
               "equipment": null
             },
             {
-              "id": 751,
+              "id": 1005,
               "monsterId": 41,
               "itemId": 21,
               "equipmentId": null,
@@ -8415,7 +8415,7 @@
               "equipment": null
             },
             {
-              "id": 752,
+              "id": 1006,
               "monsterId": 41,
               "itemId": 22,
               "equipmentId": null,
@@ -8438,7 +8438,7 @@
               "equipment": null
             },
             {
-              "id": 753,
+              "id": 1007,
               "monsterId": 41,
               "itemId": 25,
               "equipmentId": null,
@@ -8472,7 +8472,7 @@
           "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/006_A.png",
           "level": 110,
           "str": 110,
-          "def": 110,
+          "def": 135,
           "dex": 110,
           "luk": 110,
           "magic": 110,
@@ -8486,10 +8486,10 @@
           "maxMagicDmg": 547.0378249806895,
           "critChance": 0.3055555555555556,
           "critMultiplier": 1.813596893635997,
-          "dmgReduction": 1650,
-          "magicDmgReduction": 1100,
-          "hpRegenRate": 11.79530201342282,
-          "hpRegenAmount": 70.5,
+          "dmgReduction": 1900,
+          "magicDmgReduction": 1200,
+          "hpRegenRate": 10.53691275167785,
+          "hpRegenAmount": 78,
           "exp": 440,
           "minGoldDrop": 1580,
           "maxGoldDrop": 1760,
@@ -8499,7 +8499,7 @@
           "combat": {
             "id": 42,
             "attackType": "Magic",
-            "cp": "74614",
+            "cp": "74645",
             "hp": 29315,
             "maxHp": 29315,
             "atkSpd": 4433,
@@ -8510,10 +8510,10 @@
             "maxMagicDmg": 3136.181985396882,
             "critChance": 0.8372222222222222,
             "critMultiplier": 4.515856265153633,
-            "dmgReduction": 9273,
-            "magicDmgReduction": 6215,
-            "hpRegenRate": 7.431040268456376,
-            "hpRegenAmount": 240.4050000000001,
+            "dmgReduction": 10678,
+            "magicDmgReduction": 6780,
+            "hpRegenRate": 6.638255033557046,
+            "hpRegenAmount": 265.98,
             "meleeFactor": 95,
             "rangeFactor": 106,
             "magicFactor": 108,
@@ -8525,7 +8525,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 761,
+              "id": 1015,
               "monsterId": 42,
               "itemId": null,
               "equipmentId": 88,
@@ -8549,7 +8549,7 @@
               }
             },
             {
-              "id": 762,
+              "id": 1016,
               "monsterId": 42,
               "itemId": null,
               "equipmentId": 108,
@@ -8573,7 +8573,7 @@
               }
             },
             {
-              "id": 756,
+              "id": 1010,
               "monsterId": 42,
               "itemId": 11,
               "equipmentId": null,
@@ -8596,7 +8596,7 @@
               "equipment": null
             },
             {
-              "id": 757,
+              "id": 1011,
               "monsterId": 42,
               "itemId": 12,
               "equipmentId": null,
@@ -8619,7 +8619,7 @@
               "equipment": null
             },
             {
-              "id": 758,
+              "id": 1012,
               "monsterId": 42,
               "itemId": 21,
               "equipmentId": null,
@@ -8642,7 +8642,7 @@
               "equipment": null
             },
             {
-              "id": 759,
+              "id": 1013,
               "monsterId": 42,
               "itemId": 22,
               "equipmentId": null,
@@ -8665,7 +8665,7 @@
               "equipment": null
             },
             {
-              "id": 760,
+              "id": 1014,
               "monsterId": 42,
               "itemId": 25,
               "equipmentId": null,
