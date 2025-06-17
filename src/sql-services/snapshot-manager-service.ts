@@ -112,6 +112,32 @@ class SnapshotManager {
         }
     }
 
+    private parseUserDataDates(userData: FullUserData): FullUserData {
+        // Convert string dates back to Date objects
+        if (userData.lastBattleEndTimestamp && typeof userData.lastBattleEndTimestamp === 'string') {
+            userData.lastBattleEndTimestamp = new Date(userData.lastBattleEndTimestamp);
+        }
+
+        // Parse createdAt dates in inventory
+        if (userData.inventory) {
+            userData.inventory.forEach(item => {
+                if (item.createdAt && typeof item.createdAt === 'string') {
+                    item.createdAt = new Date(item.createdAt);
+                }
+            });
+        }
+
+        // Parse createdAt dates in equipped items
+        const equippedItems = [userData.hat, userData.armour, userData.weapon, userData.shield, userData.cape, userData.necklace];
+        equippedItems.forEach(item => {
+            if (item?.createdAt && typeof item.createdAt === 'string') {
+                item.createdAt = new Date(item.createdAt);
+            }
+        });
+
+        return userData;
+    }
+
     async loadUserSnapshot(userId: string): Promise<FullUserData | null> {
         try {
             const snapshot = await prisma.userSnapshot.findUnique({
@@ -133,9 +159,13 @@ class SnapshotManager {
             }
 
             const parsedData = JSON.parse(userData) as FullUserData;
+
+            // ✅ FIX: Parse dates before returning
+            const fixedData = this.parseUserDataDates(parsedData);
+
             logger.info(`📸 Loaded user ${userId} from snapshot (${userData.length} chars)`);
 
-            return parsedData;
+            return fixedData;
         } catch (error) {
             logger.error(`❌ Failed to load snapshot for user ${userId}: ${error}`);
             return null;

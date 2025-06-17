@@ -16,7 +16,6 @@ interface CreateUserInput {
 export type FullUserData = Prisma.UserGetPayload<{
     include: {
         combat: true;
-        lastBattleEndTimestamp: true;
         inventory: {
             select: {
                 id: true;

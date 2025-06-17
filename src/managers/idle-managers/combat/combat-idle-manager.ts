@@ -296,7 +296,7 @@ export class IdleCombatManager {
 
         // HP recover 
         if (user.lastBattleEndTimestamp) {
-            const elapsedMs = Date.now() - user.lastBattleEndTimestamp.getTime();
+            const elapsedMs = Date.now() - new Date(user.lastBattleEndTimestamp).getTime();
 
             const HEAL_THRESHOLD_MS = 10000;
             if (elapsedMs > HEAL_THRESHOLD_MS) {
@@ -373,7 +373,7 @@ export class IdleCombatManager {
 
         // HP recover 
         if (user.lastBattleEndTimestamp) {
-            const elapsedMs = Date.now() - user.lastBattleEndTimestamp.getTime();
+            const elapsedMs = Date.now() - new Date(user.lastBattleEndTimestamp).getTime();
 
             const HEAL_THRESHOLD_MS = 10000;
             if (elapsedMs > HEAL_THRESHOLD_MS) {
