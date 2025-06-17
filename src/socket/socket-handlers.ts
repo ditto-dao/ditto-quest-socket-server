@@ -38,7 +38,7 @@ export async function setupSocketHandlers(
 
         setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager)
 
-        setupUserSocketHandlers(socket, idleManager, combatManager)
+        setupUserSocketHandlers(socket, idleManager, combatManager, dittoLedgerSocket)
 
         setupItemsSocketHandlers(socket, socketManager, idleManager)
 

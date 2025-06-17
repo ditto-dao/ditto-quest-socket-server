@@ -8,7 +8,8 @@ import { emitUserAndCombatUpdate } from "../../utils/helpers";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import { READ_REFERRAL_CODE, READ_REFERRAL_CODE_RES, READ_REFERRAL_STATS, READ_REFERRAL_STATS_RES, USE_REFERRAL_CODE, USE_REFERRAL_CODE_SUCCESS } from "../events";
-import { applyReferralCode, getReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, hasUsedReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals";
+import { applyReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, hasUsedReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals";
+import { Socket as DittoLedgerSocket } from "socket.io-client";
 
 interface EquipPayload {
     userId: string;
@@ -19,6 +20,7 @@ export async function setupUserSocketHandlers(
     socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
     idleManager: IdleManager,
     idleCombatManager: IdleCombatManager,
+    ledgerSocket: DittoLedgerSocket
 ): Promise<void> {
     socket.on("equip-equipment", async (data: EquipPayload) => {
         logger.info(`Received equip-equipment event from user ${data.userId}`);
@@ -315,4 +317,18 @@ export async function setupUserSocketHandlers(
             });
         }
     });
+
+    // wallet
+    socket.on("update-user-wallet-address", async (data: { userId: string, walletAddress: string }) => {
+        try {
+            logger.info(`Received update-user-wallet-address: ${JSON.stringify(data)}`)
+            ledgerSocket.emit('ditto-ledger-update-user-wallet-address', { userId: data.userId.toString(), walletAddress: data.walletAddress.toString() })
+        } catch (error) {
+            logger.error(`Error updating wallet address for user ${data.userId}: ${error}`)
+            socket.emit('update-user-wallet-address-error', {
+                userId: data.userId,
+                msg: 'Failed to update wallet address for user'
+            })
+        }
+    })
 }
