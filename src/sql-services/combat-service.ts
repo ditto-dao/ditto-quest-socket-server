@@ -3,6 +3,7 @@ import { logger } from "../utils/logger";
 import { prisma } from "./client";
 import { DungeonState } from "../managers/idle-managers/combat/dungeon-manager";
 import { Decimal } from "@prisma/client/runtime/library";
+import { snapshotManager, SnapshotTrigger } from "./snapshot-manager-service";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -217,6 +218,8 @@ export async function updateDungeonLeaderboard(
     });
 
     logger.info(`🏆 Upserted leaderboard for user ${userId} in dungeon ${dungeonId}. monstersKilled: ${monstersKilled}, damageDealt: ${damageDealt}, damageTaken: ${damageTaken}, timeElapsedMs: ${timeElapsedMs}, score: ${newScore}`);
+
+    await snapshotManager.markStale(userId, SnapshotTrigger.LEADERBOARD_UPDATE);
 }
 
 export type DungeonLeaderboardEntry = {

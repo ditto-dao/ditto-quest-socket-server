@@ -892,3 +892,21 @@ enum MissionType {
   GACHA
   BREED
 }
+
+model UserSnapshot {
+  userId           String    @id @map("user_id")
+  snapshotData     String    @map("snapshot_data") @db.LongText
+  compressedData   Bytes?    @map("compressed_data") @db.MediumBlob
+  uncompressedSize Int?      @map("uncompressed_size")
+  status           String    @default("fresh") // fresh, stale_immediate, stale_session, stale_periodic, regenerating
+  staleSince       DateTime? @map("stale_since")
+  lastRegeneration DateTime  @default(now()) @map("last_regeneration")
+  priorityScore    Int       @default(0) @map("priority_score")
+  version          Int       @default(1)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@index([status, priorityScore, staleSince])
+  @@index([updatedAt])
+  @@map("user_snapshots")
+}

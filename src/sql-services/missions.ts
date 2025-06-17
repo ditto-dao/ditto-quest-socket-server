@@ -5,6 +5,7 @@ import { DITTO_DECIMALS } from "../utils/config";
 import { DefaultEventsMap, Socket } from "socket.io";
 import { MISSION_UPDATE } from "../socket/events";
 import { logger } from "../utils/logger";
+import { snapshotManager, SnapshotTrigger } from "./snapshot-manager-service";
 
 export async function getUserMissionByUserId(userId: string): Promise<UserMission | null> {
     return await prisma.userMission.findFirst({
@@ -136,6 +137,8 @@ export async function updateFarmMission(telegramId: string, itemId: number, quan
         where: { id: mission.id },
         data: { progress: { increment: quantity } },
     });
+
+    await snapshotManager.markStale(telegramId, SnapshotTrigger.MISSION_PROGRESS);
 }
 
 // CRAFT
@@ -147,6 +150,8 @@ export async function updateCraftMission(telegramId: string, equipmentId: number
         where: { id: mission.id },
         data: { progress: { increment: quantity } },
     });
+
+    await snapshotManager.markStale(telegramId, SnapshotTrigger.MISSION_PROGRESS);
 }
 
 // COMBAT
@@ -158,6 +163,8 @@ export async function updateCombatMission(telegramId: string, monsterId: number,
         where: { id: mission.id },
         data: { progress: { increment: quantity } },
     });
+
+    await snapshotManager.markStale(telegramId, SnapshotTrigger.MISSION_PROGRESS);
 }
 
 // COMBAT (Batch)

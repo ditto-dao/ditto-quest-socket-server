@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
 import { getNextInventoryOrder, getUserInventorySlotInfo } from './user-service';
+import { snapshotManager, SnapshotTrigger } from './snapshot-manager-service';
 
 // Function to check if a user owns all specified items with the required quantities
 export async function doesUserOwnItems(
@@ -116,6 +117,9 @@ export async function mintItemToUser(
             logger.info(
                 `Updated quantity for item ${updatedInventory.item?.name}. New quantity: ${updatedInventory.quantity}`
             );
+
+            await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+
             return updatedInventory;
         } else {
             // Case 2: Item does not exist → Create a new entry
@@ -146,6 +150,9 @@ export async function mintItemToUser(
             logger.info(
                 `Added new item ${newInventory.item?.name} to user ${telegramId}. Quantity: ${newInventory.quantity}`
             );
+
+            await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+
             return newInventory;
         }
     } catch (error) {
@@ -230,6 +237,9 @@ export async function deleteItemsFromUserInventory(
         }
 
         logger.info(`Successfully updated inventory for user ${telegramId}.`);
+
+        await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+
         return updatedInventories;
     } catch (error) {
         logger.error(`Failed to delete items from user inventory: ${error}`);

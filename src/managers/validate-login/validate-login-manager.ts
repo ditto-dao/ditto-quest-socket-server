@@ -4,7 +4,7 @@ import { SocketManager } from "../../socket/socket-manager";
 import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { createUser, getUserData, userExists } from "../../sql-services/user-service";
+import { createUser, getUserDataWithSnapshot, userExists } from "../../sql-services/user-service";
 import { BETA_TESTER_LOGIN_EVENT, DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LEDGER_REMOVE_USER_SOCKET_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, MISSION_UPDATE, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
@@ -14,6 +14,7 @@ import { mintItemToUser } from "../../sql-services/item-inventory-service";
 import { handleBetaTesterClaim, isUnclaimedBetaTester } from "../../sql-services/beta-testers";
 import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 import { generateNewMission, getUserMissionByUserId } from "../../sql-services/missions";
+import { snapshotManager, SnapshotTrigger } from "../../sql-services/snapshot-manager-service";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -42,6 +43,12 @@ export class ValidateLoginManager {
     private loginQueue: Map<string, LoginQueueData> = new Map();
     private loginTimers: Map<string, NodeJS.Timeout> = new Map();
 
+    // Cache HMAC key to avoid recalculating on every login
+    private secretKey = crypto
+        .createHmac('sha256', 'WebAppData')
+        .update(BOT_TOKEN)
+        .digest();
+
     constructor(
         dittoLedgerSocket: DittoLedgerSocket,
         socketManager: SocketManager,
@@ -55,33 +62,42 @@ export class ValidateLoginManager {
     }
 
     async processUserLoginEvent(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, data: ValidateLoginPayload) {
-        const initData = data.initData;
-        const userData = data.userData;
-        if (!this.isInitDataValid(initData, BOT_TOKEN)) {
-            logger.error(`Init data invalid for user ${userData.id}`);
+        const userId = data.userData.id.toString();
+
+        // Early validation checks (fastest to slowest)
+        if (this.isUserAwaitingLogin(userId)) {
+            logger.warn(`User ${userId} is already in login queue.`);
             socket.emit(LOGIN_INVALID_EVENT, {
-                userId: userData.id,
-                msg: 'Login request invalid. Please use the Ditto Bot'
-            });
-        } else if (this.isUserAwaitingLogin(data.userData.id.toString())) {
-            logger.warn(`User ${data.userData.id.toString()} is already in login queue.`);
-            socket.emit(LOGIN_INVALID_EVENT, {
-                userId: userData.id,
+                userId: data.userData.id,
                 msg: 'User already attempting login. Disconnecting session'
             });
-            this.socketManager.emitEvent(userData.id.toString(), DISCONNECT_USER_EVENT, userData.id);
-        } else if (this.socketManager.isUserSocketCached(userData.id.toString())) {
+            this.socketManager.emitEvent(userId, DISCONNECT_USER_EVENT, data.userData.id);
+            return;
+        }
+
+        if (this.socketManager.isUserSocketCached(userId)) {
             logger.warn(`User already logged in. Disconnecting previous session.`);
             socket.emit(LOGIN_INVALID_EVENT, {
-                userId: userData.id,
+                userId: data.userData.id,
                 msg: 'Disconnecting previous session. Please refresh TMA'
             });
-            this.socketManager.emitEvent(userData.id.toString(), DISCONNECT_USER_EVENT, userData.id);
-        } else {
-            logger.info(`Valid login data: ${JSON.stringify(data, null, 2)}`);
-            this.queueUserLogin(socket, data);
-            this.dittoLedgerSocket.emit(LEDGER_INIT_USER_SOCKET_EVENT, data.userData);
+            this.socketManager.emitEvent(userId, DISCONNECT_USER_EVENT, data.userData.id);
+            return;
         }
+
+        // Most expensive check last
+        if (!this.isInitDataValid(data.initData, BOT_TOKEN)) {
+            logger.error(`Init data invalid for user ${userId}`);
+            socket.emit(LOGIN_INVALID_EVENT, {
+                userId: data.userData.id,
+                msg: 'Login request invalid. Please use the Ditto Bot'
+            });
+            return;
+        }
+
+        logger.info(`Valid login data for user ${userId}`);
+        this.queueUserLogin(socket, data);
+        this.dittoLedgerSocket.emit(LEDGER_INIT_USER_SOCKET_EVENT, data.userData);
     }
 
     async confirmLedgerSocketInit(userId: string) {
@@ -97,20 +113,20 @@ export class ValidateLoginManager {
         }
     }
 
-    async validateUserLogin(userId: string,) {
-        if (this.isUserAwaitingLogin(userId)) {
-            clearTimeout(this.loginTimers.get(userId)!);
-            this.loginTimers.delete(userId);
-
-            const loginData = this.loginQueue.get(userId)!;
-            this.loginQueue.delete(userId);
-
-            this.processLogin(loginData);
-
-            logger.info(`User ${userId} successfully validated.`);
-        } else {
+    async validateUserLogin(userId: string) {
+        if (!this.isUserAwaitingLogin(userId)) {
             logger.warn(`User ${userId} tried to validate login but no queued login found.`);
+            return;
         }
+
+        clearTimeout(this.loginTimers.get(userId)!);
+        this.loginTimers.delete(userId);
+
+        const loginData = this.loginQueue.get(userId)!;
+        this.loginQueue.delete(userId);
+
+        await this.processLogin(loginData);
+        logger.info(`User ${userId} successfully validated.`);
     }
 
     isUserAwaitingLogin(userId: string) {
@@ -143,96 +159,171 @@ export class ValidateLoginManager {
     }
 
     private async processLogin(data: LoginQueueData) {
-        this.socketManager.cacheSocketIdForUser(data.loginPayload.userData.id.toString(), data.socket.id);
+        const userId = data.loginPayload.userData.id.toString();
 
-        data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
+        try {
+            this.socketManager.cacheSocketIdForUser(userId, data.socket.id);
+            data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
 
-        let user;
-        if (!(await userExists(data.loginPayload.userData.id.toString()))) {
-            user = await createUser({ telegramId: data.loginPayload.userData.id.toString(), username: data.loginPayload.userData.username });
+            let user;
+            const isNewUser = !(await userExists(userId));
 
-            // Free on first login
-            const firstFreeSlime = await slimeGachaPull(user.telegramId, true);
-            const secondFreeSlime = await slimeGachaPull(user.telegramId, true);
-            const mintWood = await mintItemToUser(user.telegramId, 26, 30);
-
-            data.socket.emit(FIRST_LOGIN_EVENT, {
-                userId: user.telegramId,
-                payload: {
-                    freeSlimes: [firstFreeSlime, secondFreeSlime],
-                    freeItems: [mintWood]
+            if (isNewUser) {
+                // New user flow
+                user = await this.handleNewUserLogin(data);
+            } else {
+                // Existing user flow - use snapshot
+                user = await getUserDataWithSnapshot(userId);
+                if (!user) {
+                    throw new Error(`Failed to fetch existing user data for ${userId}`);
                 }
+            }
+
+            // Force snapshot refresh on login for active users
+            await snapshotManager.markStale(userId, SnapshotTrigger.SESSION_END);
+
+            logger.info(`Loading offline idle activity for user ${userId}`);
+
+            // Parallel load: idle activities + mission data
+            const [currentCombat, currMission] = await Promise.all([
+                this.idleManager.loadIdleActivitiesOnLogin(userId),
+                this.loadUserMission(userId)
+            ]);
+
+            // Handle combat restoration
+            if (currentCombat) {
+                await this.restoreCombatSession(currentCombat, user);
+            }
+
+            // Send user data immediately
+            data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
+                userId: data.loginPayload.userData.id,
+                payload: user // Use already loaded user data instead of fetching again
             });
 
-            if (await isUnclaimedBetaTester(user.telegramId)) {
-                await mintEquipmentToUser(user.telegramId, 111);
-                await handleBetaTesterClaim(user.telegramId);
-                data.socket.emit(BETA_TESTER_LOGIN_EVENT, {
-                    userId: user.telegramId,
-                });
+            // Send mission data with delay (non-blocking)
+            if (currMission && currMission.round < 6) {
+                setTimeout(() => {
+                    data.socket.emit(MISSION_UPDATE, {
+                        userId: data.loginPayload.userData.id,
+                        payload: {
+                            ...currMission,
+                            rewardDitto: currMission.rewardDitto?.toString(),
+                        },
+                    });
+                }, 5000); // 5 seconds
             }
-        } else {
-            user = await getUserData(data.loginPayload.userData.id.toString());
+
+        } catch (error) {
+            logger.error(`Error processing login for user ${userId}: ${error}`);
+            data.socket.emit(LOGIN_INVALID_EVENT, {
+                userId: data.loginPayload.userData.id,
+                msg: 'Login processing failed. Please try again.'
+            });
+        } finally {
+            this.cleanUpQueueAndTimer(userId);
         }
+    }
 
-        if (!user) throw new Error(`Error processing login. User data not fetched or created.`);
+    private async handleNewUserLogin(data: LoginQueueData) {
+        const userId = data.loginPayload.userData.id.toString();
 
-        logger.info(`Loading offline idle activity for user ${data.loginPayload.userData.id.toString()}`);
-
-        const currentCombat = await this.idleManager.loadIdleActivitiesOnLogin(data.loginPayload.userData.id.toString());
-        if (currentCombat) {
-            if (currentCombat.combatType === 'Domain') {
-                const domain = await getDomainById(currentCombat.locationId);
-                if (!domain) throw new Error(`Unable to find domain to load offline combat`);
-                await this.combatManager.startDomainCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, domain, currentCombat.startTimestamp, currentCombat.monsterToStartWith);
-            } else {
-                const dungeon = await getDungeonById(currentCombat.locationId);
-                if (!dungeon) throw new Error(`Unable to find dungeon to load offline combat`);
-                await this.combatManager.startDungeonCombat(this.idleManager, currentCombat.userId, user, currentCombat.userCombat, dungeon, currentCombat.startTimestamp, currentCombat.monsterToStartWith, currentCombat.dungeonState);
-            }
-        }
-
-        data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
-            userId: data.loginPayload.userData.id,
-            payload: await getUserData(data.loginPayload.userData.id.toString())
+        // Create user
+        const user = await createUser({
+            telegramId: userId,
+            username: data.loginPayload.userData.username
         });
 
-        let currMission = await getUserMissionByUserId(data.loginPayload.userData.id.toString())
-        if (!currMission) currMission = await generateNewMission(data.loginPayload.userData.id.toString(), currMission)
-        if (currMission && currMission.round < 6) {
-            setTimeout(() => {
-                data.socket.emit(MISSION_UPDATE, {
-                    userId: data.loginPayload.userData.id,
-                    payload: {
-                        ...currMission,
-                        rewardDitto: currMission.rewardDitto?.toString(),
-                    },
-                });
-            }, 10000); // 10 seconds
+        // Parallel free item generation for new users
+        const [firstFreeSlime, secondFreeSlime, mintWood, isBetaTester] = await Promise.all([
+            slimeGachaPull(user.telegramId, true),
+            slimeGachaPull(user.telegramId, true),
+            mintItemToUser(user.telegramId, 26, 30),
+            isUnclaimedBetaTester(user.telegramId)
+        ]);
+
+        // Send first login rewards
+        data.socket.emit(FIRST_LOGIN_EVENT, {
+            userId: user.telegramId,
+            payload: {
+                freeSlimes: [firstFreeSlime, secondFreeSlime],
+                freeItems: [mintWood]
+            }
+        });
+
+        // Handle beta tester rewards
+        if (isBetaTester) {
+            await Promise.all([
+                mintEquipmentToUser(user.telegramId, 111),
+                handleBetaTesterClaim(user.telegramId)
+            ]);
+
+            data.socket.emit(BETA_TESTER_LOGIN_EVENT, {
+                userId: user.telegramId,
+            });
         }
 
-        this.cleanUpQueueAndTimer(data.loginPayload.userData.id.toString());
+        // Return fresh user data (don't use snapshot for brand new users)
+        return await getUserDataWithSnapshot(userId);
+    }
+
+    private async restoreCombatSession(currentCombat: any, user: any) {
+        if (currentCombat.combatType === 'Domain') {
+            const domain = await getDomainById(currentCombat.locationId);
+            if (!domain) throw new Error(`Unable to find domain to load offline combat`);
+
+            await this.combatManager.startDomainCombat(
+                this.idleManager,
+                currentCombat.userId,
+                user,
+                currentCombat.userCombat,
+                domain,
+                currentCombat.startTimestamp,
+                currentCombat.monsterToStartWith
+            );
+        } else {
+            const dungeon = await getDungeonById(currentCombat.locationId);
+            if (!dungeon) throw new Error(`Unable to find dungeon to load offline combat`);
+
+            await this.combatManager.startDungeonCombat(
+                this.idleManager,
+                currentCombat.userId,
+                user,
+                currentCombat.userCombat,
+                dungeon,
+                currentCombat.startTimestamp,
+                currentCombat.monsterToStartWith,
+                currentCombat.dungeonState
+            );
+        }
+    }
+
+    private async loadUserMission(userId: string) {
+        let currMission = await getUserMissionByUserId(userId);
+        if (!currMission) {
+            currMission = await generateNewMission(userId, currMission);
+        }
+        return currMission;
     }
 
     private handleLoginTimeout(userId: string) {
-        if (this.loginQueue.has(userId)) {
-            logger.warn(`User ${userId} login attempt timed out.`);
+        if (!this.loginQueue.has(userId)) return;
 
-            const loginQueueElement = this.loginQueue.get(userId)!;
+        logger.warn(`User ${userId} login attempt timed out.`);
 
-            if (!loginQueueElement.isInitUserSocketInLedgerSuccess) {
-                logger.error(`Ledger did not confirm socket for ${userId}. Login failed.`);
-            }
+        const loginQueueElement = this.loginQueue.get(userId)!;
 
-            loginQueueElement.socket.emit(LOGIN_INVALID_EVENT, {
-                userId: loginQueueElement.loginPayload.userData.id,
-                msg: 'Login request timed out'
-            })
-
-            this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-
-            this.cleanUpQueueAndTimer(userId);
+        if (!loginQueueElement.isInitUserSocketInLedgerSuccess) {
+            logger.error(`Ledger did not confirm socket for ${userId}. Login failed.`);
         }
+
+        loginQueueElement.socket.emit(LOGIN_INVALID_EVENT, {
+            userId: loginQueueElement.loginPayload.userData.id,
+            msg: 'Login request timed out'
+        });
+
+        this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId);
+        this.cleanUpQueueAndTimer(userId);
     }
 
     private cleanUpQueueAndTimer(userId: string) {
@@ -240,33 +331,35 @@ export class ValidateLoginManager {
         this.loginTimers.delete(userId);
     }
 
-    private async isInitDataValid(telegramInitData: string, botToken: string): Promise<boolean> {
-        // The data is a query string, which is composed of a series of field-value pairs.
-        const encoded = decodeURIComponent(telegramInitData);
+    private isInitDataValid(telegramInitData: string, botToken: string): boolean {
+        try {
+            // The data is a query string, which is composed of a series of field-value pairs.
+            const encoded = decodeURIComponent(telegramInitData);
 
-        // HMAC-SHA-256 signature of the bot's token with the constant string WebAppData used as a key.
-        const secret = crypto
-            .createHmac('sha256', 'WebAppData')
-            .update(botToken);
+            // Data-check-string is a chain of all received fields'.
+            const arr = encoded.split('&');
+            const hashIndex = arr.findIndex(str => str.startsWith('hash='));
 
-        // Data-check-string is a chain of all received fields'.
-        const arr = encoded.split('&');
-        const hashIndex = arr.findIndex(str => str.startsWith('hash='));
-        const hash = arr.splice(hashIndex)[0].split('=')[1];
-        // sorted alphabetically
-        arr.sort((a, b) => a.localeCompare(b));
-        // in the format key=<value> with a line feed character ('\n', 0x0A) used as separator
-        // e.g., 'auth_date=<auth_date>\nquery_id=<query_id>\nuser=<user>
-        const dataCheckString = arr.join('\n');
+            if (hashIndex === -1) return false;
 
-        // The hexadecimal representation of the HMAC-SHA-256 signature of the data-check-string with the secret key
-        const _hash = crypto
-            .createHmac('sha256', secret.digest())
-            .update(dataCheckString)
-            .digest('hex');
+            const hash = arr.splice(hashIndex)[0].split('=')[1];
 
-        // if hash are equal the data may be used on your server.
-        // Complex data types are represented as JSON-serialized objects.
-        return _hash === hash;
+            // sorted alphabetically
+            arr.sort((a, b) => a.localeCompare(b));
+
+            // in the format key=<value> with a line feed character ('\n', 0x0A) used as separator
+            const dataCheckString = arr.join('\n');
+
+            // The hexadecimal representation of the HMAC-SHA-256 signature with the cached secret key
+            const _hash = crypto
+                .createHmac('sha256', this.secretKey)
+                .update(dataCheckString)
+                .digest('hex');
+
+            return _hash === hash;
+        } catch (error) {
+            logger.error(`Error validating init data: ${error}`);
+            return false;
+        }
     }
 }

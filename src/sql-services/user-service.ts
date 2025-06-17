@@ -4,6 +4,8 @@ import { prisma } from './client';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
 import { ABILITY_POINTS_PER_LEVEL, MAX_INITIAL_INVENTORY_SLOTS, MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { getBaseMaxHpFromHpLvl, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef, getBaseAccFromLuk, getBaseEvaFromDex, calculateCombatPower } from '../managers/idle-managers/combat/combat-helpers';
+import { snapshotManager, SnapshotTrigger } from './snapshot-manager-service';
+import { snapshotMetrics } from '../workers/snapshot/snapshot-metrics';
 
 // Interface for user input
 interface CreateUserInput {
@@ -476,6 +478,42 @@ export async function userExists(telegramId: string): Promise<boolean> {
 }
 
 
+export async function getUserDataWithSnapshot(telegramId: string): Promise<FullUserData | null> {
+    try {
+
+        const snapshotStart = Date.now();
+        
+        // Try snapshot first
+        const snapshotData = await snapshotManager.loadUserSnapshot(telegramId);
+        if (snapshotData) {
+            const snapshotTime = Date.now() - snapshotStart;
+            snapshotMetrics.recordSnapshotHit(snapshotTime);
+            return snapshotData;
+        }
+        
+        // Fallback to full query
+        const fullQueryStart = Date.now();
+        const fullUserData = await getUserData(telegramId);
+        const fullQueryTime = Date.now() - fullQueryStart;
+        
+        snapshotMetrics.recordSnapshotMiss(fullQueryTime);
+        
+        if (fullUserData) {
+            // Generate snapshot in background
+            setTimeout(() => {
+                snapshotManager.regenerateSnapshot(telegramId).catch(err => {
+                    logger.error(`Background snapshot generation failed: ${err}`);
+                });
+            }, 100);
+        }
+        
+        return fullUserData;
+    } catch (error) {
+        logger.error(`Error fetching user with snapshot: ${error}`);
+        throw error;
+    }
+}
+
 export async function getUserData(telegramId: string): Promise<FullUserData | null> {
     try {
         const user = await prisma.user.findUnique({
@@ -944,6 +982,9 @@ export async function incrementUserGoldBalance(telegramId: string, increment: nu
         });
 
         logger.info(`User gold balance updated successfully: new balance is ${updatedUser.goldBalance}`);
+
+        await snapshotManager.markStale(telegramId, SnapshotTrigger.GOLD_CHANGE);
+
         return updatedUser.goldBalance;
     } catch (error) {
         logger.error(`Error updating user's gold balance: ${error}`);
@@ -1031,6 +1072,18 @@ export async function incrementExpAndHpExpAndCheckLevelUp(
         logger.info(
             `User ${telegramId} → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
         );
+
+        if (levelUp) {
+            await snapshotManager.markStale(telegramId, SnapshotTrigger.LEVEL_UP);
+        }
+
+        if (hpLevelUp) {
+            await snapshotManager.markStale(telegramId, SnapshotTrigger.HP_LEVEL_UP);
+        }
+
+        if (!levelUp && !hpLevelUp) {
+            await snapshotManager.markStale(telegramId, SnapshotTrigger.EXP_GAIN);
+        }
 
         return {
             simpleUser: (hpLevelUp && hpLevelUpdatedUser) ? hpLevelUpdatedUser : null,
@@ -1144,6 +1197,8 @@ export async function applySkillUpgradesOnly(
         `✅ Applied raw skill upgrades to user ${userId} — used ${totalPointsNeeded} points`
     );
 
+    await snapshotManager.markStale(userId, SnapshotTrigger.SKILL_POINTS_SPENT);
+
     return { totalPointsUsed: totalPointsNeeded };
 }
 
@@ -1225,7 +1280,11 @@ export async function equipEquipmentForUser(
             `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`
         );
 
-        return await recalculateAndUpdateUserStats(telegramId);
+        const result = await recalculateAndUpdateUserStats(telegramId);
+
+        await snapshotManager.markStale(telegramId, SnapshotTrigger.EQUIPMENT_EQUIPPED);
+
+        return result;
 
     } catch (error) {
         logger.error(
@@ -1277,7 +1336,11 @@ export async function unequipEquipmentForUser(
             `User ${telegramId} unequipped equipment of type ${equipmentType}.`
         );
 
-        return await recalculateAndUpdateUserStats(telegramId);
+        const result = await recalculateAndUpdateUserStats(telegramId);
+
+        await snapshotManager.markStale(telegramId, SnapshotTrigger.EQUIPMENT_UNEQUIPPED);
+
+        return result;
     } catch (error) {
         logger.error(
             `Failed to unequip equipment of type ${equipmentType} for user ${telegramId}: ${error}`
@@ -1338,6 +1401,8 @@ export async function addFarmingExp(userId: string, expToAdd: number) {
         },
     });
 
+    await snapshotManager.markStale(userId, SnapshotTrigger.FARMING_COMPLETE);
+
     return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
 }
 
@@ -1393,6 +1458,8 @@ export async function addCraftingExp(userId: string, expToAdd: number) {
             expToNextCraftingLevel,
         },
     });
+
+    await snapshotManager.markStale(userId, SnapshotTrigger.CRAFTING_COMPLETE);
 
     return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
 }

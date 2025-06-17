@@ -12,6 +12,8 @@ import { io } from 'socket.io-client'
 import "@aws-sdk/crc64-nvme-crt";
 import { ValidateLoginManager } from "./src/managers/validate-login/validate-login-manager"
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
+import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
+import { snapshotWorker } from "./src/workers/snapshot/snapshot-worker"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -64,6 +66,22 @@ async function main() {
 
     setupGlobalErrorHandlers()
 
+    app.get('/admin/snapshot-metrics', async (req, res) => {
+        try {
+            const metrics = await snapshotMetrics.getMetrics();
+            res.json(metrics);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to get metrics' });
+        }
+    });
+
+    snapshotWorker.start(30000); // Process queue every 30 seconds
+
+    setInterval(async () => {
+        await snapshotMetrics.logMetrics();
+        snapshotMetrics.reset(); // Reset hourly
+    }, 3600000); // Every hour
+
     httpServer.listen((PORT), () => {
         logger.info(`Server started on port ${PORT}`)
     })
@@ -85,6 +103,8 @@ async function gracefulShutdown(
     await idleManager.saveAllUsersIdleActivities();
 
     socketManager.disconnectAllUsers();
+
+    snapshotWorker.stop();
 
     io.close(() => {
         logger.info('Socket server closed.')

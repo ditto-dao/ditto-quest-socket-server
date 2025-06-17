@@ -6,6 +6,7 @@ import { processAndUploadSlimeImage } from '../slime-generation/slime-image-gene
 import { DOMINANT_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits, HIDDEN_TRAITS_GACHA_SPECS } from '../utils/gacha-odds';
 import { GACHA_PULL_ODDS, GACHA_PULL_ODDS_NERF } from '../utils/config';
 import { canUserMintSlime, recalculateAndUpdateUserStats, UserDataEquipped } from './user-service';
+import { snapshotManager, SnapshotTrigger } from './snapshot-manager-service';
 
 
 export type SlimeWithTraits = Slime & {
@@ -385,6 +386,8 @@ export async function slimeGachaPull(ownerId: string, nerf: boolean = false): Pr
 
     slime.imageUri = res.uri;
 
+    await snapshotManager.markStale(ownerId, SnapshotTrigger.SLIME_GACHA);
+
     return {
       slime,
       rankPull,
@@ -596,6 +599,8 @@ export async function breedSlimes(sireId: number, dameId: number): Promise<Slime
     childSlime.imageUri = res.uri;
     updateSlimeImageUri(childSlime.id, res.uri);
 
+    await snapshotManager.markStale(sire.ownerId, SnapshotTrigger.SLIME_BREEDING);
+
     return childSlime;
   } catch (error) {
     console.error(`Failed to breed slimes: ${error}`);
@@ -615,7 +620,11 @@ export async function equipSlimeForUser(
       }
     });
 
-    return await recalculateAndUpdateUserStats(telegramId);
+    const result = await recalculateAndUpdateUserStats(telegramId);
+
+    await snapshotManager.markStale(telegramId, SnapshotTrigger.SLIME_EQUIPPED);
+    
+    return result;
   } catch (err) {
     throw new Error(`Failed to equip slime ${slime.id} for user ${telegramId}: ${err}`);
   }
@@ -632,7 +641,11 @@ export async function unequipSlimeForUser(
       }
     });
 
-    return await recalculateAndUpdateUserStats(telegramId);
+    const result = await recalculateAndUpdateUserStats(telegramId);
+    
+    await snapshotManager.markStale(telegramId, SnapshotTrigger.SLIME_UNEQUIPPED);
+    
+    return result;
   } catch (err) {
     throw new Error(`Failed to unequip slime for user ${telegramId}: ${err}`);
   }
