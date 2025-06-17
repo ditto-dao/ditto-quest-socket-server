@@ -269,10 +269,10 @@
     "rarity": "C",
     "description": "Slime-coated fragments glimmering with iridescent hues.",
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/12-ooze-shards/Icon40.png",
-    "farmingDurationS": 20,
-    "farmingLevelRequired": 0,
-    "farmingExp": 300,
-    "sellPriceGP": 100
+    "farmingDurationS": null,
+    "farmingLevelRequired": null,
+    "farmingExp": null,
+    "sellPriceGP": 1000
   },
   {
     "id": 26,

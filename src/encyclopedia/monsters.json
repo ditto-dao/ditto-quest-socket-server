@@ -26,11 +26,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -103,11 +103,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -180,11 +180,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -257,11 +257,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -334,11 +334,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -411,11 +411,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -548,11 +548,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -580,7 +580,7 @@
               "equipmentId": 81,
               "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 80
+              "craftingExp": 70
             }
           ],
           "statEffect": {
@@ -648,7 +648,7 @@
               "equipmentId": 82,
               "durationS": 25,
               "craftingLevelRequired": 4,
-              "craftingExp": 110
+              "craftingExp": 135
             }
           ],
           "statEffect": {
@@ -782,9 +782,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 25,
+              "durationS": 30,
               "craftingLevelRequired": 10,
-              "craftingExp": 110
+              "craftingExp": 180
             }
           ],
           "statEffect": {
@@ -835,7 +835,7 @@
     "combat": {
       "hp": 129,
       "maxHp": 129,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 11.899999999999999,
       "acc": 11.400000000000002,
       "eva": 12.3,
@@ -957,11 +957,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -989,7 +989,7 @@
               "equipmentId": 81,
               "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 80
+              "craftingExp": 70
             }
           ],
           "statEffect": {
@@ -1057,7 +1057,7 @@
               "equipmentId": 82,
               "durationS": 25,
               "craftingLevelRequired": 4,
-              "craftingExp": 110
+              "craftingExp": 135
             }
           ],
           "statEffect": {
@@ -1191,9 +1191,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 25,
+              "durationS": 30,
               "craftingLevelRequired": 10,
-              "craftingExp": 110
+              "craftingExp": 180
             }
           ],
           "statEffect": {
@@ -1244,7 +1244,7 @@
     "combat": {
       "hp": 129,
       "maxHp": 129,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 24.799999999999997,
       "acc": 28.72352879597266,
       "eva": 26.295729065570992,
@@ -1366,11 +1366,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -1398,7 +1398,7 @@
               "equipmentId": 81,
               "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 80
+              "craftingExp": 70
             }
           ],
           "statEffect": {
@@ -1466,7 +1466,7 @@
               "equipmentId": 82,
               "durationS": 25,
               "craftingLevelRequired": 4,
-              "craftingExp": 110
+              "craftingExp": 135
             }
           ],
           "statEffect": {
@@ -1600,9 +1600,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 25,
+              "durationS": 30,
               "craftingLevelRequired": 10,
-              "craftingExp": 110
+              "craftingExp": 180
             }
           ],
           "statEffect": {
@@ -1653,7 +1653,7 @@
     "combat": {
       "hp": 133,
       "maxHp": 133,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 20,
       "acc": 31.72449449107428,
       "eva": 30.850894730473048,
@@ -1775,11 +1775,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -1807,7 +1807,7 @@
               "equipmentId": 81,
               "durationS": 20,
               "craftingLevelRequired": 1,
-              "craftingExp": 80
+              "craftingExp": 70
             }
           ],
           "statEffect": {
@@ -1875,7 +1875,7 @@
               "equipmentId": 82,
               "durationS": 25,
               "craftingLevelRequired": 4,
-              "craftingExp": 110
+              "craftingExp": 135
             }
           ],
           "statEffect": {
@@ -2009,9 +2009,9 @@
             {
               "id": 102,
               "equipmentId": 102,
-              "durationS": 25,
+              "durationS": 30,
               "craftingLevelRequired": 10,
-              "craftingExp": 110
+              "craftingExp": 180
             }
           ],
           "statEffect": {
@@ -2062,7 +2062,7 @@
     "combat": {
       "hp": 278,
       "maxHp": 278,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 33,
       "acc": 48.21652111826468,
       "eva": 29.401523837095123,
@@ -2184,11 +2184,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -2216,7 +2216,7 @@
               "equipmentId": 83,
               "durationS": 30,
               "craftingLevelRequired": 7,
-              "craftingExp": 150
+              "craftingExp": 285
             }
           ],
           "statEffect": {
@@ -2282,9 +2282,9 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 30,
+              "durationS": 40,
               "craftingLevelRequired": 20,
-              "craftingExp": 150
+              "craftingExp": 295
             }
           ],
           "statEffect": {
@@ -2335,7 +2335,7 @@
     "combat": {
       "hp": 294,
       "maxHp": 294,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 49.599999999999994,
       "acc": 62.0297111698399,
       "eva": 96.46641690947224,
@@ -2457,11 +2457,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -2489,7 +2489,7 @@
               "equipmentId": 83,
               "durationS": 30,
               "craftingLevelRequired": 7,
-              "craftingExp": 150
+              "craftingExp": 285
             }
           ],
           "statEffect": {
@@ -2555,9 +2555,9 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 30,
+              "durationS": 40,
               "craftingLevelRequired": 20,
-              "craftingExp": 150
+              "craftingExp": 295
             }
           ],
           "statEffect": {
@@ -2608,7 +2608,7 @@
     "combat": {
       "hp": 354,
       "maxHp": 354,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 55,
       "acc": 86.33449231696942,
       "eva": 66.8786640622647,
@@ -2750,11 +2750,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -2782,7 +2782,7 @@
               "equipmentId": 83,
               "durationS": 30,
               "craftingLevelRequired": 7,
-              "craftingExp": 150
+              "craftingExp": 285
             }
           ],
           "statEffect": {
@@ -2848,9 +2848,9 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 30,
+              "durationS": 40,
               "craftingLevelRequired": 20,
-              "craftingExp": 150
+              "craftingExp": 295
             }
           ],
           "statEffect": {
@@ -2901,7 +2901,7 @@
     "combat": {
       "hp": 1272,
       "maxHp": 1272,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 54,
       "acc": 86.3344923169694,
       "eva": 74.78208868467141,
@@ -3043,11 +3043,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -3075,7 +3075,7 @@
               "equipmentId": 83,
               "durationS": 30,
               "craftingLevelRequired": 7,
-              "craftingExp": 150
+              "craftingExp": 285
             }
           ],
           "statEffect": {
@@ -3141,9 +3141,9 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 30,
+              "durationS": 40,
               "craftingLevelRequired": 20,
-              "craftingExp": 150
+              "craftingExp": 295
             }
           ],
           "statEffect": {
@@ -3194,7 +3194,7 @@
     "combat": {
       "hp": 981,
       "maxHp": 981,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 114.1,
       "acc": 135.2088031015482,
       "eva": 127.30248642894674,
@@ -3336,11 +3336,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -3368,7 +3368,7 @@
               "equipmentId": 83,
               "durationS": 30,
               "craftingLevelRequired": 7,
-              "craftingExp": 150
+              "craftingExp": 285
             }
           ],
           "statEffect": {
@@ -3434,9 +3434,9 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 30,
+              "durationS": 40,
               "craftingLevelRequired": 20,
-              "craftingExp": 150
+              "craftingExp": 295
             }
           ],
           "statEffect": {
@@ -3487,7 +3487,7 @@
     "combat": {
       "hp": 1125,
       "maxHp": 1125,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 77,
       "acc": 117.35103665417391,
       "eva": 109.55729135097233,
@@ -3629,11 +3629,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -3661,7 +3661,7 @@
               "equipmentId": 83,
               "durationS": 30,
               "craftingLevelRequired": 7,
-              "craftingExp": 150
+              "craftingExp": 285
             }
           ],
           "statEffect": {
@@ -3727,9 +3727,9 @@
             {
               "id": 103,
               "equipmentId": 103,
-              "durationS": 30,
+              "durationS": 40,
               "craftingLevelRequired": 20,
-              "craftingExp": 150
+              "craftingExp": 295
             }
           ],
           "statEffect": {
@@ -3780,7 +3780,7 @@
     "combat": {
       "hp": 1947,
       "maxHp": 1947,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 173.8,
       "acc": 275.4217160160375,
       "eva": 230.66158057069268,
@@ -3922,11 +3922,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -3954,7 +3954,7 @@
               "equipmentId": 84,
               "durationS": 35,
               "craftingLevelRequired": 10,
-              "craftingExp": 190
+              "craftingExp": 385
             }
           ],
           "statEffect": {
@@ -4020,9 +4020,9 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 35,
+              "durationS": 50,
               "craftingLevelRequired": 30,
-              "craftingExp": 190
+              "craftingExp": 460
             }
           ],
           "statEffect": {
@@ -4073,7 +4073,7 @@
     "combat": {
       "hp": 2052,
       "maxHp": 2052,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 288.6,
       "acc": 288.97890056659406,
       "eva": 255.67403358772413,
@@ -4215,11 +4215,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -4247,7 +4247,7 @@
               "equipmentId": 84,
               "durationS": 35,
               "craftingLevelRequired": 10,
-              "craftingExp": 190
+              "craftingExp": 385
             }
           ],
           "statEffect": {
@@ -4313,9 +4313,9 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 35,
+              "durationS": 50,
               "craftingLevelRequired": 30,
-              "craftingExp": 190
+              "craftingExp": 460
             }
           ],
           "statEffect": {
@@ -4366,7 +4366,7 @@
     "combat": {
       "hp": 3250,
       "maxHp": 3250,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 304.5,
       "acc": 391.3392977773654,
       "eva": 331.47679496431914,
@@ -4412,7 +4412,7 @@
     "dex": 15,
     "luk": 15,
     "magic": 15,
-    "hpLevel": 10,
+    "hpLevel": 18,
     "exp": 110,
     "minGoldDrop": 270,
     "maxGoldDrop": 330,
@@ -4508,11 +4508,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -4540,7 +4540,7 @@
               "equipmentId": 84,
               "durationS": 35,
               "craftingLevelRequired": 10,
-              "craftingExp": 190
+              "craftingExp": 385
             }
           ],
           "statEffect": {
@@ -4606,9 +4606,9 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 35,
+              "durationS": 50,
               "craftingLevelRequired": 30,
-              "craftingExp": 190
+              "craftingExp": 460
             }
           ],
           "statEffect": {
@@ -4657,8 +4657,8 @@
       }
     ],
     "combat": {
-      "hp": 1620,
-      "maxHp": 1620,
+      "hp": 2916,
+      "maxHp": 2916,
       "attackType": "Melee",
       "atkSpd": 316.5,
       "acc": 308.74507412586115,
@@ -4670,8 +4670,8 @@
       "critMultiplier": 1.8890955537041005,
       "dmgReduction": 679.25,
       "magicDmgReduction": 406.59999999999997,
-      "hpRegenRate": 18.338926174496645,
-      "hpRegenAmount": 36.9,
+      "hpRegenRate": 17.936241610738254,
+      "hpRegenAmount": 43.46,
       "meleeFactor": 35,
       "rangeFactor": 30,
       "magicFactor": 30,
@@ -4680,7 +4680,7 @@
       "reinforceEarth": 0,
       "reinforceFire": 0
     },
-    "maxHp": 1000,
+    "maxHp": 1800,
     "atkSpd": 150,
     "acc": 196.6529134559625,
     "eva": 171.7496346965384,
@@ -4691,8 +4691,8 @@
     "critMultiplier": 1.5612359947967773,
     "dmgReduction": 325,
     "magicDmgReduction": 190,
-    "hpRegenRate": 18.338926174496645,
-    "hpRegenAmount": 22.5
+    "hpRegenRate": 17.936241610738254,
+    "hpRegenAmount": 26.5
   },
   {
     "id": 20,
@@ -4801,11 +4801,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -4833,7 +4833,7 @@
               "equipmentId": 84,
               "durationS": 35,
               "craftingLevelRequired": 10,
-              "craftingExp": 190
+              "craftingExp": 385
             }
           ],
           "statEffect": {
@@ -4899,9 +4899,9 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 35,
+              "durationS": 50,
               "craftingLevelRequired": 30,
-              "craftingExp": 190
+              "craftingExp": 460
             }
           ],
           "statEffect": {
@@ -5094,11 +5094,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -5126,7 +5126,7 @@
               "equipmentId": 84,
               "durationS": 35,
               "craftingLevelRequired": 10,
-              "craftingExp": 190
+              "craftingExp": 385
             }
           ],
           "statEffect": {
@@ -5192,9 +5192,9 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 35,
+              "durationS": 50,
               "craftingLevelRequired": 30,
-              "craftingExp": 190
+              "craftingExp": 460
             }
           ],
           "statEffect": {
@@ -5387,11 +5387,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -5419,7 +5419,7 @@
               "equipmentId": 84,
               "durationS": 35,
               "craftingLevelRequired": 10,
-              "craftingExp": 190
+              "craftingExp": 385
             }
           ],
           "statEffect": {
@@ -5485,9 +5485,9 @@
             {
               "id": 104,
               "equipmentId": 104,
-              "durationS": 35,
+              "durationS": 50,
               "craftingLevelRequired": 30,
-              "craftingExp": 190
+              "craftingExp": 460
             }
           ],
           "statEffect": {
@@ -5680,11 +5680,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -5712,7 +5712,7 @@
               "equipmentId": 85,
               "durationS": 40,
               "craftingLevelRequired": 15,
-              "craftingExp": 240
+              "craftingExp": 1255
             }
           ],
           "statEffect": {
@@ -5778,9 +5778,9 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 40,
+              "durationS": 60,
               "craftingLevelRequired": 40,
-              "craftingExp": 240
+              "craftingExp": 765
             }
           ],
           "statEffect": {
@@ -5973,11 +5973,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -6005,7 +6005,7 @@
               "equipmentId": 85,
               "durationS": 40,
               "craftingLevelRequired": 15,
-              "craftingExp": 240
+              "craftingExp": 1255
             }
           ],
           "statEffect": {
@@ -6071,9 +6071,9 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 40,
+              "durationS": 60,
               "craftingLevelRequired": 40,
-              "craftingExp": 240
+              "craftingExp": 765
             }
           ],
           "statEffect": {
@@ -6266,11 +6266,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -6298,7 +6298,7 @@
               "equipmentId": 85,
               "durationS": 40,
               "craftingLevelRequired": 15,
-              "craftingExp": 240
+              "craftingExp": 1255
             }
           ],
           "statEffect": {
@@ -6364,9 +6364,9 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 40,
+              "durationS": 60,
               "craftingLevelRequired": 40,
-              "craftingExp": 240
+              "craftingExp": 765
             }
           ],
           "statEffect": {
@@ -6417,7 +6417,7 @@
     "combat": {
       "hp": 5910,
       "maxHp": 5910,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 411,
       "acc": 817.7774110134824,
       "eva": 636.5468134923485,
@@ -6559,11 +6559,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -6591,7 +6591,7 @@
               "equipmentId": 85,
               "durationS": 40,
               "craftingLevelRequired": 15,
-              "craftingExp": 240
+              "craftingExp": 1255
             }
           ],
           "statEffect": {
@@ -6657,9 +6657,9 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 40,
+              "durationS": 60,
               "craftingLevelRequired": 40,
-              "craftingExp": 240
+              "craftingExp": 765
             }
           ],
           "statEffect": {
@@ -6710,7 +6710,7 @@
     "combat": {
       "hp": 5775,
       "maxHp": 5775,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 514.5,
       "acc": 908.9630658475239,
       "eva": 769.2885519118119,
@@ -6852,11 +6852,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -6884,7 +6884,7 @@
               "equipmentId": 85,
               "durationS": 40,
               "craftingLevelRequired": 15,
-              "craftingExp": 240
+              "craftingExp": 1255
             }
           ],
           "statEffect": {
@@ -6950,9 +6950,9 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 40,
+              "durationS": 60,
               "craftingLevelRequired": 40,
-              "craftingExp": 240
+              "craftingExp": 765
             }
           ],
           "statEffect": {
@@ -7003,7 +7003,7 @@
     "combat": {
       "hp": 9075,
       "maxHp": 9075,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 427,
       "acc": 918.9516709667273,
       "eva": 811.0977123418018,
@@ -7145,11 +7145,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -7177,7 +7177,7 @@
               "equipmentId": 85,
               "durationS": 40,
               "craftingLevelRequired": 15,
-              "craftingExp": 240
+              "craftingExp": 1255
             }
           ],
           "statEffect": {
@@ -7243,9 +7243,9 @@
             {
               "id": 105,
               "equipmentId": 105,
-              "durationS": 40,
+              "durationS": 60,
               "craftingLevelRequired": 40,
-              "craftingExp": 240
+              "craftingExp": 765
             }
           ],
           "statEffect": {
@@ -7296,7 +7296,7 @@
     "combat": {
       "hp": 9835,
       "maxHp": 9835,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 656,
       "acc": 1370.9270210131453,
       "eva": 1082.2946434171515,
@@ -7438,11 +7438,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -7470,7 +7470,7 @@
               "equipmentId": 86,
               "durationS": 45,
               "craftingLevelRequired": 20,
-              "craftingExp": 300
+              "craftingExp": 1505
             }
           ],
           "statEffect": {
@@ -7536,9 +7536,9 @@
             {
               "id": 106,
               "equipmentId": 106,
-              "durationS": 45,
+              "durationS": 70,
               "craftingLevelRequired": 50,
-              "craftingExp": 300
+              "craftingExp": 1100
             }
           ],
           "statEffect": {
@@ -7589,7 +7589,7 @@
     "combat": {
       "hp": 10640,
       "maxHp": 10640,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 1035,
       "acc": 1771.2752127723327,
       "eva": 1175.782225543174,
@@ -7731,11 +7731,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -7763,7 +7763,7 @@
               "equipmentId": 86,
               "durationS": 45,
               "craftingLevelRequired": 20,
-              "craftingExp": 300
+              "craftingExp": 1505
             }
           ],
           "statEffect": {
@@ -7829,9 +7829,9 @@
             {
               "id": 106,
               "equipmentId": 106,
-              "durationS": 45,
+              "durationS": 70,
               "craftingLevelRequired": 50,
-              "craftingExp": 300
+              "craftingExp": 1100
             }
           ],
           "statEffect": {
@@ -7882,7 +7882,7 @@
     "combat": {
       "hp": 14640,
       "maxHp": 14640,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 1300,
       "acc": 2040.6855385470735,
       "eva": 1751.1001785484673,
@@ -8004,11 +8004,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -8036,7 +8036,7 @@
               "equipmentId": 86,
               "durationS": 45,
               "craftingLevelRequired": 20,
-              "craftingExp": 300
+              "craftingExp": 1505
             }
           ],
           "statEffect": {
@@ -8102,9 +8102,9 @@
             {
               "id": 106,
               "equipmentId": 106,
-              "durationS": 45,
+              "durationS": 70,
               "craftingLevelRequired": 50,
-              "craftingExp": 300
+              "craftingExp": 1100
             }
           ],
           "statEffect": {
@@ -8155,7 +8155,7 @@
     "combat": {
       "hp": 7380,
       "maxHp": 7380,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 1220,
       "acc": 1508.332789360881,
       "eva": 1209.9615817053643,
@@ -8277,11 +8277,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -8309,7 +8309,7 @@
               "equipmentId": 86,
               "durationS": 45,
               "craftingLevelRequired": 20,
-              "craftingExp": 300
+              "craftingExp": 1505
             }
           ],
           "statEffect": {
@@ -8375,9 +8375,9 @@
             {
               "id": 106,
               "equipmentId": 106,
-              "durationS": 45,
+              "durationS": 70,
               "craftingLevelRequired": 50,
-              "craftingExp": 300
+              "craftingExp": 1100
             }
           ],
           "statEffect": {
@@ -8428,7 +8428,7 @@
     "combat": {
       "hp": 9648,
       "maxHp": 9648,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 1105.5,
       "acc": 2126.663231657205,
       "eva": 1424.6778916041033,
@@ -8550,11 +8550,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -8582,7 +8582,7 @@
               "equipmentId": 86,
               "durationS": 45,
               "craftingLevelRequired": 20,
-              "craftingExp": 300
+              "craftingExp": 1505
             }
           ],
           "statEffect": {
@@ -8648,9 +8648,9 @@
             {
               "id": 106,
               "equipmentId": 106,
-              "durationS": 45,
+              "durationS": 70,
               "craftingLevelRequired": 50,
-              "craftingExp": 300
+              "craftingExp": 1100
             }
           ],
           "statEffect": {
@@ -8701,7 +8701,7 @@
     "combat": {
       "hp": 9024,
       "maxHp": 9024,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 1314.5,
       "acc": 1790.0099787693848,
       "eva": 1296.9944956584525,
@@ -8823,11 +8823,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -8855,7 +8855,7 @@
               "equipmentId": 86,
               "durationS": 45,
               "craftingLevelRequired": 20,
-              "craftingExp": 300
+              "craftingExp": 1505
             }
           ],
           "statEffect": {
@@ -8921,9 +8921,9 @@
             {
               "id": 106,
               "equipmentId": 106,
-              "durationS": 45,
+              "durationS": 70,
               "craftingLevelRequired": 50,
-              "craftingExp": 300
+              "craftingExp": 1100
             }
           ],
           "statEffect": {
@@ -8974,7 +8974,7 @@
     "combat": {
       "hp": 19850,
       "maxHp": 19850,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 1272,
       "acc": 2313.1635526885225,
       "eva": 1958.5760951080779,
@@ -9096,11 +9096,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -9128,7 +9128,7 @@
               "equipmentId": 87,
               "durationS": 50,
               "craftingLevelRequired": 25,
-              "craftingExp": 360
+              "craftingExp": 2180
             }
           ],
           "statEffect": {
@@ -9194,9 +9194,9 @@
             {
               "id": 107,
               "equipmentId": 107,
-              "durationS": 50,
+              "durationS": 80,
               "craftingLevelRequired": 60,
-              "craftingExp": 360
+              "craftingExp": 1525
             }
           ],
           "statEffect": {
@@ -9247,7 +9247,7 @@
     "combat": {
       "hp": 17215,
       "maxHp": 17215,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 1673,
       "acc": 2216.0430321649246,
       "eva": 2198.8047102520063,
@@ -9369,11 +9369,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -9401,7 +9401,7 @@
               "equipmentId": 87,
               "durationS": 50,
               "craftingLevelRequired": 25,
-              "craftingExp": 360
+              "craftingExp": 2180
             }
           ],
           "statEffect": {
@@ -9467,9 +9467,9 @@
             {
               "id": 107,
               "equipmentId": 107,
-              "durationS": 50,
+              "durationS": 80,
               "craftingLevelRequired": 60,
-              "craftingExp": 360
+              "craftingExp": 1525
             }
           ],
           "statEffect": {
@@ -9520,7 +9520,7 @@
     "combat": {
       "hp": 14700,
       "maxHp": 14700,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 2240,
       "acc": 3546.2146435105983,
       "eva": 2778.7449703461466,
@@ -9662,11 +9662,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -9694,7 +9694,7 @@
               "equipmentId": 87,
               "durationS": 50,
               "craftingLevelRequired": 25,
-              "craftingExp": 360
+              "craftingExp": 2180
             }
           ],
           "statEffect": {
@@ -9760,9 +9760,9 @@
             {
               "id": 107,
               "equipmentId": 107,
-              "durationS": 50,
+              "durationS": 80,
               "craftingLevelRequired": 60,
-              "craftingExp": 360
+              "craftingExp": 1525
             }
           ],
           "statEffect": {
@@ -9955,11 +9955,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -9987,7 +9987,7 @@
               "equipmentId": 87,
               "durationS": 50,
               "craftingLevelRequired": 25,
-              "craftingExp": 360
+              "craftingExp": 2180
             }
           ],
           "statEffect": {
@@ -10053,9 +10053,9 @@
             {
               "id": 107,
               "equipmentId": 107,
-              "durationS": 50,
+              "durationS": 80,
               "craftingLevelRequired": 60,
-              "craftingExp": 360
+              "craftingExp": 1525
             }
           ],
           "statEffect": {
@@ -10248,11 +10248,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -10280,7 +10280,7 @@
               "equipmentId": 87,
               "durationS": 50,
               "craftingLevelRequired": 25,
-              "craftingExp": 360
+              "craftingExp": 2180
             }
           ],
           "statEffect": {
@@ -10346,9 +10346,9 @@
             {
               "id": 107,
               "equipmentId": 107,
-              "durationS": 50,
+              "durationS": 80,
               "craftingLevelRequired": 60,
-              "craftingExp": 360
+              "craftingExp": 1525
             }
           ],
           "statEffect": {
@@ -10541,11 +10541,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -10573,7 +10573,7 @@
               "equipmentId": 87,
               "durationS": 50,
               "craftingLevelRequired": 25,
-              "craftingExp": 360
+              "craftingExp": 2180
             }
           ],
           "statEffect": {
@@ -10639,9 +10639,9 @@
             {
               "id": 107,
               "equipmentId": 107,
-              "durationS": 50,
+              "durationS": 80,
               "craftingLevelRequired": 60,
-              "craftingExp": 360
+              "craftingExp": 1525
             }
           ],
           "statEffect": {
@@ -10834,11 +10834,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -10866,7 +10866,7 @@
               "equipmentId": 88,
               "durationS": 55,
               "craftingLevelRequired": 30,
-              "craftingExp": 430
+              "craftingExp": 2050
             }
           ],
           "statEffect": {
@@ -10932,9 +10932,9 @@
             {
               "id": 108,
               "equipmentId": 108,
-              "durationS": 55,
+              "durationS": 90,
               "craftingLevelRequired": 70,
-              "craftingExp": 430
+              "craftingExp": 2070
             }
           ],
           "statEffect": {
@@ -11127,11 +11127,11 @@
           "rarity": "C",
           "statEffectId": null,
           "buyPriceGP": null,
-          "sellPriceGP": 100,
+          "sellPriceGP": 1000,
           "buyPriceDittoWei": null,
-          "farmingDurationS": 20,
-          "farmingLevelRequired": 0,
-          "farmingExp": 300,
+          "farmingDurationS": null,
+          "farmingLevelRequired": null,
+          "farmingExp": null,
           "statEffect": null
         },
         "quantity": 1,
@@ -11159,7 +11159,7 @@
               "equipmentId": 88,
               "durationS": 55,
               "craftingLevelRequired": 30,
-              "craftingExp": 430
+              "craftingExp": 2050
             }
           ],
           "statEffect": {
@@ -11225,9 +11225,9 @@
             {
               "id": 108,
               "equipmentId": 108,
-              "durationS": 55,
+              "durationS": 90,
               "craftingLevelRequired": 70,
-              "craftingExp": 430
+              "craftingExp": 2070
             }
           ],
           "statEffect": {
@@ -11334,7 +11334,7 @@
     "combat": {
       "hp": 129,
       "maxHp": 129,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 0,
       "acc": 0,
       "eva": 12.3,
@@ -11390,7 +11390,7 @@
     "combat": {
       "hp": 129,
       "maxHp": 129,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 24.799999999999997,
       "acc": 28.72352879597266,
       "eva": 54.44609189684369,
@@ -11446,7 +11446,7 @@
     "combat": {
       "hp": 266,
       "maxHp": 266,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 40,
       "acc": 68.0029426158245,
       "eva": 30.850894730473048,
@@ -11502,7 +11502,7 @@
     "combat": {
       "hp": 278,
       "maxHp": 278,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 11,
       "acc": 14.400000000000002,
       "eva": 60.87673267206146,
@@ -11558,7 +11558,7 @@
     "combat": {
       "hp": 441,
       "maxHp": 441,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 74.39999999999999,
       "acc": 96.89472710695657,
       "eva": 164.9367127823886,
@@ -11614,7 +11614,7 @@
     "combat": {
       "hp": 354,
       "maxHp": 354,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 88,
       "acc": 144.7825830093622,
       "eva": 49.44267004011839,
@@ -11670,7 +11670,7 @@
     "combat": {
       "hp": 624,
       "maxHp": 624,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 21,
       "acc": 31.0814304135525,
       "eva": 104.92811002628338,
@@ -11726,7 +11726,7 @@
     "combat": {
       "hp": 408,
       "maxHp": 408,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 156,
       "acc": 193.8745134163018,
       "eva": 294.066778879241,
@@ -11782,7 +11782,7 @@
     "combat": {
       "hp": 595,
       "maxHp": 595,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 114.4,
       "acc": 185.9446103052436,
       "eva": 58.733185746988866,
@@ -11838,7 +11838,7 @@
     "combat": {
       "hp": 665,
       "maxHp": 665,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 22.8,
       "acc": 35.154169571190415,
       "eva": 171.6688235082004,
@@ -11894,7 +11894,7 @@
     "combat": {
       "hp": 768,
       "maxHp": 768,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 250.6,
       "acc": 253.37026141017935,
       "eva": 359.47761408570955,
@@ -11950,7 +11950,7 @@
     "combat": {
       "hp": 882,
       "maxHp": 882,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 150,
       "acc": 267.447962300109,
       "eva": 85.31043672266252,
@@ -12342,7 +12342,7 @@
     "combat": {
       "hp": 2444,
       "maxHp": 2444,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 64.5,
       "acc": 109.8268711787298,
       "eva": 378.6341032376339,
@@ -12398,7 +12398,7 @@
     "combat": {
       "hp": 2119,
       "maxHp": 2119,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 340,
       "acc": 596.7330785819756,
       "eva": 841.7847226577846,
@@ -12454,7 +12454,7 @@
     "combat": {
       "hp": 3682,
       "maxHp": 3682,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 286,
       "acc": 626.6426224845699,
       "eva": 206.4513955915613,
@@ -12510,7 +12510,7 @@
     "combat": {
       "hp": 3975,
       "maxHp": 3975,
-      "attackType": "Melee",
+      "attackType": "Ranged",
       "atkSpd": 89.4,
       "acc": 161.4912118449276,
       "eva": 546.9195128589723,
@@ -12566,7 +12566,7 @@
     "combat": {
       "hp": 3960,
       "maxHp": 3960,
-      "attackType": "Ranged",
+      "attackType": "Magic",
       "atkSpd": 623.5,
       "acc": 1043.6885549114777,
       "eva": 1136.3860418932654,
@@ -12622,7 +12622,7 @@
     "combat": {
       "hp": 4656,
       "maxHp": 4656,
-      "attackType": "Magic",
+      "attackType": "Melee",
       "atkSpd": 555,
       "acc": 1015.8987425476765,
       "eva": 343.76434465338696,
@@ -12678,7 +12678,7 @@
     "combat": {
       "hp": 2550,
       "maxHp": 2550,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 139.2,
       "acc": 139.2413115462931,
       "eva": 555.007450609089,
@@ -12734,7 +12734,7 @@
     "combat": {
       "hp": 3094,
       "maxHp": 3094,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 592,
       "acc": 1113.2689163001007,
       "eva": 1260.8301550873573,
@@ -12790,7 +12790,7 @@
     "combat": {
       "hp": 3114,
       "maxHp": 3114,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 764.9999999999999,
       "acc": 996.5383791632402,
       "eva": 289.1432194436407,
@@ -12846,7 +12846,7 @@
     "combat": {
       "hp": 6061,
       "maxHp": 6061,
-      "attackType": "Melee",
+      "attackType": "Magic",
       "atkSpd": 95.89999999999999,
       "acc": 181.12877396622494,
       "eva": 737.5998096311096,
@@ -12902,7 +12902,7 @@
     "combat": {
       "hp": 5567,
       "maxHp": 5567,
-      "attackType": "Ranged",
+      "attackType": "Melee",
       "atkSpd": 795.6,
       "acc": 989.085828859953,
       "eva": 1698.2330718261262,
@@ -12958,7 +12958,7 @@
     "combat": {
       "hp": 4460,
       "maxHp": 4460,
-      "attackType": "Magic",
+      "attackType": "Ranged",
       "atkSpd": 984.1999999999999,
       "acc": 1465.1994612624344,
       "eva": 448.2665465579652,

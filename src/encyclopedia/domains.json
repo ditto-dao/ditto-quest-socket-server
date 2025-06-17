@@ -70,7 +70,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 763,
+              "id": 1271,
               "monsterId": 1,
               "itemId": 25,
               "equipmentId": null,
@@ -84,11 +84,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -157,7 +157,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 764,
+              "id": 1272,
               "monsterId": 2,
               "itemId": 25,
               "equipmentId": null,
@@ -171,11 +171,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -244,7 +244,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 765,
+              "id": 1273,
               "monsterId": 3,
               "itemId": 25,
               "equipmentId": null,
@@ -258,11 +258,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -331,7 +331,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 766,
+              "id": 1274,
               "monsterId": 4,
               "itemId": 25,
               "equipmentId": null,
@@ -345,11 +345,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -418,7 +418,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 767,
+              "id": 1275,
               "monsterId": 5,
               "itemId": 25,
               "equipmentId": null,
@@ -432,11 +432,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -505,7 +505,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 768,
+              "id": 1276,
               "monsterId": 6,
               "itemId": 25,
               "equipmentId": null,
@@ -519,11 +519,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -577,8 +577,8 @@
           "combatId": 7,
           "combat": {
             "id": 7,
-            "attackType": "Melee",
-            "cp": "165",
+            "attackType": "Ranged",
+            "cp": "147",
             "hp": 129,
             "maxHp": 129,
             "atkSpd": 11.9,
@@ -604,7 +604,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 773,
+              "id": 1281,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 81,
@@ -628,7 +628,7 @@
               }
             },
             {
-              "id": 774,
+              "id": 1282,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 82,
@@ -652,7 +652,7 @@
               }
             },
             {
-              "id": 775,
+              "id": 1283,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 101,
@@ -676,7 +676,7 @@
               }
             },
             {
-              "id": 776,
+              "id": 1284,
               "monsterId": 7,
               "itemId": null,
               "equipmentId": 102,
@@ -700,7 +700,7 @@
               }
             },
             {
-              "id": 769,
+              "id": 1277,
               "monsterId": 7,
               "itemId": 1,
               "equipmentId": null,
@@ -723,7 +723,7 @@
               "equipment": null
             },
             {
-              "id": 770,
+              "id": 1278,
               "monsterId": 7,
               "itemId": 2,
               "equipmentId": null,
@@ -746,7 +746,7 @@
               "equipment": null
             },
             {
-              "id": 772,
+              "id": 1280,
               "monsterId": 7,
               "itemId": 25,
               "equipmentId": null,
@@ -760,16 +760,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 771,
+              "id": 1279,
               "monsterId": 7,
               "itemId": 26,
               "equipmentId": null,
@@ -829,8 +829,8 @@
           "combatId": 8,
           "combat": {
             "id": 8,
-            "attackType": "Ranged",
-            "cp": "210",
+            "attackType": "Magic",
+            "cp": "222",
             "hp": 129,
             "maxHp": 129,
             "atkSpd": 24.8,
@@ -856,7 +856,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 781,
+              "id": 1289,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 81,
@@ -880,7 +880,7 @@
               }
             },
             {
-              "id": 782,
+              "id": 1290,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 82,
@@ -904,7 +904,7 @@
               }
             },
             {
-              "id": 783,
+              "id": 1291,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 101,
@@ -928,7 +928,7 @@
               }
             },
             {
-              "id": 784,
+              "id": 1292,
               "monsterId": 8,
               "itemId": null,
               "equipmentId": 102,
@@ -952,7 +952,7 @@
               }
             },
             {
-              "id": 777,
+              "id": 1285,
               "monsterId": 8,
               "itemId": 1,
               "equipmentId": null,
@@ -975,7 +975,7 @@
               "equipment": null
             },
             {
-              "id": 778,
+              "id": 1286,
               "monsterId": 8,
               "itemId": 2,
               "equipmentId": null,
@@ -998,7 +998,7 @@
               "equipment": null
             },
             {
-              "id": 780,
+              "id": 1288,
               "monsterId": 8,
               "itemId": 25,
               "equipmentId": null,
@@ -1012,16 +1012,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 779,
+              "id": 1287,
               "monsterId": 8,
               "itemId": 26,
               "equipmentId": null,
@@ -1081,8 +1081,8 @@
           "combatId": 9,
           "combat": {
             "id": 9,
-            "attackType": "Magic",
-            "cp": "221",
+            "attackType": "Melee",
+            "cp": "215",
             "hp": 133,
             "maxHp": 133,
             "atkSpd": 20,
@@ -1108,7 +1108,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 789,
+              "id": 1297,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 81,
@@ -1132,7 +1132,7 @@
               }
             },
             {
-              "id": 790,
+              "id": 1298,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 82,
@@ -1156,7 +1156,7 @@
               }
             },
             {
-              "id": 791,
+              "id": 1299,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 101,
@@ -1180,7 +1180,7 @@
               }
             },
             {
-              "id": 792,
+              "id": 1300,
               "monsterId": 9,
               "itemId": null,
               "equipmentId": 102,
@@ -1204,7 +1204,7 @@
               }
             },
             {
-              "id": 785,
+              "id": 1293,
               "monsterId": 9,
               "itemId": 1,
               "equipmentId": null,
@@ -1227,7 +1227,7 @@
               "equipment": null
             },
             {
-              "id": 786,
+              "id": 1294,
               "monsterId": 9,
               "itemId": 2,
               "equipmentId": null,
@@ -1250,7 +1250,7 @@
               "equipment": null
             },
             {
-              "id": 788,
+              "id": 1296,
               "monsterId": 9,
               "itemId": 25,
               "equipmentId": null,
@@ -1264,16 +1264,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 787,
+              "id": 1295,
               "monsterId": 9,
               "itemId": 26,
               "equipmentId": null,
@@ -1333,8 +1333,8 @@
           "combatId": 10,
           "combat": {
             "id": 10,
-            "attackType": "Melee",
-            "cp": "343",
+            "attackType": "Ranged",
+            "cp": "243",
             "hp": 278,
             "maxHp": 278,
             "atkSpd": 33,
@@ -1360,7 +1360,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 797,
+              "id": 1305,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 81,
@@ -1384,7 +1384,7 @@
               }
             },
             {
-              "id": 798,
+              "id": 1306,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 82,
@@ -1408,7 +1408,7 @@
               }
             },
             {
-              "id": 799,
+              "id": 1307,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 101,
@@ -1432,7 +1432,7 @@
               }
             },
             {
-              "id": 800,
+              "id": 1308,
               "monsterId": 10,
               "itemId": null,
               "equipmentId": 102,
@@ -1456,7 +1456,7 @@
               }
             },
             {
-              "id": 793,
+              "id": 1301,
               "monsterId": 10,
               "itemId": 1,
               "equipmentId": null,
@@ -1479,7 +1479,7 @@
               "equipment": null
             },
             {
-              "id": 794,
+              "id": 1302,
               "monsterId": 10,
               "itemId": 2,
               "equipmentId": null,
@@ -1502,7 +1502,7 @@
               "equipment": null
             },
             {
-              "id": 796,
+              "id": 1304,
               "monsterId": 10,
               "itemId": 25,
               "equipmentId": null,
@@ -1516,16 +1516,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 795,
+              "id": 1303,
               "monsterId": 10,
               "itemId": 26,
               "equipmentId": null,
@@ -1585,8 +1585,8 @@
           "combatId": 11,
           "combat": {
             "id": 11,
-            "attackType": "Ranged",
-            "cp": "382",
+            "attackType": "Magic",
+            "cp": "315",
             "hp": 294,
             "maxHp": 294,
             "atkSpd": 49.59999999999999,
@@ -1612,7 +1612,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 805,
+              "id": 1313,
               "monsterId": 11,
               "itemId": null,
               "equipmentId": 83,
@@ -1636,7 +1636,7 @@
               }
             },
             {
-              "id": 806,
+              "id": 1314,
               "monsterId": 11,
               "itemId": null,
               "equipmentId": 103,
@@ -1660,7 +1660,7 @@
               }
             },
             {
-              "id": 801,
+              "id": 1309,
               "monsterId": 11,
               "itemId": 1,
               "equipmentId": null,
@@ -1683,7 +1683,7 @@
               "equipment": null
             },
             {
-              "id": 802,
+              "id": 1310,
               "monsterId": 11,
               "itemId": 2,
               "equipmentId": null,
@@ -1706,7 +1706,7 @@
               "equipment": null
             },
             {
-              "id": 804,
+              "id": 1312,
               "monsterId": 11,
               "itemId": 25,
               "equipmentId": null,
@@ -1720,16 +1720,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 803,
+              "id": 1311,
               "monsterId": 11,
               "itemId": 26,
               "equipmentId": null,
@@ -1789,8 +1789,8 @@
           "combatId": 12,
           "combat": {
             "id": 12,
-            "attackType": "Magic",
-            "cp": "502",
+            "attackType": "Melee",
+            "cp": "352",
             "hp": 354,
             "maxHp": 354,
             "atkSpd": 55,
@@ -1816,7 +1816,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 811,
+              "id": 1319,
               "monsterId": 12,
               "itemId": null,
               "equipmentId": 83,
@@ -1840,7 +1840,7 @@
               }
             },
             {
-              "id": 812,
+              "id": 1320,
               "monsterId": 12,
               "itemId": null,
               "equipmentId": 103,
@@ -1864,7 +1864,7 @@
               }
             },
             {
-              "id": 807,
+              "id": 1315,
               "monsterId": 12,
               "itemId": 1,
               "equipmentId": null,
@@ -1887,7 +1887,7 @@
               "equipment": null
             },
             {
-              "id": 808,
+              "id": 1316,
               "monsterId": 12,
               "itemId": 2,
               "equipmentId": null,
@@ -1910,7 +1910,7 @@
               "equipment": null
             },
             {
-              "id": 810,
+              "id": 1318,
               "monsterId": 12,
               "itemId": 25,
               "equipmentId": null,
@@ -1924,16 +1924,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 809,
+              "id": 1317,
               "monsterId": 12,
               "itemId": 26,
               "equipmentId": null,
@@ -1983,8 +1983,8 @@
           "dex": 5,
           "luk": 5,
           "magic": 5,
-          "hpLevel": 3,
-          "maxHp": 300,
+          "hpLevel": 8,
+          "maxHp": 800,
           "atkSpd": 50,
           "acc": 58.73094715440096,
           "eva": 54.18991933671841,
@@ -1995,8 +1995,8 @@
           "critMultiplier": 1.433445375115093,
           "dmgReduction": 125,
           "magicDmgReduction": 70,
-          "hpRegenRate": 19.44630872483221,
-          "hpRegenAmount": 14.5,
+          "hpRegenRate": 19.19463087248322,
+          "hpRegenAmount": 17,
           "exp": 45,
           "minGoldDrop": 50,
           "maxGoldDrop": 90,
@@ -2005,10 +2005,10 @@
           "combatId": 13,
           "combat": {
             "id": 13,
-            "attackType": "Melee",
-            "cp": "581",
-            "hp": 477,
-            "maxHp": 477,
+            "attackType": "Magic",
+            "cp": "408",
+            "hp": 1272,
+            "maxHp": 1272,
             "atkSpd": 54,
             "acc": 86.3344923169694,
             "eva": 74.78208868467141,
@@ -2019,8 +2019,8 @@
             "critMultiplier": 1.53378655137315,
             "dmgReduction": 167.5,
             "magicDmgReduction": 98.70000000000002,
-            "hpRegenRate": 14.9736577181208,
-            "hpRegenAmount": 17.69,
+            "hpRegenRate": 14.77986577181208,
+            "hpRegenAmount": 20.74,
             "meleeFactor": 4,
             "rangeFactor": 0,
             "magicFactor": 0,
@@ -2032,7 +2032,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 818,
+              "id": 1326,
               "monsterId": 13,
               "itemId": null,
               "equipmentId": 83,
@@ -2056,7 +2056,7 @@
               }
             },
             {
-              "id": 819,
+              "id": 1327,
               "monsterId": 13,
               "itemId": null,
               "equipmentId": 103,
@@ -2080,7 +2080,7 @@
               }
             },
             {
-              "id": 813,
+              "id": 1321,
               "monsterId": 13,
               "itemId": 3,
               "equipmentId": null,
@@ -2103,7 +2103,7 @@
               "equipment": null
             },
             {
-              "id": 814,
+              "id": 1322,
               "monsterId": 13,
               "itemId": 4,
               "equipmentId": null,
@@ -2126,7 +2126,7 @@
               "equipment": null
             },
             {
-              "id": 815,
+              "id": 1323,
               "monsterId": 13,
               "itemId": 17,
               "equipmentId": null,
@@ -2149,7 +2149,7 @@
               "equipment": null
             },
             {
-              "id": 817,
+              "id": 1325,
               "monsterId": 13,
               "itemId": 25,
               "equipmentId": null,
@@ -2163,16 +2163,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 816,
+              "id": 1324,
               "monsterId": 13,
               "itemId": 27,
               "equipmentId": null,
@@ -2210,8 +2210,8 @@
           "dex": 7,
           "luk": 7,
           "magic": 7,
-          "hpLevel": 4,
-          "maxHp": 400,
+          "hpLevel": 9,
+          "maxHp": 900,
           "atkSpd": 70,
           "acc": 85.03698308273471,
           "eva": 77.15302207814953,
@@ -2222,8 +2222,8 @@
           "critMultiplier": 1.470926996097583,
           "dmgReduction": 155,
           "magicDmgReduction": 90,
-          "hpRegenRate": 19.29530201342282,
-          "hpRegenAmount": 15.6,
+          "hpRegenRate": 19.04362416107383,
+          "hpRegenAmount": 18.1,
           "exp": 65,
           "minGoldDrop": 90,
           "maxGoldDrop": 130,
@@ -2232,10 +2232,10 @@
           "combatId": 14,
           "combat": {
             "id": 14,
-            "attackType": "Ranged",
-            "cp": "713",
-            "hp": 436,
-            "maxHp": 436,
+            "attackType": "Melee",
+            "cp": "721",
+            "hp": 981,
+            "maxHp": 981,
             "atkSpd": 114.1,
             "acc": 135.2088031015482,
             "eva": 127.3024864289467,
@@ -2246,8 +2246,8 @@
             "critMultiplier": 1.559182615863438,
             "dmgReduction": 257.3,
             "magicDmgReduction": 153,
-            "hpRegenRate": 11.19127516778524,
-            "hpRegenAmount": 28.08,
+            "hpRegenRate": 11.04530201342282,
+            "hpRegenAmount": 32.58000000000001,
             "meleeFactor": 5,
             "rangeFactor": 4,
             "magicFactor": 0,
@@ -2259,7 +2259,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 825,
+              "id": 1333,
               "monsterId": 14,
               "itemId": null,
               "equipmentId": 83,
@@ -2283,7 +2283,7 @@
               }
             },
             {
-              "id": 826,
+              "id": 1334,
               "monsterId": 14,
               "itemId": null,
               "equipmentId": 103,
@@ -2307,7 +2307,7 @@
               }
             },
             {
-              "id": 820,
+              "id": 1328,
               "monsterId": 14,
               "itemId": 3,
               "equipmentId": null,
@@ -2330,7 +2330,7 @@
               "equipment": null
             },
             {
-              "id": 821,
+              "id": 1329,
               "monsterId": 14,
               "itemId": 4,
               "equipmentId": null,
@@ -2353,7 +2353,7 @@
               "equipment": null
             },
             {
-              "id": 822,
+              "id": 1330,
               "monsterId": 14,
               "itemId": 17,
               "equipmentId": null,
@@ -2376,7 +2376,7 @@
               "equipment": null
             },
             {
-              "id": 824,
+              "id": 1332,
               "monsterId": 14,
               "itemId": 25,
               "equipmentId": null,
@@ -2390,16 +2390,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 823,
+              "id": 1331,
               "monsterId": 14,
               "itemId": 27,
               "equipmentId": null,
@@ -2437,8 +2437,8 @@
           "dex": 7,
           "luk": 7,
           "magic": 7,
-          "hpLevel": 4,
-          "maxHp": 400,
+          "hpLevel": 9,
+          "maxHp": 900,
           "atkSpd": 70,
           "acc": 85.03698308273471,
           "eva": 77.15302207814953,
@@ -2449,8 +2449,8 @@
           "critMultiplier": 1.470926996097583,
           "dmgReduction": 155,
           "magicDmgReduction": 90,
-          "hpRegenRate": 19.29530201342282,
-          "hpRegenAmount": 15.6,
+          "hpRegenRate": 19.04362416107383,
+          "hpRegenAmount": 18.1,
           "exp": 65,
           "minGoldDrop": 90,
           "maxGoldDrop": 130,
@@ -2459,10 +2459,10 @@
           "combatId": 15,
           "combat": {
             "id": 15,
-            "attackType": "Magic",
-            "cp": "576",
-            "hp": 500,
-            "maxHp": 500,
+            "attackType": "Ranged",
+            "cp": "714",
+            "hp": 1125,
+            "maxHp": 1125,
             "atkSpd": 77,
             "acc": 117.3510366541739,
             "eva": 109.5572913509723,
@@ -2473,8 +2473,8 @@
             "critMultiplier": 1.779821665278075,
             "dmgReduction": 241.8,
             "magicDmgReduction": 139.5,
-            "hpRegenRate": 15.0503355704698,
-            "hpRegenAmount": 21.996,
+            "hpRegenRate": 14.85402684563758,
+            "hpRegenAmount": 25.521,
             "meleeFactor": 0,
             "rangeFactor": 5,
             "magicFactor": 3,
@@ -2486,7 +2486,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 832,
+              "id": 1340,
               "monsterId": 15,
               "itemId": null,
               "equipmentId": 83,
@@ -2510,7 +2510,7 @@
               }
             },
             {
-              "id": 833,
+              "id": 1341,
               "monsterId": 15,
               "itemId": null,
               "equipmentId": 103,
@@ -2534,7 +2534,7 @@
               }
             },
             {
-              "id": 827,
+              "id": 1335,
               "monsterId": 15,
               "itemId": 3,
               "equipmentId": null,
@@ -2557,7 +2557,7 @@
               "equipment": null
             },
             {
-              "id": 828,
+              "id": 1336,
               "monsterId": 15,
               "itemId": 4,
               "equipmentId": null,
@@ -2580,7 +2580,7 @@
               "equipment": null
             },
             {
-              "id": 829,
+              "id": 1337,
               "monsterId": 15,
               "itemId": 17,
               "equipmentId": null,
@@ -2603,7 +2603,7 @@
               "equipment": null
             },
             {
-              "id": 831,
+              "id": 1339,
               "monsterId": 15,
               "itemId": 25,
               "equipmentId": null,
@@ -2617,16 +2617,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 830,
+              "id": 1338,
               "monsterId": 15,
               "itemId": 27,
               "equipmentId": null,
@@ -2664,8 +2664,8 @@
           "dex": 11,
           "luk": 11,
           "magic": 11,
-          "hpLevel": 6,
-          "maxHp": 600,
+          "hpLevel": 11,
+          "maxHp": 1100,
           "atkSpd": 110,
           "acc": 139.8079776731155,
           "eva": 124.0116024573616,
@@ -2676,8 +2676,8 @@
           "critMultiplier": 1.523754373814287,
           "dmgReduction": 215,
           "magicDmgReduction": 130,
-          "hpRegenRate": 18.99328859060403,
-          "hpRegenAmount": 17.8,
+          "hpRegenRate": 18.74161073825503,
+          "hpRegenAmount": 20.3,
           "exp": 100,
           "minGoldDrop": 160,
           "maxGoldDrop": 200,
@@ -2686,10 +2686,10 @@
           "combatId": 16,
           "combat": {
             "id": 16,
-            "attackType": "Melee",
-            "cp": "943",
-            "hp": 1062,
-            "maxHp": 1062,
+            "attackType": "Magic",
+            "cp": "1096",
+            "hp": 1947,
+            "maxHp": 1947,
             "atkSpd": 173.8,
             "acc": 275.4217160160375,
             "eva": 230.6615805706927,
@@ -2700,8 +2700,8 @@
             "critMultiplier": 1.630417179981288,
             "dmgReduction": 466.55,
             "magicDmgReduction": 180.7,
-            "hpRegenRate": 17.28389261744967,
-            "hpRegenAmount": 27.76800000000001,
+            "hpRegenRate": 17.05486577181208,
+            "hpRegenAmount": 31.668,
             "meleeFactor": 34,
             "rangeFactor": 30,
             "magicFactor": 34,
@@ -2713,7 +2713,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 839,
+              "id": 1347,
               "monsterId": 16,
               "itemId": null,
               "equipmentId": 83,
@@ -2737,7 +2737,7 @@
               }
             },
             {
-              "id": 840,
+              "id": 1348,
               "monsterId": 16,
               "itemId": null,
               "equipmentId": 103,
@@ -2761,7 +2761,7 @@
               }
             },
             {
-              "id": 834,
+              "id": 1342,
               "monsterId": 16,
               "itemId": 3,
               "equipmentId": null,
@@ -2784,7 +2784,7 @@
               "equipment": null
             },
             {
-              "id": 835,
+              "id": 1343,
               "monsterId": 16,
               "itemId": 4,
               "equipmentId": null,
@@ -2807,7 +2807,7 @@
               "equipment": null
             },
             {
-              "id": 836,
+              "id": 1344,
               "monsterId": 16,
               "itemId": 17,
               "equipmentId": null,
@@ -2830,7 +2830,7 @@
               "equipment": null
             },
             {
-              "id": 838,
+              "id": 1346,
               "monsterId": 16,
               "itemId": 25,
               "equipmentId": null,
@@ -2844,16 +2844,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 837,
+              "id": 1345,
               "monsterId": 16,
               "itemId": 27,
               "equipmentId": null,
@@ -2891,8 +2891,8 @@
           "dex": 13,
           "luk": 13,
           "magic": 13,
-          "hpLevel": 7,
-          "maxHp": 700,
+          "hpLevel": 12,
+          "maxHp": 1200,
           "atkSpd": 130,
           "acc": 168.0109887015082,
           "eva": 147.7884587212278,
@@ -2903,8 +2903,8 @@
           "critMultiplier": 1.543838410703471,
           "dmgReduction": 245,
           "magicDmgReduction": 150,
-          "hpRegenRate": 18.84228187919463,
-          "hpRegenAmount": 18.9,
+          "hpRegenRate": 18.59060402684564,
+          "hpRegenAmount": 21.4,
           "exp": 115,
           "minGoldDrop": 190,
           "maxGoldDrop": 230,
@@ -2913,10 +2913,10 @@
           "combatId": 17,
           "combat": {
             "id": 17,
-            "attackType": "Ranged",
-            "cp": "1080",
-            "hp": 1197,
-            "maxHp": 1197,
+            "attackType": "Melee",
+            "cp": "1240",
+            "hp": 2052,
+            "maxHp": 2052,
             "atkSpd": 288.6,
             "acc": 288.9789005665941,
             "eva": 255.6740335877241,
@@ -2927,8 +2927,8 @@
             "critMultiplier": 2.362072768376311,
             "dmgReduction": 394.4499999999999,
             "magicDmgReduction": 378,
-            "hpRegenRate": 18.84228187919463,
-            "hpRegenAmount": 29.484,
+            "hpRegenRate": 18.59060402684564,
+            "hpRegenAmount": 33.384,
             "meleeFactor": 33,
             "rangeFactor": 37,
             "magicFactor": 33,
@@ -2940,7 +2940,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 846,
+              "id": 1354,
               "monsterId": 17,
               "itemId": null,
               "equipmentId": 84,
@@ -2964,7 +2964,7 @@
               }
             },
             {
-              "id": 847,
+              "id": 1355,
               "monsterId": 17,
               "itemId": null,
               "equipmentId": 104,
@@ -2988,7 +2988,7 @@
               }
             },
             {
-              "id": 841,
+              "id": 1349,
               "monsterId": 17,
               "itemId": 3,
               "equipmentId": null,
@@ -3011,7 +3011,7 @@
               "equipment": null
             },
             {
-              "id": 842,
+              "id": 1350,
               "monsterId": 17,
               "itemId": 4,
               "equipmentId": null,
@@ -3034,7 +3034,7 @@
               "equipment": null
             },
             {
-              "id": 843,
+              "id": 1351,
               "monsterId": 17,
               "itemId": 17,
               "equipmentId": null,
@@ -3057,7 +3057,7 @@
               "equipment": null
             },
             {
-              "id": 845,
+              "id": 1353,
               "monsterId": 17,
               "itemId": 25,
               "equipmentId": null,
@@ -3071,16 +3071,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 844,
+              "id": 1352,
               "monsterId": 17,
               "itemId": 27,
               "equipmentId": null,
@@ -3118,8 +3118,8 @@
           "dex": 15,
           "luk": 15,
           "magic": 15,
-          "hpLevel": 8,
-          "maxHp": 800,
+          "hpLevel": 13,
+          "maxHp": 1300,
           "atkSpd": 150,
           "acc": 196.6529134559625,
           "eva": 171.7496346965384,
@@ -3130,8 +3130,8 @@
           "critMultiplier": 1.561235994796777,
           "dmgReduction": 275,
           "magicDmgReduction": 170,
-          "hpRegenRate": 18.69127516778524,
-          "hpRegenAmount": 20,
+          "hpRegenRate": 18.43959731543624,
+          "hpRegenAmount": 22.5,
           "exp": 135,
           "minGoldDrop": 230,
           "maxGoldDrop": 270,
@@ -3140,10 +3140,10 @@
           "combatId": 18,
           "combat": {
             "id": 18,
-            "attackType": "Magic",
-            "cp": "1296",
-            "hp": 2000,
-            "maxHp": 2000,
+            "attackType": "Ranged",
+            "cp": "1220",
+            "hp": 3250,
+            "maxHp": 3250,
             "atkSpd": 304.5,
             "acc": 391.3392977773654,
             "eva": 331.4767949643191,
@@ -3154,8 +3154,8 @@
             "critMultiplier": 1.701747234328487,
             "dmgReduction": 517,
             "magicDmgReduction": 368.9,
-            "hpRegenRate": 18.69127516778524,
-            "hpRegenAmount": 32.4,
+            "hpRegenRate": 18.43959731543624,
+            "hpRegenAmount": 36.45,
             "meleeFactor": 80,
             "rangeFactor": 84,
             "magicFactor": 84,
@@ -3167,7 +3167,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 853,
+              "id": 1361,
               "monsterId": 18,
               "itemId": null,
               "equipmentId": 84,
@@ -3191,7 +3191,7 @@
               }
             },
             {
-              "id": 854,
+              "id": 1362,
               "monsterId": 18,
               "itemId": null,
               "equipmentId": 104,
@@ -3215,7 +3215,7 @@
               }
             },
             {
-              "id": 848,
+              "id": 1356,
               "monsterId": 18,
               "itemId": 3,
               "equipmentId": null,
@@ -3238,7 +3238,7 @@
               "equipment": null
             },
             {
-              "id": 849,
+              "id": 1357,
               "monsterId": 18,
               "itemId": 4,
               "equipmentId": null,
@@ -3261,7 +3261,7 @@
               "equipment": null
             },
             {
-              "id": 850,
+              "id": 1358,
               "monsterId": 18,
               "itemId": 17,
               "equipmentId": null,
@@ -3284,7 +3284,7 @@
               "equipment": null
             },
             {
-              "id": 852,
+              "id": 1360,
               "monsterId": 18,
               "itemId": 25,
               "equipmentId": null,
@@ -3298,16 +3298,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 851,
+              "id": 1359,
               "monsterId": 18,
               "itemId": 27,
               "equipmentId": null,
@@ -3357,8 +3357,8 @@
           "dex": 15,
           "luk": 15,
           "magic": 15,
-          "hpLevel": 8,
-          "maxHp": 800,
+          "hpLevel": 18,
+          "maxHp": 1800,
           "atkSpd": 150,
           "acc": 196.6529134559625,
           "eva": 171.7496346965384,
@@ -3369,8 +3369,8 @@
           "critMultiplier": 1.561235994796777,
           "dmgReduction": 325,
           "magicDmgReduction": 190,
-          "hpRegenRate": 18.43959731543624,
-          "hpRegenAmount": 21.5,
+          "hpRegenRate": 17.93624161073825,
+          "hpRegenAmount": 26.5,
           "exp": 110,
           "minGoldDrop": 270,
           "maxGoldDrop": 330,
@@ -3380,9 +3380,9 @@
           "combat": {
             "id": 19,
             "attackType": "Melee",
-            "cp": "1166",
-            "hp": 1296,
-            "maxHp": 1296,
+            "cp": "1204",
+            "hp": 2916,
+            "maxHp": 2916,
             "atkSpd": 316.5,
             "acc": 308.7450741258612,
             "eva": 288.5393862901846,
@@ -3393,8 +3393,8 @@
             "critMultiplier": 1.889095553704101,
             "dmgReduction": 679.25,
             "magicDmgReduction": 406.6,
-            "hpRegenRate": 18.43959731543624,
-            "hpRegenAmount": 35.26,
+            "hpRegenRate": 17.93624161073825,
+            "hpRegenAmount": 43.46,
             "meleeFactor": 35,
             "rangeFactor": 30,
             "magicFactor": 30,
@@ -3406,7 +3406,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 860,
+              "id": 1368,
               "monsterId": 19,
               "itemId": null,
               "equipmentId": 84,
@@ -3430,7 +3430,7 @@
               }
             },
             {
-              "id": 861,
+              "id": 1369,
               "monsterId": 19,
               "itemId": null,
               "equipmentId": 104,
@@ -3454,7 +3454,7 @@
               }
             },
             {
-              "id": 855,
+              "id": 1363,
               "monsterId": 19,
               "itemId": 5,
               "equipmentId": null,
@@ -3477,7 +3477,7 @@
               "equipment": null
             },
             {
-              "id": 856,
+              "id": 1364,
               "monsterId": 19,
               "itemId": 6,
               "equipmentId": null,
@@ -3500,7 +3500,7 @@
               "equipment": null
             },
             {
-              "id": 857,
+              "id": 1365,
               "monsterId": 19,
               "itemId": 18,
               "equipmentId": null,
@@ -3523,7 +3523,7 @@
               "equipment": null
             },
             {
-              "id": 859,
+              "id": 1367,
               "monsterId": 19,
               "itemId": 25,
               "equipmentId": null,
@@ -3537,16 +3537,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 858,
+              "id": 1366,
               "monsterId": 19,
               "itemId": 28,
               "equipmentId": null,
@@ -3584,8 +3584,8 @@
           "dex": 18,
           "luk": 18,
           "magic": 18,
-          "hpLevel": 9,
-          "maxHp": 900,
+          "hpLevel": 19,
+          "maxHp": 1900,
           "atkSpd": 180,
           "acc": 240.3254452572564,
           "eva": 207.9869710974852,
@@ -3596,8 +3596,8 @@
           "critMultiplier": 1.583626080285849,
           "dmgReduction": 370,
           "magicDmgReduction": 220,
-          "hpRegenRate": 18.23825503355705,
-          "hpRegenAmount": 22.9,
+          "hpRegenRate": 17.73489932885906,
+          "hpRegenAmount": 27.9,
           "exp": 130,
           "minGoldDrop": 330,
           "maxGoldDrop": 390,
@@ -3607,9 +3607,9 @@
           "combat": {
             "id": 20,
             "attackType": "Ranged",
-            "cp": "1466",
-            "hp": 1728,
-            "maxHp": 1728,
+            "cp": "1506",
+            "hp": 3648,
+            "maxHp": 3648,
             "atkSpd": 401.4,
             "acc": 478.2476360619403,
             "eva": 380.6161571083979,
@@ -3620,8 +3620,8 @@
             "critMultiplier": 1.583626080285849,
             "dmgReduction": 710.4,
             "magicDmgReduction": 343.2,
-            "hpRegenRate": 12.03724832214765,
-            "hpRegenAmount": 35.953,
+            "hpRegenRate": 11.70503355704698,
+            "hpRegenAmount": 43.803,
             "meleeFactor": 30,
             "rangeFactor": 35,
             "magicFactor": 34,
@@ -3633,7 +3633,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 867,
+              "id": 1375,
               "monsterId": 20,
               "itemId": null,
               "equipmentId": 84,
@@ -3657,7 +3657,7 @@
               }
             },
             {
-              "id": 868,
+              "id": 1376,
               "monsterId": 20,
               "itemId": null,
               "equipmentId": 104,
@@ -3681,7 +3681,7 @@
               }
             },
             {
-              "id": 862,
+              "id": 1370,
               "monsterId": 20,
               "itemId": 5,
               "equipmentId": null,
@@ -3704,7 +3704,7 @@
               "equipment": null
             },
             {
-              "id": 863,
+              "id": 1371,
               "monsterId": 20,
               "itemId": 6,
               "equipmentId": null,
@@ -3727,7 +3727,7 @@
               "equipment": null
             },
             {
-              "id": 864,
+              "id": 1372,
               "monsterId": 20,
               "itemId": 18,
               "equipmentId": null,
@@ -3750,7 +3750,7 @@
               "equipment": null
             },
             {
-              "id": 866,
+              "id": 1374,
               "monsterId": 20,
               "itemId": 25,
               "equipmentId": null,
@@ -3764,16 +3764,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 865,
+              "id": 1373,
               "monsterId": 20,
               "itemId": 28,
               "equipmentId": null,
@@ -3811,8 +3811,8 @@
           "dex": 18,
           "luk": 18,
           "magic": 18,
-          "hpLevel": 9,
-          "maxHp": 900,
+          "hpLevel": 19,
+          "maxHp": 1900,
           "atkSpd": 180,
           "acc": 240.3254452572564,
           "eva": 207.9869710974852,
@@ -3823,8 +3823,8 @@
           "critMultiplier": 1.583626080285849,
           "dmgReduction": 370,
           "magicDmgReduction": 220,
-          "hpRegenRate": 18.23825503355705,
-          "hpRegenAmount": 22.9,
+          "hpRegenRate": 17.73489932885906,
+          "hpRegenAmount": 27.9,
           "exp": 130,
           "minGoldDrop": 330,
           "maxGoldDrop": 390,
@@ -3834,9 +3834,9 @@
           "combat": {
             "id": 21,
             "attackType": "Magic",
-            "cp": "1683",
-            "hp": 1314,
-            "maxHp": 1314,
+            "cp": "1719",
+            "hp": 2774,
+            "maxHp": 2774,
             "atkSpd": 334.8,
             "acc": 444.6020737259244,
             "eva": 368.1369388425489,
@@ -3847,8 +3847,8 @@
             "critMultiplier": 2.454620424443066,
             "dmgReduction": 669.6999999999999,
             "magicDmgReduction": 437.8,
-            "hpRegenRate": 13.67869127516778,
-            "hpRegenAmount": 39.38799999999999,
+            "hpRegenRate": 13.3011744966443,
+            "hpRegenAmount": 47.98799999999999,
             "meleeFactor": 33,
             "rangeFactor": 33,
             "magicFactor": 37,
@@ -3860,7 +3860,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 874,
+              "id": 1382,
               "monsterId": 21,
               "itemId": null,
               "equipmentId": 84,
@@ -3884,7 +3884,7 @@
               }
             },
             {
-              "id": 875,
+              "id": 1383,
               "monsterId": 21,
               "itemId": null,
               "equipmentId": 104,
@@ -3908,7 +3908,7 @@
               }
             },
             {
-              "id": 869,
+              "id": 1377,
               "monsterId": 21,
               "itemId": 5,
               "equipmentId": null,
@@ -3931,7 +3931,7 @@
               "equipment": null
             },
             {
-              "id": 870,
+              "id": 1378,
               "monsterId": 21,
               "itemId": 6,
               "equipmentId": null,
@@ -3954,7 +3954,7 @@
               "equipment": null
             },
             {
-              "id": 871,
+              "id": 1379,
               "monsterId": 21,
               "itemId": 18,
               "equipmentId": null,
@@ -3977,7 +3977,7 @@
               "equipment": null
             },
             {
-              "id": 873,
+              "id": 1381,
               "monsterId": 21,
               "itemId": 25,
               "equipmentId": null,
@@ -3991,16 +3991,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 872,
+              "id": 1380,
               "monsterId": 21,
               "itemId": 28,
               "equipmentId": null,
@@ -4038,8 +4038,8 @@
           "dex": 21,
           "luk": 21,
           "magic": 21,
-          "hpLevel": 11,
-          "maxHp": 1100,
+          "hpLevel": 21,
+          "maxHp": 2100,
           "atkSpd": 210,
           "acc": 284.7352424057079,
           "eva": 244.5289367440972,
@@ -4050,8 +4050,8 @@
           "critMultiplier": 1.602726804246662,
           "dmgReduction": 415,
           "magicDmgReduction": 250,
-          "hpRegenRate": 17.98657718120806,
-          "hpRegenAmount": 24.8,
+          "hpRegenRate": 17.48322147651007,
+          "hpRegenAmount": 29.8,
           "exp": 160,
           "minGoldDrop": 420,
           "maxGoldDrop": 480,
@@ -4061,9 +4061,9 @@
           "combat": {
             "id": 22,
             "attackType": "Melee",
-            "cp": "1785",
-            "hp": 2101,
-            "maxHp": 2101,
+            "cp": "1822",
+            "hp": 4011,
+            "maxHp": 4011,
             "atkSpd": 415.8,
             "acc": 654.8910575331282,
             "eva": 498.8390309579583,
@@ -4074,8 +4074,8 @@
             "critMultiplier": 1.987381237265861,
             "dmgReduction": 805.1000000000001,
             "magicDmgReduction": 645,
-            "hpRegenRate": 13.13020134228188,
-            "hpRegenAmount": 41.416,
+            "hpRegenRate": 12.76275167785235,
+            "hpRegenAmount": 49.76600000000001,
             "meleeFactor": 38,
             "rangeFactor": 38,
             "magicFactor": 33,
@@ -4087,7 +4087,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 881,
+              "id": 1389,
               "monsterId": 22,
               "itemId": null,
               "equipmentId": 84,
@@ -4111,7 +4111,7 @@
               }
             },
             {
-              "id": 882,
+              "id": 1390,
               "monsterId": 22,
               "itemId": null,
               "equipmentId": 104,
@@ -4135,7 +4135,7 @@
               }
             },
             {
-              "id": 876,
+              "id": 1384,
               "monsterId": 22,
               "itemId": 5,
               "equipmentId": null,
@@ -4158,7 +4158,7 @@
               "equipment": null
             },
             {
-              "id": 877,
+              "id": 1385,
               "monsterId": 22,
               "itemId": 6,
               "equipmentId": null,
@@ -4181,7 +4181,7 @@
               "equipment": null
             },
             {
-              "id": 878,
+              "id": 1386,
               "monsterId": 22,
               "itemId": 18,
               "equipmentId": null,
@@ -4204,7 +4204,7 @@
               "equipment": null
             },
             {
-              "id": 880,
+              "id": 1388,
               "monsterId": 22,
               "itemId": 25,
               "equipmentId": null,
@@ -4218,16 +4218,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 879,
+              "id": 1387,
               "monsterId": 22,
               "itemId": 28,
               "equipmentId": null,
@@ -4265,8 +4265,8 @@
           "dex": 24,
           "luk": 24,
           "magic": 24,
-          "hpLevel": 12,
-          "maxHp": 1200,
+          "hpLevel": 22,
+          "maxHp": 2200,
           "atkSpd": 240,
           "acc": 329.786114475993,
           "eva": 281.3337297130195,
@@ -4277,8 +4277,8 @@
           "critMultiplier": 1.619382002601611,
           "dmgReduction": 460,
           "magicDmgReduction": 280,
-          "hpRegenRate": 17.78523489932886,
-          "hpRegenAmount": 26.2,
+          "hpRegenRate": 17.28187919463087,
+          "hpRegenAmount": 31.2,
           "exp": 180,
           "minGoldDrop": 480,
           "maxGoldDrop": 540,
@@ -4288,9 +4288,9 @@
           "combat": {
             "id": 23,
             "attackType": "Ranged",
-            "cp": "2151",
-            "hp": 3468,
-            "maxHp": 3468,
+            "cp": "2195",
+            "hp": 6358,
+            "maxHp": 6358,
             "atkSpd": 480,
             "acc": 732.1251741367043,
             "eva": 658.3209275284655,
@@ -4301,8 +4301,8 @@
             "critMultiplier": 2.024227503252014,
             "dmgReduction": 1439.8,
             "magicDmgReduction": 775.6,
-            "hpRegenRate": 14.58389261744966,
-            "hpRegenAmount": 51.352,
+            "hpRegenRate": 14.17114093959731,
+            "hpRegenAmount": 61.152,
             "meleeFactor": 36,
             "rangeFactor": 41,
             "magicFactor": 36,
@@ -4314,7 +4314,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 888,
+              "id": 1396,
               "monsterId": 23,
               "itemId": null,
               "equipmentId": 85,
@@ -4338,7 +4338,7 @@
               }
             },
             {
-              "id": 889,
+              "id": 1397,
               "monsterId": 23,
               "itemId": null,
               "equipmentId": 105,
@@ -4362,7 +4362,7 @@
               }
             },
             {
-              "id": 883,
+              "id": 1391,
               "monsterId": 23,
               "itemId": 5,
               "equipmentId": null,
@@ -4385,7 +4385,7 @@
               "equipment": null
             },
             {
-              "id": 884,
+              "id": 1392,
               "monsterId": 23,
               "itemId": 6,
               "equipmentId": null,
@@ -4408,7 +4408,7 @@
               "equipment": null
             },
             {
-              "id": 885,
+              "id": 1393,
               "monsterId": 23,
               "itemId": 18,
               "equipmentId": null,
@@ -4431,7 +4431,7 @@
               "equipment": null
             },
             {
-              "id": 887,
+              "id": 1395,
               "monsterId": 23,
               "itemId": 25,
               "equipmentId": null,
@@ -4445,16 +4445,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 886,
+              "id": 1394,
               "monsterId": 23,
               "itemId": 28,
               "equipmentId": null,
@@ -4492,8 +4492,8 @@
           "dex": 30,
           "luk": 30,
           "magic": 30,
-          "hpLevel": 15,
-          "maxHp": 1500,
+          "hpLevel": 25,
+          "maxHp": 2500,
           "atkSpd": 300,
           "acc": 421.534747945094,
           "eva": 355.6127449677924,
@@ -4504,8 +4504,8 @@
           "critMultiplier": 1.647408508150282,
           "dmgReduction": 550,
           "magicDmgReduction": 340,
-          "hpRegenRate": 17.33221476510067,
-          "hpRegenAmount": 29.5,
+          "hpRegenRate": 16.82885906040269,
+          "hpRegenAmount": 34.5,
           "exp": 220,
           "minGoldDrop": 600,
           "maxGoldDrop": 660,
@@ -4515,9 +4515,9 @@
           "combat": {
             "id": 24,
             "attackType": "Magic",
-            "cp": "2685",
-            "hp": 4605,
-            "maxHp": 4605,
+            "cp": "2727",
+            "hp": 7675,
+            "maxHp": 7675,
             "atkSpd": 603,
             "acc": 805.1313685751295,
             "eva": 771.6796565801096,
@@ -4528,8 +4528,8 @@
             "critMultiplier": 2.56995727271444,
             "dmgReduction": 1534.5,
             "magicDmgReduction": 887.3999999999997,
-            "hpRegenRate": 16.46560402684564,
-            "hpRegenAmount": 59.59,
+            "hpRegenRate": 15.98741610738255,
+            "hpRegenAmount": 69.68999999999998,
             "meleeFactor": 88,
             "rangeFactor": 101,
             "magicFactor": 98,
@@ -4541,7 +4541,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 895,
+              "id": 1403,
               "monsterId": 24,
               "itemId": null,
               "equipmentId": 85,
@@ -4565,7 +4565,7 @@
               }
             },
             {
-              "id": 896,
+              "id": 1404,
               "monsterId": 24,
               "itemId": null,
               "equipmentId": 105,
@@ -4589,7 +4589,7 @@
               }
             },
             {
-              "id": 890,
+              "id": 1398,
               "monsterId": 24,
               "itemId": 5,
               "equipmentId": null,
@@ -4612,7 +4612,7 @@
               "equipment": null
             },
             {
-              "id": 891,
+              "id": 1399,
               "monsterId": 24,
               "itemId": 6,
               "equipmentId": null,
@@ -4635,7 +4635,7 @@
               "equipment": null
             },
             {
-              "id": 892,
+              "id": 1400,
               "monsterId": 24,
               "itemId": 18,
               "equipmentId": null,
@@ -4658,7 +4658,7 @@
               "equipment": null
             },
             {
-              "id": 894,
+              "id": 1402,
               "monsterId": 24,
               "itemId": 25,
               "equipmentId": null,
@@ -4672,16 +4672,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 893,
+              "id": 1401,
               "monsterId": 24,
               "itemId": 28,
               "equipmentId": null,
@@ -4731,8 +4731,8 @@
           "dex": 30,
           "luk": 30,
           "magic": 30,
-          "hpLevel": 15,
-          "maxHp": 1500,
+          "hpLevel": 30,
+          "maxHp": 3000,
           "atkSpd": 300,
           "acc": 421.534747945094,
           "eva": 355.6127449677924,
@@ -4743,8 +4743,8 @@
           "critMultiplier": 1.647408508150282,
           "dmgReduction": 600,
           "magicDmgReduction": 360,
-          "hpRegenRate": 17.08053691275168,
-          "hpRegenAmount": 31,
+          "hpRegenRate": 16.3255033557047,
+          "hpRegenAmount": 38.5,
           "exp": 190,
           "minGoldDrop": 490,
           "maxGoldDrop": 570,
@@ -4753,10 +4753,10 @@
           "combatId": 25,
           "combat": {
             "id": 25,
-            "attackType": "Melee",
-            "cp": "2170",
-            "hp": 2955,
-            "maxHp": 2955,
+            "attackType": "Ranged",
+            "cp": "1981",
+            "hp": 5910,
+            "maxHp": 5910,
             "atkSpd": 411,
             "acc": 817.7774110134824,
             "eva": 636.5468134923485,
@@ -4767,8 +4767,8 @@
             "critMultiplier": 2.174579230758372,
             "dmgReduction": 1218,
             "magicDmgReduction": 799.1999999999999,
-            "hpRegenRate": 14.34765100671141,
-            "hpRegenAmount": 50.52999999999999,
+            "hpRegenRate": 13.71342281879194,
+            "hpRegenAmount": 62.755,
             "meleeFactor": 12,
             "rangeFactor": 6,
             "magicFactor": 6,
@@ -4780,7 +4780,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 902,
+              "id": 1410,
               "monsterId": 25,
               "itemId": null,
               "equipmentId": 85,
@@ -4804,7 +4804,7 @@
               }
             },
             {
-              "id": 903,
+              "id": 1411,
               "monsterId": 25,
               "itemId": null,
               "equipmentId": 105,
@@ -4828,7 +4828,7 @@
               }
             },
             {
-              "id": 897,
+              "id": 1405,
               "monsterId": 25,
               "itemId": 7,
               "equipmentId": null,
@@ -4851,7 +4851,7 @@
               "equipment": null
             },
             {
-              "id": 898,
+              "id": 1406,
               "monsterId": 25,
               "itemId": 8,
               "equipmentId": null,
@@ -4874,7 +4874,7 @@
               "equipment": null
             },
             {
-              "id": 899,
+              "id": 1407,
               "monsterId": 25,
               "itemId": 19,
               "equipmentId": null,
@@ -4897,7 +4897,7 @@
               "equipment": null
             },
             {
-              "id": 901,
+              "id": 1409,
               "monsterId": 25,
               "itemId": 25,
               "equipmentId": null,
@@ -4911,16 +4911,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 900,
+              "id": 1408,
               "monsterId": 25,
               "itemId": 29,
               "equipmentId": null,
@@ -4958,8 +4958,8 @@
           "dex": 35,
           "luk": 35,
           "magic": 35,
-          "hpLevel": 18,
-          "maxHp": 1800,
+          "hpLevel": 33,
+          "maxHp": 3300,
           "atkSpd": 350,
           "acc": 499.430255960178,
           "eva": 418.0916042998978,
@@ -4970,8 +4970,8 @@
           "critMultiplier": 1.666890750230186,
           "dmgReduction": 675,
           "magicDmgReduction": 410,
-          "hpRegenRate": 16.67785234899329,
-          "hpRegenAmount": 34,
+          "hpRegenRate": 15.92281879194631,
+          "hpRegenAmount": 41.5,
           "exp": 220,
           "minGoldDrop": 580,
           "maxGoldDrop": 660,
@@ -4980,10 +4980,10 @@
           "combatId": 26,
           "combat": {
             "id": 26,
-            "attackType": "Ranged",
-            "cp": "2469",
-            "hp": 3150,
-            "maxHp": 3150,
+            "attackType": "Magic",
+            "cp": "2669",
+            "hp": 5775,
+            "maxHp": 5775,
             "atkSpd": 514.5,
             "acc": 908.9630658475239,
             "eva": 769.2885519118119,
@@ -4994,8 +4994,8 @@
             "critMultiplier": 2.900389905400524,
             "dmgReduction": 1687.5,
             "magicDmgReduction": 1254.6,
-            "hpRegenRate": 15.34362416107382,
-            "hpRegenAmount": 57.46,
+            "hpRegenRate": 14.6489932885906,
+            "hpRegenAmount": 70.135,
             "meleeFactor": 6,
             "rangeFactor": 12,
             "magicFactor": 10,
@@ -5007,7 +5007,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 909,
+              "id": 1417,
               "monsterId": 26,
               "itemId": null,
               "equipmentId": 85,
@@ -5031,7 +5031,7 @@
               }
             },
             {
-              "id": 910,
+              "id": 1418,
               "monsterId": 26,
               "itemId": null,
               "equipmentId": 105,
@@ -5055,7 +5055,7 @@
               }
             },
             {
-              "id": 904,
+              "id": 1412,
               "monsterId": 26,
               "itemId": 7,
               "equipmentId": null,
@@ -5078,7 +5078,7 @@
               "equipment": null
             },
             {
-              "id": 905,
+              "id": 1413,
               "monsterId": 26,
               "itemId": 8,
               "equipmentId": null,
@@ -5101,7 +5101,7 @@
               "equipment": null
             },
             {
-              "id": 906,
+              "id": 1414,
               "monsterId": 26,
               "itemId": 19,
               "equipmentId": null,
@@ -5124,7 +5124,7 @@
               "equipment": null
             },
             {
-              "id": 908,
+              "id": 1416,
               "monsterId": 26,
               "itemId": 25,
               "equipmentId": null,
@@ -5138,16 +5138,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 907,
+              "id": 1415,
               "monsterId": 26,
               "itemId": 29,
               "equipmentId": null,
@@ -5185,8 +5185,8 @@
           "dex": 35,
           "luk": 35,
           "magic": 35,
-          "hpLevel": 18,
-          "maxHp": 1800,
+          "hpLevel": 33,
+          "maxHp": 3300,
           "atkSpd": 350,
           "acc": 499.430255960178,
           "eva": 418.0916042998978,
@@ -5197,8 +5197,8 @@
           "critMultiplier": 1.666890750230186,
           "dmgReduction": 675,
           "magicDmgReduction": 410,
-          "hpRegenRate": 16.67785234899329,
-          "hpRegenAmount": 34,
+          "hpRegenRate": 15.92281879194631,
+          "hpRegenAmount": 41.5,
           "exp": 220,
           "minGoldDrop": 580,
           "maxGoldDrop": 660,
@@ -5207,10 +5207,10 @@
           "combatId": 27,
           "combat": {
             "id": 27,
-            "attackType": "Magic",
-            "cp": "3296",
-            "hp": 4950,
-            "maxHp": 4950,
+            "attackType": "Melee",
+            "cp": "2539",
+            "hp": 9075,
+            "maxHp": 9075,
             "atkSpd": 427,
             "acc": 918.9516709667273,
             "eva": 811.0977123418018,
@@ -5221,8 +5221,8 @@
             "critMultiplier": 2.717031922875203,
             "dmgReduction": 1653.75,
             "magicDmgReduction": 934.8,
-            "hpRegenRate": 10.6738255033557,
-            "hpRegenAmount": 53.38,
+            "hpRegenRate": 10.19060402684564,
+            "hpRegenAmount": 65.155,
             "meleeFactor": 6,
             "rangeFactor": 11,
             "magicFactor": 11,
@@ -5234,7 +5234,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 916,
+              "id": 1424,
               "monsterId": 27,
               "itemId": null,
               "equipmentId": 85,
@@ -5258,7 +5258,7 @@
               }
             },
             {
-              "id": 917,
+              "id": 1425,
               "monsterId": 27,
               "itemId": null,
               "equipmentId": 105,
@@ -5282,7 +5282,7 @@
               }
             },
             {
-              "id": 911,
+              "id": 1419,
               "monsterId": 27,
               "itemId": 7,
               "equipmentId": null,
@@ -5305,7 +5305,7 @@
               "equipment": null
             },
             {
-              "id": 912,
+              "id": 1420,
               "monsterId": 27,
               "itemId": 8,
               "equipmentId": null,
@@ -5328,7 +5328,7 @@
               "equipment": null
             },
             {
-              "id": 913,
+              "id": 1421,
               "monsterId": 27,
               "itemId": 19,
               "equipmentId": null,
@@ -5351,7 +5351,7 @@
               "equipment": null
             },
             {
-              "id": 915,
+              "id": 1423,
               "monsterId": 27,
               "itemId": 25,
               "equipmentId": null,
@@ -5365,16 +5365,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 914,
+              "id": 1422,
               "monsterId": 27,
               "itemId": 29,
               "equipmentId": null,
@@ -5412,8 +5412,8 @@
           "dex": 40,
           "luk": 40,
           "magic": 40,
-          "hpLevel": 20,
-          "maxHp": 2000,
+          "hpLevel": 35,
+          "maxHp": 3500,
           "atkSpd": 400,
           "acc": 578.4502198367701,
           "eva": 481.0198415187341,
@@ -5424,8 +5424,8 @@
           "critMultiplier": 1.68383515701592,
           "dmgReduction": 750,
           "magicDmgReduction": 460,
-          "hpRegenRate": 16.3255033557047,
-          "hpRegenAmount": 36.5,
+          "hpRegenRate": 15.57046979865772,
+          "hpRegenAmount": 44,
           "exp": 250,
           "minGoldDrop": 670,
           "maxGoldDrop": 750,
@@ -5434,10 +5434,10 @@
           "combatId": 28,
           "combat": {
             "id": 28,
-            "attackType": "Melee",
-            "cp": "4277",
-            "hp": 5620,
-            "maxHp": 5620,
+            "attackType": "Ranged",
+            "cp": "4837",
+            "hp": 9835,
+            "maxHp": 9835,
             "atkSpd": 656,
             "acc": 1370.927021013145,
             "eva": 1082.294643417152,
@@ -5448,8 +5448,8 @@
             "critMultiplier": 3.80546745485598,
             "dmgReduction": 2130,
             "magicDmgReduction": 1518,
-            "hpRegenRate": 13.38691275167785,
-            "hpRegenAmount": 73.00000000000003,
+            "hpRegenRate": 12.76778523489933,
+            "hpRegenAmount": 88.00000000000001,
             "meleeFactor": 21,
             "rangeFactor": 15,
             "magicFactor": 15,
@@ -5461,7 +5461,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 923,
+              "id": 1431,
               "monsterId": 28,
               "itemId": null,
               "equipmentId": 85,
@@ -5485,7 +5485,7 @@
               }
             },
             {
-              "id": 924,
+              "id": 1432,
               "monsterId": 28,
               "itemId": null,
               "equipmentId": 105,
@@ -5509,7 +5509,7 @@
               }
             },
             {
-              "id": 918,
+              "id": 1426,
               "monsterId": 28,
               "itemId": 7,
               "equipmentId": null,
@@ -5532,7 +5532,7 @@
               "equipment": null
             },
             {
-              "id": 919,
+              "id": 1427,
               "monsterId": 28,
               "itemId": 8,
               "equipmentId": null,
@@ -5555,7 +5555,7 @@
               "equipment": null
             },
             {
-              "id": 920,
+              "id": 1428,
               "monsterId": 28,
               "itemId": 19,
               "equipmentId": null,
@@ -5578,7 +5578,7 @@
               "equipment": null
             },
             {
-              "id": 922,
+              "id": 1430,
               "monsterId": 28,
               "itemId": 25,
               "equipmentId": null,
@@ -5592,16 +5592,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 921,
+              "id": 1429,
               "monsterId": 28,
               "itemId": 29,
               "equipmentId": null,
@@ -5639,8 +5639,8 @@
           "dex": 45,
           "luk": 45,
           "magic": 45,
-          "hpLevel": 23,
-          "maxHp": 2300,
+          "hpLevel": 38,
+          "maxHp": 3800,
           "atkSpd": 450,
           "acc": 658.4666218484508,
           "eva": 544.3436229366547,
@@ -5651,8 +5651,8 @@
           "critMultiplier": 1.698827349504472,
           "dmgReduction": 825,
           "magicDmgReduction": 510,
-          "hpRegenRate": 15.92281879194631,
-          "hpRegenAmount": 39.5,
+          "hpRegenRate": 15.16778523489933,
+          "hpRegenAmount": 47,
           "exp": 280,
           "minGoldDrop": 760,
           "maxGoldDrop": 840,
@@ -5661,10 +5661,10 @@
           "combatId": 29,
           "combat": {
             "id": 29,
-            "attackType": "Ranged",
-            "cp": "4985",
-            "hp": 6440,
-            "maxHp": 6440,
+            "attackType": "Magic",
+            "cp": "5330",
+            "hp": 10640,
+            "maxHp": 10640,
             "atkSpd": 1035,
             "acc": 1771.275212772333,
             "eva": 1175.782225543174,
@@ -5675,8 +5675,8 @@
             "critMultiplier": 2.650170665226976,
             "dmgReduction": 2384.25,
             "magicDmgReduction": 1662.6,
-            "hpRegenRate": 11.78288590604027,
-            "hpRegenAmount": 71.10000000000005,
+            "hpRegenRate": 11.2241610738255,
+            "hpRegenAmount": 84.60000000000001,
             "meleeFactor": 15,
             "rangeFactor": 21,
             "magicFactor": 15,
@@ -5688,7 +5688,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 930,
+              "id": 1438,
               "monsterId": 29,
               "itemId": null,
               "equipmentId": 86,
@@ -5712,7 +5712,7 @@
               }
             },
             {
-              "id": 931,
+              "id": 1439,
               "monsterId": 29,
               "itemId": null,
               "equipmentId": 106,
@@ -5736,7 +5736,7 @@
               }
             },
             {
-              "id": 925,
+              "id": 1433,
               "monsterId": 29,
               "itemId": 7,
               "equipmentId": null,
@@ -5759,7 +5759,7 @@
               "equipment": null
             },
             {
-              "id": 926,
+              "id": 1434,
               "monsterId": 29,
               "itemId": 8,
               "equipmentId": null,
@@ -5782,7 +5782,7 @@
               "equipment": null
             },
             {
-              "id": 927,
+              "id": 1435,
               "monsterId": 29,
               "itemId": 19,
               "equipmentId": null,
@@ -5805,7 +5805,7 @@
               "equipment": null
             },
             {
-              "id": 929,
+              "id": 1437,
               "monsterId": 29,
               "itemId": 25,
               "equipmentId": null,
@@ -5819,16 +5819,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 928,
+              "id": 1436,
               "monsterId": 29,
               "itemId": 29,
               "equipmentId": null,
@@ -5866,8 +5866,8 @@
           "dex": 50,
           "luk": 50,
           "magic": 50,
-          "hpLevel": 25,
-          "maxHp": 2500,
+          "hpLevel": 40,
+          "maxHp": 4000,
           "atkSpd": 500,
           "acc": 739.3788183141571,
           "eva": 608.0208953293287,
@@ -5878,8 +5878,8 @@
           "critMultiplier": 1.712271052829381,
           "dmgReduction": 900,
           "magicDmgReduction": 560,
-          "hpRegenRate": 15.57046979865772,
-          "hpRegenAmount": 42,
+          "hpRegenRate": 14.81543624161074,
+          "hpRegenAmount": 49.5,
           "exp": 310,
           "minGoldDrop": 850,
           "maxGoldDrop": 930,
@@ -5888,10 +5888,10 @@
           "combatId": 30,
           "combat": {
             "id": 30,
-            "attackType": "Magic",
-            "cp": "9761",
-            "hp": 9150,
-            "maxHp": 9150,
+            "attackType": "Melee",
+            "cp": "9203",
+            "hp": 14640,
+            "maxHp": 14640,
             "atkSpd": 1300,
             "acc": 2040.685538547074,
             "eva": 1751.100178548467,
@@ -5902,8 +5902,8 @@
             "critMultiplier": 3.955346132035869,
             "dmgReduction": 3906,
             "magicDmgReduction": 2788.8,
-            "hpRegenRate": 10.58791946308725,
-            "hpRegenAmount": 105.42,
+            "hpRegenRate": 10.0744966442953,
+            "hpRegenAmount": 124.245,
             "meleeFactor": 82,
             "rangeFactor": 72,
             "magicFactor": 77,
@@ -5915,7 +5915,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 937,
+              "id": 1445,
               "monsterId": 30,
               "itemId": null,
               "equipmentId": 86,
@@ -5939,7 +5939,7 @@
               }
             },
             {
-              "id": 938,
+              "id": 1446,
               "monsterId": 30,
               "itemId": null,
               "equipmentId": 106,
@@ -5963,7 +5963,7 @@
               }
             },
             {
-              "id": 932,
+              "id": 1440,
               "monsterId": 30,
               "itemId": 7,
               "equipmentId": null,
@@ -5986,7 +5986,7 @@
               "equipment": null
             },
             {
-              "id": 933,
+              "id": 1441,
               "monsterId": 30,
               "itemId": 8,
               "equipmentId": null,
@@ -6009,7 +6009,7 @@
               "equipment": null
             },
             {
-              "id": 934,
+              "id": 1442,
               "monsterId": 30,
               "itemId": 19,
               "equipmentId": null,
@@ -6032,7 +6032,7 @@
               "equipment": null
             },
             {
-              "id": 936,
+              "id": 1444,
               "monsterId": 30,
               "itemId": 25,
               "equipmentId": null,
@@ -6046,16 +6046,16 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             },
             {
-              "id": 935,
+              "id": 1443,
               "monsterId": 30,
               "itemId": 29,
               "equipmentId": null,
@@ -6105,8 +6105,8 @@
           "dex": 50,
           "luk": 50,
           "magic": 50,
-          "hpLevel": 25,
-          "maxHp": 2500,
+          "hpLevel": 45,
+          "maxHp": 4500,
           "atkSpd": 500,
           "acc": 739.3788183141571,
           "eva": 608.0208953293287,
@@ -6117,8 +6117,8 @@
           "critMultiplier": 1.712271052829381,
           "dmgReduction": 950,
           "magicDmgReduction": 580,
-          "hpRegenRate": 15.31879194630872,
-          "hpRegenAmount": 43.5,
+          "hpRegenRate": 14.31208053691275,
+          "hpRegenAmount": 53.5,
           "exp": 250,
           "minGoldDrop": 880,
           "maxGoldDrop": 1000,
@@ -6127,10 +6127,10 @@
           "combatId": 31,
           "combat": {
             "id": 31,
-            "attackType": "Melee",
-            "cp": "5678",
-            "hp": 4100,
-            "maxHp": 4100,
+            "attackType": "Magic",
+            "cp": "5282",
+            "hp": 7380,
+            "maxHp": 7380,
             "atkSpd": 1220,
             "acc": 1508.332789360881,
             "eva": 1209.961581705364,
@@ -6141,8 +6141,8 @@
             "critMultiplier": 2.979351631923122,
             "dmgReduction": 2137.5,
             "magicDmgReduction": 1513.799999999999,
-            "hpRegenRate": 13.02097315436242,
-            "hpRegenAmount": 76.99500000000002,
+            "hpRegenRate": 12.16526845637584,
+            "hpRegenAmount": 94.69500000000002,
             "meleeFactor": 18,
             "rangeFactor": 9,
             "magicFactor": 9,
@@ -6154,7 +6154,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 943,
+              "id": 1451,
               "monsterId": 31,
               "itemId": null,
               "equipmentId": 86,
@@ -6178,7 +6178,7 @@
               }
             },
             {
-              "id": 944,
+              "id": 1452,
               "monsterId": 31,
               "itemId": null,
               "equipmentId": 106,
@@ -6202,7 +6202,7 @@
               }
             },
             {
-              "id": 939,
+              "id": 1447,
               "monsterId": 31,
               "itemId": 9,
               "equipmentId": null,
@@ -6225,7 +6225,7 @@
               "equipment": null
             },
             {
-              "id": 940,
+              "id": 1448,
               "monsterId": 31,
               "itemId": 10,
               "equipmentId": null,
@@ -6248,7 +6248,7 @@
               "equipment": null
             },
             {
-              "id": 941,
+              "id": 1449,
               "monsterId": 31,
               "itemId": 20,
               "equipmentId": null,
@@ -6271,7 +6271,7 @@
               "equipment": null
             },
             {
-              "id": 942,
+              "id": 1450,
               "monsterId": 31,
               "itemId": 25,
               "equipmentId": null,
@@ -6285,11 +6285,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -6309,8 +6309,8 @@
           "dex": 55,
           "luk": 55,
           "magic": 55,
-          "hpLevel": 28,
-          "maxHp": 2800,
+          "hpLevel": 48,
+          "maxHp": 4800,
           "atkSpd": 550,
           "acc": 821.1054948483416,
           "eva": 672.0178733981618,
@@ -6321,8 +6321,8 @@
           "critMultiplier": 1.72445640810186,
           "dmgReduction": 1025,
           "magicDmgReduction": 630,
-          "hpRegenRate": 14.91610738255034,
-          "hpRegenAmount": 46.5,
+          "hpRegenRate": 13.90939597315436,
+          "hpRegenAmount": 56.5,
           "exp": 280,
           "minGoldDrop": 1000,
           "maxGoldDrop": 1120,
@@ -6331,10 +6331,10 @@
           "combatId": 32,
           "combat": {
             "id": 32,
-            "attackType": "Ranged",
-            "cp": "7229",
-            "hp": 5628,
-            "maxHp": 5628,
+            "attackType": "Melee",
+            "cp": "6929",
+            "hp": 9648,
+            "maxHp": 9648,
             "atkSpd": 1105.5,
             "acc": 2126.663231657205,
             "eva": 1424.677891604103,
@@ -6345,8 +6345,8 @@
             "critMultiplier": 3.172999790907423,
             "dmgReduction": 3105.75,
             "magicDmgReduction": 1908.9,
-            "hpRegenRate": 13.72281879194631,
-            "hpRegenAmount": 90.67500000000001,
+            "hpRegenRate": 12.79664429530201,
+            "hpRegenAmount": 110.175,
             "meleeFactor": 9,
             "rangeFactor": 18,
             "magicFactor": 15,
@@ -6358,7 +6358,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 949,
+              "id": 1457,
               "monsterId": 32,
               "itemId": null,
               "equipmentId": 86,
@@ -6382,7 +6382,7 @@
               }
             },
             {
-              "id": 950,
+              "id": 1458,
               "monsterId": 32,
               "itemId": null,
               "equipmentId": 106,
@@ -6406,7 +6406,7 @@
               }
             },
             {
-              "id": 945,
+              "id": 1453,
               "monsterId": 32,
               "itemId": 9,
               "equipmentId": null,
@@ -6429,7 +6429,7 @@
               "equipment": null
             },
             {
-              "id": 946,
+              "id": 1454,
               "monsterId": 32,
               "itemId": 10,
               "equipmentId": null,
@@ -6452,7 +6452,7 @@
               "equipment": null
             },
             {
-              "id": 947,
+              "id": 1455,
               "monsterId": 32,
               "itemId": 20,
               "equipmentId": null,
@@ -6475,7 +6475,7 @@
               "equipment": null
             },
             {
-              "id": 948,
+              "id": 1456,
               "monsterId": 32,
               "itemId": 25,
               "equipmentId": null,
@@ -6489,11 +6489,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -6513,8 +6513,8 @@
           "dex": 55,
           "luk": 55,
           "magic": 55,
-          "hpLevel": 28,
-          "maxHp": 2800,
+          "hpLevel": 48,
+          "maxHp": 4800,
           "atkSpd": 550,
           "acc": 821.1054948483416,
           "eva": 672.0178733981618,
@@ -6525,8 +6525,8 @@
           "critMultiplier": 1.72445640810186,
           "dmgReduction": 1025,
           "magicDmgReduction": 630,
-          "hpRegenRate": 14.91610738255034,
-          "hpRegenAmount": 46.5,
+          "hpRegenRate": 13.90939597315436,
+          "hpRegenAmount": 56.5,
           "exp": 280,
           "minGoldDrop": 1000,
           "maxGoldDrop": 1120,
@@ -6535,10 +6535,10 @@
           "combatId": 33,
           "combat": {
             "id": 33,
-            "attackType": "Magic",
-            "cp": "8446",
-            "hp": 5264,
-            "maxHp": 5264,
+            "attackType": "Ranged",
+            "cp": "7055",
+            "hp": 9024,
+            "maxHp": 9024,
             "atkSpd": 1314.5,
             "acc": 1790.009978769385,
             "eva": 1296.994495658452,
@@ -6549,8 +6549,8 @@
             "critMultiplier": 3.793804097824093,
             "dmgReduction": 2890.5,
             "magicDmgReduction": 1669.5,
-            "hpRegenRate": 11.48540268456376,
-            "hpRegenAmount": 88.35000000000001,
+            "hpRegenRate": 10.71023489932886,
+            "hpRegenAmount": 107.35,
             "meleeFactor": 9,
             "rangeFactor": 9,
             "magicFactor": 20,
@@ -6562,7 +6562,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 955,
+              "id": 1463,
               "monsterId": 33,
               "itemId": null,
               "equipmentId": 86,
@@ -6586,7 +6586,7 @@
               }
             },
             {
-              "id": 956,
+              "id": 1464,
               "monsterId": 33,
               "itemId": null,
               "equipmentId": 106,
@@ -6610,7 +6610,7 @@
               }
             },
             {
-              "id": 951,
+              "id": 1459,
               "monsterId": 33,
               "itemId": 9,
               "equipmentId": null,
@@ -6633,7 +6633,7 @@
               "equipment": null
             },
             {
-              "id": 952,
+              "id": 1460,
               "monsterId": 33,
               "itemId": 10,
               "equipmentId": null,
@@ -6656,7 +6656,7 @@
               "equipment": null
             },
             {
-              "id": 953,
+              "id": 1461,
               "monsterId": 33,
               "itemId": 20,
               "equipmentId": null,
@@ -6679,7 +6679,7 @@
               "equipment": null
             },
             {
-              "id": 954,
+              "id": 1462,
               "monsterId": 33,
               "itemId": 25,
               "equipmentId": null,
@@ -6693,11 +6693,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -6717,8 +6717,8 @@
           "dex": 60,
           "luk": 60,
           "magic": 60,
-          "hpLevel": 30,
-          "maxHp": 3000,
+          "hpLevel": 50,
+          "maxHp": 5000,
           "atkSpd": 600,
           "acc": 903.5795127689539,
           "eva": 736.3068026722096,
@@ -6729,8 +6729,8 @@
           "critMultiplier": 1.73559895050323,
           "dmgReduction": 1100,
           "magicDmgReduction": 680,
-          "hpRegenRate": 14.56375838926175,
-          "hpRegenAmount": 49,
+          "hpRegenRate": 13.55704697986577,
+          "hpRegenAmount": 59,
           "exp": 300,
           "minGoldDrop": 1080,
           "maxGoldDrop": 1200,
@@ -6739,10 +6739,10 @@
           "combatId": 34,
           "combat": {
             "id": 34,
-            "attackType": "Melee",
-            "cp": "9990",
-            "hp": 11910,
-            "maxHp": 11910,
+            "attackType": "Magic",
+            "cp": "10912",
+            "hp": 19850,
+            "maxHp": 19850,
             "atkSpd": 1272,
             "acc": 2313.163552688522,
             "eva": 1958.576095108078,
@@ -6753,8 +6753,8 @@
             "critMultiplier": 4.043945554672526,
             "dmgReduction": 3938,
             "magicDmgReduction": 2767.6,
-            "hpRegenRate": 12.23355704697987,
-            "hpRegenAmount": 118.58,
+            "hpRegenRate": 11.38791946308725,
+            "hpRegenAmount": 142.78,
             "meleeFactor": 68,
             "rangeFactor": 59,
             "magicFactor": 65,
@@ -6766,7 +6766,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 961,
+              "id": 1469,
               "monsterId": 34,
               "itemId": null,
               "equipmentId": 86,
@@ -6790,7 +6790,7 @@
               }
             },
             {
-              "id": 962,
+              "id": 1470,
               "monsterId": 34,
               "itemId": null,
               "equipmentId": 106,
@@ -6814,7 +6814,7 @@
               }
             },
             {
-              "id": 957,
+              "id": 1465,
               "monsterId": 34,
               "itemId": 9,
               "equipmentId": null,
@@ -6837,7 +6837,7 @@
               "equipment": null
             },
             {
-              "id": 958,
+              "id": 1466,
               "monsterId": 34,
               "itemId": 10,
               "equipmentId": null,
@@ -6860,7 +6860,7 @@
               "equipment": null
             },
             {
-              "id": 959,
+              "id": 1467,
               "monsterId": 34,
               "itemId": 20,
               "equipmentId": null,
@@ -6883,7 +6883,7 @@
               "equipment": null
             },
             {
-              "id": 960,
+              "id": 1468,
               "monsterId": 34,
               "itemId": 25,
               "equipmentId": null,
@@ -6897,11 +6897,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -6921,8 +6921,8 @@
           "dex": 70,
           "luk": 70,
           "magic": 70,
-          "hpLevel": 35,
-          "maxHp": 3500,
+          "hpLevel": 55,
+          "maxHp": 5500,
           "atkSpd": 700,
           "acc": 1070.552189451654,
           "eva": 865.671145768506,
@@ -6933,8 +6933,8 @@
           "critMultiplier": 1.755377504615723,
           "dmgReduction": 1250,
           "magicDmgReduction": 780,
-          "hpRegenRate": 13.80872483221476,
-          "hpRegenAmount": 54.5,
+          "hpRegenRate": 12.80201342281879,
+          "hpRegenAmount": 64.5,
           "exp": 350,
           "minGoldDrop": 1280,
           "maxGoldDrop": 1400,
@@ -6943,10 +6943,10 @@
           "combatId": 35,
           "combat": {
             "id": 35,
-            "attackType": "Ranged",
-            "cp": "13103",
-            "hp": 10955,
-            "maxHp": 10955,
+            "attackType": "Melee",
+            "cp": "11240",
+            "hp": 17215,
+            "maxHp": 17215,
             "atkSpd": 1673,
             "acc": 2216.043032164925,
             "eva": 2198.804710252006,
@@ -6957,8 +6957,8 @@
             "critMultiplier": 3.475647459139131,
             "dmgReduction": 4712.5,
             "magicDmgReduction": 2730,
-            "hpRegenRate": 9.942281879194631,
-            "hpRegenAmount": 131.345,
+            "hpRegenRate": 9.217449664429529,
+            "hpRegenAmount": 155.445,
             "meleeFactor": 14,
             "rangeFactor": 36,
             "magicFactor": 25,
@@ -6970,7 +6970,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 967,
+              "id": 1475,
               "monsterId": 35,
               "itemId": null,
               "equipmentId": 87,
@@ -6994,7 +6994,7 @@
               }
             },
             {
-              "id": 968,
+              "id": 1476,
               "monsterId": 35,
               "itemId": null,
               "equipmentId": 107,
@@ -7018,7 +7018,7 @@
               }
             },
             {
-              "id": 963,
+              "id": 1471,
               "monsterId": 35,
               "itemId": 9,
               "equipmentId": null,
@@ -7041,7 +7041,7 @@
               "equipment": null
             },
             {
-              "id": 964,
+              "id": 1472,
               "monsterId": 35,
               "itemId": 10,
               "equipmentId": null,
@@ -7064,7 +7064,7 @@
               "equipment": null
             },
             {
-              "id": 965,
+              "id": 1473,
               "monsterId": 35,
               "itemId": 20,
               "equipmentId": null,
@@ -7087,7 +7087,7 @@
               "equipment": null
             },
             {
-              "id": 966,
+              "id": 1474,
               "monsterId": 35,
               "itemId": 25,
               "equipmentId": null,
@@ -7101,11 +7101,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -7125,8 +7125,8 @@
           "dex": 80,
           "luk": 80,
           "magic": 80,
-          "hpLevel": 40,
-          "maxHp": 4000,
+          "hpLevel": 60,
+          "maxHp": 6000,
           "atkSpd": 800,
           "acc": 1239.93519003867,
           "eva": 995.9659391921674,
@@ -7137,8 +7137,8 @@
           "critMultiplier": 1.772545505663595,
           "dmgReduction": 1400,
           "magicDmgReduction": 880,
-          "hpRegenRate": 13.05369127516779,
-          "hpRegenAmount": 60,
+          "hpRegenRate": 12.04697986577181,
+          "hpRegenAmount": 70,
           "exp": 400,
           "minGoldDrop": 1480,
           "maxGoldDrop": 1600,
@@ -7147,10 +7147,10 @@
           "combatId": 36,
           "combat": {
             "id": 36,
-            "attackType": "Magic",
-            "cp": "25986",
-            "hp": 9800,
-            "maxHp": 9800,
+            "attackType": "Ranged",
+            "cp": "24523",
+            "hp": 14700,
+            "maxHp": 14700,
             "atkSpd": 2240,
             "acc": 3546.214643510598,
             "eva": 2778.744970346147,
@@ -7161,8 +7161,8 @@
             "critMultiplier": 4.360461943932443,
             "dmgReduction": 4788,
             "magicDmgReduction": 3564,
-            "hpRegenRate": 7.310067114093961,
-            "hpRegenAmount": 136.8,
+            "hpRegenRate": 6.746308724832215,
+            "hpRegenAmount": 159.6,
             "meleeFactor": 29,
             "rangeFactor": 22,
             "magicFactor": 29,
@@ -7174,7 +7174,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 973,
+              "id": 1481,
               "monsterId": 36,
               "itemId": null,
               "equipmentId": 87,
@@ -7198,7 +7198,7 @@
               }
             },
             {
-              "id": 974,
+              "id": 1482,
               "monsterId": 36,
               "itemId": null,
               "equipmentId": 107,
@@ -7222,7 +7222,7 @@
               }
             },
             {
-              "id": 969,
+              "id": 1477,
               "monsterId": 36,
               "itemId": 9,
               "equipmentId": null,
@@ -7245,7 +7245,7 @@
               "equipment": null
             },
             {
-              "id": 970,
+              "id": 1478,
               "monsterId": 36,
               "itemId": 10,
               "equipmentId": null,
@@ -7268,7 +7268,7 @@
               "equipment": null
             },
             {
-              "id": 971,
+              "id": 1479,
               "monsterId": 36,
               "itemId": 20,
               "equipmentId": null,
@@ -7291,7 +7291,7 @@
               "equipment": null
             },
             {
-              "id": 972,
+              "id": 1480,
               "monsterId": 36,
               "itemId": 25,
               "equipmentId": null,
@@ -7305,11 +7305,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -7341,8 +7341,8 @@
           "dex": 80,
           "luk": 80,
           "magic": 80,
-          "hpLevel": 40,
-          "maxHp": 4000,
+          "hpLevel": 65,
+          "maxHp": 6500,
           "atkSpd": 800,
           "acc": 1239.93519003867,
           "eva": 995.9659391921674,
@@ -7353,8 +7353,8 @@
           "critMultiplier": 1.772545505663595,
           "dmgReduction": 1450,
           "magicDmgReduction": 900,
-          "hpRegenRate": 12.80201342281879,
-          "hpRegenAmount": 61.5,
+          "hpRegenRate": 11.54362416107383,
+          "hpRegenAmount": 74,
           "exp": 320,
           "minGoldDrop": 1100,
           "maxGoldDrop": 1280,
@@ -7364,9 +7364,9 @@
           "combat": {
             "id": 37,
             "attackType": "Melee",
-            "cp": "20228",
-            "hp": 14520,
-            "maxHp": 14520,
+            "cp": "20310",
+            "hp": 23595,
+            "maxHp": 23595,
             "atkSpd": 2608,
             "acc": 3447.019828307503,
             "eva": 2519.793826156184,
@@ -7377,8 +7377,8 @@
             "critMultiplier": 3.456463736044009,
             "dmgReduction": 5162,
             "magicDmgReduction": 3474,
-            "hpRegenRate": 9.857550335570469,
-            "hpRegenAmount": 152.52,
+            "hpRegenRate": 8.888590604026847,
+            "hpRegenAmount": 183.52,
             "meleeFactor": 82,
             "rangeFactor": 65,
             "magicFactor": 65,
@@ -7390,7 +7390,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 980,
+              "id": 1488,
               "monsterId": 37,
               "itemId": null,
               "equipmentId": 87,
@@ -7414,7 +7414,7 @@
               }
             },
             {
-              "id": 981,
+              "id": 1489,
               "monsterId": 37,
               "itemId": null,
               "equipmentId": 107,
@@ -7438,7 +7438,7 @@
               }
             },
             {
-              "id": 975,
+              "id": 1483,
               "monsterId": 37,
               "itemId": 11,
               "equipmentId": null,
@@ -7461,7 +7461,7 @@
               "equipment": null
             },
             {
-              "id": 976,
+              "id": 1484,
               "monsterId": 37,
               "itemId": 12,
               "equipmentId": null,
@@ -7484,7 +7484,7 @@
               "equipment": null
             },
             {
-              "id": 977,
+              "id": 1485,
               "monsterId": 37,
               "itemId": 21,
               "equipmentId": null,
@@ -7507,7 +7507,7 @@
               "equipment": null
             },
             {
-              "id": 978,
+              "id": 1486,
               "monsterId": 37,
               "itemId": 22,
               "equipmentId": null,
@@ -7530,7 +7530,7 @@
               "equipment": null
             },
             {
-              "id": 979,
+              "id": 1487,
               "monsterId": 37,
               "itemId": 25,
               "equipmentId": null,
@@ -7544,11 +7544,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -7568,8 +7568,8 @@
           "dex": 85,
           "luk": 85,
           "magic": 85,
-          "hpLevel": 43,
-          "maxHp": 4300,
+          "hpLevel": 68,
+          "maxHp": 6800,
           "atkSpd": 850,
           "acc": 1325.442274942408,
           "eva": 1061.426367536178,
@@ -7580,8 +7580,8 @@
           "critMultiplier": 1.78034953537307,
           "dmgReduction": 1525,
           "magicDmgReduction": 950,
-          "hpRegenRate": 12.3993288590604,
-          "hpRegenAmount": 64.5,
+          "hpRegenRate": 11.14093959731544,
+          "hpRegenAmount": 77,
           "exp": 340,
           "minGoldDrop": 1180,
           "maxGoldDrop": 1360,
@@ -7591,9 +7591,9 @@
           "combat": {
             "id": 38,
             "attackType": "Ranged",
-            "cp": "27363",
-            "hp": 16297,
-            "maxHp": 16297,
+            "cp": "27447",
+            "hp": 25772,
+            "maxHp": 25772,
             "atkSpd": 2873,
             "acc": 4228.16085706628,
             "eva": 3131.207784231726,
@@ -7604,8 +7604,8 @@
             "critMultiplier": 3.471681593977486,
             "dmgReduction": 6328.75,
             "magicDmgReduction": 4256,
-            "hpRegenRate": 9.547483221476512,
-            "hpRegenAmount": 170.28,
+            "hpRegenRate": 8.578523489932886,
+            "hpRegenAmount": 203.28,
             "meleeFactor": 65,
             "rangeFactor": 82,
             "magicFactor": 70,
@@ -7617,7 +7617,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 987,
+              "id": 1495,
               "monsterId": 38,
               "itemId": null,
               "equipmentId": 87,
@@ -7641,7 +7641,7 @@
               }
             },
             {
-              "id": 988,
+              "id": 1496,
               "monsterId": 38,
               "itemId": null,
               "equipmentId": 107,
@@ -7665,7 +7665,7 @@
               }
             },
             {
-              "id": 982,
+              "id": 1490,
               "monsterId": 38,
               "itemId": 11,
               "equipmentId": null,
@@ -7688,7 +7688,7 @@
               "equipment": null
             },
             {
-              "id": 983,
+              "id": 1491,
               "monsterId": 38,
               "itemId": 12,
               "equipmentId": null,
@@ -7711,7 +7711,7 @@
               "equipment": null
             },
             {
-              "id": 984,
+              "id": 1492,
               "monsterId": 38,
               "itemId": 21,
               "equipmentId": null,
@@ -7734,7 +7734,7 @@
               "equipment": null
             },
             {
-              "id": 985,
+              "id": 1493,
               "monsterId": 38,
               "itemId": 22,
               "equipmentId": null,
@@ -7757,7 +7757,7 @@
               "equipment": null
             },
             {
-              "id": 986,
+              "id": 1494,
               "monsterId": 38,
               "itemId": 25,
               "equipmentId": null,
@@ -7771,11 +7771,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -7795,8 +7795,8 @@
           "dex": 85,
           "luk": 85,
           "magic": 85,
-          "hpLevel": 43,
-          "maxHp": 4300,
+          "hpLevel": 68,
+          "maxHp": 6800,
           "atkSpd": 850,
           "acc": 1325.442274942408,
           "eva": 1061.426367536178,
@@ -7807,8 +7807,8 @@
           "critMultiplier": 1.78034953537307,
           "dmgReduction": 1525,
           "magicDmgReduction": 950,
-          "hpRegenRate": 12.3993288590604,
-          "hpRegenAmount": 64.5,
+          "hpRegenRate": 11.14093959731544,
+          "hpRegenAmount": 77,
           "exp": 340,
           "minGoldDrop": 1180,
           "maxGoldDrop": 1360,
@@ -7818,9 +7818,9 @@
           "combat": {
             "id": 39,
             "attackType": "Magic",
-            "cp": "26921",
-            "hp": 15910,
-            "maxHp": 15910,
+            "cp": "27004",
+            "hp": 25160,
+            "maxHp": 25160,
             "atkSpd": 2805,
             "acc": 4055.853361323767,
             "eva": 2993.222356452024,
@@ -7831,8 +7831,8 @@
             "critMultiplier": 3.507288584684948,
             "dmgReduction": 6084.75,
             "magicDmgReduction": 4104,
-            "hpRegenRate": 8.92751677852349,
-            "hpRegenAmount": 161.895,
+            "hpRegenRate": 8.021476510067114,
+            "hpRegenAmount": 193.27,
             "meleeFactor": 70,
             "rangeFactor": 83,
             "magicFactor": 89,
@@ -7844,7 +7844,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 994,
+              "id": 1502,
               "monsterId": 39,
               "itemId": null,
               "equipmentId": 87,
@@ -7868,7 +7868,7 @@
               }
             },
             {
-              "id": 995,
+              "id": 1503,
               "monsterId": 39,
               "itemId": null,
               "equipmentId": 107,
@@ -7892,7 +7892,7 @@
               }
             },
             {
-              "id": 989,
+              "id": 1497,
               "monsterId": 39,
               "itemId": 11,
               "equipmentId": null,
@@ -7915,7 +7915,7 @@
               "equipment": null
             },
             {
-              "id": 990,
+              "id": 1498,
               "monsterId": 39,
               "itemId": 12,
               "equipmentId": null,
@@ -7938,7 +7938,7 @@
               "equipment": null
             },
             {
-              "id": 991,
+              "id": 1499,
               "monsterId": 39,
               "itemId": 21,
               "equipmentId": null,
@@ -7961,7 +7961,7 @@
               "equipment": null
             },
             {
-              "id": 992,
+              "id": 1500,
               "monsterId": 39,
               "itemId": 22,
               "equipmentId": null,
@@ -7984,7 +7984,7 @@
               "equipment": null
             },
             {
-              "id": 993,
+              "id": 1501,
               "monsterId": 39,
               "itemId": 25,
               "equipmentId": null,
@@ -7998,11 +7998,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -8022,8 +8022,8 @@
           "dex": 90,
           "luk": 90,
           "magic": 90,
-          "hpLevel": 45,
-          "maxHp": 4500,
+          "hpLevel": 70,
+          "maxHp": 7000,
           "atkSpd": 900,
           "acc": 1411.454102526181,
           "eva": 1127.079718686111,
@@ -8034,8 +8034,8 @@
           "critMultiplier": 1.787712417696328,
           "dmgReduction": 1600,
           "magicDmgReduction": 1000,
-          "hpRegenRate": 12.04697986577181,
-          "hpRegenAmount": 67,
+          "hpRegenRate": 10.78859060402685,
+          "hpRegenAmount": 79.5,
           "exp": 360,
           "minGoldDrop": 1260,
           "maxGoldDrop": 1440,
@@ -8045,9 +8045,9 @@
           "combat": {
             "id": 40,
             "attackType": "Melee",
-            "cp": "43360",
-            "hp": 21690,
-            "maxHp": 21690,
+            "cp": "43454",
+            "hp": 33740,
+            "maxHp": 33740,
             "atkSpd": 3582,
             "acc": 5194.151097296346,
             "eva": 3809.529449159055,
@@ -8058,8 +8058,8 @@
             "critMultiplier": 4.165369933232444,
             "dmgReduction": 7872,
             "magicDmgReduction": 5180,
-            "hpRegenRate": 9.276174496644295,
-            "hpRegenAmount": 203.01,
+            "hpRegenRate": 8.307214765100673,
+            "hpRegenAmount": 240.885,
             "meleeFactor": 132,
             "rangeFactor": 127,
             "magicFactor": 115,
@@ -8071,7 +8071,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 1001,
+              "id": 1509,
               "monsterId": 40,
               "itemId": null,
               "equipmentId": 87,
@@ -8095,7 +8095,7 @@
               }
             },
             {
-              "id": 1002,
+              "id": 1510,
               "monsterId": 40,
               "itemId": null,
               "equipmentId": 107,
@@ -8119,7 +8119,7 @@
               }
             },
             {
-              "id": 996,
+              "id": 1504,
               "monsterId": 40,
               "itemId": 11,
               "equipmentId": null,
@@ -8142,7 +8142,7 @@
               "equipment": null
             },
             {
-              "id": 997,
+              "id": 1505,
               "monsterId": 40,
               "itemId": 12,
               "equipmentId": null,
@@ -8165,7 +8165,7 @@
               "equipment": null
             },
             {
-              "id": 998,
+              "id": 1506,
               "monsterId": 40,
               "itemId": 21,
               "equipmentId": null,
@@ -8188,7 +8188,7 @@
               "equipment": null
             },
             {
-              "id": 999,
+              "id": 1507,
               "monsterId": 40,
               "itemId": 22,
               "equipmentId": null,
@@ -8211,7 +8211,7 @@
               "equipment": null
             },
             {
-              "id": 1000,
+              "id": 1508,
               "monsterId": 40,
               "itemId": 25,
               "equipmentId": null,
@@ -8225,11 +8225,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -8249,8 +8249,8 @@
           "dex": 100,
           "luk": 100,
           "magic": 100,
-          "hpLevel": 50,
-          "maxHp": 5000,
+          "hpLevel": 75,
+          "maxHp": 7500,
           "atkSpd": 1000,
           "acc": 1584.893192461114,
           "eva": 1258.925411794168,
@@ -8261,8 +8261,8 @@
           "critMultiplier": 1.801296412134793,
           "dmgReduction": 1750,
           "magicDmgReduction": 1100,
-          "hpRegenRate": 11.29194630872483,
-          "hpRegenAmount": 72.5,
+          "hpRegenRate": 10.03355704697987,
+          "hpRegenAmount": 85,
           "exp": 400,
           "minGoldDrop": 1420,
           "maxGoldDrop": 1600,
@@ -8272,9 +8272,9 @@
           "combat": {
             "id": 41,
             "attackType": "Ranged",
-            "cp": "50021",
-            "hp": 23750,
-            "maxHp": 23750,
+            "cp": "50116",
+            "hp": 35625,
+            "maxHp": 35625,
             "atkSpd": 3660,
             "acc": 5372.787922443176,
             "eva": 4444.006703633413,
@@ -8285,8 +8285,8 @@
             "critMultiplier": 3.674644680754977,
             "dmgReduction": 8662.5,
             "magicDmgReduction": 5401,
-            "hpRegenRate": 8.130201342281879,
-            "hpRegenAmount": 220.4,
+            "hpRegenRate": 7.224161073825503,
+            "hpRegenAmount": 258.4,
             "meleeFactor": 70,
             "rangeFactor": 109,
             "magicFactor": 80,
@@ -8298,7 +8298,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 1008,
+              "id": 1516,
               "monsterId": 41,
               "itemId": null,
               "equipmentId": 88,
@@ -8322,7 +8322,7 @@
               }
             },
             {
-              "id": 1009,
+              "id": 1517,
               "monsterId": 41,
               "itemId": null,
               "equipmentId": 108,
@@ -8346,7 +8346,7 @@
               }
             },
             {
-              "id": 1003,
+              "id": 1511,
               "monsterId": 41,
               "itemId": 11,
               "equipmentId": null,
@@ -8369,7 +8369,7 @@
               "equipment": null
             },
             {
-              "id": 1004,
+              "id": 1512,
               "monsterId": 41,
               "itemId": 12,
               "equipmentId": null,
@@ -8392,7 +8392,7 @@
               "equipment": null
             },
             {
-              "id": 1005,
+              "id": 1513,
               "monsterId": 41,
               "itemId": 21,
               "equipmentId": null,
@@ -8415,7 +8415,7 @@
               "equipment": null
             },
             {
-              "id": 1006,
+              "id": 1514,
               "monsterId": 41,
               "itemId": 22,
               "equipmentId": null,
@@ -8438,7 +8438,7 @@
               "equipment": null
             },
             {
-              "id": 1007,
+              "id": 1515,
               "monsterId": 41,
               "itemId": 25,
               "equipmentId": null,
@@ -8452,11 +8452,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }
@@ -8476,8 +8476,8 @@
           "dex": 110,
           "luk": 110,
           "magic": 110,
-          "hpLevel": 55,
-          "maxHp": 5500,
+          "hpLevel": 80,
+          "maxHp": 8000,
           "atkSpd": 1100,
           "acc": 1760.078158642367,
           "eva": 1391.433065047185,
@@ -8488,8 +8488,8 @@
           "critMultiplier": 1.813596893635997,
           "dmgReduction": 1900,
           "magicDmgReduction": 1200,
-          "hpRegenRate": 10.53691275167785,
-          "hpRegenAmount": 78,
+          "hpRegenRate": 9.278523489932885,
+          "hpRegenAmount": 90.5,
           "exp": 440,
           "minGoldDrop": 1580,
           "maxGoldDrop": 1760,
@@ -8499,9 +8499,9 @@
           "combat": {
             "id": 42,
             "attackType": "Magic",
-            "cp": "74645",
-            "hp": 29315,
-            "maxHp": 29315,
+            "cp": "74754",
+            "hp": 42640,
+            "maxHp": 42640,
             "atkSpd": 4433,
             "acc": 6846.704037118809,
             "eva": 5050.902026121284,
@@ -8512,8 +8512,8 @@
             "critMultiplier": 4.515856265153633,
             "dmgReduction": 10678,
             "magicDmgReduction": 6780,
-            "hpRegenRate": 6.638255033557046,
-            "hpRegenAmount": 265.98,
+            "hpRegenRate": 5.845469798657718,
+            "hpRegenAmount": 308.605,
             "meleeFactor": 95,
             "rangeFactor": 106,
             "magicFactor": 108,
@@ -8525,7 +8525,7 @@
           "statEffects": [],
           "drops": [
             {
-              "id": 1015,
+              "id": 1523,
               "monsterId": 42,
               "itemId": null,
               "equipmentId": 88,
@@ -8549,7 +8549,7 @@
               }
             },
             {
-              "id": 1016,
+              "id": 1524,
               "monsterId": 42,
               "itemId": null,
               "equipmentId": 108,
@@ -8573,7 +8573,7 @@
               }
             },
             {
-              "id": 1010,
+              "id": 1518,
               "monsterId": 42,
               "itemId": 11,
               "equipmentId": null,
@@ -8596,7 +8596,7 @@
               "equipment": null
             },
             {
-              "id": 1011,
+              "id": 1519,
               "monsterId": 42,
               "itemId": 12,
               "equipmentId": null,
@@ -8619,7 +8619,7 @@
               "equipment": null
             },
             {
-              "id": 1012,
+              "id": 1520,
               "monsterId": 42,
               "itemId": 21,
               "equipmentId": null,
@@ -8642,7 +8642,7 @@
               "equipment": null
             },
             {
-              "id": 1013,
+              "id": 1521,
               "monsterId": 42,
               "itemId": 22,
               "equipmentId": null,
@@ -8665,7 +8665,7 @@
               "equipment": null
             },
             {
-              "id": 1014,
+              "id": 1522,
               "monsterId": 42,
               "itemId": 25,
               "equipmentId": null,
@@ -8679,11 +8679,11 @@
                 "rarity": "C",
                 "statEffectId": null,
                 "buyPriceGP": null,
-                "sellPriceGP": 100,
+                "sellPriceGP": 1000,
                 "buyPriceDittoWei": null,
-                "farmingDurationS": 20,
-                "farmingLevelRequired": 0,
-                "farmingExp": 300
+                "farmingDurationS": null,
+                "farmingLevelRequired": null,
+                "farmingExp": null
               },
               "equipment": null
             }

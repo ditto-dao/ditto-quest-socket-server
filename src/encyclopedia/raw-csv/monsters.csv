@@ -17,7 +17,7 @@ Sticky Mantle*1*0.00125
 Bronze Warden Cape*1*0.00125","81*1*0.00125
 82*1*0.00125
 101*1*0.00125
-102*1*0.00125",1,5,5,1,1,1,1,1,1,"3, 35",2D,,Melee
+102*1*0.00125",1,5,5,1,1,1,1,1,1,"3, 35",2D,,Ranged
 8,2,Oozeling Wriggler,Slips through cracks to surprise its prey.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/070_A.png,22.5%,25,20,50,0,4,"Flintrock*2*0.01
 Dusklead*2*0.01
 Barkwood*2*0.01
@@ -30,7 +30,7 @@ Sticky Mantle*1*0.00375
 Bronze Warden Cape*1*0.00375","81*1*0.00375
 82*1*0.00375
 101*1*0.00375
-102*1*0.00375",2,10,10,2,2,2,2,2,1,"3, 35, 53",3D,,Ranged
+102*1*0.00375",2,10,10,2,2,2,2,2,1,"3, 35, 53",3D,,Magic
 9,2,Slorbb,Bounces happily—but digests slowly.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/068_A.png,22.5%,25,20,50,0,4,"Flintrock*2*0.01
 Dusklead*2*0.01
 Barkwood*2*0.01
@@ -43,7 +43,7 @@ Sticky Mantle*1*0.00375
 Bronze Warden Cape*1*0.00375","81*1*0.00375
 82*1*0.00375
 101*1*0.00375
-102*1*0.00375",2,10,10,2,2,2,2,2,1,"4, 24, 42",3D,,Magic
+102*1*0.00375",2,10,10,2,2,2,2,2,1,"4, 24, 42",3D,,Melee
 10,2,Miremelt,Leaves acidic puddles wherever it goes.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/071_A.png,10.0%,40,50,80,0,4,"Flintrock*2*0.01667
 Dusklead*2*0.01667
 Barkwood*2*0.01667
@@ -56,7 +56,7 @@ Sticky Mantle*1*0.00625
 Bronze Warden Cape*1*0.00625","81*1*0.00625
 82*1*0.00625
 101*1*0.00625
-102*1*0.00625",3,15,15,5,3,2,3,2,2,"4, 18, 24",3D,,Melee
+102*1*0.00625",3,15,15,5,3,2,3,2,2,"4, 18, 24",3D,,Ranged
 11,2,Squelchoid,"Squishy, sticky, and slightly sinister.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/069_A.png,7.5%,50,70,100,0,4,"Flintrock*2*0.02333
 Dusklead*2*0.02333
 Barkwood*2*0.02333
@@ -65,7 +65,7 @@ Ooze Shards*1*0.05","1*2*0.02333
 26*2*0.02333
 25*1*0.05","Hardened Shield*1*0.0175
 Ironclad Wrap*1*0.0175","83*1*0.0175
-103*1*0.0175",4,20,20,3,4,6,4,3,2,"3, 15, 35, 45",4D,,Ranged
+103*1*0.0175",4,20,20,3,4,6,4,3,2,"3, 15, 35, 45",4D,,Magic
 12,2,The Gelatinator,The final form of slime evolution.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/073_B.png,5.0%,65,100,130,0,4,"Flintrock*2*0.03
 Dusklead*2*0.03
 Barkwood*2*0.03
@@ -74,7 +74,7 @@ Ooze Shards*1*0.05","1*2*0.03
 26*2*0.03
 25*1*0.05","Hardened Shield*1*0.0225
 Ironclad Wrap*1*0.0225","83*1*0.0225
-103*1*0.0225",5,25,25,4,5,4,5,7,3,"4, 9, 29, 50",4D,,Magic
+103*1*0.0225",5,25,25,4,5,4,5,7,3,"4, 9, 29, 50",4D,,Melee
 13,3,Rosemaw,A bloom with teeth and a taste for blood.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/015_A.png,32.5%,45,50,90,0,8,"Cinderslag*2*0.0025
 Ironbloom*2*0.0025
 Hearthshard*2*0.0025
@@ -86,7 +86,7 @@ Ooze Shards*1*0.05","3*2*0.0025
 25*1*0.05","Hardened Shield*1*0.0025
 Ironclad Wrap*1*0.0025","83*1*0.0025
 103*1*0.0025",5,25,30,5,10,5,5,5,8,"53, 3,
-30",2D 1C,2,Melee
+30",2D 1C,2,Magic
 14,3,Petalguard,A flowery sentinel who blocks the path.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/023_A.png,22.5%,65,90,130,0,8,"Cinderslag*2*0.0075
 Ironbloom*2*0.0075
 Hearthshard*2*0.0075
@@ -98,7 +98,7 @@ Ooze Shards*1*0.05","3*2*0.0075
 25*1*0.05","Hardened Shield*1*0.0075
 Ironclad Wrap*1*0.0075","83*1*0.0075
 103*1*0.0075",7,35,40,7,12,7,7,7,9,"50, 4,
-10, 36",2D 2C,"22, 3",Ranged
+10, 36",2D 2C,"22, 3",Melee
 15,3,Thornkin Bulb,It grows thorns sharper than blades.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/013_A.png,22.5%,65,90,130,0,8,"Cinderslag*2*0.0075
 Ironbloom*2*0.0075
 Hearthshard*2*0.0075
@@ -110,7 +110,7 @@ Ooze Shards*1*0.05","3*2*0.0075
 25*1*0.05","Hardened Shield*1*0.0075
 Ironclad Wrap*1*0.0075","83*1*0.0075
 103*1*0.0075",7,35,40,7,12,7,7,7,9,"45, 9
-17, 25",2D 2C,"41, 23",Magic
+17, 25",2D 2C,"41, 23",Ranged
 16,3,Bloomshroud,Veils itself in blossoms to ambush prey.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/021_A.png,10.0%,100,160,200,0,8,"Cinderslag*2*0.0125
 Ironbloom*2*0.0125
 Hearthshard*2*0.0125
@@ -122,7 +122,7 @@ Ooze Shards*1*0.05","3*2*0.0125
 25*1*0.05","Hardened Shield*1*0.0125
 Ironclad Wrap*1*0.0125","83*1*0.0125
 103*1*0.0125",11,55,60,11,16,11,11,11,11,"42, 15
-51, 11, 1",2D 3C,"2,  80, 42",Melee
+51, 11, 1",2D 3C,"2,  80, 42",Magic
 17,3,Lilylurker,"Silent as roots, deadly as poison.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/014_A.png,7.5%,115,190,230,0,8,"Cinderslag*2*0.0175
 Ironbloom*2*0.0175
 Hearthshard*2*0.0175
@@ -134,7 +134,7 @@ Ooze Shards*1*0.05","3*2*0.0175
 25*1*0.05","Alloy Shield*1*0.0175
 Shroud of Shadows*1*0.0175","84*1*0.0175
 104*1*0.0175",13,65,70,13,18,13,13,13,12,"35, 18
-10, 17, 34, 43",2D 4C,"22, 80, 61",Ranged
+10, 17, 34, 43",2D 4C,"22, 80, 61",Melee
 18,3,Verdant Snapper,Lunges from vines with snapping jaws.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/017_A.png,5.0%,135,230,270,0,8,"Cinderslag*2*0.0225
 Ironbloom*2*0.0225
 Hearthshard*2*0.0225
@@ -147,7 +147,7 @@ Ooze Shards*1*0.05","3*2*0.0225
 Shroud of Shadows*1*0.0225","84*1*0.0225
 104*1*0.0225",15,75,80,15,20,15,15,15,13,"29, 24
 52
-31",2D 1C 1B,"22, 100, 80, 42",Magic
+31",2D 1C 1B,"22, 100, 80, 42",Ranged
 19,4,Murkmancer,Croaks warnings before it strikes.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/080_A.png,32.5%,110,270,330,0,12,"Stoneflare*2*0.0025
 Quicksilt*2*0.0025
 Dunecryst*2*0.0025
@@ -158,7 +158,7 @@ Ooze Shards*1*0.05","5*2*0.0025
 28*2*0.0025
 25*1*0.05","Alloy Shield*1*0.0025
 Shroud of Shadows*1*0.0025","84*1*0.0025
-104*1*0.0025",15,75,85,15,25,15,15,15,10,"34, 37
+104*1*0.0025",15,75,85,15,25,15,15,15,18,"34, 37
 7, 21","2C, 2B","3, 80",Melee
 20,4,Murkbeast,"Camouflaged in mud, it waits still.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/078_A.png,22.5%,130,330,390,0,12,"Stoneflare*2*0.0075
 Quicksilt*2*0.0075
@@ -230,7 +230,7 @@ Ooze Shards*1*0.05","7*2*0.0025
 25*1*0.05","Veil Shield*1*0.0025
 Verdant Aegis Cloak*1*0.0025","85*1*0.0025
 105*1*0.0025",30,150,165,30,45,30,30,30,30,"5, 31, 55
-6, 46","3B, 2A","4, 71, 81",Melee
+6, 46","3B, 2A","4, 71, 81",Ranged
 26,5,Scalelord,Tongue splits and sings to stone.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/077_A.png,22.5%,220,580,660,0,16,"Emberite*2*0.0075
 Cragmite*2*0.0075
 Spellrose*2*0.0075
@@ -242,7 +242,7 @@ Ooze Shards*1*0.05","7*2*0.0075
 25*1*0.05","Veil Shield*1*0.0075
 Verdant Aegis Cloak*1*0.0075","85*1*0.0075
 105*1*0.0075",35,175,190,35,50,35,35,35,33,"7, 21, 48
-27, 47, 57","3B, 3A","24, 71, 81, 42",Ranged
+27, 47, 57","3B, 3A","24, 71, 81, 42",Magic
 27,5,Scalething,Its hiss echoes through underground halls.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/079_A.png,22.5%,220,580,660,0,16,"Emberite*2*0.0075
 Cragmite*2*0.0075
 Spellrose*2*0.0075
@@ -254,7 +254,7 @@ Ooze Shards*1*0.05","7*2*0.0075
 25*1*0.05","Veil Shield*1*0.0075
 Verdant Aegis Cloak*1*0.0075","85*1*0.0075
 105*1*0.0075",35,175,190,35,50,35,35,35,33,"12, 26, 56
-13, 32, 27","3B, 3A","43, 71, 81, 23",Magic
+13, 32, 27","3B, 3A","43, 71, 81, 23",Melee
 28,5,Venomthing,Poisons pool where it slithers.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/086_A.png,10.0%,250,670,750,0,16,"Emberite*2*0.0125
 Cragmite*2*0.0125
 Spellrose*2*0.0125
@@ -266,7 +266,7 @@ Ooze Shards*1*0.05","7*2*0.0125
 25*1*0.05","Veil Shield*1*0.0125
 Verdant Aegis Cloak*1*0.0125","85*1*0.0125
 105*1*0.0125",40,200,215,40,55,40,40,40,35,"12, 21, 31, 40
-20, 27, 46, 47","4B, 4A","4, 71, 81, 82, 61",Melee
+20, 27, 46, 47","4B, 4A","4, 71, 81, 82, 61",Ranged
 29,5,Hissthing,Worshipped as a god by lesser snakes.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/061_A.png,7.5%,280,760,840,0,16,"Emberite*2*0.0175
 Cragmite*2*0.0175
 Spellrose*2*0.0175
@@ -278,7 +278,7 @@ Ooze Shards*1*0.05","7*2*0.0175
 25*1*0.05","Muck Shield*1*0.0175
 Luminous Veil*1*0.0175","86*1*0.0175
 106*1*0.0175",45,225,240,45,60,45,45,45,38,"5, 7, 12, 19
-13, 27, 38, 46, 57","4B, 5A","24, 71, 81, 82, 61",Ranged
+13, 27, 38, 46, 57","4B, 5A","24, 71, 81, 82, 61",Magic
 30,5,Hisslord,Eyes shimmer with ancient cunning.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/042_A.png,5.0%,310,850,930,0,16,"Emberite*2*0.0225
 Cragmite*2*0.0225
 Spellrose*2*0.0225
@@ -290,7 +290,7 @@ Ooze Shards*1*0.05","7*2*0.0225
 25*1*0.05","Muck Shield*1*0.0225
 Luminous Veil*1*0.0225","86*1*0.0225
 106*1*0.0225",50,250,265,50,65,50,50,50,40,"21, 26, 31, 56
-6, 20, 32, 39, 47, 57","4B, 6A","43, 82, 102, 99, 61, 71",Magic
+6, 20, 32, 39, 47, 57","4B, 6A","43, 82, 102, 99, 61, 71",Melee
 31,6,Oathbreaker Fenlord,Bears the scars of countless battles.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/063_A.png,32.5%,250,880,1000,0,20,"Stargrit*2*0.00333
 Paleiron*2*0.00333
 Gildroot*2*0.00333
@@ -299,7 +299,7 @@ Ooze Shards*1*0.05","9*2*0.00333
 20*2*0.00333
 25*1*0.05","Muck Shield*1*0.0025
 Luminous Veil*1*0.0025","86*1*0.0025
-106*1*0.0025",50,250,270,50,70,50,50,50,45,"13, 32, 38, 39, 46",5A,"5, 61, 71, 81",Melee
+106*1*0.0025",50,250,270,50,70,50,50,50,45,"13, 32, 38, 39, 46",5A,"5, 61, 71, 81",Magic
 32,6,Gnashfang Duelist,Roars before charging with wild glee.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/076_A.png,22.5%,280,1000,1120,0,20,"Stargrit*2*0.01
 Paleiron*2*0.01
 Gildroot*2*0.01
@@ -309,7 +309,7 @@ Ooze Shards*1*0.05","9*2*0.01
 25*1*0.05","Muck Shield*1*0.0075
 Luminous Veil*1*0.0075","86*1*0.0075
 106*1*0.0075",55,275,295,55,75,55,55,55,48,"20, 27, 39, 46, 57,
-41","5A, 1S","25, 61, 71, 81, 44",Ranged
+41","5A, 1S","25, 61, 71, 81, 44",Melee
 33,6,Ironhide Outcast,Keeps trophies on a blood-soaked belt.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/060_A.png,22.5%,280,1000,1120,0,20,"Stargrit*2*0.01
 Paleiron*2*0.01
 Gildroot*2*0.01
@@ -319,7 +319,7 @@ Ooze Shards*1*0.05","9*2*0.01
 25*1*0.05","Muck Shield*1*0.0075
 Luminous Veil*1*0.0075","86*1*0.0075
 106*1*0.0075",55,275,295,55,75,55,55,55,48,"13, 27, 39, 47, 57,
-41","5A, 1S","44, 61, 71, 81, 43",Magic
+41","5A, 1S","44, 61, 71, 81, 43",Ranged
 34,6,Gorefang Raider,Only respects strength and savagery.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/062_A.png,10.0%,300,1080,1200,0,20,"Stargrit*2*0.01667
 Paleiron*2*0.01667
 Gildroot*2*0.01667
@@ -329,7 +329,7 @@ Ooze Shards*1*0.05","9*2*0.01667
 25*1*0.05","Muck Shield*1*0.0125
 Luminous Veil*1*0.0125","86*1*0.0125
 106*1*0.0125",60,300,320,60,80,60,60,60,50,"6, 27, 32, 47, 57,
-28, 58","5A, 2S","5, 61, 71, 81, 100, 44",Melee
+28, 58","5A, 2S","5, 61, 71, 81, 100, 44",Magic
 35,6,Bloodtrail Marauder,Its laughter sends chills down spines.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/090_A.png,7.5%,350,1280,1400,0,20,"Stargrit*2*0.02333
 Paleiron*2*0.02333
 Gildroot*2*0.02333
@@ -339,7 +339,7 @@ Ooze Shards*1*0.05","9*2*0.02333
 25*1*0.05","Glow Shield*1*0.0175
 Cryo Cloak*1*0.0175","87*1*0.0175
 107*1*0.0175",70,350,370,70,90,70,70,70,55,"6, 13, 32, 39, 47, 57,
-23, 33",6A 2S,"25, 61, 71, 81, 101, 43",Ranged
+23, 33",6A 2S,"25, 61, 71, 81, 101, 43",Melee
 36,6,Blighthorn Warchief,Fueled by fury and raw instinct.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/087_A.png,5.0%,400,1480,1600,0,20,"Stargrit*2*0.03
 Paleiron*2*0.03
 Gildroot*2*0.03
@@ -349,7 +349,7 @@ Ooze Shards*1*0.05","9*2*0.03
 25*1*0.05","Glow Shield*1*0.0225
 Cryo Cloak*1*0.0225","87*1*0.0225
 107*1*0.0225",80,400,420,80,100,80,80,80,60,"13, 27, 32, 39, 47, 57,
-14, 49, 58",6A 3S,"44, 61, 71, 81, 102, 42, 21",Magic
+14, 49, 58",6A 3S,"44, 61, 71, 81, 102, 42, 21",Ranged
 37,7,Charbeast,A relic of fire given cruel sentience.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-domains/016_A.png,32.5%,320,1100,1280,0,24,"Howlglass*2*0.0025
 Aetherore*2*0.0025
 Blazebloom*2*0.0025
@@ -416,25 +416,25 @@ Ooze Shards*1*0.05","11*2*0.0225
 25*1*0.05","Frost Shield*1*0.0225
 Infernal Drape*1*0.0225","88*1*0.0225
 108*1*0.0225",110,550,575,110,135,110,110,110,80,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57, 22, 41, 8",10A 3S,"45, 42, 81, 84, 100, 102, 104, 25, 26",Magic
-43,999,Shadow Glooplet,"The corrupted echo of its former self. Drifts mindlessly, compelled to consume memories.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/067_8Bit.png,,2,0,0,0,0,,,,,1,5,5,2,2,1,0,0,1,"3, 35",2D,,Melee
-44,999,Shadow Oozeling Wriggler,"The corrupted echo of its former self. Seeps between stones, hunting with ghostlike intent.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/070_8Bit.png,,3,0,0,0,0,,,,,2,10,9,1,2,4,2,0,1,"3, 35, 53",3D,,Ranged
-45,999,Shadow Slorbb,The corrupted echo of its former self. Trembles unnaturally—joy twisted into hunger.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/068_8Bit.png,,3,0,0,0,0,,,,,3,10,16,1,3,2,4,6,2,"4, 24, 42",3D,,Magic
-46,999,Shadow Miremelt,The corrupted echo of its former self. Spills venomous ichor that scars the floor.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/071_8Bit.png,,4,0,0,0,0,,,,,4,15,20,8,6,4,1,1,2,"4, 18, 24",3D,,Melee
-47,999,Shadow Squelchoid,The corrupted echo of its former self. Pulses with a sickly glow beneath a warped skin.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/069_8Bit.png,,5,0,0,0,0,,,,,5,20,24,2,5,10,6,1,3,"3, 15, 35, 45",4D,,Ranged
-48,999,The Shadow Gelatinator,The corrupted echo of its former self. A grotesque mockery of its perfected form.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/073_8Bit.png,,7,0,0,0,0,,,,,6,25,31,2,6,3,8,12,3,"4, 9, 29, 50",4D,,Magic
+43,999,Shadow Glooplet,"The corrupted echo of its former self. Drifts mindlessly, compelled to consume memories.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/067_8Bit.png,,2,0,0,0,0,,,,,1,5,5,2,2,1,0,0,1,"3, 35",2D,,Ranged
+44,999,Shadow Oozeling Wriggler,"The corrupted echo of its former self. Seeps between stones, hunting with ghostlike intent.",https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/070_8Bit.png,,3,0,0,0,0,,,,,2,10,9,1,2,4,2,0,1,"3, 35, 53",3D,,Magic
+45,999,Shadow Slorbb,The corrupted echo of its former self. Trembles unnaturally—joy twisted into hunger.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/068_8Bit.png,,3,0,0,0,0,,,,,3,10,16,1,3,2,4,6,2,"4, 24, 42",3D,,Melee
+46,999,Shadow Miremelt,The corrupted echo of its former self. Spills venomous ichor that scars the floor.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/071_8Bit.png,,4,0,0,0,0,,,,,4,15,20,8,6,4,1,1,2,"4, 18, 24",3D,,Ranged
+47,999,Shadow Squelchoid,The corrupted echo of its former self. Pulses with a sickly glow beneath a warped skin.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/069_8Bit.png,,5,0,0,0,0,,,,,5,20,24,2,5,10,6,1,3,"3, 15, 35, 45",4D,,Magic
+48,999,The Shadow Gelatinator,The corrupted echo of its former self. A grotesque mockery of its perfected form.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/073_8Bit.png,,7,0,0,0,0,,,,,6,25,31,2,6,3,8,12,3,"4, 9, 29, 50",4D,,Melee
 49,999,Shadow Rosemaw,The corrupted echo of its former self. Petals bloom with blood where it bites.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/015_8Bit.png,,5,0,0,0,0,,,,,7,25,35,14,10,7,2,2,4,"53, 3,
-30",2D 1C,,Melee
+30",2D 1C,,Magic
 50,999,Shadow Petalguard,The corrupted echo of its former self. Thorns whisper warnings in long-dead tongues.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/023_8Bit.png,,7,0,0,0,0,,,,,8,35,40,4,8,16,10,2,4,"50, 4,
-10, 36",2D 2C,,Ranged
+10, 36",2D 2C,,Melee
 51,999,Shadow Thornkin Bulb,The corrupted echo of its former self. Its barbs fester with spectral poison.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/013_8Bit.png,,7,0,0,0,0,,,,,9,35,44,2,9,4,11,18,5,"45, 9
-17, 25",2D 2C,,Magic
+17, 25",2D 2C,,Ranged
 52,999,Shadow Bloomshroud,The corrupted echo of its former self. Shrouds itself in cursed blossoms to ensnare souls.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/021_8Bit.png,,10,0,0,0,0,,,,,10,55,49,20,15,10,2,2,5,"42, 15
-51, 11, 1",2D 3C,,Melee
+51, 11, 1",2D 3C,,Magic
 53,999,Shadow Lilylurker,The corrupted echo of its former self. Its roots reach for warmth it no longer feels.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/014_8Bit.png,,12,0,0,0,0,,,,,11,65,56,6,11,22,14,3,6,"35, 18
-10, 17, 34, 43",2D 4C,,Ranged
+10, 17, 34, 43",2D 4C,,Melee
 54,999,Shadow Verdant Snapper,The corrupted echo of its former self. Snaps not to feed—but to silence.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/017_8Bit.png,,14,0,0,0,0,,,,,12,75,60,3,12,6,15,24,6,"29, 24
 52
-31",2D 1C 1B,,Magic
+31",2D 1C 1B,,Ranged
 55,999,Shadow Murkmancer,The corrupted echo of its former self. Its croak carries echoes from beyond.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/080_8Bit.png,,11,0,0,0,0,,,,,13,75,65,26,20,13,3,3,9,"34, 37
 7, 21","2C, 2B",,Melee
 56,999,Shadow Murkbeast,The corrupted echo of its former self. Disappears into the mist as if never born.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/078_8Bit.png,,13,0,0,0,0,,,,,14,90,71,7,14,28,18,4,9,"1, 11, 51
@@ -447,28 +447,28 @@ Infernal Drape*1*0.0225","88*1*0.0225
 5, 12, 21, 31","3C, 4B",,Ranged
 60,999,Shadow Murklord,The corrupted echo of its former self. Fungus thrives where the dead once stood.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/046_8Bit.png,,22,0,0,0,0,,,,,18,150,89,4,18,9,22,36,12,"6, 32, 49",3A,,Magic
 61,999,Shadow Slithling,The corrupted echo of its former self. Strikes from behind veils of shadow and guilt.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/019_8Bit.png,,19,0,0,0,0,,,,,19,150,95,38,28,19,5,5,13,"5, 31, 55
-6, 46","3B, 2A",,Melee
+6, 46","3B, 2A",,Ranged
 62,999,Shadow Scalelord,The corrupted echo of its former self. Hisses scripture older than stone.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/077_8Bit.png,,22,0,0,0,0,,,,,20,175,100,10,20,40,25,5,13,"7, 21, 48
-27, 47, 57","3B, 3A",,Ranged
+27, 47, 57","3B, 3A",,Magic
 63,999,Shadow Scalething,The corrupted echo of its former self. Its echoes warp the tunnel around you.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/079_8Bit.png,,22,0,0,0,0,,,,,21,175,104,5,21,10,26,42,14,"12, 26, 56
-13, 32, 27","3B, 3A",,Magic
+13, 32, 27","3B, 3A",,Melee
 64,999,Shadow Venomthing,The corrupted echo of its former self. Venom drips with necrotic hate.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/086_8Bit.png,,25,0,0,0,0,,,,,22,200,111,44,33,22,6,6,15,"12, 21, 31, 40
-20, 27, 46, 47","4B, 4A",,Melee
+20, 27, 46, 47","4B, 4A",,Ranged
 65,999,Shadow Hissthing,The corrupted echo of its former self. Chanted to by ghostly vipers in reverence.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/061_8Bit.png,,28,0,0,0,0,,,,,23,225,116,12,23,46,29,6,15,"5, 7, 12, 19
-13, 27, 38, 46, 57","4B, 5A",,Ranged
+13, 27, 38, 46, 57","4B, 5A",,Magic
 66,999,Shadow Hisslord,The corrupted echo of its former self. Its gaze pierces into the heart’s decay.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/042_8Bit.png,,31,0,0,0,0,,,,,24,250,120,6,24,12,30,48,16,"21, 26, 31, 56
-6, 20, 32, 39, 47, 57","4B, 6A",,Magic
-67,999,Shadow Oathbreaker Fenlord,The corrupted echo of its former self. Every scar burns with vengeance.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/063_8Bit.png,,25,0,0,0,0,,,,,25,250,125,50,38,25,6,6,17,"13, 32, 38, 39, 46",5A,,Melee
+6, 20, 32, 39, 47, 57","4B, 6A",,Melee
+67,999,Shadow Oathbreaker Fenlord,The corrupted echo of its former self. Every scar burns with vengeance.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/063_8Bit.png,,25,0,0,0,0,,,,,25,250,125,50,38,25,6,6,17,"13, 32, 38, 39, 46",5A,,Magic
 68,999,Shadow Gnashfang Duelist,The corrupted echo of its former self. Its roar raises the dead in awe.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/076_8Bit.png,,28,0,0,0,0,,,,,26,275,129,13,26,52,32,6,17,"20, 27, 39, 46, 57,
-41","5A, 1S",,Ranged
+41","5A, 1S",,Melee
 69,999,Shadow Ironhide Outcast,The corrupted echo of its former self. Each trophy bears a name it whispers.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/060_8Bit.png,,28,0,0,0,0,,,,,27,275,136,7,27,14,34,54,18,"13, 27, 39, 47, 57,
-41","5A, 1S",,Magic
+41","5A, 1S",,Ranged
 70,999,Shadow Gorefang Raider,The corrupted echo of its former self. Strength is its scripture; mercy is void.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/062_8Bit.png,,30,0,0,0,0,,,,,28,300,140,56,42,28,7,7,19,"6, 27, 32, 47, 57,
-28, 58","5A, 2S",,Melee
+28, 58","5A, 2S",,Magic
 71,999,Shadow Bloodtrail Marauder,The corrupted echo of its former self. Its laughter splits minds from within.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/090_8Bit.png,,35,0,0,0,0,,,,,29,350,144,14,29,58,36,7,19,"6, 13, 32, 39, 47, 57,
-23, 33",6A 2S,,Ranged
+23, 33",6A 2S,,Melee
 72,999,Shadow Blighthorn Warchief,The corrupted echo of its former self. Fueled by echoes of ancient warcries.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/087_8Bit.png,,40,0,0,0,0,,,,,30,400,151,8,30,15,38,60,20,"13, 27, 32, 39, 47, 57,
-14, 49, 58",6A 3S,,Magic
+14, 49, 58",6A 3S,,Ranged
 73,999,Shadow Charbeast,The corrupted echo of its former self. Flames coil within its hollow bones.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/016_8Bit.png,,32,0,0,0,0,,,,,31,400,155,62,46,31,8,8,21,"6, 13, 27, 32, 38, 39, 46. 47, 57",9A,,Melee
 74,999,Shadow Cindermancer,The corrupted echo of its former self. Its ashes cling to memory and skin.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/028_8Bit.png,,34,0,0,0,0,,,,,32,425,160,16,32,64,40,8,21,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57",10A,,Ranged
 75,999,Shadow Charthing,The corrupted echo of its former self. Burns footprints into reality itself.,https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/rpg-monsters-dungeons/084_8Bit.png,,34,0,0,0,0,,,,,33,425,164,8,33,16,41,66,22,"6, 13, 20, 27, 32, 38, 39, 46. 47, 57",10A,,Magic
