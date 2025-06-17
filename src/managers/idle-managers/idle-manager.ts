@@ -277,12 +277,18 @@ export class IdleManager {
                 await deleteAllIdleActivityQueueElements(this.redisClient, userId);
 
                 if (activities.length <= 0) {
+                    // ✅ ALWAYS emit the event, even for empty activities
                     this.socketManager.emitEvent(userId, "idle-progress-update", {
                         userId: userId,
                         payload: {
+                            offlineProgressMs: 0,
+                            updates: [],
                         },
                     });
-                };
+
+                    // ✅ RETURN here to stop processing - change semicolon to return!
+                    return undefined;
+                }
 
                 const progressUpdates: { update?: ProgressUpdate, currentCombat?: CurrentCombat }[] = [];
 
