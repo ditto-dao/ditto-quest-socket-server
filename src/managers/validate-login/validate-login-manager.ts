@@ -178,8 +178,10 @@ export class ValidateLoginManager {
             }
             if (user === null) throw new Error(`Failed to fetch user data.`);
             logger.info(`Loading offline idle activity for user ${userId}`);
+
             // Process offline progress and get both combat data and updates
-            const { currentCombat, progressUpdates } = await this.idleManager.loadIdleActivitiesOnLogin(userId);
+            const { currentCombat, progressUpdates, offlineProgressMs } = await this.idleManager.loadIdleActivitiesOnLogin(userId);
+
             // Apply progress updates to user object in memory
             if (progressUpdates && progressUpdates.length > 0) {
                 const addedItems = await applyProgressUpdatesToUser(user, progressUpdates);
@@ -189,19 +191,32 @@ export class ValidateLoginManager {
                     await this.refreshNewInventoryItems(user, addedItems);
                 }
             }
+
             // Handle combat restoration if needed
             if (currentCombat) {
                 await this.restoreCombatSession(currentCombat, user);
             }
+
             // Send the updated user data to frontend (includes all offline progress with real IDs)
             data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
                 userId: data.loginPayload.userData.id,
                 payload: user
             });
+
+            // NOW emit the idle progress update - after everything is ready
+            data.socket.emit("idle-progress-update", {
+                userId: data.loginPayload.userData.id,
+                payload: {
+                    offlineProgressMs,
+                    updates: progressUpdates,
+                },
+            });
+
             // Mark snapshot stale for background regeneration (since user state changed)
             if (progressUpdates && progressUpdates.length > 0) {
                 await snapshotManager.markStale(userId, SnapshotTrigger.SESSION_END);
             }
+
             // Load and send mission data (non-blocking with delay)
             const currMission = await this.loadUserMission(userId);
             if (currMission && currMission.round < 6) {

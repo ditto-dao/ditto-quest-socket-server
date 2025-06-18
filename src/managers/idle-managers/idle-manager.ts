@@ -270,23 +270,14 @@ export class IdleManager {
         });
     }
 
-    async loadIdleActivitiesOnLogin(userId: string): Promise<{ currentCombat?: CurrentCombat, progressUpdates: ProgressUpdate[] }> {
+    async loadIdleActivitiesOnLogin(userId: string): Promise<{ currentCombat?: CurrentCombat, progressUpdates: ProgressUpdate[], offlineProgressMs: number }> {
         return await this.lock.acquire(userId, async () => {
             try {
                 const activities = await getIdleActivityQueueElements(this.redisClient, userId);
                 await deleteAllIdleActivityQueueElements(this.redisClient, userId);
 
                 if (activities.length <= 0) {
-                    // ✅ ALWAYS emit the event, even for empty activities
-                    this.socketManager.emitEvent(userId, "idle-progress-update", {
-                        userId: userId,
-                        payload: {
-                            offlineProgressMs: 0,
-                            updates: [],
-                        },
-                    });
-
-                    return { progressUpdates: [] };
+                    return { progressUpdates: [], offlineProgressMs: 0 };
                 }
 
                 const progressUpdates: { update?: ProgressUpdate, currentCombat?: CurrentCombat }[] = [];
@@ -322,24 +313,20 @@ export class IdleManager {
 
                 logger.info(`idle progress update: ${JSON.stringify(updatesOnly, null, 2)}`);
 
-                this.socketManager.emitEvent(userId, "idle-progress-update", {
-                    userId: userId,
-                    payload: {
-                        offlineProgressMs: Math.min(
-                            Date.now() - activities[0].logoutTimestamp!,
-                            MAX_OFFLINE_IDLE_PROGRESS_S * 1000
-                        ),
-                        updates: updatesOnly,
-                    },
-                });
+                const offlineProgressMs = Math.min(
+                    Date.now() - activities[0].logoutTimestamp!,
+                    MAX_OFFLINE_IDLE_PROGRESS_S * 1000
+                );
 
+                // Return the data for login manager to emit
                 return {
                     currentCombat: progressUpdates.find((entry) => entry.currentCombat !== undefined)?.currentCombat,
-                    progressUpdates: updatesOnly
+                    progressUpdates: updatesOnly,
+                    offlineProgressMs
                 };
             } catch (err) {
                 logger.error(`Error loading idle activities on login for user ${userId}: ${err}`);
-                return { progressUpdates: [] };
+                return { progressUpdates: [], offlineProgressMs: 0 };
             }
         });
     }
