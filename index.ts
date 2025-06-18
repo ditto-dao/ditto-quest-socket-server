@@ -1,3 +1,5 @@
+// index.ts (UPDATED with Game Codex initialization)
+
 import { logger } from "./src/utils/logger"
 import express from "express"
 import { createServer } from "http"
@@ -14,10 +16,27 @@ import { ValidateLoginManager } from "./src/managers/validate-login/validate-log
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { snapshotWorker } from "./src/workers/snapshot/snapshot-worker"
+import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
 
 require("@aws-sdk/crc64-nvme-crt");
 
 async function main() {
+    logger.info('🚀 Starting Ditto Quest Server with Memory-First Architecture...');
+
+    // ========== STEP 1: INITIALIZE GAME CODEX (CRITICAL - BEFORE EVERYTHING ELSE) ==========
+    try {
+        logger.info('📚 Initializing Game Codex in-memory cache...');
+        await GameCodexManager.initialize();
+        logger.info('✅ Game Codex ready - all static data loaded into memory');
+    } catch (error) {
+        logger.error('❌ CRITICAL: Game Codex initialization failed');
+        logger.error('🚨 Server cannot start without game data');
+        logger.error(`Error: ${error}`);
+        process.exit(1); // Exit immediately - cannot run without game data
+    }
+
+    // ========== STEP 2: SETUP SERVER INFRASTRUCTURE ==========
+
     // Socket
     const app = express()
     const httpServer = createServer(app)
@@ -52,6 +71,8 @@ async function main() {
         logger.info('Connected to Redis')
     })
 
+    // ========== STEP 3: INITIALIZE MANAGERS ==========
+
     // Socket manager
     const socketManager = new SocketManager(dqIo, dittoLedgerSocket)
 
@@ -62,10 +83,40 @@ async function main() {
     // Validate login manager
     const validateLoginManager = new ValidateLoginManager(dittoLedgerSocket, socketManager, idleManager, combatManager)
 
+    // ========== STEP 4: SETUP SOCKET HANDLERS ==========
     await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager)
 
     setupGlobalErrorHandlers()
 
+    // ========== STEP 5: SETUP ADMIN ENDPOINTS ==========
+
+    // Health check route
+    app.get('/', (req, res) => {
+        res.status(200).json({
+            status: 'ok',
+            gameCodexReady: GameCodexManager.isReady(),
+            gameCodexStats: GameCodexManager.getStats()
+        });
+    });
+
+    // Game Codex stats endpoint
+    app.get('/admin/game-codex', (req, res) => {
+        try {
+            const stats = GameCodexManager.getStats();
+            res.json({
+                success: true,
+                ...stats
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: 'Failed to get game codex stats',
+                details: error
+            });
+        }
+    });
+
+    // Snapshot metrics endpoint
     app.get('/admin/snapshot-metrics', async (req, res) => {
         try {
             const metrics = await snapshotMetrics.getMetrics();
@@ -75,6 +126,8 @@ async function main() {
         }
     });
 
+    // ========== STEP 6: START BACKGROUND WORKERS ==========
+
     snapshotWorker.start(30000); // Process queue every 30 seconds
 
     setInterval(async () => {
@@ -82,8 +135,16 @@ async function main() {
         snapshotMetrics.reset(); // Reset hourly
     }, 3600000); // Every hour
 
+    // ========== STEP 7: START SERVER ==========
+
     httpServer.listen((PORT), () => {
-        logger.info(`Server started on port ${PORT}`)
+        logger.info(`🎉 Server started successfully on port ${PORT}`)
+        logger.info(`📊 Game Codex Status: ${GameCodexManager.isReady() ? 'READY' : 'NOT READY'}`)
+
+        // Log final memory usage summary
+        const stats = GameCodexManager.getStats();
+        logger.info(`📈 Total Game Data Entries: ${Object.values(stats.counts).reduce((a, b) => a + b, 0)}`)
+        logger.info(`🚀 Memory-First Architecture: ACTIVE`)
     })
 
     httpServer.on('error', (error) => {
@@ -100,17 +161,26 @@ async function gracefulShutdown(
     idleManager: IdleManager,
     socketManager: SocketManager
 ) {
+    logger.info('🛑 Graceful shutdown initiated...');
+
+    // Save all user activities
     await idleManager.saveAllUsersIdleActivities();
 
+    // Disconnect all users
     socketManager.disconnectAllUsers();
 
+    // Stop background workers
     snapshotWorker.stop();
 
+    // Close socket server
     io.close(() => {
         logger.info('Socket server closed.')
     })
 
+    // Close Redis connection
     await redisClient.quit()
+
+    logger.info('✅ Graceful shutdown complete');
     process.exit(0)
 }
 

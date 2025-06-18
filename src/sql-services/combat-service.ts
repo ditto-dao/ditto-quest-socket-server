@@ -4,6 +4,7 @@ import { prisma } from "./client";
 import { DungeonState } from "../managers/idle-managers/combat/dungeon-manager";
 import { Decimal } from "@prisma/client/runtime/library";
 import { snapshotManager, SnapshotTrigger } from "./snapshot-manager-service";
+import { GameCodexManager } from "../managers/game-codex/game-codex-manager";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -18,18 +19,36 @@ export type FullMonster = Monster & {
 };
 
 /**
- * Fetch a monster by ID, including its combat stats.
- * @param {number} monsterId - The ID of the monster to fetch.
- * @returns {Promise<Monster>} - The monster with its combat stats and drop objects.
+ * Updated Combat Service - Memory first with Prisma fallback
+ * Monster/Domain/Dungeon functions try memory cache first, fallback to database
+ * Other combat functions (user-specific) remain unchanged and use database
+ */
+
+/**
+ * Fetch a monster by ID - memory first with database fallback
  */
 export async function fetchMonsterById(monsterId: number): Promise<FullMonster | null> {
     try {
-        logger.info(`Fetching monster with ID: ${monsterId}`);
+        // Try memory cache first - O(1) lookup
+        if (GameCodexManager.isReady()) {
+            const monster = GameCodexManager.getMonster(monsterId);
+            if (monster) {
+                logger.debug(`Retrieved monster ${monsterId} (${monster.name}) from memory cache`);
+                return monster;
+            }
+        }
+    } catch (error) {
+        logger.warn(`Memory cache failed for fetchMonsterById(${monsterId}): ${error}`);
+    }
+
+    // Fallback to database
+    try {
+        logger.info(`Falling back to database for fetchMonsterById(${monsterId})`);
 
         const monster = await prisma.monster.findUnique({
             where: { id: monsterId },
             include: {
-                combat: true, // Include combat stats
+                combat: true,
                 statEffects: true,
                 drops: {
                     include: {
@@ -41,14 +60,14 @@ export async function fetchMonsterById(monsterId: number): Promise<FullMonster |
         });
 
         if (!monster) {
-            logger.warn(`Monster with ID ${monsterId} not found.`);
+            logger.warn(`Monster with ID ${monsterId} not found in database.`);
             return null;
         }
 
-        logger.info(`Retrieved monster: ${monster.name}`);
+        logger.info(`Retrieved monster from database: ${monster.name}`);
         return monster;
     } catch (error) {
-        logger.error(`Error fetching monster with ID ${monsterId}: ${error}`);
+        logger.error(`Error fetching monster with ID ${monsterId} from database: ${error}`);
         throw error;
     }
 }
@@ -70,40 +89,56 @@ export type DomainWithMonsters = Domain & {
 };
 
 /**
- * Fetches a domain by its ID, including nested monster data.
- *
- * This function returns a full `DomainWithMonsters` object from the database, along with:
- * - All `DomainMonster` entries related to it
- * - Each associated `Monster`'s data
- * - Each `Monster`'s `combat` stats
- * - Each `Monster`'s attached `statEffects`
- * - Each `Monster`'s `drops`, including nested `item` or `equipment`
- *
- * @param domainId - The ID of the domain to fetch
- * @returns A `DomainWithMonsters` object or `null` if not found
+ * Fetches a domain by its ID - memory first with database fallback
  */
 export async function getDomainById(domainId: number): Promise<DomainWithMonsters | null> {
-    return await prisma.domain.findUnique({
-        where: { id: domainId },
-        include: {
-            monsters: {
-                include: {
-                    monster: {
-                        include: {
-                            combat: true,
-                            statEffects: true,
-                            drops: {
-                                include: {
-                                    item: true,
-                                    equipment: true,
+    try {
+        // Try memory cache first - O(1) lookup
+        if (GameCodexManager.isReady()) {
+            const domain = GameCodexManager.getDomain(domainId);
+            if (domain) {
+                logger.debug(`Retrieved domain ${domainId} (${domain.name}) from memory cache`);
+                return domain;
+            }
+        }
+    } catch (error) {
+        logger.warn(`Memory cache failed for getDomainById(${domainId}): ${error}`);
+    }
+
+    // Fallback to database
+    try {
+        logger.info(`Falling back to database for getDomainById(${domainId})`);
+
+        const domain = await prisma.domain.findUnique({
+            where: { id: domainId },
+            include: {
+                monsters: {
+                    include: {
+                        monster: {
+                            include: {
+                                combat: true,
+                                statEffects: true,
+                                drops: {
+                                    include: {
+                                        item: true,
+                                        equipment: true,
+                                    },
                                 },
                             },
                         },
                     },
                 },
             },
-        },
-    });
+        });
+
+        if (domain) {
+            logger.info(`Retrieved domain from database: ${domain.name}`);
+        }
+        return domain;
+    } catch (error) {
+        logger.error(`Error fetching domain with ID ${domainId} from database: ${error}`);
+        throw error;
+    }
 }
 
 export type DungeonWithMonsters = Dungeon & {
@@ -120,40 +155,56 @@ export type DungeonWithMonsters = Dungeon & {
 };
 
 /**
- * Fetches a dungeon by its ID, including all nested monster data but excluding leaderboard.
- *
- * - Includes `monsterSequence` in defined order
- * - Each sequence entry includes the full `Monster` object with:
- *    - `combat` stats
- *    - `statEffects`
- *    - `drops` including nested `item` and `equipment`
- *
- * @param dungeonId - The ID of the dungeon to fetch
- * @returns A `DungeonWithMonsters` object or `null` if not found
+ * Fetches a dungeon by its ID - memory first with database fallback
  */
 export async function getDungeonById(dungeonId: number): Promise<DungeonWithMonsters | null> {
-    return await prisma.dungeon.findUnique({
-        where: { id: dungeonId },
-        include: {
-            monsterSequence: {
-                orderBy: { order: "asc" },
-                include: {
-                    monster: {
-                        include: {
-                            combat: true,
-                            statEffects: true,
-                            drops: {
-                                include: {
-                                    item: true,
-                                    equipment: true,
+    try {
+        // Try memory cache first - O(1) lookup
+        if (GameCodexManager.isReady()) {
+            const dungeon = GameCodexManager.getDungeon(dungeonId);
+            if (dungeon) {
+                logger.debug(`Retrieved dungeon ${dungeonId} (${dungeon.name}) from memory cache`);
+                return dungeon;
+            }
+        }
+    } catch (error) {
+        logger.warn(`Memory cache failed for getDungeonById(${dungeonId}): ${error}`);
+    }
+
+    // Fallback to database
+    try {
+        logger.info(`Falling back to database for getDungeonById(${dungeonId})`);
+
+        const dungeon = await prisma.dungeon.findUnique({
+            where: { id: dungeonId },
+            include: {
+                monsterSequence: {
+                    include: {
+                        monster: {
+                            include: {
+                                combat: true,
+                                statEffects: true,
+                                drops: {
+                                    include: {
+                                        item: true,
+                                        equipment: true,
+                                    },
                                 },
                             },
                         },
                     },
                 },
             },
-        },
-    });
+        });
+
+        if (dungeon) {
+            logger.info(`Retrieved dungeon from database: ${dungeon.name}`);
+        }
+        return dungeon;
+    } catch (error) {
+        logger.error(`Error fetching dungeon with ID ${dungeonId} from database: ${error}`);
+        throw error;
+    }
 }
 
 export async function updateDungeonLeaderboard(

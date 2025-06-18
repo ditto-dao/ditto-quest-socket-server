@@ -7,6 +7,7 @@ import { DOMINANT_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTrai
 import { GACHA_PULL_ODDS, GACHA_PULL_ODDS_NERF } from '../utils/config';
 import { canUserMintSlime, recalculateAndUpdateUserStats, UserDataEquipped } from './user-service';
 import { snapshotManager, SnapshotTrigger } from './snapshot-manager-service';
+import { GameCodexManager } from '../managers/game-codex/game-codex-manager';
 
 
 export type SlimeWithTraits = Slime & {
@@ -193,25 +194,42 @@ export async function getRandomSlimeTraitId(traitType: TraitType, probabilities:
   }
 }
 
-export async function getSlimeTraitById(traitId: number): Promise<Prisma.SlimeTraitGetPayload<{
-  include: { statEffect: true };
-}> | null> {
+/**
+ * Updated function to get slime trait by ID - memory first with database fallback
+ * Other slime functions remain unchanged as they deal with user-specific data
+ */
+export async function getSlimeTraitById(traitId: number) {
   try {
+    // Try memory cache first - O(1) lookup
+    if (GameCodexManager.isReady()) {
+      const trait = GameCodexManager.getSlimeTrait(traitId);
+
+      if (trait) {
+        logger.debug(`Retrieved slime trait ${traitId} (${trait.name}) from memory cache`);
+        return trait;
+      }
+    }
+  } catch (error) {
+    logger.warn(`Memory cache failed for getSlimeTraitById(${traitId}): ${error}`);
+  }
+
+  // Fallback to database
+  try {
+    logger.info(`Falling back to database for getSlimeTraitById(${traitId})`);
+
     const trait = await prisma.slimeTrait.findUnique({
       where: { id: traitId },
       include: {
-        statEffect: true, // Include related StatEffect
+        statEffect: true
       }
     });
 
-    if (!trait) {
-      logger.warn(`No SlimeTrait found with ID: ${traitId}`);
-      return null;
+    if (trait) {
+      logger.info(`Retrieved slime trait from database: ${trait.name}`);
     }
-
     return trait;
   } catch (error) {
-    logger.error(`Error fetching SlimeTrait ID ${traitId}: ${error}`);
+    logger.error(`Failed to get slime trait with ID ${traitId} from database: ${error}`);
     throw error;
   }
 }
@@ -623,7 +641,7 @@ export async function equipSlimeForUser(
     const result = await recalculateAndUpdateUserStats(telegramId);
 
     await snapshotManager.markStale(telegramId, SnapshotTrigger.SLIME_EQUIPPED);
-    
+
     return result;
   } catch (err) {
     throw new Error(`Failed to equip slime ${slime.id} for user ${telegramId}: ${err}`);
@@ -642,9 +660,9 @@ export async function unequipSlimeForUser(
     });
 
     const result = await recalculateAndUpdateUserStats(telegramId);
-    
+
     await snapshotManager.markStale(telegramId, SnapshotTrigger.SLIME_UNEQUIPPED);
-    
+
     return result;
   } catch (err) {
     throw new Error(`Failed to unequip slime for user ${telegramId}: ${err}`);
