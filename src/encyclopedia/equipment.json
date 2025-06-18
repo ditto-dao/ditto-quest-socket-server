@@ -79,7 +79,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 55
+    "sellPriceGP": 105
   },
   {
     "id": 3,
@@ -120,7 +120,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 60
+    "sellPriceGP": 170
   },
   {
     "id": 4,
@@ -161,7 +161,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 70
+    "sellPriceGP": 235
   },
   {
     "id": 5,
@@ -202,7 +202,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 100
+    "sellPriceGP": 280
   },
   {
     "id": 6,
@@ -243,7 +243,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 160
+    "sellPriceGP": 745
   },
   {
     "id": 7,
@@ -284,7 +284,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 210
+    "sellPriceGP": 520
   },
   {
     "id": 8,
@@ -325,7 +325,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 260
+    "sellPriceGP": 890
   },
   {
     "id": 9,
@@ -366,7 +366,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 350
+    "sellPriceGP": 805
   },
   {
     "id": 10,
@@ -407,7 +407,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 420
+    "sellPriceGP": 1240
   },
   {
     "id": 11,
@@ -448,7 +448,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 500
+    "sellPriceGP": 1180
   },
   {
     "id": 12,
@@ -489,7 +489,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 650
+    "sellPriceGP": 1500
   },
   {
     "id": 13,
@@ -530,7 +530,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 740
+    "sellPriceGP": 1510
   },
   {
     "id": 14,
@@ -571,7 +571,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 850
+    "sellPriceGP": 2215
   },
   {
     "id": 15,
@@ -612,7 +612,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1100
+    "sellPriceGP": 2105
   },
   {
     "id": 16,
@@ -653,7 +653,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1260
+    "sellPriceGP": 2720
   },
   {
     "id": 17,
@@ -694,7 +694,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1430
+    "sellPriceGP": 3200
   },
   {
     "id": 18,
@@ -735,7 +735,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 1800
+    "sellPriceGP": 3710
   },
   {
     "id": 19,
@@ -776,7 +776,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 2100
+    "sellPriceGP": 4195
   },
   {
     "id": 20,
@@ -817,7 +817,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 2450
+    "sellPriceGP": 3290
   },
   {
     "id": 21,
@@ -899,7 +899,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 55
+    "sellPriceGP": 105
   },
   {
     "id": 23,
@@ -940,7 +940,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 60
+    "sellPriceGP": 170
   },
   {
     "id": 24,
@@ -981,7 +981,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 80
+    "sellPriceGP": 235
   },
   {
     "id": 25,
@@ -1022,7 +1022,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 100
+    "sellPriceGP": 280
   },
   {
     "id": 26,
@@ -1063,7 +1063,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 150
+    "sellPriceGP": 745
   },
   {
     "id": 27,
@@ -1104,7 +1104,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 195
+    "sellPriceGP": 520
   },
   {
     "id": 28,
@@ -1145,7 +1145,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 250
+    "sellPriceGP": 890
   },
   {
     "id": 29,
@@ -1186,7 +1186,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 320
+    "sellPriceGP": 805
   },
   {
     "id": 30,
@@ -1227,7 +1227,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 400
+    "sellPriceGP": 1240
   },
   {
     "id": 31,
@@ -1268,7 +1268,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 500
+    "sellPriceGP": 1180
   },
   {
     "id": 32,
@@ -1309,7 +1309,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 666
+    "sellPriceGP": 1500
   },
   {
     "id": 33,
@@ -1350,7 +1350,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 700
+    "sellPriceGP": 1510
   },
   {
     "id": 34,
@@ -1391,7 +1391,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 850
+    "sellPriceGP": 2215
   },
   {
     "id": 35,
@@ -1432,7 +1432,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1000
+    "sellPriceGP": 2105
   },
   {
     "id": 36,
@@ -1473,7 +1473,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1200
+    "sellPriceGP": 2720
   },
   {
     "id": 37,
@@ -1514,7 +1514,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1666
+    "sellPriceGP": 3200
   },
   {
     "id": 38,
@@ -1555,7 +1555,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 1600
+    "sellPriceGP": 3710
   },
   {
     "id": 39,
@@ -1596,7 +1596,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 1900
+    "sellPriceGP": 4195
   },
   {
     "id": 40,
@@ -1637,7 +1637,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 2400
+    "sellPriceGP": 3290
   },
   {
     "id": 41,
@@ -1719,7 +1719,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 55
+    "sellPriceGP": 105
   },
   {
     "id": 43,
@@ -1760,7 +1760,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 60
+    "sellPriceGP": 170
   },
   {
     "id": 44,
@@ -1801,7 +1801,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 80
+    "sellPriceGP": 235
   },
   {
     "id": 45,
@@ -1842,7 +1842,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 100
+    "sellPriceGP": 280
   },
   {
     "id": 46,
@@ -1883,7 +1883,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 150
+    "sellPriceGP": 745
   },
   {
     "id": 47,
@@ -1924,7 +1924,7 @@
     },
     "rarity": "D",
     "type": "weapon",
-    "sellPriceGP": 195
+    "sellPriceGP": 520
   },
   {
     "id": 48,
@@ -1965,7 +1965,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 250
+    "sellPriceGP": 890
   },
   {
     "id": 49,
@@ -2006,7 +2006,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 320
+    "sellPriceGP": 805
   },
   {
     "id": 50,
@@ -2047,7 +2047,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 400
+    "sellPriceGP": 1240
   },
   {
     "id": 51,
@@ -2088,7 +2088,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 500
+    "sellPriceGP": 1180
   },
   {
     "id": 52,
@@ -2129,7 +2129,7 @@
     },
     "rarity": "C",
     "type": "weapon",
-    "sellPriceGP": 666
+    "sellPriceGP": 1500
   },
   {
     "id": 53,
@@ -2170,7 +2170,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 700
+    "sellPriceGP": 1510
   },
   {
     "id": 54,
@@ -2211,7 +2211,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 850
+    "sellPriceGP": 2215
   },
   {
     "id": 55,
@@ -2252,7 +2252,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1000
+    "sellPriceGP": 2105
   },
   {
     "id": 56,
@@ -2293,7 +2293,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1200
+    "sellPriceGP": 2720
   },
   {
     "id": 57,
@@ -2334,7 +2334,7 @@
     },
     "rarity": "B",
     "type": "weapon",
-    "sellPriceGP": 1666
+    "sellPriceGP": 3200
   },
   {
     "id": 58,
@@ -2375,7 +2375,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 1600
+    "sellPriceGP": 3710
   },
   {
     "id": 59,
@@ -2416,7 +2416,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 1900
+    "sellPriceGP": 4195
   },
   {
     "id": 60,
@@ -2457,7 +2457,7 @@
     },
     "rarity": "A",
     "type": "weapon",
-    "sellPriceGP": 2400
+    "sellPriceGP": 3290
   },
   {
     "id": 61,
@@ -2497,7 +2497,7 @@
     },
     "rarity": "D",
     "type": "hat",
-    "sellPriceGP": 50
+    "sellPriceGP": 65
   },
   {
     "id": 62,
@@ -2537,7 +2537,7 @@
     },
     "rarity": "D",
     "type": "hat",
-    "sellPriceGP": 80
+    "sellPriceGP": 280
   },
   {
     "id": 63,
@@ -2577,7 +2577,7 @@
     },
     "rarity": "D",
     "type": "hat",
-    "sellPriceGP": 100
+    "sellPriceGP": 400
   },
   {
     "id": 64,
@@ -2617,7 +2617,7 @@
     },
     "rarity": "D",
     "type": "hat",
-    "sellPriceGP": 150
+    "sellPriceGP": 735
   },
   {
     "id": 65,
@@ -2657,7 +2657,7 @@
     },
     "rarity": "D",
     "type": "hat",
-    "sellPriceGP": 195
+    "sellPriceGP": 900
   },
   {
     "id": 66,
@@ -2697,7 +2697,7 @@
     },
     "rarity": "C",
     "type": "hat",
-    "sellPriceGP": 250
+    "sellPriceGP": 1460
   },
   {
     "id": 67,
@@ -2737,7 +2737,7 @@
     },
     "rarity": "C",
     "type": "hat",
-    "sellPriceGP": 320
+    "sellPriceGP": 1800
   },
   {
     "id": 68,
@@ -2777,7 +2777,7 @@
     },
     "rarity": "C",
     "type": "hat",
-    "sellPriceGP": 400
+    "sellPriceGP": 2585
   },
   {
     "id": 69,
@@ -2817,7 +2817,7 @@
     },
     "rarity": "C",
     "type": "hat",
-    "sellPriceGP": 500
+    "sellPriceGP": 3000
   },
   {
     "id": 70,
@@ -2857,7 +2857,7 @@
     },
     "rarity": "C",
     "type": "hat",
-    "sellPriceGP": 666
+    "sellPriceGP": 4275
   },
   {
     "id": 71,
@@ -2897,7 +2897,7 @@
     },
     "rarity": "D",
     "type": "armour",
-    "sellPriceGP": 50
+    "sellPriceGP": 70
   },
   {
     "id": 72,
@@ -2937,7 +2937,7 @@
     },
     "rarity": "D",
     "type": "armour",
-    "sellPriceGP": 80
+    "sellPriceGP": 235
   },
   {
     "id": 73,
@@ -2977,7 +2977,7 @@
     },
     "rarity": "D",
     "type": "armour",
-    "sellPriceGP": 100
+    "sellPriceGP": 300
   },
   {
     "id": 74,
@@ -3017,7 +3017,7 @@
     },
     "rarity": "D",
     "type": "armour",
-    "sellPriceGP": 150
+    "sellPriceGP": 585
   },
   {
     "id": 75,
@@ -3057,7 +3057,7 @@
     },
     "rarity": "D",
     "type": "armour",
-    "sellPriceGP": 195
+    "sellPriceGP": 1400
   },
   {
     "id": 76,
@@ -3097,7 +3097,7 @@
     },
     "rarity": "C",
     "type": "armour",
-    "sellPriceGP": 250
+    "sellPriceGP": 1805
   },
   {
     "id": 77,
@@ -3137,7 +3137,7 @@
     },
     "rarity": "C",
     "type": "armour",
-    "sellPriceGP": 320
+    "sellPriceGP": 2300
   },
   {
     "id": 78,
@@ -3177,7 +3177,7 @@
     },
     "rarity": "C",
     "type": "armour",
-    "sellPriceGP": 400
+    "sellPriceGP": 2450
   },
   {
     "id": 79,
@@ -3217,7 +3217,7 @@
     },
     "rarity": "C",
     "type": "armour",
-    "sellPriceGP": 500
+    "sellPriceGP": 4260
   },
   {
     "id": 80,
@@ -3257,7 +3257,7 @@
     },
     "rarity": "C",
     "type": "armour",
-    "sellPriceGP": 666
+    "sellPriceGP": 3880
   },
   {
     "id": 81,
@@ -3337,7 +3337,7 @@
     },
     "rarity": "D",
     "type": "shield",
-    "sellPriceGP": 80
+    "sellPriceGP": 105
   },
   {
     "id": 83,
@@ -3377,7 +3377,7 @@
     },
     "rarity": "D",
     "type": "shield",
-    "sellPriceGP": 100
+    "sellPriceGP": 170
   },
   {
     "id": 84,
@@ -3417,7 +3417,7 @@
     },
     "rarity": "D",
     "type": "shield",
-    "sellPriceGP": 150
+    "sellPriceGP": 255
   },
   {
     "id": 85,
@@ -3457,7 +3457,7 @@
     },
     "rarity": "D",
     "type": "shield",
-    "sellPriceGP": 195
+    "sellPriceGP": 270
   },
   {
     "id": 86,
@@ -3497,7 +3497,7 @@
     },
     "rarity": "C",
     "type": "shield",
-    "sellPriceGP": 250
+    "sellPriceGP": 770
   },
   {
     "id": 87,
@@ -3537,7 +3537,7 @@
     },
     "rarity": "C",
     "type": "shield",
-    "sellPriceGP": 320
+    "sellPriceGP": 500
   },
   {
     "id": 88,
@@ -3577,7 +3577,7 @@
     },
     "rarity": "C",
     "type": "shield",
-    "sellPriceGP": 400
+    "sellPriceGP": 895
   },
   {
     "id": 89,
@@ -3617,7 +3617,7 @@
     },
     "rarity": "C",
     "type": "shield",
-    "sellPriceGP": 500
+    "sellPriceGP": 700
   },
   {
     "id": 90,
@@ -3657,7 +3657,7 @@
     },
     "rarity": "C",
     "type": "shield",
-    "sellPriceGP": 666
+    "sellPriceGP": 1335
   },
   {
     "id": 91,
@@ -3697,7 +3697,7 @@
     },
     "rarity": "B",
     "type": "shield",
-    "sellPriceGP": 700
+    "sellPriceGP": 1090
   },
   {
     "id": 92,
@@ -3737,7 +3737,7 @@
     },
     "rarity": "B",
     "type": "shield",
-    "sellPriceGP": 850
+    "sellPriceGP": 1600
   },
   {
     "id": 93,
@@ -3777,7 +3777,7 @@
     },
     "rarity": "B",
     "type": "shield",
-    "sellPriceGP": 1000
+    "sellPriceGP": 1365
   },
   {
     "id": 94,
@@ -3817,7 +3817,7 @@
     },
     "rarity": "B",
     "type": "shield",
-    "sellPriceGP": 1200
+    "sellPriceGP": 2325
   },
   {
     "id": 95,
@@ -3857,7 +3857,7 @@
     },
     "rarity": "B",
     "type": "shield",
-    "sellPriceGP": 1666
+    "sellPriceGP": 1980
   },
   {
     "id": 96,
@@ -3897,7 +3897,7 @@
     },
     "rarity": "A",
     "type": "shield",
-    "sellPriceGP": 1600
+    "sellPriceGP": 2765
   },
   {
     "id": 97,
@@ -3937,7 +3937,7 @@
     },
     "rarity": "A",
     "type": "shield",
-    "sellPriceGP": 1900
+    "sellPriceGP": 3100
   },
   {
     "id": 98,
@@ -3977,7 +3977,7 @@
     },
     "rarity": "A",
     "type": "shield",
-    "sellPriceGP": 2400
+    "sellPriceGP": 3830
   },
   {
     "id": 99,
@@ -4017,7 +4017,7 @@
     },
     "rarity": "A",
     "type": "shield",
-    "sellPriceGP": 3500
+    "sellPriceGP": 4295
   },
   {
     "id": 100,
@@ -4057,7 +4057,7 @@
     },
     "rarity": "S",
     "type": "shield",
-    "sellPriceGP": 6000
+    "sellPriceGP": 3300
   },
   {
     "id": 101,
@@ -4101,7 +4101,7 @@
     },
     "rarity": "D",
     "type": "cape",
-    "sellPriceGP": 50
+    "sellPriceGP": 600
   },
   {
     "id": 102,
@@ -4145,7 +4145,7 @@
     },
     "rarity": "D",
     "type": "cape",
-    "sellPriceGP": 80
+    "sellPriceGP": 1420
   },
   {
     "id": 103,
@@ -4189,7 +4189,7 @@
     },
     "rarity": "D",
     "type": "cape",
-    "sellPriceGP": 100
+    "sellPriceGP": 1700
   },
   {
     "id": 104,
@@ -4233,7 +4233,7 @@
     },
     "rarity": "D",
     "type": "cape",
-    "sellPriceGP": 150
+    "sellPriceGP": 2010
   },
   {
     "id": 105,
@@ -4277,7 +4277,7 @@
     },
     "rarity": "D",
     "type": "cape",
-    "sellPriceGP": 195
+    "sellPriceGP": 2300
   },
   {
     "id": 106,
@@ -4321,7 +4321,7 @@
     },
     "rarity": "C",
     "type": "cape",
-    "sellPriceGP": 250
+    "sellPriceGP": 2970
   },
   {
     "id": 107,
@@ -4365,7 +4365,7 @@
     },
     "rarity": "C",
     "type": "cape",
-    "sellPriceGP": 320
+    "sellPriceGP": 3300
   },
   {
     "id": 108,
@@ -4409,7 +4409,7 @@
     },
     "rarity": "C",
     "type": "cape",
-    "sellPriceGP": 400
+    "sellPriceGP": 4200
   },
   {
     "id": 109,
@@ -4453,7 +4453,7 @@
     },
     "rarity": "C",
     "type": "cape",
-    "sellPriceGP": 500
+    "sellPriceGP": 4700
   },
   {
     "id": 110,
@@ -4497,7 +4497,7 @@
     },
     "rarity": "B",
     "type": "cape",
-    "sellPriceGP": 666
+    "sellPriceGP": 6040
   },
   {
     "id": 111,

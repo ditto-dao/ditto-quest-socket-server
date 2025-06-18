@@ -85,7 +85,7 @@
     "type": "weapon",
     "durationS": 30,
     "craftingLevelRequired": 15,
-    "craftingExp": 270,
+    "craftingExp": 230,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_10.png",
     "requiredItems": [
       {
@@ -108,7 +108,7 @@
     "type": "weapon",
     "durationS": 35,
     "craftingLevelRequired": 20,
-    "craftingExp": 735,
+    "craftingExp": 745,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_12.png",
     "requiredItems": [
       {
@@ -137,7 +137,7 @@
     "type": "weapon",
     "durationS": 40,
     "craftingLevelRequired": 25,
-    "craftingExp": 500,
+    "craftingExp": 420,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_14.png",
     "requiredItems": [
       {
@@ -160,7 +160,7 @@
     "type": "weapon",
     "durationS": 45,
     "craftingLevelRequired": 30,
-    "craftingExp": 880,
+    "craftingExp": 890,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_16.png",
     "requiredItems": [
       {
@@ -189,7 +189,7 @@
     "type": "weapon",
     "durationS": 50,
     "craftingLevelRequired": 35,
-    "craftingExp": 815,
+    "craftingExp": 655,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_18.png",
     "requiredItems": [
       {
@@ -212,7 +212,7 @@
     "type": "weapon",
     "durationS": 55,
     "craftingLevelRequired": 40,
-    "craftingExp": 1230,
+    "craftingExp": 1240,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_20.png",
     "requiredItems": [
       {
@@ -241,7 +241,7 @@
     "type": "weapon",
     "durationS": 60,
     "craftingLevelRequired": 45,
-    "craftingExp": 1245,
+    "craftingExp": 980,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_22.png",
     "requiredItems": [
       {
@@ -264,7 +264,7 @@
     "type": "weapon",
     "durationS": 65,
     "craftingLevelRequired": 50,
-    "craftingExp": 1415,
+    "craftingExp": 1500,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_24.png",
     "requiredItems": [
       {
@@ -293,7 +293,7 @@
     "type": "weapon",
     "durationS": 70,
     "craftingLevelRequired": 55,
-    "craftingExp": 1615,
+    "craftingExp": 1260,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_26.png",
     "requiredItems": [
       {
@@ -316,7 +316,7 @@
     "type": "weapon",
     "durationS": 75,
     "craftingLevelRequired": 60,
-    "craftingExp": 2200,
+    "craftingExp": 2215,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_28.png",
     "requiredItems": [
       {
@@ -345,7 +345,7 @@
     "type": "weapon",
     "durationS": 80,
     "craftingLevelRequired": 65,
-    "craftingExp": 2325,
+    "craftingExp": 1805,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_30.png",
     "requiredItems": [
       {
@@ -368,7 +368,7 @@
     "type": "weapon",
     "durationS": 85,
     "craftingLevelRequired": 70,
-    "craftingExp": 2705,
+    "craftingExp": 2720,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_32.png",
     "requiredItems": [
       {
@@ -397,7 +397,7 @@
     "type": "weapon",
     "durationS": 90,
     "craftingLevelRequired": 75,
-    "craftingExp": 3580,
+    "craftingExp": 2700,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_34.png",
     "requiredItems": [
       {
@@ -420,7 +420,7 @@
     "type": "weapon",
     "durationS": 95,
     "craftingLevelRequired": 80,
-    "craftingExp": 3690,
+    "craftingExp": 3710,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_36.png",
     "requiredItems": [
       {
@@ -449,7 +449,7 @@
     "type": "weapon",
     "durationS": 100,
     "craftingLevelRequired": 85,
-    "craftingExp": 5140,
+    "craftingExp": 3595,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_38.png",
     "requiredItems": [
       {
@@ -472,7 +472,7 @@
     "type": "weapon",
     "durationS": 105,
     "craftingLevelRequired": 90,
-    "craftingExp": 3265,
+    "craftingExp": 3290,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/01-swords-160pc/Swords_Normal_40.png",
     "requiredItems": [
       {
@@ -575,7 +575,7 @@
     "type": "weapon",
     "durationS": 30,
     "craftingLevelRequired": 15,
-    "craftingExp": 270,
+    "craftingExp": 230,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_10.png",
     "requiredItems": [
       {
@@ -598,7 +598,7 @@
     "type": "weapon",
     "durationS": 35,
     "craftingLevelRequired": 20,
-    "craftingExp": 735,
+    "craftingExp": 745,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_12.png",
     "requiredItems": [
       {
@@ -627,7 +627,7 @@
     "type": "weapon",
     "durationS": 40,
     "craftingLevelRequired": 25,
-    "craftingExp": 500,
+    "craftingExp": 420,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_14.png",
     "requiredItems": [
       {
@@ -650,7 +650,7 @@
     "type": "weapon",
     "durationS": 45,
     "craftingLevelRequired": 30,
-    "craftingExp": 880,
+    "craftingExp": 890,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_16.png",
     "requiredItems": [
       {
@@ -679,7 +679,7 @@
     "type": "weapon",
     "durationS": 50,
     "craftingLevelRequired": 35,
-    "craftingExp": 815,
+    "craftingExp": 655,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_18.png",
     "requiredItems": [
       {
@@ -702,7 +702,7 @@
     "type": "weapon",
     "durationS": 55,
     "craftingLevelRequired": 40,
-    "craftingExp": 1230,
+    "craftingExp": 1240,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_20.png",
     "requiredItems": [
       {
@@ -731,7 +731,7 @@
     "type": "weapon",
     "durationS": 60,
     "craftingLevelRequired": 45,
-    "craftingExp": 1245,
+    "craftingExp": 980,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_22.png",
     "requiredItems": [
       {
@@ -754,7 +754,7 @@
     "type": "weapon",
     "durationS": 65,
     "craftingLevelRequired": 50,
-    "craftingExp": 1415,
+    "craftingExp": 1500,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_24.png",
     "requiredItems": [
       {
@@ -783,7 +783,7 @@
     "type": "weapon",
     "durationS": 70,
     "craftingLevelRequired": 55,
-    "craftingExp": 1615,
+    "craftingExp": 1260,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_26.png",
     "requiredItems": [
       {
@@ -806,7 +806,7 @@
     "type": "weapon",
     "durationS": 75,
     "craftingLevelRequired": 60,
-    "craftingExp": 2200,
+    "craftingExp": 2215,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_28.png",
     "requiredItems": [
       {
@@ -835,7 +835,7 @@
     "type": "weapon",
     "durationS": 80,
     "craftingLevelRequired": 65,
-    "craftingExp": 2325,
+    "craftingExp": 1805,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_30.png",
     "requiredItems": [
       {
@@ -858,7 +858,7 @@
     "type": "weapon",
     "durationS": 85,
     "craftingLevelRequired": 70,
-    "craftingExp": 2705,
+    "craftingExp": 2720,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_32.png",
     "requiredItems": [
       {
@@ -887,7 +887,7 @@
     "type": "weapon",
     "durationS": 90,
     "craftingLevelRequired": 75,
-    "craftingExp": 3580,
+    "craftingExp": 2700,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_33.png",
     "requiredItems": [
       {
@@ -910,7 +910,7 @@
     "type": "weapon",
     "durationS": 95,
     "craftingLevelRequired": 80,
-    "craftingExp": 3690,
+    "craftingExp": 3710,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_34.png",
     "requiredItems": [
       {
@@ -939,7 +939,7 @@
     "type": "weapon",
     "durationS": 100,
     "craftingLevelRequired": 85,
-    "craftingExp": 5140,
+    "craftingExp": 3595,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_35.png",
     "requiredItems": [
       {
@@ -962,7 +962,7 @@
     "type": "weapon",
     "durationS": 105,
     "craftingLevelRequired": 90,
-    "craftingExp": 3265,
+    "craftingExp": 3290,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/02-bows-96pc/Bow_36.png",
     "requiredItems": [
       {
@@ -1065,7 +1065,7 @@
     "type": "weapon",
     "durationS": 30,
     "craftingLevelRequired": 15,
-    "craftingExp": 270,
+    "craftingExp": 230,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_5.png",
     "requiredItems": [
       {
@@ -1088,7 +1088,7 @@
     "type": "weapon",
     "durationS": 35,
     "craftingLevelRequired": 20,
-    "craftingExp": 735,
+    "craftingExp": 745,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_6.png",
     "requiredItems": [
       {
@@ -1117,7 +1117,7 @@
     "type": "weapon",
     "durationS": 40,
     "craftingLevelRequired": 25,
-    "craftingExp": 500,
+    "craftingExp": 420,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_7.png",
     "requiredItems": [
       {
@@ -1140,7 +1140,7 @@
     "type": "weapon",
     "durationS": 45,
     "craftingLevelRequired": 30,
-    "craftingExp": 880,
+    "craftingExp": 890,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_8.png",
     "requiredItems": [
       {
@@ -1169,7 +1169,7 @@
     "type": "weapon",
     "durationS": 50,
     "craftingLevelRequired": 35,
-    "craftingExp": 815,
+    "craftingExp": 655,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_9.png",
     "requiredItems": [
       {
@@ -1192,7 +1192,7 @@
     "type": "weapon",
     "durationS": 55,
     "craftingLevelRequired": 40,
-    "craftingExp": 1230,
+    "craftingExp": 1240,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_10.png",
     "requiredItems": [
       {
@@ -1221,7 +1221,7 @@
     "type": "weapon",
     "durationS": 60,
     "craftingLevelRequired": 45,
-    "craftingExp": 1245,
+    "craftingExp": 980,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_11.png",
     "requiredItems": [
       {
@@ -1244,7 +1244,7 @@
     "type": "weapon",
     "durationS": 65,
     "craftingLevelRequired": 50,
-    "craftingExp": 1415,
+    "craftingExp": 1500,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_12.png",
     "requiredItems": [
       {
@@ -1273,7 +1273,7 @@
     "type": "weapon",
     "durationS": 70,
     "craftingLevelRequired": 55,
-    "craftingExp": 1615,
+    "craftingExp": 1260,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_13.png",
     "requiredItems": [
       {
@@ -1296,7 +1296,7 @@
     "type": "weapon",
     "durationS": 75,
     "craftingLevelRequired": 60,
-    "craftingExp": 2200,
+    "craftingExp": 2215,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_14.png",
     "requiredItems": [
       {
@@ -1325,7 +1325,7 @@
     "type": "weapon",
     "durationS": 80,
     "craftingLevelRequired": 65,
-    "craftingExp": 2325,
+    "craftingExp": 1805,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_15.png",
     "requiredItems": [
       {
@@ -1348,7 +1348,7 @@
     "type": "weapon",
     "durationS": 85,
     "craftingLevelRequired": 70,
-    "craftingExp": 2705,
+    "craftingExp": 2720,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_16.png",
     "requiredItems": [
       {
@@ -1377,7 +1377,7 @@
     "type": "weapon",
     "durationS": 90,
     "craftingLevelRequired": 75,
-    "craftingExp": 3580,
+    "craftingExp": 2700,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_17.png",
     "requiredItems": [
       {
@@ -1400,7 +1400,7 @@
     "type": "weapon",
     "durationS": 95,
     "craftingLevelRequired": 80,
-    "craftingExp": 3690,
+    "craftingExp": 3710,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_18.png",
     "requiredItems": [
       {
@@ -1429,7 +1429,7 @@
     "type": "weapon",
     "durationS": 100,
     "craftingLevelRequired": 85,
-    "craftingExp": 5140,
+    "craftingExp": 3595,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_19.png",
     "requiredItems": [
       {
@@ -1452,7 +1452,7 @@
     "type": "weapon",
     "durationS": 105,
     "craftingLevelRequired": 90,
-    "craftingExp": 3265,
+    "craftingExp": 3290,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/03-staves-80pc/Staff_Normal_20.png",
     "requiredItems": [
       {
@@ -1475,7 +1475,7 @@
     "type": "hat",
     "durationS": 20,
     "craftingLevelRequired": 1,
-    "craftingExp": 50,
+    "craftingExp": 65,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_2.png",
     "requiredItems": [
       {
@@ -1498,7 +1498,7 @@
     "type": "hat",
     "durationS": 30,
     "craftingLevelRequired": 10,
-    "craftingExp": 105,
+    "craftingExp": 180,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_4.png",
     "requiredItems": [
       {
@@ -1521,7 +1521,7 @@
     "type": "hat",
     "durationS": 40,
     "craftingLevelRequired": 20,
-    "craftingExp": 170,
+    "craftingExp": 400,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_6.png",
     "requiredItems": [
       {
@@ -1544,7 +1544,7 @@
     "type": "hat",
     "durationS": 50,
     "craftingLevelRequired": 30,
-    "craftingExp": 250,
+    "craftingExp": 535,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_8.png",
     "requiredItems": [
       {
@@ -1567,7 +1567,7 @@
     "type": "hat",
     "durationS": 60,
     "craftingLevelRequired": 40,
-    "craftingExp": 265,
+    "craftingExp": 900,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_10.png",
     "requiredItems": [
       {
@@ -1590,7 +1590,7 @@
     "type": "hat",
     "durationS": 70,
     "craftingLevelRequired": 50,
-    "craftingExp": 770,
+    "craftingExp": 1160,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_12.png",
     "requiredItems": [
       {
@@ -1613,7 +1613,7 @@
     "type": "hat",
     "durationS": 80,
     "craftingLevelRequired": 60,
-    "craftingExp": 450,
+    "craftingExp": 1800,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_14.png",
     "requiredItems": [
       {
@@ -1636,7 +1636,7 @@
     "type": "hat",
     "durationS": 90,
     "craftingLevelRequired": 70,
-    "craftingExp": 890,
+    "craftingExp": 2185,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_16.png",
     "requiredItems": [
       {
@@ -1659,7 +1659,7 @@
     "type": "hat",
     "durationS": 100,
     "craftingLevelRequired": 80,
-    "craftingExp": 690,
+    "craftingExp": 3000,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_18.png",
     "requiredItems": [
       {
@@ -1682,7 +1682,7 @@
     "type": "hat",
     "durationS": 110,
     "craftingLevelRequired": 90,
-    "craftingExp": 1320,
+    "craftingExp": 3775,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_20.png",
     "requiredItems": [
       {
@@ -1705,7 +1705,7 @@
     "type": "armour",
     "durationS": 20,
     "craftingLevelRequired": 1,
-    "craftingExp": 1090,
+    "craftingExp": 70,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_2.png",
     "requiredItems": [
       {
@@ -1722,7 +1722,7 @@
     "type": "armour",
     "durationS": 30,
     "craftingLevelRequired": 10,
-    "craftingExp": 1440,
+    "craftingExp": 135,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_4.png",
     "requiredItems": [
       {
@@ -1745,7 +1745,7 @@
     "type": "armour",
     "durationS": 40,
     "craftingLevelRequired": 20,
-    "craftingExp": 1350,
+    "craftingExp": 300,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_6.png",
     "requiredItems": [
       {
@@ -1768,7 +1768,7 @@
     "type": "armour",
     "durationS": 50,
     "craftingLevelRequired": 30,
-    "craftingExp": 2305,
+    "craftingExp": 385,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_8.png",
     "requiredItems": [
       {
@@ -1791,7 +1791,7 @@
     "type": "armour",
     "durationS": 60,
     "craftingLevelRequired": 40,
-    "craftingExp": 1980,
+    "craftingExp": 1400,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_10.png",
     "requiredItems": [
       {
@@ -1814,7 +1814,7 @@
     "type": "armour",
     "durationS": 70,
     "craftingLevelRequired": 50,
-    "craftingExp": 2745,
+    "craftingExp": 1505,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_12.png",
     "requiredItems": [
       {
@@ -1837,7 +1837,7 @@
     "type": "armour",
     "durationS": 80,
     "craftingLevelRequired": 60,
-    "craftingExp": 2755,
+    "craftingExp": 2300,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_14.png",
     "requiredItems": [
       {
@@ -1860,7 +1860,7 @@
     "type": "armour",
     "durationS": 90,
     "craftingLevelRequired": 70,
-    "craftingExp": 3800,
+    "craftingExp": 2050,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_16.png",
     "requiredItems": [
       {
@@ -1883,7 +1883,7 @@
     "type": "armour",
     "durationS": 100,
     "craftingLevelRequired": 80,
-    "craftingExp": 4270,
+    "craftingExp": 4260,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_18.png",
     "requiredItems": [
       {
@@ -1906,7 +1906,7 @@
     "type": "armour",
     "durationS": 110,
     "craftingLevelRequired": 90,
-    "craftingExp": 3205,
+    "craftingExp": 3380,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/06-armor-128pc-32x4/Steel_Armor_20.png",
     "requiredItems": [
       {
@@ -1929,7 +1929,7 @@
     "type": "shield",
     "durationS": 20,
     "craftingLevelRequired": 1,
-    "craftingExp": 70,
+    "craftingExp": 50,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_01.png",
     "requiredItems": [
       {
@@ -1946,7 +1946,7 @@
     "type": "shield",
     "durationS": 25,
     "craftingLevelRequired": 4,
-    "craftingExp": 135,
+    "craftingExp": 105,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_02.png",
     "requiredItems": [
       {
@@ -1963,7 +1963,7 @@
     "type": "shield",
     "durationS": 30,
     "craftingLevelRequired": 7,
-    "craftingExp": 285,
+    "craftingExp": 170,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_03.png",
     "requiredItems": [
       {
@@ -1986,7 +1986,7 @@
     "type": "shield",
     "durationS": 35,
     "craftingLevelRequired": 10,
-    "craftingExp": 385,
+    "craftingExp": 255,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_04.png",
     "requiredItems": [
       {
@@ -2009,7 +2009,7 @@
     "type": "shield",
     "durationS": 40,
     "craftingLevelRequired": 15,
-    "craftingExp": 1255,
+    "craftingExp": 270,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_05.png",
     "requiredItems": [
       {
@@ -2032,7 +2032,7 @@
     "type": "shield",
     "durationS": 45,
     "craftingLevelRequired": 20,
-    "craftingExp": 1505,
+    "craftingExp": 770,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_06.png",
     "requiredItems": [
       {
@@ -2055,7 +2055,7 @@
     "type": "shield",
     "durationS": 50,
     "craftingLevelRequired": 25,
-    "craftingExp": 2180,
+    "craftingExp": 500,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_07.png",
     "requiredItems": [
       {
@@ -2078,7 +2078,7 @@
     "type": "shield",
     "durationS": 55,
     "craftingLevelRequired": 30,
-    "craftingExp": 2050,
+    "craftingExp": 895,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_08.png",
     "requiredItems": [
       {
@@ -2101,7 +2101,7 @@
     "type": "shield",
     "durationS": 60,
     "craftingLevelRequired": 35,
-    "craftingExp": 4075,
+    "craftingExp": 700,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_09.png",
     "requiredItems": [
       {
@@ -2124,7 +2124,7 @@
     "type": "shield",
     "durationS": 65,
     "craftingLevelRequired": 40,
-    "craftingExp": 3380,
+    "craftingExp": 1335,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_10.png",
     "requiredItems": [
       {
@@ -2147,7 +2147,7 @@
     "type": "shield",
     "durationS": 70,
     "craftingLevelRequired": 45,
-    "craftingExp": 140,
+    "craftingExp": 1090,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_11.png",
     "requiredItems": [
       {
@@ -2170,7 +2170,7 @@
     "type": "shield",
     "durationS": 75,
     "craftingLevelRequired": 50,
-    "craftingExp": 355,
+    "craftingExp": 1600,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_12.png",
     "requiredItems": [
       {
@@ -2193,7 +2193,7 @@
     "type": "shield",
     "durationS": 80,
     "craftingLevelRequired": 55,
-    "craftingExp": 525,
+    "craftingExp": 1365,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_13.png",
     "requiredItems": [
       {
@@ -2216,7 +2216,7 @@
     "type": "shield",
     "durationS": 85,
     "craftingLevelRequired": 60,
-    "craftingExp": 750,
+    "craftingExp": 2325,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_14.png",
     "requiredItems": [
       {
@@ -2239,7 +2239,7 @@
     "type": "shield",
     "durationS": 90,
     "craftingLevelRequired": 65,
-    "craftingExp": 1045,
+    "craftingExp": 1980,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_15.png",
     "requiredItems": [
       {
@@ -2262,7 +2262,7 @@
     "type": "shield",
     "durationS": 95,
     "craftingLevelRequired": 70,
-    "craftingExp": 1425,
+    "craftingExp": 2765,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_16.png",
     "requiredItems": [
       {
@@ -2285,7 +2285,7 @@
     "type": "shield",
     "durationS": 100,
     "craftingLevelRequired": 75,
-    "craftingExp": 1900,
+    "craftingExp": 3100,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_17.png",
     "requiredItems": [
       {
@@ -2308,7 +2308,7 @@
     "type": "shield",
     "durationS": 105,
     "craftingLevelRequired": 80,
-    "craftingExp": 2500,
+    "craftingExp": 3830,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_18.png",
     "requiredItems": [
       {
@@ -2331,7 +2331,7 @@
     "type": "shield",
     "durationS": 110,
     "craftingLevelRequired": 85,
-    "craftingExp": 3240,
+    "craftingExp": 4295,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_19.png",
     "requiredItems": [
       {
@@ -2354,7 +2354,7 @@
     "type": "shield",
     "durationS": 200,
     "craftingLevelRequired": 90,
-    "craftingExp": 4155,
+    "craftingExp": 3300,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/04-shields-100pc/Shield_20.png",
     "requiredItems": [
       {
@@ -2377,7 +2377,7 @@
     "type": "cape",
     "durationS": 20,
     "craftingLevelRequired": 1,
-    "craftingExp": 80,
+    "craftingExp": 600,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-01.png",
     "requiredItems": [
       {
@@ -2394,7 +2394,7 @@
     "type": "cape",
     "durationS": 30,
     "craftingLevelRequired": 10,
-    "craftingExp": 180,
+    "craftingExp": 1320,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-02.png",
     "requiredItems": [
       {
@@ -2411,7 +2411,7 @@
     "type": "cape",
     "durationS": 40,
     "craftingLevelRequired": 20,
-    "craftingExp": 295,
+    "craftingExp": 1700,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-03.png",
     "requiredItems": [
       {
@@ -2434,7 +2434,7 @@
     "type": "cape",
     "durationS": 50,
     "craftingLevelRequired": 30,
-    "craftingExp": 460,
+    "craftingExp": 1810,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-04.png",
     "requiredItems": [
       {
@@ -2457,7 +2457,7 @@
     "type": "cape",
     "durationS": 60,
     "craftingLevelRequired": 40,
-    "craftingExp": 765,
+    "craftingExp": 2300,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-05.png",
     "requiredItems": [
       {
@@ -2480,7 +2480,7 @@
     "type": "cape",
     "durationS": 70,
     "craftingLevelRequired": 50,
-    "craftingExp": 1100,
+    "craftingExp": 2670,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-06.png",
     "requiredItems": [
       {
@@ -2503,7 +2503,7 @@
     "type": "cape",
     "durationS": 80,
     "craftingLevelRequired": 60,
-    "craftingExp": 1525,
+    "craftingExp": 3300,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-07.png",
     "requiredItems": [
       {
@@ -2526,7 +2526,7 @@
     "type": "cape",
     "durationS": 90,
     "craftingLevelRequired": 70,
-    "craftingExp": 2070,
+    "craftingExp": 3800,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-08.png",
     "requiredItems": [
       {
@@ -2549,7 +2549,7 @@
     "type": "cape",
     "durationS": 100,
     "craftingLevelRequired": 80,
-    "craftingExp": 2750,
+    "craftingExp": 4700,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-09.png",
     "requiredItems": [
       {
@@ -2572,7 +2572,7 @@
     "type": "cape",
     "durationS": 110,
     "craftingLevelRequired": 90,
-    "craftingExp": 3590,
+    "craftingExp": 5540,
     "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/07-capes-10pc/cape-10.png",
     "requiredItems": [
       {
