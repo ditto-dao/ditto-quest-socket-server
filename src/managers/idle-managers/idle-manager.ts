@@ -270,7 +270,7 @@ export class IdleManager {
         });
     }
 
-    async loadIdleActivitiesOnLogin(userId: string): Promise<CurrentCombat | undefined> {
+    async loadIdleActivitiesOnLogin(userId: string): Promise<{ currentCombat?: CurrentCombat, progressUpdates: ProgressUpdate[] }> {
         return await this.lock.acquire(userId, async () => {
             try {
                 const activities = await getIdleActivityQueueElements(this.redisClient, userId);
@@ -286,8 +286,7 @@ export class IdleManager {
                         },
                     });
 
-                    // ✅ RETURN here to stop processing - change semicolon to return!
-                    return undefined;
+                    return { progressUpdates: [] };
                 }
 
                 const progressUpdates: { update?: ProgressUpdate, currentCombat?: CurrentCombat }[] = [];
@@ -334,9 +333,13 @@ export class IdleManager {
                     },
                 });
 
-                return progressUpdates.find((entry) => entry.currentCombat !== undefined)?.currentCombat;
+                return {
+                    currentCombat: progressUpdates.find((entry) => entry.currentCombat !== undefined)?.currentCombat,
+                    progressUpdates: updatesOnly
+                };
             } catch (err) {
                 logger.error(`Error loading idle activities on login for user ${userId}: ${err}`);
+                return { progressUpdates: [] };
             }
         });
     }

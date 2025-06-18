@@ -87,7 +87,7 @@ export async function mintItemToUser(
         if (!itemExists) {
             throw new Error(`Item ID ${itemId} does not exist in the database`);
         }
-        
+
         // Check if the item already exists in the user's inventory
         const existingInventory = await prisma.inventory.findFirst({
             where: {
@@ -268,4 +268,58 @@ export async function canUserMintItem(
     // Otherwise, check if user has room to add a new inventory row
     const { usedSlots, maxSlots } = await getUserInventorySlotInfo(telegramId);
     return usedSlots < maxSlots;
+}
+
+/**
+ * Fetches specific inventory entries for new items/equipment that were added during offline progress
+ * @param telegramId - User's telegram ID
+ * @param newItemIds - Array of item IDs that were newly added
+ * @param newEquipmentIds - Array of equipment IDs that were newly added
+ * @returns Array of inventory entries with full item/equipment data
+ */
+export async function getNewInventoryEntries(
+    telegramId: string,
+    newItemIds: number[] = [],
+    newEquipmentIds: number[] = []
+): Promise<Prisma.InventoryGetPayload<{
+    include: {
+        item: { include: { statEffect: true } };
+        equipment: { include: { statEffect: true } };
+    }
+}>[]> {
+    try {
+        if (newItemIds.length === 0 && newEquipmentIds.length === 0) {
+            logger.info(`No new inventory items to fetch for user ${telegramId}`);
+            return [];
+        }
+
+        const whereConditions = [];
+
+        if (newItemIds.length > 0) {
+            whereConditions.push({ itemId: { in: newItemIds }, equipmentId: null });
+        }
+
+        if (newEquipmentIds.length > 0) {
+            whereConditions.push({ equipmentId: { in: newEquipmentIds }, itemId: null });
+        }
+
+        const newInventoryEntries = await prisma.inventory.findMany({
+            where: {
+                userId: telegramId,
+                OR: whereConditions
+            },
+            include: {
+                item: { include: { statEffect: true } },
+                equipment: { include: { statEffect: true } }
+            },
+            orderBy: { createdAt: 'desc' } // Get the most recent entries first
+        });
+
+        logger.info(`Fetched ${newInventoryEntries.length} new inventory entries for user ${telegramId}`);
+        return newInventoryEntries;
+
+    } catch (error) {
+        logger.error(`Error fetching new inventory entries for user ${telegramId}: ${error}`);
+        throw error;
+    }
 }

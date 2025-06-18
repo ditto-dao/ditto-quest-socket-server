@@ -4,17 +4,18 @@ import { SocketManager } from "../../socket/socket-manager";
 import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { createUser, getUserDataWithSnapshot, userExists } from "../../sql-services/user-service";
+import { createUser, FullUserData, getUserDataWithSnapshot, userExists } from "../../sql-services/user-service";
 import { BETA_TESTER_LOGIN_EVENT, DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LEDGER_REMOVE_USER_SOCKET_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, MISSION_UPDATE, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
 import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
 import { slimeGachaPull } from "../../sql-services/slime";
-import { mintItemToUser } from "../../sql-services/item-inventory-service";
+import { getNewInventoryEntries, mintItemToUser } from "../../sql-services/item-inventory-service";
 import { handleBetaTesterClaim, isUnclaimedBetaTester } from "../../sql-services/beta-testers";
 import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 import { generateNewMission, getUserMissionByUserId } from "../../sql-services/missions";
 import { snapshotManager, SnapshotTrigger } from "../../sql-services/snapshot-manager-service";
+import { applyProgressUpdatesToUser } from "../idle-managers/offline-progress-helpers";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -160,48 +161,49 @@ export class ValidateLoginManager {
 
     private async processLogin(data: LoginQueueData) {
         const userId = data.loginPayload.userData.id.toString();
-
         try {
             this.socketManager.cacheSocketIdForUser(userId, data.socket.id);
             data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
-
-            let user;
+            let user: FullUserData | null = null;
             const isNewUser = !(await userExists(userId));
-
             if (isNewUser) {
                 // New user flow
                 user = await this.handleNewUserLogin(data);
             } else {
-                // Existing user flow - use snapshot
+                // Existing user flow - use snapshot (benefits from cached data)
                 user = await getUserDataWithSnapshot(userId);
                 if (!user) {
                     throw new Error(`Failed to fetch existing user data for ${userId}`);
                 }
             }
-
-            // Force snapshot refresh on login for active users
-            await snapshotManager.markStale(userId, SnapshotTrigger.SESSION_END);
-
+            if (user === null) throw new Error(`Failed to fetch user data.`);
             logger.info(`Loading offline idle activity for user ${userId}`);
+            // Process offline progress and get both combat data and updates
+            const { currentCombat, progressUpdates } = await this.idleManager.loadIdleActivitiesOnLogin(userId);
+            // Apply progress updates to user object in memory
+            if (progressUpdates && progressUpdates.length > 0) {
+                const addedItems = await applyProgressUpdatesToUser(user, progressUpdates);
 
-            // Parallel load: idle activities + mission data
-            const [currentCombat, currMission] = await Promise.all([
-                this.idleManager.loadIdleActivitiesOnLogin(userId),
-                this.loadUserMission(userId)
-            ]);
-
-            // Handle combat restoration
+                // Only fetch new inventory items that were added (with temporary IDs)
+                if (addedItems.length > 0) {
+                    await this.refreshNewInventoryItems(user, addedItems);
+                }
+            }
+            // Handle combat restoration if needed
             if (currentCombat) {
                 await this.restoreCombatSession(currentCombat, user);
             }
-
-            // Send user data immediately
+            // Send the updated user data to frontend (includes all offline progress with real IDs)
             data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
                 userId: data.loginPayload.userData.id,
-                payload: user // Use already loaded user data instead of fetching again
+                payload: user
             });
-
-            // Send mission data with delay (non-blocking)
+            // Mark snapshot stale for background regeneration (since user state changed)
+            if (progressUpdates && progressUpdates.length > 0) {
+                await snapshotManager.markStale(userId, SnapshotTrigger.SESSION_END);
+            }
+            // Load and send mission data (non-blocking with delay)
+            const currMission = await this.loadUserMission(userId);
             if (currMission && currMission.round < 6) {
                 setTimeout(() => {
                     data.socket.emit(MISSION_UPDATE, {
@@ -213,7 +215,6 @@ export class ValidateLoginManager {
                     });
                 }, 5000); // 5 seconds
             }
-
         } catch (error) {
             logger.error(`Error processing login for user ${userId}: ${error}`);
             data.socket.emit(LOGIN_INVALID_EVENT, {
@@ -222,6 +223,39 @@ export class ValidateLoginManager {
             });
         } finally {
             this.cleanUpQueueAndTimer(userId);
+        }
+    }
+
+    private async refreshNewInventoryItems(user: FullUserData, addedItems: { type: 'item' | 'equipment'; id: number }[]) {
+        try {
+            // Get unique item and equipment IDs that were added
+            const newItemIds = addedItems.filter(item => item.type === 'item').map(item => item.id);
+            const newEquipmentIds = addedItems.filter(item => item.type === 'equipment').map(item => item.id);
+
+            // Fetch only the new inventory entries from DB using proper service function
+            const newInventoryEntries = await getNewInventoryEntries(user.telegramId, newItemIds, newEquipmentIds);
+
+            // Replace temporary inventory items with real DB entries
+            for (const newEntry of newInventoryEntries) {
+                // Find and remove the temporary entry
+                const tempIndex = user.inventory.findIndex(inv => {
+                    // Type-safe check for temporary flag
+                    const isTemp = (inv as any).isTemporary === true;
+                    const matchesItem = newEntry.itemId && inv.itemId === newEntry.itemId;
+                    const matchesEquipment = newEntry.equipmentId && inv.equipmentId === newEntry.equipmentId;
+
+                    return isTemp && (matchesItem || matchesEquipment);
+                });
+
+                if (tempIndex !== -1) {
+                    // Replace temporary entry with real DB entry
+                    user.inventory[tempIndex] = newEntry as any;
+                }
+            }
+
+            logger.info(`Refreshed ${newInventoryEntries.length} new inventory items with real DB IDs`);
+        } catch (error) {
+            logger.error(`Error refreshing new inventory items: ${error}`);
         }
     }
 
