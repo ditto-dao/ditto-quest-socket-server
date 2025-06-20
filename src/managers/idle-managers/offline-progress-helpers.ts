@@ -2,7 +2,7 @@ import { FullUserData } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
 import { ProgressUpdate } from "./idle-manager-types";
 import { ABILITY_POINTS_PER_LEVEL } from "../../utils/config";
-import { addFarmingExpMemory, addCraftingExpMemory } from "../../operations/user-operations";
+import { addFarmingExpMemory, addCraftingExpMemory, incrementUserGold } from "../../operations/user-operations";
 import { incrementExpAndHpExpAndCheckLevelUpMemory } from "../../operations/combat-operations";
 import { mintItemToUser } from "../../operations/item-inventory-operations";
 import { mintEquipmentToUser } from "../../operations/equipment-inventory-operations";
@@ -42,11 +42,6 @@ async function applyFarmingUpdate(user: FullUserData, update: any): Promise<{ ty
         try {
             const farmingResult = await addFarmingExpMemory(user.telegramId, update.farmingExpGained);
 
-            // Update the user object with the results
-            user.farmingExp = farmingResult.farmingExp;
-            user.farmingLevel = farmingResult.farmingLevel;
-            user.expToNextFarmingLevel = farmingResult.expToNextFarmingLevel;
-
             logger.debug(`📈 Applied farming exp: ${update.farmingExpGained} (levels gained: ${farmingResult.farmingLevelsGained})`);
         } catch (error) {
             logger.error(`❌ Failed to apply farming exp update: ${error}`);
@@ -78,11 +73,6 @@ async function applyCraftingUpdate(user: FullUserData, update: any): Promise<{ t
     if (update.craftingExpGained) {
         try {
             const craftingResult = await addCraftingExpMemory(user.telegramId, update.craftingExpGained);
-
-            // Update the user object with the results
-            user.craftingExp = craftingResult.craftingExp;
-            user.craftingLevel = craftingResult.craftingLevel;
-            user.expToNextCraftingLevel = craftingResult.expToNextCraftingLevel;
 
             logger.debug(`🔨 Applied crafting exp: ${update.craftingExpGained} (levels gained: ${craftingResult.craftingLevelsGained})`);
         } catch (error) {
@@ -146,15 +136,6 @@ async function applyCombatUpdate(user: FullUserData, update: any): Promise<{ typ
         try {
             const combatResult = await incrementExpAndHpExpAndCheckLevelUpMemory(user.telegramId, update.expGained);
 
-            // Update the user object with the results
-            user.exp = combatResult.exp;
-            user.level = combatResult.level;
-            user.expToNextLevel = combatResult.expToNextLevel;
-            user.outstandingSkillPoints = combatResult.outstandingSkillPoints;
-            user.hpLevel = combatResult.hpLevel;
-            user.expHp = combatResult.hpExp;
-            user.expToNextHpLevel = combatResult.expToNextHpLevel;
-
             logger.debug(`⚔️ Applied combat exp: ${update.expGained} (level up: ${combatResult.levelUp}, HP level up: ${combatResult.hpLevelUp})`);
         } catch (error) {
             logger.error(`❌ Failed to apply combat exp update: ${error}`);
@@ -171,12 +152,13 @@ async function applyCombatUpdate(user: FullUserData, update: any): Promise<{ typ
 
     const userMemoryManager = requireUserMemoryManager();
 
-    // Apply gold using memory manager
+    // Apply gold
     if (update.goldGained) {
-        if (userMemoryManager.hasUser(user.telegramId)) {
-            userMemoryManager.updateUserField(user.telegramId, 'goldBalance', user.goldBalance + update.goldGained);
-            user.goldBalance += update.goldGained;
-        } else {
+        try {
+            await incrementUserGold(user.telegramId, update.goldGained);
+            logger.debug(`💰 Applied gold gain: ${update.goldGained}`);
+        } catch (error) {
+            logger.error(`❌ Failed to apply gold update: ${error}`);
             // Fallback: direct field update
             user.goldBalance += update.goldGained;
         }
@@ -206,7 +188,6 @@ async function applyCombatUpdate(user: FullUserData, update: any): Promise<{ typ
     if (update.userDied && user.combat) {
         if (userMemoryManager.hasUser(user.telegramId)) {
             userMemoryManager.updateUserCombatField(user.telegramId, 'hp', user.maxHp);
-            user.combat.hp = user.maxHp;
         } else {
             user.combat.hp = user.maxHp;
         }
