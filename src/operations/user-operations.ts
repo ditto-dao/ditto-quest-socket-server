@@ -828,19 +828,7 @@ export async function ensureRealId(
 
     // Handle temporary IDs
     if (entityType === 'slime') {
-        // Check if already mapped
-        const existingMap = userMemoryManager.slimeIdRemap.get(userId)?.get(entityId);
-        if (existingMap) return existingMap;
-
-        // Flush and get real ID
-        await userMemoryManager.flushUserSlimes(userId);
-        const newMap = userMemoryManager.slimeIdRemap.get(userId)?.get(entityId);
-
-        if (!newMap) {
-            throw new Error(`Failed to get real ID for temporary slime ${entityId}`);
-        }
-
-        return newMap;
+        return entityId;
     } else if (entityType === 'inventory') {
         // Check if already mapped
         const existingMap = userMemoryManager.inventoryIdRemap.get(userId)?.get(entityId);

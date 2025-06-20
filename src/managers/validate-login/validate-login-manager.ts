@@ -212,7 +212,7 @@ export class ValidateLoginManager {
 
     private async handleNewUserCreation(data: LoginQueueData): Promise<FullUserData> {
         if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
-    
+
         const userId = data.loginPayload.userData.id.toString();
         logger.info(`🆕 Creating new user: ${userId}`);
 
@@ -221,6 +221,8 @@ export class ValidateLoginManager {
             telegramId: userId,
             username: data.loginPayload.userData.username
         });
+
+        this.userMemoryManager.setUser(userId, user);
 
         // Generate starter rewards using memory-optimized functions
         const [firstSlime, secondSlime, starterWood, isBetaTester] = await Promise.all([
@@ -258,12 +260,6 @@ export class ValidateLoginManager {
 
             // Flush inventory (creates real IDs and remapping)
             await this.userMemoryManager.flushUserInventory(userId);
-
-            // Log ID remapping info
-            if (this.userMemoryManager.slimeIdRemap.has(userId)) {
-                const slimeRemap = this.userMemoryManager.slimeIdRemap.get(userId)!;
-                logger.info(`🔄 Slime ID remapping: ${slimeRemap.size} slimes remapped`);
-            }
 
             if (this.userMemoryManager.inventoryIdRemap.has(userId)) {
                 const invRemap = this.userMemoryManager.inventoryIdRemap.get(userId)!;

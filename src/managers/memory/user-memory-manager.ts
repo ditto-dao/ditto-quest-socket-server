@@ -24,7 +24,6 @@ export class UserMemoryManager {
 
     pendingCreateSlimes: Map<string, SlimeWithTraits[]> = new Map();
     pendingBurnSlimeIds: Map<string, number[]> = new Map();
-    slimeIdRemap: Map<string, Map<number, number>> = new Map();
 
     pendingCreateInventory: Map<string, UserInventoryItem[]> = new Map();
     pendingBurnInventoryIds: Map<string, number[]> = new Map();
@@ -405,49 +404,35 @@ export class UserMemoryManager {
     async flushUserSlimes(userId: string): Promise<void> {
         const createSlimes = this.pendingCreateSlimes.get(userId) || [];
         const burnSlimeIds = this.pendingBurnSlimeIds.get(userId) || [];
-
+    
         if (createSlimes.length === 0 && burnSlimeIds.length === 0) return;
-
+    
         try {
+            // Insert slimes with their real IDs
             if (createSlimes.length > 0) {
                 await prismaInsertSlimesToDB(userId, createSlimes);
                 logger.debug(`💾 Inserted ${createSlimes.length} slimes for ${userId}`);
             }
-
-            const freshSlimes = await prismaFetchSlimesForUser(userId);
-            const remap = new Map<number, number>();
-
-            for (const slime of freshSlimes) {
-                const matchingFake = createSlimes.find(f =>
-                    f.imageUri === slime.imageUri && f.id < 0
-                );
-                if (matchingFake) {
-                    remap.set(matchingFake.id, slime.id);
-                }
+    
+            // Delete slimes (using real IDs, no remapping needed)
+            if (burnSlimeIds.length > 0) {
+                await prismaDeleteSlimesFromDB(userId, burnSlimeIds);
+                logger.debug(`🗑️ Deleted ${burnSlimeIds.length} slimes for ${userId}`);
             }
-
-            const realBurnIds = burnSlimeIds.map(fakeId => remap.get(fakeId) || fakeId);
-
-            if (realBurnIds.length > 0) {
-                await prismaDeleteSlimesFromDB(userId, realBurnIds);
-                logger.debug(`🗑️ Deleted ${realBurnIds.length} slimes for ${userId}`);
-            }
-
+    
+            // Reload fresh slimes from DB
             const finalSlimes = await prismaFetchSlimesForUser(userId);
             this.updateSlimes(userId, finalSlimes);
-
-            if (remap.size > 0) {
-                this.slimeIdRemap.set(userId, remap);
-            }
-
+    
+            // Clear pending operations
             this.pendingCreateSlimes.delete(userId);
             this.pendingBurnSlimeIds.delete(userId);
-
+    
             // Mark clean if no other pending changes
             if (!this.hasPendingChanges(userId)) {
                 this.markClean(userId);
             }
-
+    
         } catch (err) {
             logger.error(`❌ Slime flush failed for user ${userId}: ${err}`);
             throw err;
@@ -591,7 +576,6 @@ export class UserMemoryManager {
             // Clean up pending operation tracking
             this.pendingCreateSlimes.delete(userId);
             this.pendingBurnSlimeIds.delete(userId);
-            this.slimeIdRemap.delete(userId);
             this.pendingCreateInventory.delete(userId);
             this.pendingBurnInventoryIds.delete(userId);
             this.inventoryIdRemap.delete(userId);

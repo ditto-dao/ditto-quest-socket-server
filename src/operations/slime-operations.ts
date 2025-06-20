@@ -39,15 +39,6 @@ export async function getSlimeForUserById(userId: string, slimeId: number): Prom
         // Try to find with original slimeId first
         let found = user.slimes.find(s => s.id === slimeId);
         if (found) return found as SlimeWithTraits;
-
-        // If not found and it's a temporary ID, try remap
-        if (slimeId < 0) {
-            const remappedId = userMemoryManager.slimeIdRemap.get(userId)?.get(slimeId);
-            if (remappedId) {
-                found = user.slimes.find(s => s.id === remappedId);
-                if (found) return found as SlimeWithTraits;
-            }
-        }
     }
 
     // Step 2: DB fallback only for positive IDs
