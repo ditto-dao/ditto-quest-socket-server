@@ -371,7 +371,16 @@ export async function incrementUserGold(userId: string, amount: number) {
 
     // Try memory first
     if (userMemoryManager.hasUser(userId)) {
-        newBalance = userMemoryManager.updateUserField(userId, 'goldBalance', amount);
+        const user = userMemoryManager.getUser(userId)!;
+        const currentBalance = user.goldBalance || 0;
+        newBalance = currentBalance + amount;
+        
+        // Ensure balance doesn't go negative
+        if (newBalance < 0) {
+            throw new Error(`Insufficient gold balance (Balance: ${currentBalance} < ${Math.abs(amount)})`);
+        }
+        
+        userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
         userMemoryManager.markDirty(userId);
     } else {
         // Fallback to DB
