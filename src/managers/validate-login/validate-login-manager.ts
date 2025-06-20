@@ -21,7 +21,6 @@ import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
 import { handleBetaTesterClaim, isUnclaimedBetaTester } from "../../sql-services/beta-testers";
 import { generateNewMission, getUserMissionByUserId } from "../../sql-services/missions";
-import { applyProgressUpdatesToUser } from "../idle-managers/offline-progress-helpers";
 import { mintEquipmentToUser } from "../../operations/equipment-inventory-operations";
 import { getUserDataWithSnapshot } from "../../operations/user-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
@@ -296,21 +295,6 @@ export class ValidateLoginManager {
         // Apply progress updates to user data using memory-first approach
         if (progressUpdates?.length > 0) {
             logger.info(`📈 Applying ${progressUpdates.length} offline progress updates for user ${userId}`);
-
-            const addedItems = await applyProgressUpdatesToUser(user, progressUpdates);
-
-            // Log what was added during offline progress
-            if (addedItems.length > 0) {
-                const itemCount = addedItems.filter(item => item.type === 'item').length;
-                const equipmentCount = addedItems.filter(item => item.type === 'equipment').length;
-                logger.info(`✅ Offline progress added: ${itemCount} items, ${equipmentCount} equipment`);
-            }
-
-            // Memory manager handles all the updates automatically, including:
-            // - User field updates (exp, levels, gold, etc.)
-            // - Inventory additions with temporary IDs
-            // - Slime additions
-            // - Marking user as dirty
 
             // Check if we have pending changes that need flushing
             if (this.userMemoryManager.hasPendingChanges(userId)) {
