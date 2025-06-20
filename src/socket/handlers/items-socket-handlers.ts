@@ -1,14 +1,14 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { deleteItemsFromUserInventory, mintItemToUser } from "../../sql-services/item-inventory-service"
 import { IdleFarmingManager } from "../../managers/idle-managers/farming-idle-manager"
 import { SocketManager } from "../socket-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
-import { getItemById } from "../../sql-services/item-service"
 import { globalIdleSocketUserLock } from "../socket-handlers"
-import { incrementUserGoldBalance } from "../../sql-services/user-service"
 import { USER_UPDATE_EVENT } from "../events"
+import { deleteItemsFromUserInventory, mintItemToUser } from "../../operations/item-inventory-operations"
+import { getItemById } from "../../operations/item-operations"
+import { incrementUserGold } from "../../operations/user-operations"
 
 interface MintItemPayload {
     userId: string,
@@ -97,7 +97,7 @@ export async function setupItemsSocketHandlers(
                 const item = await getItemById(data.itemId);
                 if (!item) throw new Error(`Unable to find item`);
 
-                const goldBalance = await incrementUserGoldBalance(data.userId, item.sellPriceGP * data.quantity);
+                const goldBalance = await incrementUserGold(data.userId, item.sellPriceGP * data.quantity);
 
                 const inv = await deleteItemsFromUserInventory(data.userId, [data.itemId], [data.quantity]);
 

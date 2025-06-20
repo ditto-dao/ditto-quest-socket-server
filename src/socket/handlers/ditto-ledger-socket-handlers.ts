@@ -5,15 +5,16 @@ import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UP
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { SocketManager } from "../socket-manager";
 import { ENTER_DOMAIN_TRX_NOTE, ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
-import { slimeGachaPull } from "../../sql-services/slime";
 import { DEVELOPMENT_FUNDS_KEY } from "../../utils/config";
-import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
-import { getSimpleUserData } from "../../sql-services/user-service";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import AsyncLock from 'async-lock';
 import { emitMissionUpdate, updateGachaMission } from "../../sql-services/missions";
 import { getHighestDominantTraitRarity } from "../../utils/helpers";
+import { slimeGachaPullMemory } from "../../operations/slime-operations";
+import { getDomainById, getDungeonById } from "../../operations/combat-operations";
+import { getUserData } from "../../operations/user-operations";
+import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 
 const lock = new AsyncLock();
 
@@ -129,11 +130,49 @@ export async function setupDittoLedgerSocketServerHandlers(
 
     ledgerSocket.on("disconnect", async () => {
         try {
+            logger.error('🔌 Disconnected from ditto ledger socket server - initiating full cleanup');
+
+            const userMemoryManager = requireUserMemoryManager();
+            const activityLogMemoryManager = requireActivityLogMemoryManager();
+
+            // STEP 1: Save all idle activities for all users (time-sensitive)
             await idleManager.saveAllUsersIdleActivities();
-            
+
+            // STEP 2: Get all active users from memory
+            const activeUsers = userMemoryManager.getActiveUsers();
+            logger.info(`🧹 Cleaning up ${activeUsers.length} active users due to ledger disconnect`);
+
+            if (activeUsers.length > 0) {
+                // STEP 3: Flush all pending user updates to database
+                logger.info("💾 Flushing all pending user updates...");
+                await userMemoryManager.flushAllDirtyUsers();
+
+                // STEP 4: Flush all activity logs
+                logger.info("📝 Flushing all activity logs...");
+                await activityLogMemoryManager.flushAll();
+
+                // STEP 5: Optional - Clear memory
+                userMemoryManager.clear();
+                activityLogMemoryManager.clear();
+
+                logger.info(`✅ Successfully saved data for ${activeUsers.length} users`);
+            }
+
+            // STEP 6: Disconnect all user sockets
             socketManager.disconnectAllUsers();
+
+            logger.error('🚨 All users disconnected due to ledger socket failure');
+
         } catch (error) {
-            logger.error(`Error disconnecting all users`);
+            logger.error(`❌ Critical error during ledger disconnect cleanup: ${error}`);
+
+            // Emergency fallback - still try to disconnect users
+            try {
+                logger.error('⚠️ Attempting emergency user disconnection...');
+                socketManager.disconnectAllUsers();
+            } catch (emergencyErr) {
+                logger.error(`❌ Emergency disconnection failed: ${emergencyErr}`);
+            }
         }
     });
 }
@@ -148,7 +187,7 @@ async function handleMintSlime(userId: string, payload: UserBalanceUpdateRes, so
     }
 
     try {
-        const res = await slimeGachaPull(userId);
+        const res = await slimeGachaPullMemory(userId);
 
         socketManager.emitEvent(userId, "update-slime-inventory", {
             userId: userId,
@@ -200,7 +239,7 @@ async function handleDomainEntry(
             }
         }
 
-        const user = await getSimpleUserData(userId);
+        const user = await getUserData(userId);
         if (!user) throw new Error(`Unable to find user of id: ${userId}`);
 
         await combatManager.startDomainCombat(idleManager, userId, user, user.combat, domain, Date.now());
@@ -239,7 +278,7 @@ async function handleDungeonEntry(
             }
         }
 
-        const user = await getSimpleUserData(userId);
+        const user = await getUserData(userId);
         if (!user) throw new Error(`Unable to find user of id: ${userId}`);
 
         await combatManager.startDungeonCombat(idleManager, userId, user, user.combat, dungeon, Date.now());

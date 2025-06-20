@@ -1,6 +1,6 @@
 import { prisma } from '../../sql-services/client';
+import { prismaRecalculateAndUpdateUserBaseStats } from '../../sql-services/user-service';
 import { logger } from '../../utils/logger';
-import { recalculateAndUpdateUserBaseStats, recalculateAndUpdateUserStats } from '../../sql-services/user-service';
 
 async function updateAllUserCombat() {
     const users = await prisma.user.findMany({
@@ -11,8 +11,7 @@ async function updateAllUserCombat() {
 
     for (const user of users) {
         try {
-            await recalculateAndUpdateUserBaseStats(user.telegramId);
-            await recalculateAndUpdateUserStats(user.telegramId);
+            await prismaRecalculateAndUpdateUserBaseStats(user.telegramId);
             logger.info(`✅ Updated stats for user ${user.telegramId}`);
         } catch (err) {
             console.error(`❌ Failed to update user ${user.telegramId}:`, err);

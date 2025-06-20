@@ -2,7 +2,7 @@ import { Rarity } from '@prisma/client';
 import { prisma } from './client';
 import { logger } from '../utils/logger';
 
-export async function logFarmingActivity(userId: string, itemId: number, quantity: number) {
+export async function prismaLogFarmingActivity(userId: string, itemId: number, quantity: number) {
     try {
         await prisma.farmingActivityLog.create({
             data: {
@@ -24,7 +24,7 @@ interface ConsumedItemInput {
     quantity: number;
 }
 
-export async function logCraftingActivity(
+export async function prismaLogCraftingActivity(
     userId: string,
     equipmentIdIn: number,
     quantityIn: number,
@@ -64,7 +64,7 @@ interface BreedingActivityInput {
     childRarity: Rarity;
 }
 
-export async function logBreedingActivity(input: BreedingActivityInput) {
+export async function prismaLogBreedingActivity(input: BreedingActivityInput) {
     try {
         await prisma.breedingActivityLog.create({
             data: {
@@ -102,7 +102,7 @@ export interface CombatActivityInput {
     drops?: CombatDropInput[];
 }
 
-export async function logCombatActivity(input: CombatActivityInput) {
+export async function prismaLogCombatActivity(input: CombatActivityInput) {
     try {
         await prisma.combatActivityLog.create({
             data: {
@@ -127,7 +127,7 @@ export async function logCombatActivity(input: CombatActivityInput) {
     }
 }
 
-export async function logCombatActivities(inputs: CombatActivityInput[]) {
+export async function prismaLogCombatActivities(inputs: CombatActivityInput[]) {
     if (inputs.length === 0) return;
 
     try {
@@ -177,6 +177,105 @@ export async function logCombatActivities(inputs: CombatActivityInput[]) {
         logger.info(`✅ Batch logged ${inputs.length} combat activities.`);
     } catch (error) {
         logger.error(`❌ Failed to batch log combat activities:`, error);
+        throw error;
+    }
+}
+
+/**
+ * Batch insert farming activities
+ */
+export async function prismaBatchLogFarmingActivities(activities: {
+    userId: string;
+    itemId: number;
+    quantity: number;
+    timestamp: Date;
+}[]): Promise<void> {
+    if (activities.length === 0) return;
+
+    try {
+        await prisma.farmingActivityLog.createMany({
+            data: activities,
+            skipDuplicates: true
+        });
+
+        logger.info(`✅ Batch logged ${activities.length} farming activities`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch log farming activities:`, error);
+        throw error;
+    }
+}
+
+/**
+ * Batch insert crafting activities with consumed items
+ */
+export async function prismaBatchLogCraftingActivities(activities: {
+    userId: string;
+    equipmentIdIn: number;
+    quantityIn: number;
+    consumedItems: {
+        itemId: number;
+        quantity: number;
+    }[];
+    timestamp: Date;
+}[]): Promise<void> {
+    if (activities.length === 0) return;
+
+    try {
+        // Need to use transaction since we have related consumed items
+        await prisma.$transaction(async (tx) => {
+            // Insert all crafting logs
+            for (const activity of activities) {
+                await tx.craftingActivityLog.create({
+                    data: {
+                        userId: activity.userId,
+                        timestamp: activity.timestamp,
+                        equipmentIdIn: activity.equipmentIdIn,
+                        quantityIn: activity.quantityIn,
+                        consumedItems: {
+                            create: activity.consumedItems.map(item => ({
+                                itemId: item.itemId,
+                                quantity: item.quantity
+                            }))
+                        }
+                    }
+                });
+            }
+        });
+
+        logger.info(`✅ Batch logged ${activities.length} crafting activities`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch log crafting activities:`, error);
+        throw error;
+    }
+}
+
+/**
+ * Batch insert breeding activities
+ */
+export async function prismaBatchLogBreedingActivities(activities: {
+    userId: string;
+    dameId: number;
+    dameGeneration: number;
+    dameRarity: Rarity;
+    sireId: number;
+    sireGeneration: number;
+    sireRarity: Rarity;
+    childId: number;
+    childGeneration: number;
+    childRarity: Rarity;
+    timestamp: Date;
+}[]): Promise<void> {
+    if (activities.length === 0) return;
+
+    try {
+        await prisma.breedingActivityLog.createMany({
+            data: activities,
+            skipDuplicates: true
+        });
+
+        logger.info(`✅ Batch logged ${activities.length} breeding activities`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch log breeding activities:`, error);
         throw error;
     }
 }

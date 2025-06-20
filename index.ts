@@ -1,5 +1,3 @@
-// index.ts (UPDATED with Game Codex initialization)
-
 import { logger } from "./src/utils/logger"
 import express from "express"
 import { createServer } from "http"
@@ -15,8 +13,8 @@ import "@aws-sdk/crc64-nvme-crt";
 import { ValidateLoginManager } from "./src/managers/validate-login/validate-login-manager"
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
-import { snapshotWorker } from "./src/workers/snapshot/snapshot-worker"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
+import { cleanupGlobalManagers, getActivityLogMemoryManager, getSnapshotWorker, getUserMemoryManager, initializeGlobalManagers } from "./src/managers/global-managers/global-managers"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -32,7 +30,7 @@ async function main() {
         logger.error('❌ CRITICAL: Game Codex initialization failed');
         logger.error('🚨 Server cannot start without game data');
         logger.error(`Error: ${error}`);
-        process.exit(1); // Exit immediately - cannot run without game data
+        process.exit(1);
     }
 
     // ========== STEP 2: SETUP SERVER INFRASTRUCTURE ==========
@@ -67,11 +65,13 @@ async function main() {
         url: 'redis://localhost:6379'
     })
     redisClient.on('error', (err) => logger.error(`Redis Client Error ${err}`))
-    redisClient.connect().then(() => {
-        logger.info('Connected to Redis')
-    })
+    await redisClient.connect();
+    logger.info('✅ Connected to Redis')
 
-    // ========== STEP 3: INITIALIZE MANAGERS ==========
+    // ========== STEP 3: INITIALIZE GLOBAL MANAGERS ==========
+    await initializeGlobalManagers(redisClient);
+
+    // ========== STEP 4: INITIALIZE GAME MANAGERS ==========
 
     // Socket manager
     const socketManager = new SocketManager(dqIo, dittoLedgerSocket)
@@ -83,20 +83,85 @@ async function main() {
     // Validate login manager
     const validateLoginManager = new ValidateLoginManager(dittoLedgerSocket, socketManager, idleManager, combatManager)
 
-    // ========== STEP 4: SETUP SOCKET HANDLERS ==========
+    // ========== STEP 5: SETUP SOCKET HANDLERS ==========
     await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager)
 
     setupGlobalErrorHandlers()
 
-    // ========== STEP 5: SETUP ADMIN ENDPOINTS ==========
+    // ========== STEP 6: SETUP PERIODIC TASKS ==========
+
+    // Flush activity logs every 60 seconds
+    setInterval(async () => {
+        try {
+            const activityManager = getActivityLogMemoryManager();
+            if (activityManager) {
+                await activityManager.flushAll();
+            }
+        } catch (error) {
+            logger.error("❌ Failed to flush activity logs:", error);
+        }
+    }, 60000);
+
+    // Clean up inactive users from memory every 30 minutes
+    setInterval(async () => {
+        try {
+            const userManager = getUserMemoryManager();
+            if (userManager) {
+                const cleaned = userManager.cleanupInactiveUsers(1800000);
+                if (cleaned > 0) {
+                    logger.info(`🧹 Cleaned ${cleaned} inactive users from memory`);
+                }
+            }
+        } catch (error) {
+            logger.error("❌ Failed to cleanup memory users:", error);
+        }
+    }, 1800000);
+
+    // Flush all dirty users every 5 minutes
+    setInterval(async () => {
+        try {
+            const userManager = getUserMemoryManager();
+            if (userManager) {
+                await userManager.flushAllDirtyUsers();
+                logger.info("✅ Flushed all dirty users to database");
+            }
+        } catch (error) {
+            logger.error("❌ Failed to flush dirty users:", error);
+        }
+    }, 300000);
+
+    // Metrics logging
+    setInterval(async () => {
+        await snapshotMetrics.logMetrics();
+        snapshotMetrics.reset();
+    }, 3600000);
+
+    // ========== STEP 7: SETUP ADMIN ENDPOINTS ==========
 
     // Health check route
-    app.get('/', (req, res) => {
-        res.status(200).json({
-            status: 'ok',
-            gameCodexReady: GameCodexManager.isReady(),
-            gameCodexStats: GameCodexManager.getStats()
-        });
+    app.get('/', async (req, res) => {
+        try {
+            const worker = getSnapshotWorker();
+            const snapshotStats = worker ? await worker.getWorkerStats() : null;
+
+            res.status(200).json({
+                status: 'ok',
+                timestamp: new Date().toISOString(),
+                gameCodexReady: GameCodexManager.isReady(),
+                gameCodexStats: GameCodexManager.getStats(),
+                snapshotWorker: snapshotStats ? {
+                    running: snapshotStats.isRunning,
+                    fresh: snapshotStats.freshSnapshots,
+                    stale: snapshotStats.staleSnapshots,
+                    total: snapshotStats.totalSnapshots
+                } : null
+            });
+        } catch (error) {
+            res.status(503).json({
+                status: 'error',
+                error: error instanceof Error ? error.message : 'Unknown error'
+            });
+        }
     });
 
     // Game Codex stats endpoint
@@ -120,31 +185,27 @@ async function main() {
     app.get('/admin/snapshot-metrics', async (req, res) => {
         try {
             const metrics = await snapshotMetrics.getMetrics();
-            res.json(metrics);
+            const worker = getSnapshotWorker();
+            const workerStats = worker ? await worker.getWorkerStats() : null;
+            res.json({
+                ...metrics,
+                worker: workerStats
+            });
         } catch (error) {
             res.status(500).json({ error: 'Failed to get metrics' });
         }
     });
 
-    // ========== STEP 6: START BACKGROUND WORKERS ==========
-
-    snapshotWorker.start(30000); // Process queue every 30 seconds
-
-    setInterval(async () => {
-        await snapshotMetrics.logMetrics();
-        snapshotMetrics.reset(); // Reset hourly
-    }, 3600000); // Every hour
-
-    // ========== STEP 7: START SERVER ==========
+    // ========== STEP 8: START SERVER ==========
 
     httpServer.listen((PORT), () => {
         logger.info(`🎉 Server started successfully on port ${PORT}`)
         logger.info(`📊 Game Codex Status: ${GameCodexManager.isReady() ? 'READY' : 'NOT READY'}`)
 
-        // Log final memory usage summary
         const stats = GameCodexManager.getStats();
         logger.info(`📈 Total Game Data Entries: ${Object.values(stats.counts).reduce((a, b) => a + b, 0)}`)
         logger.info(`🚀 Memory-First Architecture: ACTIVE`)
+        logger.info(`📸 Snapshot System: REDIS-BASED`)
     })
 
     httpServer.on('error', (error) => {
@@ -163,25 +224,30 @@ async function gracefulShutdown(
 ) {
     logger.info('🛑 Graceful shutdown initiated...');
 
-    // Save all user activities
-    await idleManager.saveAllUsersIdleActivities();
+    try {
+        // Save all user activities
+        await idleManager.saveAllUsersIdleActivities();
 
-    // Disconnect all users
-    socketManager.disconnectAllUsers();
+        // Cleanup all global managers
+        await cleanupGlobalManagers();
 
-    // Stop background workers
-    snapshotWorker.stop();
+        // Disconnect all users
+        socketManager.disconnectAllUsers();
 
-    // Close socket server
-    io.close(() => {
-        logger.info('Socket server closed.')
-    })
+        // Close socket server
+        io.close(() => {
+            logger.info('Socket server closed.')
+        })
 
-    // Close Redis connection
-    await redisClient.quit()
+        // Close Redis connection
+        await redisClient.quit()
 
-    logger.info('✅ Graceful shutdown complete');
-    process.exit(0)
+        logger.info('✅ Graceful shutdown complete');
+        process.exit(0)
+    } catch (error) {
+        logger.error('❌ Error during shutdown:', error);
+        process.exit(1)
+    }
 }
 
 main()

@@ -3,13 +3,12 @@ import { Battle } from './battle';
 import { SocketManager } from '../../../socket/socket-manager';
 import { IdleManager } from '../idle-manager';
 import { logger } from '../../../utils/logger';
-import { DomainWithMonsters, DungeonWithMonsters, FullMonster, updateDungeonLeaderboard } from '../../../sql-services/combat-service';
 import { DomainManager } from './domain-manager';
 import { COMBAT_STARTED_EVENT } from '../../../socket/events';
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { sleep } from '../../../utils/helpers';
 import { DungeonManager, DungeonState } from './dungeon-manager';
-import { getUserLevel } from '../../../sql-services/user-service';
+import { DomainWithMonsters, DungeonWithMonsters, FullMonster, prismaUpdateDungeonLeaderboard } from '../../../sql-services/combat-service';
 
 export class IdleCombatManager {
     private activeBattlesByUserId: Record<string, Battle> = {};
@@ -150,7 +149,7 @@ export class IdleCombatManager {
             const dungeonState = DungeonManager.getState(userId);
             if (!dungeonState) throw new Error(`Dungeon state not initialized in onBattleEnd`);
 
-            await updateDungeonLeaderboard(userId, dungeon.id, dungeonState, dungeon.monsterSequence.length);
+            await prismaUpdateDungeonLeaderboard(userId, dungeon.id, dungeonState, dungeon.monsterSequence.length);
 
             DungeonManager.clearState(userId);
 

@@ -1,8 +1,9 @@
+import { breedSlimesMemory, getEquippedSlimeWithTraitsMemory } from "../../operations/slime-operations";
+import { logBreedingActivity } from "../../operations/user-activity-log-operations";
+import { canUserMintSlimeMemory } from "../../operations/user-operations";
 import { SocketManager } from "../../socket/socket-manager";
 import { emitMissionUpdate, updateBreedMission } from "../../sql-services/missions";
-import { breedSlimes, getEquippedSlimeId, SlimeWithTraits } from "../../sql-services/slime";
-import { logBreedingActivity } from "../../sql-services/user-activity-log";
-import { canUserMintSlime } from "../../sql-services/user-service";
+import { SlimeWithTraits } from "../../sql-services/slime";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { getBreedingTimesByGeneration, getHighestDominantTraitRarity } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
@@ -26,7 +27,7 @@ export class IdleBreedingManager {
         try {
             await idleManager.removeBreedingActivity(userId);
 
-            const equippedSlimeId = await getEquippedSlimeId(userId);
+            const equippedSlimeId = (await getEquippedSlimeWithTraitsMemory(userId))?.id;
             const breedingDurationS =
                 getBreedingTimesByGeneration(sire.generation) +
                 getBreedingTimesByGeneration(dame.generation);
@@ -39,7 +40,7 @@ export class IdleBreedingManager {
                 sire.id === equippedSlimeId ||
                 dame.id === equippedSlimeId
             ) throw new Error("Cannot breed equipped slime.");
-            if (!(await canUserMintSlime(sire.ownerId))) {
+            if (!(await canUserMintSlimeMemory(sire.ownerId))) {
                 throw new Error(`Slime inventory full. Please clear space or upgrade your slots`);
             }
 
@@ -182,7 +183,7 @@ export class IdleBreedingManager {
             // Logic for completed repetitions after logout
             for (let i = 0; i < repetitions; i++) {
                 try {
-                    const slime = await breedSlimes(breeding.sire.id, breeding.dame.id);
+                    const slime = await breedSlimesMemory(userId, breeding.sire.id, breeding.dame.id);
                     mintedSlimes.push(slime);
                     await logBreedingActivity({
                         userId: userId,
@@ -220,7 +221,7 @@ export class IdleBreedingManager {
         dame: SlimeWithTraits,
     ): Promise<void> {
         try {
-            if (!(await canUserMintSlime(userId))) {
+            if (!(await canUserMintSlimeMemory(userId))) {
                 socketManager.emitEvent(userId, 'error', {
                     userId: userId,
                     msg: 'Slime inventory full. Please clear space or upgrade your slots'
@@ -228,7 +229,7 @@ export class IdleBreedingManager {
                 throw new Error(`Insufficient slime inventory space to complete breeding`);
             }
 
-            const slime = await breedSlimes(sire.id, dame.id);
+            const slime = await breedSlimesMemory(userId, sire.id, dame.id);
 
             socketManager.emitEvent(userId, 'update-slime-inventory', {
                 userId: userId,

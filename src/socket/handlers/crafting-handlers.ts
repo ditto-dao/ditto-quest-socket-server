@@ -4,12 +4,12 @@ import { logger } from "../../utils/logger"
 import { IdleCraftingManager } from "../../managers/idle-managers/crafting-idle-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import { SocketManager } from "../socket-manager";
-import { getCraftingRecipeForEquipment } from "../../sql-services/crafting-service";
-import { getEquipmentById } from "../../sql-services/equipment-service";
 import { globalIdleSocketUserLock } from "../socket-handlers"
-import { incrementUserGoldBalance } from "../../sql-services/user-service";
-import { deleteEquipmentFromUserInventory } from "../../sql-services/equipment-inventory-service";
 import { USER_UPDATE_EVENT } from "../events";
+import { getEquipmentById } from "../../operations/equipment-operations";
+import { getCraftingRecipeForEquipment } from "../../operations/crafting-operations";
+import { incrementUserGold } from "../../operations/user-operations";
+import { deleteEquipmentFromUserInventory } from "../../operations/equipment-inventory-operations";
 
 interface CraftEquipmentPayload {
     userId: string;
@@ -58,7 +58,7 @@ export async function setupCraftingSocketHandlers(
                 const equipment = await getEquipmentById(data.equipmentId);
                 if (!equipment) throw new Error(`Unable to find equipment`);
 
-                const goldBalance = await incrementUserGoldBalance(data.userId, equipment.sellPriceGP * data.quantity);
+                const goldBalance = await incrementUserGold(data.userId, equipment.sellPriceGP * data.quantity);
 
                 const inv = await deleteEquipmentFromUserInventory(data.userId, [data.equipmentId], [data.quantity]);
 

@@ -4,7 +4,7 @@ import * as path from 'path';
 import { prisma } from '../../sql-services/client';
 import { logger } from '../../utils/logger';
 import { EffectType, Prisma, Rarity, TraitType } from "@prisma/client";
-import { recalculateAndUpdateUserStats } from '../../sql-services/user-service';
+import { prismaRecalculateAndUpdateUserStats } from '../../sql-services/user-service';
 
 interface StatEffect {
   maxHpMod?: number;
@@ -170,7 +170,7 @@ async function updateAllUserCombat() {
 
   for (const user of users) {
     try {
-      await recalculateAndUpdateUserStats(user.telegramId);
+      await prismaRecalculateAndUpdateUserStats(user.telegramId);
       logger.info(`✅ Updated stats for user ${user.telegramId}`);
     } catch (err) {
       console.error(`❌ Failed to update user ${user.telegramId}:`, err);

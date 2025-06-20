@@ -1,11 +1,11 @@
 import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
-import { getNextInventoryOrder, getUserInventorySlotInfo } from './user-service';
-import { snapshotManager, SnapshotTrigger } from './snapshot-manager-service';
+import { prismaFetchNextInventoryOrder, prismaFetchUserInventorySlotInfo } from './user-service';
+import { requireSnapshotRedisManager } from '../managers/global-managers/global-managers';
 
 // Function to check if a user owns all specified items with the required quantities
-export async function doesUserOwnItems(
+export async function prismaDoesUserOwnItems(
     telegramId: string,
     itemIds: number[],
     quantities: number[]
@@ -77,7 +77,7 @@ export async function doesUserOwnItems(
     }
 }
 
-export async function mintItemToUser(
+export async function prismaMintItemToUser(
     telegramId: string,
     itemId: number,
     quantity: number = 1
@@ -102,6 +102,8 @@ export async function mintItemToUser(
             }
         });
 
+        const snapshotRedisManager = requireSnapshotRedisManager();
+
         if (existingInventory) {
             // Case 1: Item exists → Increment the quantity
             const updatedInventory = await prisma.inventory.update({
@@ -118,19 +120,19 @@ export async function mintItemToUser(
                 `Updated quantity for item ${updatedInventory.item?.name}. New quantity: ${updatedInventory.quantity}`
             );
 
-            await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return updatedInventory;
         } else {
             // Case 2: Item does not exist → Create a new entry
 
-            const inventorySlots = await getUserInventorySlotInfo(telegramId);
+            const inventorySlots = await prismaFetchUserInventorySlotInfo(telegramId);
 
             if (inventorySlots.usedSlots >= inventorySlots.maxSlots) {
                 throw new Error(`User inventory is full`);
             }
 
-            const nextOrder = await getNextInventoryOrder(telegramId); // Get next inventory order index
+            const nextOrder = await prismaFetchNextInventoryOrder(telegramId); // Get next inventory order index
 
             const newInventory = await prisma.inventory.create({
                 data: {
@@ -151,7 +153,7 @@ export async function mintItemToUser(
                 `Added new item ${newInventory.item?.name} to user ${telegramId}. Quantity: ${newInventory.quantity}`
             );
 
-            await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return newInventory;
         }
@@ -161,7 +163,7 @@ export async function mintItemToUser(
     }
 }
 
-export async function deleteItemsFromUserInventory(
+export async function prismaDeleteItemsFromUserInventory(
     telegramId: string,
     itemIds: number[],
     quantitiesToRemove: number[]
@@ -238,7 +240,9 @@ export async function deleteItemsFromUserInventory(
 
         logger.info(`Successfully updated inventory for user ${telegramId}.`);
 
-        await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+        const snapshotRedisManager = requireSnapshotRedisManager();
+
+        await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
         return updatedInventories;
     } catch (error) {
@@ -247,7 +251,7 @@ export async function deleteItemsFromUserInventory(
     }
 }
 
-export async function canUserMintItem(
+export async function prismaCanUserMintItem(
     telegramId: string,
     itemId: number
 ): Promise<boolean> {
@@ -266,60 +270,6 @@ export async function canUserMintItem(
     if (existingInventory) return true; // Stacking doesn't use a new slot
 
     // Otherwise, check if user has room to add a new inventory row
-    const { usedSlots, maxSlots } = await getUserInventorySlotInfo(telegramId);
+    const { usedSlots, maxSlots } = await prismaFetchUserInventorySlotInfo(telegramId);
     return usedSlots < maxSlots;
-}
-
-/**
- * Fetches specific inventory entries for new items/equipment that were added during offline progress
- * @param telegramId - User's telegram ID
- * @param newItemIds - Array of item IDs that were newly added
- * @param newEquipmentIds - Array of equipment IDs that were newly added
- * @returns Array of inventory entries with full item/equipment data
- */
-export async function getNewInventoryEntries(
-    telegramId: string,
-    newItemIds: number[] = [],
-    newEquipmentIds: number[] = []
-): Promise<Prisma.InventoryGetPayload<{
-    include: {
-        item: { include: { statEffect: true } };
-        equipment: { include: { statEffect: true } };
-    }
-}>[]> {
-    try {
-        if (newItemIds.length === 0 && newEquipmentIds.length === 0) {
-            logger.info(`No new inventory items to fetch for user ${telegramId}`);
-            return [];
-        }
-
-        const whereConditions = [];
-
-        if (newItemIds.length > 0) {
-            whereConditions.push({ itemId: { in: newItemIds }, equipmentId: null });
-        }
-
-        if (newEquipmentIds.length > 0) {
-            whereConditions.push({ equipmentId: { in: newEquipmentIds }, itemId: null });
-        }
-
-        const newInventoryEntries = await prisma.inventory.findMany({
-            where: {
-                userId: telegramId,
-                OR: whereConditions
-            },
-            include: {
-                item: { include: { statEffect: true } },
-                equipment: { include: { statEffect: true } }
-            },
-            orderBy: { createdAt: 'desc' } // Get the most recent entries first
-        });
-
-        logger.info(`Fetched ${newInventoryEntries.length} new inventory entries for user ${telegramId}`);
-        return newInventoryEntries;
-
-    } catch (error) {
-        logger.error(`Error fetching new inventory entries for user ${telegramId}: ${error}`);
-        throw error;
-    }
 }

@@ -2,7 +2,7 @@ import { Combat, Prisma, Rarity, TraitType } from "@prisma/client";
 import { HP_EXP_PER_EXP } from "./config";
 import { SlimeWithTraits } from "../sql-services/slime";
 import { COMBAT_UPDATE_EVENT, USER_UPDATE_EVENT } from "../socket/events";
-import { FullUserData, UserDataEquipped } from "../sql-services/user-service";
+import { FullUserData, UserDataEquipped, UserStatsWithCombat } from "../sql-services/user-service";
 import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { Decimal } from "@prisma/client/runtime/library";
@@ -163,7 +163,7 @@ export function getColourHexByRarity(rarity: Rarity): string {
     return colourHex;
 }
 
-export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, userId: string, res: Partial<FullUserData> | UserDataEquipped | Prisma.UserGetPayload<{ include: { combat: true } }>) {
+export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, userId: string, res: Partial<FullUserData> | UserDataEquipped | Prisma.UserGetPayload<{ include: { combat: true } }> | UserStatsWithCombat) {
     socket.emit(USER_UPDATE_EVENT, {
         userId: userId,
         payload: {

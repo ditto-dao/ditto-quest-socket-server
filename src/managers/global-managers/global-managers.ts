@@ -1,0 +1,127 @@
+import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis';
+import { SnapshotRedisManager } from '../../redis/snapshot-redis';
+import { logger } from '../../utils/logger';
+import { createSnapshotWorker } from '../../workers/snapshot/snapshot-worker';
+import { ActivityLogMemoryManager } from '../memory/activity-log-memory-manager';
+import { UserMemoryManager } from '../memory/user-memory-manager';
+import { SlimeIDManager, slimeIdManager } from '../slime-id-memory-manager.ts/slime-id-memory-manager';
+
+// Global manager instances
+let snapshotRedisManager: SnapshotRedisManager | null = null;
+let snapshotWorker: ReturnType<typeof createSnapshotWorker> | null = null;
+let userMemoryManager: UserMemoryManager | null = null;
+let activityLogMemoryManager: ActivityLogMemoryManager | null = null;
+
+/**
+ * Initialize all global managers
+ */
+export async function initializeGlobalManagers(redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>) {
+    logger.info('🔧 Initializing global managers...');
+
+    // Initialize User memory manager
+    userMemoryManager = new UserMemoryManager();
+
+    // Initialize User activity log memory manager
+    activityLogMemoryManager = new ActivityLogMemoryManager();
+
+    // Initialize Redis managers
+    snapshotRedisManager = new SnapshotRedisManager(redisClient);
+
+    // Initialize and start snapshot worker (Redis-based)
+    snapshotWorker = createSnapshotWorker(redisClient);
+    snapshotWorker.start(30000); // Run every 30 seconds
+
+    // Initialize Slime ID manager first
+    await slimeIdManager.initialize();
+
+    logger.info('✅ Global managers initialized');
+}
+
+/**
+ * Get snapshot redis manager (safe for use in other modules)
+ */
+export function getSnapshotRedisManager(): SnapshotRedisManager | null {
+    return snapshotRedisManager;
+}
+
+/**
+ * Get user memory manager (safe for use in other modules)
+ */
+export function getUserMemoryManager(): UserMemoryManager | null {
+    return userMemoryManager;
+}
+
+/**
+ * Get activity log memory manager (safe for use in other modules)
+ */
+export function getActivityLogMemoryManager(): ActivityLogMemoryManager | null {
+    return activityLogMemoryManager;
+}
+
+/**
+ * Get snapshot worker (safe for use in other modules)
+ */
+export function getSnapshotWorker(): ReturnType<typeof createSnapshotWorker> | null {
+    return snapshotWorker;
+}
+
+/**
+ * Get Slime ID manager (safe for use in other modules)
+ */
+export function getSlimeIDManager(): SlimeIDManager {
+    return slimeIdManager;
+}
+
+// Add these helper functions to global-managers.ts
+export function requireActivityLogMemoryManager(): ActivityLogMemoryManager {
+    if (!activityLogMemoryManager) {
+        throw new Error('ActivityLogMemoryManager not initialized');
+    }
+    return activityLogMemoryManager;
+}
+
+export function requireUserMemoryManager(): UserMemoryManager {
+    if (!userMemoryManager) {
+        throw new Error('UserMemoryManager not initialized');
+    }
+    return userMemoryManager;
+}
+
+export function requireSnapshotRedisManager(): SnapshotRedisManager {
+    if (!snapshotRedisManager) {
+        throw new Error('SnapshotRedisManager not initialized');
+    }
+    return snapshotRedisManager;
+}
+
+/**
+ * Cleanup all managers (for graceful shutdown)
+ */
+export async function cleanupGlobalManagers(): Promise<void> {
+    logger.info('🧹 Cleaning up global managers...');
+
+    try {
+        // Flush all pending user updates
+        if (userMemoryManager) {
+            logger.info("💾 Flushing all pending user updates...");
+            await userMemoryManager.flushAllDirtyUsers();
+            userMemoryManager.clear();
+        }
+
+        // Flush all activity logs
+        if (activityLogMemoryManager) {
+            logger.info("📝 Flushing activity logs...");
+            await activityLogMemoryManager.flushAll();
+        }
+
+        // Stop background workers
+        if (snapshotWorker) {
+            snapshotWorker.stop();
+        }
+
+        logger.info('✅ Global managers cleanup complete');
+    } catch (error) {
+        logger.error('❌ Error during manager cleanup:', error);
+        throw error;
+    }
+}

@@ -3,8 +3,10 @@ import { logger } from "../utils/logger";
 import { prisma } from "./client";
 import { DungeonState } from "../managers/idle-managers/combat/dungeon-manager";
 import { Decimal } from "@prisma/client/runtime/library";
-import { snapshotManager, SnapshotTrigger } from "./snapshot-manager-service";
-import { GameCodexManager } from "../managers/game-codex/game-codex-manager";
+import { calculateExpForNextLevel, calculateHpExpGained } from "../utils/helpers";
+import { prismaRecalculateAndUpdateUserBaseStats, UserStatsWithCombat } from "./user-service";
+import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
+import { requireSnapshotRedisManager } from "../managers/global-managers/global-managers";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -18,30 +20,7 @@ export type FullMonster = Monster & {
     })[];
 };
 
-/**
- * Updated Combat Service - Memory first with Prisma fallback
- * Monster/Domain/Dungeon functions try memory cache first, fallback to database
- * Other combat functions (user-specific) remain unchanged and use database
- */
-
-/**
- * Fetch a monster by ID - memory first with database fallback
- */
-export async function fetchMonsterById(monsterId: number): Promise<FullMonster | null> {
-    try {
-        // Try memory cache first - O(1) lookup
-        if (GameCodexManager.isReady()) {
-            const monster = GameCodexManager.getMonster(monsterId);
-            if (monster) {
-                logger.debug(`Retrieved monster ${monsterId} (${monster.name}) from memory cache`);
-                return monster;
-            }
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for fetchMonsterById(${monsterId}): ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchMonsterById(monsterId: number): Promise<FullMonster | null> {
     try {
         logger.info(`Falling back to database for fetchMonsterById(${monsterId})`);
 
@@ -88,24 +67,7 @@ export type DomainWithMonsters = Domain & {
     })[];
 };
 
-/**
- * Fetches a domain by its ID - memory first with database fallback
- */
-export async function getDomainById(domainId: number): Promise<DomainWithMonsters | null> {
-    try {
-        // Try memory cache first - O(1) lookup
-        if (GameCodexManager.isReady()) {
-            const domain = GameCodexManager.getDomain(domainId);
-            if (domain) {
-                logger.debug(`Retrieved domain ${domainId} (${domain.name}) from memory cache`);
-                return domain;
-            }
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for getDomainById(${domainId}): ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchDomainById(domainId: number): Promise<DomainWithMonsters | null> {
     try {
         logger.info(`Falling back to database for getDomainById(${domainId})`);
 
@@ -154,24 +116,7 @@ export type DungeonWithMonsters = Dungeon & {
     })[];
 };
 
-/**
- * Fetches a dungeon by its ID - memory first with database fallback
- */
-export async function getDungeonById(dungeonId: number): Promise<DungeonWithMonsters | null> {
-    try {
-        // Try memory cache first - O(1) lookup
-        if (GameCodexManager.isReady()) {
-            const dungeon = GameCodexManager.getDungeon(dungeonId);
-            if (dungeon) {
-                logger.debug(`Retrieved dungeon ${dungeonId} (${dungeon.name}) from memory cache`);
-                return dungeon;
-            }
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for getDungeonById(${dungeonId}): ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchDungeonById(dungeonId: number): Promise<DungeonWithMonsters | null> {
     try {
         logger.info(`Falling back to database for getDungeonById(${dungeonId})`);
 
@@ -207,7 +152,7 @@ export async function getDungeonById(dungeonId: number): Promise<DungeonWithMons
     }
 }
 
-export async function updateDungeonLeaderboard(
+export async function prismaUpdateDungeonLeaderboard(
     userId: string,
     dungeonId: number,
     dungeonState: DungeonState,
@@ -270,7 +215,8 @@ export async function updateDungeonLeaderboard(
 
     logger.info(`🏆 Upserted leaderboard for user ${userId} in dungeon ${dungeonId}. monstersKilled: ${monstersKilled}, damageDealt: ${damageDealt}, damageTaken: ${damageTaken}, timeElapsedMs: ${timeElapsedMs}, score: ${newScore}`);
 
-    await snapshotManager.markStale(userId, SnapshotTrigger.LEADERBOARD_UPDATE);
+    const snapshotRedisManager = requireSnapshotRedisManager();
+    await snapshotRedisManager.markSnapshotStale(userId, "stale_immediate", 20);
 }
 
 export type DungeonLeaderboardEntry = {
@@ -296,7 +242,7 @@ export type DungeonLeaderboardEntry = {
     };
 };
 
-export async function getDungeonLeaderboardPage(
+export async function prismaFetchDungeonLeaderboardPage(
     dungeonId: number,
     limit: number,
     cursor?: { id: number }
@@ -328,54 +274,7 @@ export async function getDungeonLeaderboardPage(
     });
 }
 
-/**
- * Increment or decrement a user's base stats.
- * @param {string} userId - The Telegram ID of the user.
- * @param {Partial<{ str: number; def: number; dex: number; luk: number; magic: number; hpLevel: number }>} changes - The stat changes.
- * @returns {Promise<void>}
- */
-export async function updateUserStats(
-    userId: string,
-    changes: Partial<{ str: number; def: number; dex: number; luk: number; magic: number; hpLevel: number }>
-) {
-    try {
-        logger.info(`Updating stats for user: ${userId}`);
-
-        // Ensure at least one change is provided
-        if (Object.keys(changes).length === 0) {
-            throw new Error("No stat changes provided.");
-        }
-
-        // Update the user stats dynamically
-        await prisma.user.update({
-            where: { telegramId: userId },
-            data: {
-                str: { increment: changes.str ?? 0 },
-                def: { increment: changes.def ?? 0 },
-                dex: { increment: changes.dex ?? 0 },
-                luk: { increment: changes.luk ?? 0 },
-                magic: { increment: changes.magic ?? 0 },
-                hpLevel: { increment: changes.hpLevel ?? 0 },
-            },
-        });
-
-        logger.info(`Successfully updated stats for user: ${userId}`);
-    } catch (error) {
-        logger.error(`Error updating user stats: ${error}`);
-        throw error;
-    }
-}
-
-/**
- * Updates a user's combat HP by telegramId using a nested update.
- *
- * This avoids fetching the combatId manually by using Prisma's relational updates.
- *
- * @param telegramId - The user's Telegram ID
- * @param newHp - The new HP value to set
- * @returns The updated Combat object
- */
-export async function setUserCombatHpByTelegramId(telegramId: string, newHp: number) {
+export async function prismaSetUserCombatHp(telegramId: string, newHp: number): Promise<number> {
     try {
         // First, get the user's combat maxHp
         const user = await prisma.user.findUnique({
@@ -392,7 +291,7 @@ export async function setUserCombatHpByTelegramId(telegramId: string, newHp: num
         const clampedHp = Math.max(0, Math.min(newHp, user.combat.maxHp));
 
         // Now perform nested update
-        return await prisma.user.update({
+        const update = await prisma.user.update({
             where: { telegramId },
             data: {
                 combat: {
@@ -405,20 +304,15 @@ export async function setUserCombatHpByTelegramId(telegramId: string, newHp: num
                 combat: true,
             },
         });
+
+        return update.combat.hp;
     } catch (error) {
         console.error(`Error setting user combat HP for user ${telegramId}: ${error}`);
         throw error;
     }
 }
 
-/**
- * Updates the lastBattleEndTimestamp for a user by their userId.
- *
- * @param userId - The telegramId of the user
- * @param timestamp - The Date to set as the last battle end time
- * @returns The updated user object
- */
-export async function setLastBattleEndTimestamp(userId: string, timestamp: Date) {
+export async function prismaSetLastBattleEndTimestamp(userId: string, timestamp: Date) {
     try {
         const updatedUser = await prisma.user.update({
             where: { telegramId: userId },
@@ -432,4 +326,220 @@ export async function setLastBattleEndTimestamp(userId: string, timestamp: Date)
         console.error(`Error updating lastBattleEndTimestamp for user ${userId}: ${error}`);
         throw error;
     }
+}
+
+export interface IncrementExpAndHpExpResponse {
+    simpleUser: UserStatsWithCombat | null
+
+    levelUp: boolean;
+    level: number;
+    exp: number;
+    expToNextLevel: number;
+    outstandingSkillPoints: number;
+
+    hpLevelUp: boolean;
+    hpLevel: number;
+    hpExp: number;
+    expToNextHpLevel: number;
+}
+
+export async function prismaIncrementExpAndHpExpAndCheckLevelUp(
+    telegramId: string,
+    expToAdd: number
+): Promise<IncrementExpAndHpExpResponse> {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { telegramId },
+            include: { combat: true }
+        });
+
+        if (!user) throw new Error("User not found.");
+        if (!user.combat) throw new Error("User combat data not found.");
+
+        // Level Logic
+        let newExp = user.exp + expToAdd;
+        let currLevel = user.level;
+        let outstandingSkillPoints = user.outstandingSkillPoints;
+        let expToNextLevel = user.expToNextLevel;
+        let levelUp = false;
+
+        while (newExp >= calculateExpForNextLevel(currLevel + 1)) {
+            newExp -= calculateExpForNextLevel(currLevel + 1);
+            currLevel++;
+            outstandingSkillPoints += ABILITY_POINTS_PER_LEVEL;
+            levelUp = true;
+        }
+
+        expToNextLevel = calculateExpForNextLevel(currLevel + 1); // only update once at end
+
+        // HP Exp Logic
+        let newHpExp = user.expHp + calculateHpExpGained(expToAdd);
+        let currHpLevel = user.hpLevel;
+        let expToNextHpLevel = user.expToNextHpLevel;
+        let hpLevelUp = false;
+
+        while (newHpExp >= calculateExpForNextLevel(currHpLevel + 1)) {
+            newHpExp -= calculateExpForNextLevel(currHpLevel + 1);
+            currHpLevel++;
+            hpLevelUp = true;
+        }
+
+        expToNextHpLevel = calculateExpForNextLevel(currHpLevel + 1); // update after loop
+
+        // Update database
+        await prisma.user.update({
+            where: { telegramId },
+            data: {
+                level: currLevel,
+                exp: newExp,
+                expToNextLevel,
+                outstandingSkillPoints,
+                hpLevel: currHpLevel,
+                expHp: newHpExp,
+                expToNextHpLevel,
+            }
+        });
+
+        let hpLevelUpdatedUser;
+        if (hpLevelUp) {
+            hpLevelUpdatedUser = await prismaRecalculateAndUpdateUserBaseStats(telegramId);
+        }
+
+        logger.info(
+            `User ${telegramId} → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
+        );
+
+        const snapshotRedisManager = requireSnapshotRedisManager();
+
+        if (levelUp) {
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
+        }
+
+        if (hpLevelUp) {
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
+        }
+
+        if (!levelUp && !hpLevelUp) {
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
+        }
+
+        return {
+            simpleUser: (hpLevelUp && hpLevelUpdatedUser) ? hpLevelUpdatedUser : null,
+            levelUp,
+            level: currLevel,
+            exp: newExp,
+            expToNextLevel,
+            outstandingSkillPoints,
+            hpLevelUp,
+            hpLevel: currHpLevel,
+            hpExp: newHpExp,
+            expToNextHpLevel
+        };
+    } catch (error) {
+        logger.error(`Error in incrementExpAndHpExpAndCheckLevelUp: ${error}`);
+        throw error;
+    }
+}
+
+export interface SkillUpgradeInput {
+    str?: number;
+    def?: number;
+    dex?: number;
+    luk?: number;
+    magic?: number;
+    hpLevel?: number;
+};
+
+export interface SkillUpgradeInput {
+    str?: number;
+    def?: number;
+    dex?: number;
+    luk?: number;
+    magic?: number;
+    hpLevel?: number;
+}
+
+export async function prismaApplySkillUpgrades(
+    userId: string,
+    upgrades: SkillUpgradeInput,
+) {
+    const entries = Object.entries(upgrades).filter(([_, v]) => v !== undefined);
+
+    if (entries.length === 0) {
+        throw new Error(`No skill upgrades provided for user ${userId}`);
+    }
+
+    let totalPointsNeeded = 0;
+    const updateData: Record<string, { increment: number }> = {};
+
+    const validKeys = ["str", "def", "dex", "luk", "magic", "hpLevel"] as const;
+
+    let isHpUpgrade = false;
+    let hpLevelToAdd = 0;
+
+    for (const [key, value] of entries) {
+        if (!validKeys.includes(key as any)) {
+            throw new Error(`Invalid skill key: "${key}"`);
+        }
+
+        if (typeof value !== "number" || value <= 0 || !Number.isInteger(value)) {
+            throw new Error(
+                `Invalid skill upgrade value for "${key}": must be a positive integer`
+            );
+        }
+
+        updateData[key] = { increment: value };
+        totalPointsNeeded += value;
+
+        if (key === "hpLevel") {
+            isHpUpgrade = true;
+            hpLevelToAdd = value;
+        }
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { telegramId: userId },
+        select: {
+            outstandingSkillPoints: true,
+            hpLevel: true,
+        },
+    });
+
+    if (!user) {
+        throw new Error(`User not found: ${userId}`);
+    }
+
+    if (user.outstandingSkillPoints < totalPointsNeeded) {
+        throw new Error(
+            `User ${userId} has ${user.outstandingSkillPoints} skill points, but tried to use ${totalPointsNeeded}`
+        );
+    }
+
+    const additionalHpFields = isHpUpgrade
+        ? {
+            expHp: 0,
+            expToNextHpLevel: calculateExpForNextLevel(user.hpLevel + hpLevelToAdd),
+        }
+        : {};
+
+    await prisma.user.update({
+        where: { telegramId: userId },
+        data: {
+            ...updateData,
+            ...additionalHpFields,
+            outstandingSkillPoints: { decrement: totalPointsNeeded },
+        },
+    });
+
+    logger.info(
+        `✅ Applied raw skill upgrades to user ${userId} — used ${totalPointsNeeded} points`
+    );
+
+    await prismaRecalculateAndUpdateUserBaseStats(userId);
+
+    const snapshotRedisManager = requireSnapshotRedisManager();
+
+    await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 80);
+
+    return { totalPointsUsed: totalPointsNeeded };
 }

@@ -1,7 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { getUserLevel, recalculateAndUpdateUserBaseStats, recalculateAndUpdateUserStats } from "../../sql-services/user-service";
 import { getBaseMaxHpFromHpLvl, getBaseAtkSpdFromLuk, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseMagicDmgReductionFromDefAndMagic, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef, calculateCombatPower, getBaseAccFromLuk, getBaseEvaFromDex } from "../../managers/idle-managers/combat/combat-helpers";
-import { getDomainById } from "../../sql-services/combat-service";
 import { Decimal } from "@prisma/client/runtime/library";
 import { logger } from "../../utils/logger";
 

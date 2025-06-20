@@ -2,20 +2,22 @@ import { Combat, Equipment, Item } from "@prisma/client";
 import { logger } from "../../../utils/logger";
 import { CombatUpdate, IdleCombatActivityElement } from "../idle-manager-types";
 import { DomainManager } from "./domain-manager";
-import { FullMonster, getDomainById, getDungeonById, updateDungeonLeaderboard } from "../../../sql-services/combat-service";
 import { getAtkCooldownFromAtkSpd } from "./combat-helpers";
 import { Battle } from "./battle";
 import { DEVELOPMENT_FUNDS_KEY, MAX_OFFLINE_IDLE_PROGRESS_S, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
-import { getUserLevel, incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
-import { canUserMintItem, mintItemToUser } from "../../../sql-services/item-inventory-service";
-import { canUserMintEquipment, mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { calculateHpExpGained } from "../../../utils/helpers";
-import { CombatActivityInput, logCombatActivities } from "../../../sql-services/user-activity-log";
 import { DungeonManager, DungeonState } from "./dungeon-manager";
 import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
 import { updateCombatMissions } from "../../../sql-services/missions";
+import { FullMonster, prismaUpdateDungeonLeaderboard } from "../../../sql-services/combat-service";
+import { getDomainById, getDungeonById, incrementExpAndHpExpAndCheckLevelUpMemory } from "../../../operations/combat-operations";
+import { getUserLevelMemory, incrementUserGold } from "../../../operations/user-operations";
+import { CombatActivityInput } from "../../../sql-services/user-activity-log";
+import { canUserMintItem, mintItemToUser } from "../../../operations/item-inventory-operations";
+import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
+import { logCombatActivity } from "../../../operations/user-activity-log-operations";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -84,7 +86,7 @@ export class OfflineCombatManager {
     const domain = await getDomainById(activity.domainId);
     if (!domain) throw new Error(`Domain not found: ${activity.domainId}`);
 
-    const userLevel = await getUserLevel(activity.userId);
+    const userLevel = await getUserLevelMemory(activity.userId);
     if (
       userLevel < (domain.minCombatLevel ?? -Infinity) ||
       userLevel > (domain.maxCombatLevel ?? Infinity)
@@ -124,7 +126,6 @@ export class OfflineCombatManager {
     const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
-    const combatActivities: CombatActivityInput[] = [];
     const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
 
     for (let t = 0; t < totalTicks; t++) {
@@ -193,8 +194,7 @@ export class OfflineCombatManager {
             }
           }
 
-          // inside monster defeated block
-          combatActivities.push({
+          await logCombatActivity({
             userId: activity.userId,
             monsterId: monster.id,
             expGained: exp,
@@ -251,8 +251,8 @@ export class OfflineCombatManager {
     }
 
     // handle increments in db
-    const expRes = await incrementExpAndHpExpAndCheckLevelUp(activity.userId, totalExp);
-    await incrementUserGoldBalance(activity.userId, totalGold);
+    const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
+    await incrementUserGold(activity.userId, totalGold);
 
     await OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
 
@@ -267,7 +267,6 @@ export class OfflineCombatManager {
       }
     }
 
-    await logCombatActivities(combatActivities);
     await updateCombatMissions(missionUpdates);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
@@ -334,7 +333,7 @@ export class OfflineCombatManager {
     const dungeon = await getDungeonById(activity.dungeonId);
     if (!dungeon) throw new Error(`Dungeon not found: ${activity.dungeonId}`);
 
-    const userLevel = await getUserLevel(activity.userId);
+    const userLevel = await getUserLevelMemory(activity.userId);
     if (
       userLevel < (dungeon.minCombatLevel ?? -Infinity) ||
       userLevel > (dungeon.maxCombatLevel ?? Infinity)
@@ -378,7 +377,6 @@ export class OfflineCombatManager {
     const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
-    const combatActivities: CombatActivityInput[] = [];
     const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
 
     for (let t = 0; t < totalTicks; t++) {
@@ -450,7 +448,7 @@ export class OfflineCombatManager {
           }
 
           // inside monster defeated block
-          combatActivities.push({
+          await logCombatActivity({
             userId: activity.userId,
             monsterId: monster.id,
             expGained: exp,
@@ -495,7 +493,7 @@ export class OfflineCombatManager {
 
         if (userCombat.hp === 0) {
           userDied = true;
-          await updateDungeonLeaderboard(
+          await prismaUpdateDungeonLeaderboard(
             activity.userId,
             dungeon.id,
             {
@@ -530,8 +528,8 @@ export class OfflineCombatManager {
     }
 
     // handle increments in db
-    const expRes = await incrementExpAndHpExpAndCheckLevelUp(activity.userId, totalExp);
-    await incrementUserGoldBalance(activity.userId, totalGold);
+    const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
+    await incrementUserGold(activity.userId, totalGold);
     OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
     for (const itemDrop of itemDrops) {
       if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
@@ -544,7 +542,6 @@ export class OfflineCombatManager {
       }
     }
 
-    await logCombatActivities(combatActivities);
     await updateCombatMissions(missionUpdates);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);

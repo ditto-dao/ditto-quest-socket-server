@@ -2,19 +2,21 @@ import { User, Combat, AttackType } from "@prisma/client";
 import { getAtkCooldownFromAtkSpd, getPercentageDmgReduct } from "./combat-helpers";
 import { logger } from "../../../utils/logger";
 import { SocketManager } from "../../../socket/socket-manager";
-import { FullMonster, setLastBattleEndTimestamp, setUserCombatHpByTelegramId } from "../../../sql-services/combat-service";
 import { COMBAT_EXP_UPDATE_EVENT, COMBAT_HP_CHANGE_EVENT, COMBAT_STARTED_EVENT, COMBAT_STOPPED_EVENT, COMBAT_USER_DIED_EVENT, LEDGER_UPDATE_BALANCE_EVENT, USER_UPDATE_EVENT } from "../../../socket/events";
 import { DEVELOPMENT_FUNDS_KEY, DITTO_DECIMALS, REFERRAL_BOOST, REFERRAL_COMBAT_CUT } from "../../../utils/config";
-import { getUserLevel, incrementExpAndHpExpAndCheckLevelUp, incrementUserGoldBalance } from "../../../sql-services/user-service";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { randomBytes } from "crypto";
-import { canUserMintItem, mintItemToUser } from "../../../sql-services/item-inventory-service";
-import { canUserMintEquipment, mintEquipmentToUser } from "../../../sql-services/equipment-inventory-service";
 import { emitUserAndCombatUpdate, sleep } from "../../../utils/helpers";
-import { CombatDropInput, logCombatActivity } from "../../../sql-services/user-activity-log";
 import { DungeonManager } from "./dungeon-manager";
 import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
 import { emitMissionUpdate, updateCombatMission } from "../../../sql-services/missions";
+import { FullMonster } from "../../../sql-services/combat-service";
+import { getUserLevelMemory, incrementUserGold } from "../../../operations/user-operations";
+import { incrementExpAndHpExpAndCheckLevelUpMemory, setLastBattleTimestamp, setUserCombatHp } from "../../../operations/combat-operations";
+import { logCombatActivity } from "../../../operations/user-activity-log-operations";
+import { CombatDropInput } from "../../../sql-services/user-activity-log";
+import { canUserMintItem, mintItemToUser } from "../../../operations/item-inventory-operations";
+import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -75,13 +77,7 @@ export class Battle {
     try {
       logger.info(`🚀 Entered startBattle for ${this.user.telegramId}`);
 
-      const userLevel = await getUserLevel(this.user.telegramId);
-/*       if (
-        userLevel < (this.minCombatLevel ?? -Infinity) ||
-        userLevel > (this.maxCombatLevel ?? Infinity)
-      ) {
-        throw new Error(`User ${this.user.telegramId} does not meet battle level requirements.`);
-      } */
+      const userLevel = await getUserLevelMemory(this.user.telegramId);
 
       if (this.battleEnded) {
         logger.warn(`❌ Tried to start battle for ${this.user.telegramId} but it was already ended.`);
@@ -269,7 +265,7 @@ export class Battle {
     logger.info(`Ended battle for user ${this.user.telegramId}`);
 
     try {
-      await setUserCombatHpByTelegramId(this.user.telegramId, this.userCombat.hp);
+      await setUserCombatHp(this.user.telegramId, this.userCombat.hp);
       logger.info(`Set user HP to ${this.userCombat.hp} / ${this.userCombat.maxHp}`);
     } catch (err) {
       logger.error(`Failed to set user HP: ${err}`);
@@ -278,7 +274,7 @@ export class Battle {
     try {
       const now = new Date();
       this.user.lastBattleEndTimestamp = now;
-      await setLastBattleEndTimestamp(this.user.telegramId, now);
+      await setLastBattleTimestamp(this.user.telegramId, now);
       logger.info(`Set user setLastBattleEndTimestamp to ${now.toLocaleString()}`);
     } catch (err) {
       logger.error(`Failed to set last battle end timestamp: ${err}`);
@@ -618,7 +614,7 @@ export class Battle {
     try {
       if (this.battleEnded) return;
 
-      const expRes = await incrementExpAndHpExpAndCheckLevelUp(this.user.telegramId, this.monster.exp);
+      const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, this.monster.exp);
 
       this.socketManager.emitEvent(this.user.telegramId, COMBAT_EXP_UPDATE_EVENT, {
         userId: this.user.telegramId,
@@ -645,7 +641,7 @@ export class Battle {
 
       const goldDrop = Battle.getAmountDrop(BigInt(this.monster.minGoldDrop), BigInt(this.monster.maxGoldDrop));
       if (goldDrop > 0n) {
-        const goldBalance = await incrementUserGoldBalance(this.user.telegramId, Number(goldDrop));
+        const goldBalance = await incrementUserGold(this.user.telegramId, Number(goldDrop));
         this.socketManager.emitEvent(this.user.telegramId, USER_UPDATE_EVENT, {
           userId: this.user.telegramId,
           payload: {

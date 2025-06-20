@@ -1,14 +1,12 @@
-// equip/unequip and change combat
-//  Adjusts user attributes such as str, def, dex, and magic, potentially as a result of equipping or unequipping items or using consumable items.
-
 import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
-import { getNextInventoryOrder, getUserInventorySlotInfo } from './user-service';
-import { snapshotManager, SnapshotTrigger } from './snapshot-manager-service';
+import { prismaFetchNextInventoryOrder, prismaFetchUserInventorySlotInfo } from './user-service';
+import { UserInventoryItem } from '../managers/memory/user-memory-manager';
+import { prismaMintItemToUser } from './item-inventory-service';
+import { requireSnapshotRedisManager } from '../managers/global-managers/global-managers';
 
-// Function to check if a user owns all specified equipment with required quantities
-export async function doesUserOwnEquipments(
+export async function prismaDoesUserOwnEquipments(
     telegramId: string,
     equipmentIds: number[],
     quantities: number[]
@@ -85,7 +83,7 @@ export async function doesUserOwnEquipments(
     }
 }
 
-export async function mintEquipmentToUser(
+export async function prismaMintEquipmentToUser(
     telegramId: string,
     equipmentId: number,
     quantity: number = 1
@@ -125,18 +123,20 @@ export async function mintEquipmentToUser(
             logger.info(
                 `Updated quantity for equipment ${updatedInventory.equipment?.name}. New quantity: ${updatedInventory.quantity}`
             );
-            await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+
+            const snapshotRedisManager = requireSnapshotRedisManager();
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return updatedInventory;
         } else {
             // Case 2: Equipment does not exist → Create a new entry
-            const inventorySlots = await getUserInventorySlotInfo(telegramId);
+            const inventorySlots = await prismaFetchUserInventorySlotInfo(telegramId);
 
             if (inventorySlots.usedSlots >= inventorySlots.maxSlots) {
                 throw new Error(`User inventory is full`);
             }
 
-            const nextOrder = await getNextInventoryOrder(telegramId); // Get next inventory order index
+            const nextOrder = await prismaFetchNextInventoryOrder(telegramId); // Get next inventory order index
 
             const newInventory = await prisma.inventory.create({
                 data: {
@@ -157,7 +157,9 @@ export async function mintEquipmentToUser(
                 `Added new equipment ${newInventory.equipment?.name} to user ${telegramId}. Quantity: ${newInventory.quantity}`
             );
 
-            await snapshotManager.markStale(telegramId, SnapshotTrigger.INVENTORY_CHANGE);
+            const snapshotRedisManager = requireSnapshotRedisManager();
+
+            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return newInventory;
         }
@@ -167,8 +169,7 @@ export async function mintEquipmentToUser(
     }
 }
 
-// Function to delete equipment from user's inventory
-export async function deleteEquipmentFromUserInventory(
+export async function prismaDeleteEquipmentFromUserInventory(
     telegramId: string,
     equipmentIds: number[],
     quantitiesToRemove: number[]
@@ -251,7 +252,7 @@ export async function deleteEquipmentFromUserInventory(
     }
 }
 
-export async function canUserMintEquipment(
+export async function prismaCanUserMintEquipment(
     telegramId: string,
     equipmentId: number
 ): Promise<boolean> {
@@ -268,6 +269,98 @@ export async function canUserMintEquipment(
     if (existingInventory) return true; // Already owned = no new slot needed
 
     // Otherwise check if user has free inventory slots
-    const { usedSlots, maxSlots } = await getUserInventorySlotInfo(telegramId);
+    const { usedSlots, maxSlots } = await prismaFetchUserInventorySlotInfo(telegramId);
     return usedSlots < maxSlots;
+}
+
+export async function prismaFetchUserInventory(userId: string): Promise<UserInventoryItem[]> {
+    try {
+        const inventory = await prisma.inventory.findMany({
+            where: {
+                user: { telegramId: userId }
+            },
+            select: {
+                id: true,
+                itemId: true,
+                equipmentId: true,
+                quantity: true,
+                order: true,
+                createdAt: true,
+                item: {
+                    include: {
+                        statEffect: true
+                    }
+                },
+                equipment: {
+                    include: {
+                        statEffect: true
+                    }
+                }
+            },
+            orderBy: { order: 'asc' }
+        });
+
+        return inventory as UserInventoryItem[];
+    } catch (error) {
+        logger.error(`❌ Failed to fetch inventory for user ${userId}: ${error}`);
+        throw error;
+    }
+}
+
+export async function prismaFetchEquipmentOrItemFromInventory(
+    telegramId: string,
+    inventoryId: number
+): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }> | undefined> {
+    try {
+        // Fetch the equipment from the user's inventory
+        const equipmentInventory = await prisma.inventory.findUnique({
+            where: { id: inventoryId },
+            include: { equipment: true }, // Include equipment details
+        });
+
+        // Check if the equipment exists and belongs to the user
+        if (!equipmentInventory || equipmentInventory.userId.toString() !== telegramId) {
+            throw new Error(`Inventory ID ${inventoryId} not found in inventory for user ${telegramId}`);
+        }
+
+        if (!equipmentInventory.equipment) {
+            throw new Error(`Inventory object is not an equipment`);
+        }
+
+        return equipmentInventory;
+    } catch (err) {
+        console.error(`Error fetching equipment or item from user ${telegramId}'s inventory: ${err}`);
+        throw err; // Re-throw the error for further handling
+    }
+}
+
+export async function insertInventoryToDB(userId: string, inventory: UserInventoryItem[]): Promise<void> {
+    try {
+        for (const inv of inventory) {
+            if (inv.equipmentId) {
+                await prismaMintEquipmentToUser(userId, inv.equipmentId, inv.quantity);
+            } else if (inv.itemId) {
+                await prismaMintItemToUser(userId, inv.itemId, inv.quantity);
+            }
+        }
+        logger.info(`📦 Batch inserted ${inventory.length} inventory items for user ${userId}`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch insert inventory for user ${userId}: ${error}`);
+        throw error;
+    }
+}
+
+export async function deleteInventoryFromDB(userId: string, inventoryIds: number[]): Promise<void> {
+    try {
+        await prisma.inventory.deleteMany({
+            where: {
+                id: { in: inventoryIds },
+                user: { telegramId: userId }
+            }
+        });
+        logger.info(`🗑️ Batch deleted ${inventoryIds.length} inventory items for user ${userId}`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch delete inventory for user ${userId}: ${error}`);
+        throw error;
+    }
 }

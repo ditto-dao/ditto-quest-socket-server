@@ -5,7 +5,7 @@ import * as path from 'path';
 import csv from 'csv-parser';
 import { logger } from '../../utils/logger';
 import { Prisma } from '@prisma/client';
-import { fetchMonsterById } from '../../sql-services/combat-service';
+import { prismaFetchMonsterById } from '../../sql-services/combat-service';
 
 type MonsterWithCombatAndDrops = Prisma.MonsterGetPayload<{
     include: {
@@ -63,7 +63,7 @@ const parseDomains = async () => {
                             continue;
                         }
 
-                        const monster = await fetchMonsterById(monsterId);
+                        const monster = await prismaFetchMonsterById(monsterId);
                         if (!monster) {
                             logger.warn(`Monster not found for ID ${monsterId}`);
                             continue;

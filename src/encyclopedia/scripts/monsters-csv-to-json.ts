@@ -5,12 +5,12 @@ import * as path from 'path';
 import csv from 'csv-parser';
 import { logger } from '../../utils/logger';
 import { AttackType, Equipment, Item, StatEffect } from '@prisma/client';
-import { getEquipmentById } from '../../sql-services/equipment-service';
-import { getItemById } from '../../sql-services/item-service';
-import { getSlimeTraitById } from '../../sql-services/slime';
 import { getBaseAccFromLuk, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromDex, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../../managers/idle-managers/combat/combat-helpers';
 import { parseUnits } from 'ethers';
 import { DITTO_DECIMALS } from '../../utils/config';
+import { prismaFetchEquipmentById } from '../../sql-services/equipment-service';
+import { prismaFetchItemById } from '../../sql-services/item-service';
+import { prismaFetchSlimeTraitById } from '../../sql-services/slime';
 
 interface Monster {
     id: number;
@@ -302,7 +302,7 @@ async function parseMonsterDrops(itemDropsStr?: string, equipmentDropsStr?: stri
         }
 
         try {
-            const drop = isEquipment ? await getEquipmentById(id) : await getItemById(id);
+            const drop = isEquipment ? await prismaFetchEquipmentById(id) : await prismaFetchItemById(id);
             const type = isEquipment ? "Equipment" : "Item";
             if (drop) {
                 drops.push({ drop, quantity, dropRate, type });
@@ -338,8 +338,8 @@ export async function getMonsterStatEffects(slimeTraitIds: string, equipmentIds:
 
         // Fetch SlimeTrait and Equipment stat effects in parallel
         const [slimeTraits, equipments] = await Promise.all([
-            Promise.all(slimeIds.map(id => getSlimeTraitById(id))),
-            Promise.all(equipIds.map(id => getEquipmentById(id)))
+            Promise.all(slimeIds.map(id => prismaFetchSlimeTraitById(id))),
+            Promise.all(equipIds.map(id => prismaFetchEquipmentById(id)))
         ]);
 
         // Extract StatEffects (ignoring null values)

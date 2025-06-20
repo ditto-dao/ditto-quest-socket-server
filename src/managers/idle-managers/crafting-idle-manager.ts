@@ -1,15 +1,15 @@
 import { Equipment } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
 import { CraftingRecipeRes } from "../../sql-services/crafting-service";
-import { canUserMintEquipment, mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
-import { deleteItemsFromUserInventory, doesUserOwnItems } from "../../sql-services/item-inventory-service";
-import { addCraftingExp, getUserCraftingLevel } from "../../sql-services/user-service";
 import { MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { CraftingUpdate, IdleActivityIntervalElement, IdleCraftingIntervalElement, TimerHandle } from "./idle-manager-types";
-import { logCraftingActivity } from "../../sql-services/user-activity-log";
 import { emitMissionUpdate, updateCraftMission } from "../../sql-services/missions";
+import { addCraftingExpMemory, getUserCraftingLevelMemory } from "../../operations/user-operations";
+import { canUserMintEquipment, mintEquipmentToUser } from "../../operations/equipment-inventory-operations";
+import { deleteItemsFromUserInventory, doesUserOwnItems } from "../../operations/item-inventory-operations";
+import { logCraftingActivity } from "../../operations/user-activity-log-operations";
 
 export class IdleCraftingManager {
 
@@ -29,7 +29,7 @@ export class IdleCraftingManager {
             await idleManager.removeCraftingActivity(userId); // no duplicates
 
             if (!recipe) throw new Error('Crafting recipe not found');
-            if ((await getUserCraftingLevel(userId)) < recipe.craftingLevelRequired) {
+            if ((await getUserCraftingLevelMemory(userId)).craftingLevel < recipe.craftingLevelRequired) {
                 throw new Error('Insufficient crafting level');
             }
 
@@ -190,7 +190,7 @@ export class IdleCraftingManager {
 
             await deleteItemsFromUserInventory(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions));
 
-            expRes = await addCraftingExp(userId, crafting.recipe.craftingExp * repetitions);
+            expRes = await addCraftingExpMemory(userId, crafting.recipe.craftingExp * repetitions);
 
             await logCraftingActivity(
                 userId,
@@ -241,7 +241,7 @@ export class IdleCraftingManager {
                 payload: [...updatedItemsInv, updatedEquipmentInv]
             });
 
-            const expRes = await addCraftingExp(userId, recipe.craftingExp);
+            const expRes = await addCraftingExpMemory(userId, recipe.craftingExp);
 
             socketManager.emitEvent(userId, 'update-crafting-exp', {
                 userId: userId,

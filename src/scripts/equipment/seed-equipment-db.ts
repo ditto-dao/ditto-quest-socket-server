@@ -2,26 +2,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { prisma } from '../../sql-services/client';
 import { logger } from '../../utils/logger';
-import { recalculateAndUpdateUserStats } from '../../sql-services/user-service';
-
-async function updateAllUserCombat() {
-    const users = await prisma.user.findMany({
-        select: { telegramId: true }
-    });
-
-    logger.info(`🔄 Recalculating stats for ${users.length} users...`);
-
-    for (const user of users) {
-        try {
-            await recalculateAndUpdateUserStats(user.telegramId);
-            logger.info(`✅ Updated stats for user ${user.telegramId}`);
-        } catch (err) {
-            console.error(`❌ Failed to update user ${user.telegramId}:`, err);
-        }
-    }
-
-    logger.info("✅ Done updating all users.");
-}
 
 async function seedEquipment() {
     try {
@@ -67,7 +47,6 @@ async function seedEquipment() {
         logger.info(`Inserted or updated ${insertedCount} equipment items.`);
         const count = await prisma.equipment.count();
         logger.info(`Total number of equipment in database: ${count}.`);
-        await updateAllUserCombat();
     } catch (error) {
         logger.error(`Error seeding equipment data: ${error}`);
     } finally {

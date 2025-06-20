@@ -1,13 +1,13 @@
 import { Item } from "@prisma/client";
 import { SocketManager } from "../../socket/socket-manager";
-import { canUserMintItem, mintItemToUser } from "../../sql-services/item-inventory-service";
-import { addFarmingExp, getUserFarmingLevel } from "../../sql-services/user-service";
 import { FARM_REPS_MULTIPLIER, MAX_OFFLINE_IDLE_PROGRESS_S } from "../../utils/config";
 import { logger } from "../../utils/logger";
 import { IdleManager } from "./idle-manager";
 import { FarmingUpdate, IdleActivityIntervalElement, IdleFarmingIntervalElement, TimerHandle } from "./idle-manager-types";
-import { logFarmingActivity } from "../../sql-services/user-activity-log";
 import { emitMissionUpdate, updateFarmMission } from "../../sql-services/missions";
+import { addFarmingExpMemory, getUserFarmingLevelMemory } from "../../operations/user-operations";
+import { canUserMintItem, mintItemToUser } from "../../operations/item-inventory-operations";
+import { logFarmingActivity } from "../../operations/user-activity-log-operations";
 
 export class IdleFarmingManager {
 
@@ -29,8 +29,8 @@ export class IdleFarmingManager {
                 throw new Error('Item cannot be farmed');
             }
 
-            const currentFarmingLevel = await getUserFarmingLevel(userId);
-            if (currentFarmingLevel < item.farmingLevelRequired) {
+            const currentFarmingLevel = await getUserFarmingLevelMemory(userId);
+            if (currentFarmingLevel.farmingLevel < item.farmingLevelRequired) {
                 throw new Error("Insufficient farming level");
             }
 
@@ -176,7 +176,7 @@ export class IdleFarmingManager {
         let expRes;
         if (repetitions > 0) {
             await mintItemToUser(userId.toString(), farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
-            expRes = await addFarmingExp(userId, farming.item.farmingExp * repetitions);
+            expRes = await addFarmingExpMemory(userId, farming.item.farmingExp * repetitions);
 
             await logFarmingActivity(userId, farming.item.id, repetitions);
             await updateFarmMission(userId, farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
@@ -207,7 +207,7 @@ export class IdleFarmingManager {
     ): Promise<void> {
         try {
             const updatedItemsInv = await mintItemToUser(userId.toString(), itemId, FARM_REPS_MULTIPLIER);
-            const expRes = await addFarmingExp(userId, updatedItemsInv.item!.farmingExp!);
+            const expRes = await addFarmingExpMemory(userId, updatedItemsInv.item!.farmingExp!);
 
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,

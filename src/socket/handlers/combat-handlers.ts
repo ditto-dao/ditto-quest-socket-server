@@ -4,10 +4,11 @@ import { logger } from "../../utils/logger"
 import { SocketManager } from "../socket-manager"
 import { COMBAT_STOPPED_EVENT, DUNGEON_LB_UPDATE_EVENT, GET_DUNGEON_LB, START_COMBAT_DOMAIN_EVENT, START_COMBAT_DUNGEON_EVENT, STOP_COMBAT_EVENT, USER_UPDATE_EVENT } from "../events"
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager"
-import { getDomainById, getDungeonById, getDungeonLeaderboardPage } from "../../sql-services/combat-service"
-import { getSimpleUserData, incrementUserGoldBalance } from "../../sql-services/user-service"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
 import { globalIdleSocketUserLock } from "../socket-handlers"
+import { getDomainById, getDungeonById } from "../../operations/combat-operations"
+import { getUserData, incrementUserGold } from "../../operations/user-operations"
+import { prismaFetchDungeonLeaderboardPage } from "../../sql-services/combat-service"
 
 interface StartCombatPayload {
     userId: string,
@@ -30,7 +31,7 @@ export async function setupCombatSocketHandlers(
 
                 const entryPriceGp = domain.entryPriceGP;
                 if (entryPriceGp) {
-                    const goldBalance = await incrementUserGoldBalance(data.userId, -entryPriceGp);
+                    const goldBalance = await incrementUserGold(data.userId, -entryPriceGp);
                     socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
                         userId: data.userId,
                         payload: {
@@ -39,7 +40,7 @@ export async function setupCombatSocketHandlers(
                     });
                 }
 
-                const user = await getSimpleUserData(data.userId);
+                const user = await getUserData(data.userId);
                 if (!user) throw new Error(`Unable to find user of id: ${data.userId}`);
 
                 await combatManager.startDomainCombat(idleManager, data.userId, user, user.combat, domain, Date.now());
@@ -66,7 +67,7 @@ export async function setupCombatSocketHandlers(
 
                 const entryPriceGp = dungeon.entryPriceGP;
                 if (entryPriceGp) {
-                    const goldBalance = await incrementUserGoldBalance(data.userId, -entryPriceGp);
+                    const goldBalance = await incrementUserGold(data.userId, -entryPriceGp);
                     socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
                         userId: data.userId,
                         payload: {
@@ -75,7 +76,7 @@ export async function setupCombatSocketHandlers(
                     });
                 }
 
-                const user = await getSimpleUserData(data.userId);
+                const user = await getUserData(data.userId);
                 if (!user) throw new Error(`Unable to find user of id: ${data.userId}`);
 
                 await combatManager.startDungeonCombat(idleManager, data.userId, user, user.combat, dungeon, Date.now());
@@ -116,7 +117,7 @@ export async function setupCombatSocketHandlers(
         try {
             logger.info(`Received GET_DUNGEON_LB event for user ${data.userId}: ${JSON.stringify(data, null, 2)}`);
 
-            const lb = await getDungeonLeaderboardPage(data.dungeonId, data.limit, data.cursor);
+            const lb = await prismaFetchDungeonLeaderboardPage(data.dungeonId, data.limit, data.cursor);
 
             logger.info(`LB fetched: ${JSON.stringify(lb, null, 2)}`);
 

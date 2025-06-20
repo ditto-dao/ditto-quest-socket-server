@@ -1,15 +1,21 @@
 import { Socket } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { applySkillUpgradesOnly, equipEquipmentForUser, EquippedInventory, getEquipmentOrItemFromInventory, getEquippedByEquipmentType, getSimpleUserData, recalculateAndUpdateUserBaseStats, SkillUpgradeInput, unequipEquipmentForUser } from "../../sql-services/user-service";
 import { EquipmentType } from "@prisma/client";
-import { equipSlimeForUser, getEquippedSlimeWithTraits, getSlimeWithTraitsById, SlimeWithTraits, unequipSlimeForUser } from "../../sql-services/slime";
 import { emitUserAndCombatUpdate } from "../../utils/helpers";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
 import { READ_REFERRAL_CODE, READ_REFERRAL_CODE_RES, READ_REFERRAL_STATS, READ_REFERRAL_STATS_RES, USE_REFERRAL_CODE, USE_REFERRAL_CODE_SUCCESS } from "../events";
-import { applyReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, hasUsedReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals";
+import { applyReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
+import { getEquipmentOrItemFromInventory } from "../../operations/equipment-inventory-operations";
+import { equipEquipmentForUserMemory, getEquippedByEquipmentTypeMemory, getUserData, recalculateAndUpdateUserBaseStatsMemory, unequipEquipmentForUserMemory } from "../../operations/user-operations";
+import { EquippedInventory } from "../../sql-services/user-service";
+import { SlimeWithTraits } from "../../sql-services/slime";
+import { equipSlimeForUserMemory, getEquippedSlimeWithTraitsMemory, getSlimeForUserById, unequipSlimeForUserMemory } from "../../operations/slime-operations";
+import { SkillUpgradeInput } from "../../sql-services/combat-service";
+import { applySkillUpgradesMemory } from "../../operations/combat-operations";
+import { requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 
 interface EquipPayload {
     userId: string;
@@ -31,12 +37,12 @@ export async function setupUserSocketHandlers(
 
             const equipmentType = inventoryEl?.equipment?.type;
             const previouslyEquipped = equipmentType
-                ? await getEquippedByEquipmentType(data.userId, equipmentType)
+                ? await getEquippedByEquipmentTypeMemory(data.userId, equipmentType)
                 : null;
 
             try {
                 // Attempt to equip new item
-                const res = await equipEquipmentForUser(data.userId.toString(), inventoryEl);
+                const res = await equipEquipmentForUserMemory(data.userId.toString(), inventoryEl);
                 idleCombatManager.updateUserCombatMidBattle(data.userId, res.combat);
                 emitUserAndCombatUpdate(socket, data.userId, res);
             } catch (err) {
@@ -44,11 +50,11 @@ export async function setupUserSocketHandlers(
 
                 // Attempt to revert to previously equipped item
                 if (previouslyEquipped) {
-                    const revertRes = await equipEquipmentForUser(data.userId.toString(), previouslyEquipped);
+                    const revertRes = await equipEquipmentForUserMemory(data.userId.toString(), previouslyEquipped);
                     if (revertRes) emitUserAndCombatUpdate(socket, data.userId, revertRes);
                 } else if (inventoryEl.equipment) {
                     // If nothing was previously equipped, unequip the current type
-                    const res = await unequipEquipmentForUser(data.userId, inventoryEl.equipment.type);
+                    const res = await unequipEquipmentForUserMemory(data.userId, inventoryEl.equipment.type);
                     if (res) emitUserAndCombatUpdate(socket, data.userId, res);
                 }
 
@@ -75,7 +81,7 @@ export async function setupUserSocketHandlers(
             logger.info(`Received unequip-equipment event from user ${data.userId} for type ${data.equipmentType}`);
 
             // Store the currently equipped item before unequipping
-            currentEquipped = await getEquippedByEquipmentType(data.userId.toString(), data.equipmentType);
+            currentEquipped = await getEquippedByEquipmentTypeMemory(data.userId.toString(), data.equipmentType);
 
             if (!currentEquipped) {
                 logger.info(`Nothing to unequip for ${data.equipmentType} for user ${data.userId}`);
@@ -83,7 +89,7 @@ export async function setupUserSocketHandlers(
             }
 
             // Attempt to unequip
-            const userDataAfterUnequip = await unequipEquipmentForUser(data.userId.toString(), data.equipmentType);
+            const userDataAfterUnequip = await unequipEquipmentForUserMemory(data.userId.toString(), data.equipmentType);
 
             if (!userDataAfterUnequip) {
                 throw new Error(`unequipEquipmentForUser returned null unexpectedly`);
@@ -101,7 +107,7 @@ export async function setupUserSocketHandlers(
             if (currentEquipped) {
                 try {
                     logger.warn(`Reverting equipment for user ${data.userId}...`);
-                    const revertRes = await equipEquipmentForUser(data.userId, currentEquipped);
+                    const revertRes = await equipEquipmentForUserMemory(data.userId, currentEquipped);
                     if (revertRes) {
                         emitUserAndCombatUpdate(socket, data.userId, revertRes);
                     }
@@ -129,24 +135,29 @@ export async function setupUserSocketHandlers(
         let previouslyEquippedSlime: SlimeWithTraits | null = null;
 
         try {
-            previouslyEquippedSlime = await getEquippedSlimeWithTraits(data.userId);
-            const nextEquippedSlime = await getSlimeWithTraitsById(data.slimeId);
+            previouslyEquippedSlime = await getEquippedSlimeWithTraitsMemory(data.userId);
+            const nextEquippedSlime = await getSlimeForUserById(data.userId, data.slimeId);
 
             if (!nextEquippedSlime) throw new Error(`Slime of id ${data.slimeId} does not exist`);
 
             if (nextEquippedSlime.ownerId !== data.userId) throw new Error(`User ${data.userId} does not own slime ${data.slimeId}`);
 
-            const newEquipped = await equipSlimeForUser(data.userId, nextEquippedSlime);
-            idleCombatManager.updateUserCombatMidBattle(data.userId, newEquipped.combat);
+            const newEquipped = await equipSlimeForUserMemory(data.userId, nextEquippedSlime);
+            idleCombatManager.updateUserCombatMidBattle(data.userId, newEquipped.combat!);
 
             emitUserAndCombatUpdate(socket, data.userId, newEquipped);
+
+            // After equipping, log the memory state:
+            const userMemoryManager = requireUserMemoryManager();
+            const user = userMemoryManager.getUser(data.userId)!;
+            logger.info(`DEBUG: User ${data.userId} equippedSlimeId in memory: ${user.equippedSlimeId}`);
 
         } catch (err) {
             logger.warn(`Equip slime failed, reverting...`);
 
             if (previouslyEquippedSlime) {
                 try {
-                    const revertRes = await equipSlimeForUser(data.userId, previouslyEquippedSlime);
+                    const revertRes = await equipSlimeForUserMemory(data.userId, previouslyEquippedSlime);
                     emitUserAndCombatUpdate(socket, data.userId, revertRes);
                     socket.emit("equip-slime-update", {
                         userId: data.userId,
@@ -170,13 +181,13 @@ export async function setupUserSocketHandlers(
         try {
             logger.info(`Received unequip-slime event from user ${data.userId}`);
 
-            currentEquipped = await getEquippedSlimeWithTraits(data.userId);
+            currentEquipped = await getEquippedSlimeWithTraitsMemory(data.userId);
             if (!currentEquipped) {
                 logger.info(`Nothing to unequip for user ${data.userId}`);
                 return;
             }
 
-            const unequipped = await unequipSlimeForUser(data.userId);
+            const unequipped = await unequipSlimeForUserMemory(data.userId);
 
             idleCombatManager.stopCombat(idleManager, data.userId);
 
@@ -188,7 +199,7 @@ export async function setupUserSocketHandlers(
             // Revert if something breaks
             if (currentEquipped) {
                 try {
-                    const revertRes = await equipSlimeForUser(data.userId, currentEquipped);
+                    const revertRes = await equipSlimeForUserMemory(data.userId, currentEquipped);
                     emitUserAndCombatUpdate(socket, data.userId, revertRes);
                     socket.emit("equip-slime-update", {
                         userId: data.userId,
@@ -210,8 +221,8 @@ export async function setupUserSocketHandlers(
         try {
             logger.info(`Received pump-stats event from user ${data.userId}`);
 
-            await applySkillUpgradesOnly(data.userId, data.statsToUpgrade);
-            const updateRes = await recalculateAndUpdateUserBaseStats(data.userId);
+            await applySkillUpgradesMemory(data.userId, data.statsToUpgrade);
+            const updateRes = await recalculateAndUpdateUserBaseStatsMemory(data.userId);
 
             logger.info(`pump-stats updateRes: ${JSON.stringify(updateRes)}`);
 
@@ -227,7 +238,7 @@ export async function setupUserSocketHandlers(
             });
 
             // emit prev user stats
-            await getSimpleUserData(data.userId).then(res => {
+            await getUserData(data.userId).then(res => {
                 if (res) emitUserAndCombatUpdate(socket, data.userId, res);
             }).catch(err => {
                 logger.error(`Error emitting prev user stats after failed stat pump: ${err}`);

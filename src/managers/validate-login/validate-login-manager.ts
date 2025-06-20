@@ -4,18 +4,31 @@ import { SocketManager } from "../../socket/socket-manager";
 import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { createUser, FullUserData, getUserDataWithSnapshot, userExists } from "../../sql-services/user-service";
-import { BETA_TESTER_LOGIN_EVENT, DISCONNECT_USER_EVENT, FIRST_LOGIN_EVENT, LEDGER_INIT_USER_SOCKET_EVENT, LEDGER_READ_BALANCE_EVENT, LEDGER_REMOVE_USER_SOCKET_EVENT, LOGIN_INVALID_EVENT, LOGIN_VALIDATED_EVENT, MISSION_UPDATE, USER_DATA_ON_LOGIN_EVENT } from "../../socket/events";
+import { FullUserData, prismaCreateUser, prismaUserExists } from "../../sql-services/user-service";
+import {
+    BETA_TESTER_LOGIN_EVENT,
+    DISCONNECT_USER_EVENT,
+    FIRST_LOGIN_EVENT,
+    LEDGER_INIT_USER_SOCKET_EVENT,
+    LEDGER_READ_BALANCE_EVENT,
+    LEDGER_REMOVE_USER_SOCKET_EVENT,
+    LOGIN_INVALID_EVENT,
+    LOGIN_VALIDATED_EVENT,
+    MISSION_UPDATE,
+    USER_DATA_ON_LOGIN_EVENT
+} from "../../socket/events";
 import * as crypto from 'crypto';
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
-import { getDomainById, getDungeonById } from "../../sql-services/combat-service";
-import { slimeGachaPull } from "../../sql-services/slime";
-import { getNewInventoryEntries, mintItemToUser } from "../../sql-services/item-inventory-service";
 import { handleBetaTesterClaim, isUnclaimedBetaTester } from "../../sql-services/beta-testers";
-import { mintEquipmentToUser } from "../../sql-services/equipment-inventory-service";
 import { generateNewMission, getUserMissionByUserId } from "../../sql-services/missions";
-import { snapshotManager, SnapshotTrigger } from "../../sql-services/snapshot-manager-service";
 import { applyProgressUpdatesToUser } from "../idle-managers/offline-progress-helpers";
+import { mintEquipmentToUser } from "../../operations/equipment-inventory-operations";
+import { getUserDataWithSnapshot } from "../../operations/user-operations";
+import { getDomainById, getDungeonById } from "../../operations/combat-operations";
+import { prismaSaveUser } from "../../sql-services/user-service";
+import { slimeGachaPullMemory } from "../../operations/slime-operations";
+import { mintItemToUser } from "../../operations/item-inventory-operations";
+import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../global-managers/global-managers";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -36,6 +49,10 @@ interface LoginQueueData {
 }
 
 export class ValidateLoginManager {
+    activityLogMemoryManager = requireActivityLogMemoryManager();
+    snapshotRedisManager = requireSnapshotRedisManager();
+    userMemoryManager = requireUserMemoryManager();
+
     private dittoLedgerSocket: DittoLedgerSocket;
     private socketManager: SocketManager;
     private idleManager: IdleManager;
@@ -62,7 +79,7 @@ export class ValidateLoginManager {
         this.combatManager = combatManager;
     }
 
-    async processUserLoginEvent(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, data: ValidateLoginPayload) {
+    async processUserLoginEvent(socket: Socket, data: ValidateLoginPayload) {
         const userId = data.userData.id.toString();
 
         // Early validation checks (fastest to slowest)
@@ -87,7 +104,7 @@ export class ValidateLoginManager {
         }
 
         // Most expensive check last
-        if (!this.isInitDataValid(data.initData, BOT_TOKEN)) {
+        if (!this.isInitDataValid(data.initData)) {
             logger.error(`Init data invalid for user ${userId}`);
             socket.emit(LOGIN_INVALID_EVENT, {
                 userId: data.userData.id,
@@ -107,7 +124,6 @@ export class ValidateLoginManager {
             loginData.isInitUserSocketInLedgerSuccess = true;
             this.loginQueue.set(userId, loginData);
             logger.info(`User socket successfully initialised in ledger server`);
-
             this.dittoLedgerSocket.emit(LEDGER_READ_BALANCE_EVENT, userId);
         } else {
             logger.warn(`User ${userId} tried to validate login but no queued login found.`);
@@ -134,10 +150,10 @@ export class ValidateLoginManager {
         return this.loginQueue.has(userId) && this.loginTimers.has(userId);
     }
 
-    private async queueUserLogin(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, data: ValidateLoginPayload) {
+    private async queueUserLogin(socket: Socket, data: ValidateLoginPayload) {
         const userId = data.userData.id.toString();
 
-        // If a previous login attempt exists, clear its timeout
+        // Clear any existing timeout
         if (this.loginTimers.has(userId)) {
             clearTimeout(this.loginTimers.get(userId)!);
         }
@@ -149,266 +165,368 @@ export class ValidateLoginManager {
             isInitUserSocketInLedgerSuccess: false,
         });
 
-        // Set a timeout to expire the login request
+        // Set timeout for login expiration
         const timeout = setTimeout(() => {
             this.handleLoginTimeout(userId);
         }, LOGIN_TIMEOUT_MS);
 
         this.loginTimers.set(userId, timeout);
-
-        logger.info(`Queued login for user ${userId}. Waiting for response from ledger server.`);
+        logger.info(`Queued login for user ${userId}. Waiting for ledger response.`);
     }
 
     private async processLogin(data: LoginQueueData) {
         const userId = data.loginPayload.userData.id.toString();
+
         try {
+            // Cache socket connection
             this.socketManager.cacheSocketIdForUser(userId, data.socket.id);
             data.socket.emit(LOGIN_VALIDATED_EVENT, data.loginPayload.userData.id);
+
             let user: FullUserData | null = null;
-            const isNewUser = !(await userExists(userId));
+            const isNewUser = !(await prismaUserExists(userId));
+
             if (isNewUser) {
-                // New user flow
-                user = await this.handleNewUserLogin(data);
+                user = await this.handleNewUserCreation(data);
             } else {
-                // Existing user flow - use snapshot (benefits from cached data)
-                user = await getUserDataWithSnapshot(userId);
-                if (!user) {
-                    throw new Error(`Failed to fetch existing user data for ${userId}`);
-                }
-            }
-            if (user === null) throw new Error(`Failed to fetch user data.`);
-            logger.info(`Loading offline idle activity for user ${userId}`);
-
-            // Process offline progress and get both combat data and updates
-            const { currentCombat, progressUpdates, offlineProgressMs } = await this.idleManager.loadIdleActivitiesOnLogin(userId);
-
-            // Apply progress updates to user object in memory
-            if (progressUpdates && progressUpdates.length > 0) {
-                const addedItems = await applyProgressUpdatesToUser(user, progressUpdates);
-
-                // Only fetch new inventory items that were added (with temporary IDs)
-                if (addedItems.length > 0) {
-                    await this.refreshNewInventoryItems(user, addedItems);
-                }
+                user = await this.handleExistingUserLogin(userId);
             }
 
-            // Handle combat restoration if needed
-            if (currentCombat) {
-                await this.restoreCombatSession(currentCombat, user);
-            }
+            if (!user) throw new Error(`Failed to load user data for ${userId}`);
 
-            // Send the updated user data to frontend (includes all offline progress with real IDs)
-            data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
-                userId: data.loginPayload.userData.id,
-                payload: user
-            });
+            // Process offline activities and idle progress
+            await this.processOfflineProgress(userId, user, data);
 
-            // NOW emit the idle progress update - after everything is ready
-            data.socket.emit("idle-progress-update", {
-                userId: data.loginPayload.userData.id,
-                payload: {
-                    offlineProgressMs,
-                    updates: progressUpdates,
-                },
-            });
+            // Send mission data (delayed, non-blocking)
+            this.sendMissionData(userId, data.socket);
 
-            // Mark snapshot stale for background regeneration (since user state changed)
-            if (progressUpdates && progressUpdates.length > 0) {
-                await snapshotManager.markStale(userId, SnapshotTrigger.SESSION_END);
-            }
-
-            // Load and send mission data (non-blocking with delay)
-            const currMission = await this.loadUserMission(userId);
-            if (currMission && currMission.round < 6) {
-                setTimeout(() => {
-                    data.socket.emit(MISSION_UPDATE, {
-                        userId: data.loginPayload.userData.id,
-                        payload: {
-                            ...currMission,
-                            rewardDitto: currMission.rewardDitto?.toString(),
-                        },
-                    });
-                }, 5000); // 5 seconds
-            }
         } catch (error) {
-            logger.error(`Error processing login for user ${userId}: ${error}`);
+            logger.error(`❌ Login processing failed for user ${userId}: ${error}`);
             data.socket.emit(LOGIN_INVALID_EVENT, {
                 userId: data.loginPayload.userData.id,
                 msg: 'Login processing failed. Please try again.'
             });
         } finally {
-            this.cleanUpQueueAndTimer(userId);
+            this.cleanupLoginQueue(userId);
         }
     }
 
-    private async refreshNewInventoryItems(user: FullUserData, addedItems: { type: 'item' | 'equipment'; id: number }[]) {
-        try {
-            // Get unique item and equipment IDs that were added
-            const newItemIds = addedItems.filter(item => item.type === 'item').map(item => item.id);
-            const newEquipmentIds = addedItems.filter(item => item.type === 'equipment').map(item => item.id);
-
-            // Fetch only the new inventory entries from DB using proper service function
-            const newInventoryEntries = await getNewInventoryEntries(user.telegramId, newItemIds, newEquipmentIds);
-
-            // Replace temporary inventory items with real DB entries
-            for (const newEntry of newInventoryEntries) {
-                // Find and remove the temporary entry
-                const tempIndex = user.inventory.findIndex(inv => {
-                    // Type-safe check for temporary flag
-                    const isTemp = (inv as any).isTemporary === true;
-                    const matchesItem = newEntry.itemId && inv.itemId === newEntry.itemId;
-                    const matchesEquipment = newEntry.equipmentId && inv.equipmentId === newEntry.equipmentId;
-
-                    return isTemp && (matchesItem || matchesEquipment);
-                });
-
-                if (tempIndex !== -1) {
-                    // Replace temporary entry with real DB entry
-                    user.inventory[tempIndex] = newEntry as any;
-                }
-            }
-
-            logger.info(`Refreshed ${newInventoryEntries.length} new inventory items with real DB IDs`);
-        } catch (error) {
-            logger.error(`Error refreshing new inventory items: ${error}`);
-        }
-    }
-
-    private async handleNewUserLogin(data: LoginQueueData) {
+    private async handleNewUserCreation(data: LoginQueueData): Promise<FullUserData> {
+        if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
+    
         const userId = data.loginPayload.userData.id.toString();
+        logger.info(`🆕 Creating new user: ${userId}`);
 
-        // Create user
-        const user = await createUser({
+        // Create user in database
+        const user = await prismaCreateUser({
             telegramId: userId,
             username: data.loginPayload.userData.username
         });
 
-        // Parallel free item generation for new users
-        const [firstFreeSlime, secondFreeSlime, mintWood, isBetaTester] = await Promise.all([
-            slimeGachaPull(user.telegramId, true),
-            slimeGachaPull(user.telegramId, true),
-            mintItemToUser(user.telegramId, 26, 30),
-            isUnclaimedBetaTester(user.telegramId)
+        // Generate starter rewards using memory-optimized functions
+        const [firstSlime, secondSlime, starterWood, isBetaTester] = await Promise.all([
+            slimeGachaPullMemory(userId, true),
+            slimeGachaPullMemory(userId, true),
+            mintItemToUser(userId, 26, 30),
+            isUnclaimedBetaTester(userId)
         ]);
 
-        // Send first login rewards
+        // Send first login rewards (using fake IDs for now)
         data.socket.emit(FIRST_LOGIN_EVENT, {
-            userId: user.telegramId,
+            userId,
             payload: {
-                freeSlimes: [firstFreeSlime, secondFreeSlime],
-                freeItems: [mintWood]
+                freeSlimes: [firstSlime, secondSlime],
+                freeItems: [starterWood]
             }
         });
 
         // Handle beta tester rewards
         if (isBetaTester) {
             await Promise.all([
-                mintEquipmentToUser(user.telegramId, 111),
-                handleBetaTesterClaim(user.telegramId)
+                mintEquipmentToUser(userId, 111),
+                handleBetaTesterClaim(userId)
             ]);
 
-            data.socket.emit(BETA_TESTER_LOGIN_EVENT, {
-                userId: user.telegramId,
-            });
+            data.socket.emit(BETA_TESTER_LOGIN_EVENT, { userId });
         }
 
-        // Return fresh user data (don't use snapshot for brand new users)
-        return await getUserDataWithSnapshot(userId);
+        // Flush pending operations with proper ID remapping
+        if (this.userMemoryManager.hasUser(userId) && this.userMemoryManager.hasPendingChanges(userId)) {
+            logger.info(`💾 Flushing new user data to database with ID remapping`);
+
+            // Flush slimes first (creates real IDs and remapping)
+            await this.userMemoryManager.flushUserSlimes(userId);
+
+            // Flush inventory (creates real IDs and remapping)
+            await this.userMemoryManager.flushUserInventory(userId);
+
+            // Log ID remapping info
+            if (this.userMemoryManager.slimeIdRemap.has(userId)) {
+                const slimeRemap = this.userMemoryManager.slimeIdRemap.get(userId)!;
+                logger.info(`🔄 Slime ID remapping: ${slimeRemap.size} slimes remapped`);
+            }
+
+            if (this.userMemoryManager.inventoryIdRemap.has(userId)) {
+                const invRemap = this.userMemoryManager.inventoryIdRemap.get(userId)!;
+                logger.info(`🔄 Inventory ID remapping: ${invRemap.size} items remapped`);
+            }
+        }
+
+        // Load complete user data using 3-tier system (now with real IDs)
+        const freshUser = await getUserDataWithSnapshot(userId);
+        if (!freshUser) throw new Error(`Failed to reload user data after creation`);
+
+        return freshUser;
     }
+
+    private async handleExistingUserLogin(userId: string): Promise<FullUserData> {
+        logger.info(`👤 Loading existing user: ${userId}`);
+
+        // Use optimized 3-tier loading: Memory → Snapshot → Database
+        const user = await getUserDataWithSnapshot(userId);
+        if (!user) throw new Error(`Failed to load existing user data`);
+
+        return user;
+    }
+
+    private async processOfflineProgress(userId: string, user: FullUserData, data: LoginQueueData) {
+        if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
+
+        logger.info(`⏰ Processing offline progress for user ${userId}`);
+
+        // Load idle activities and calculate offline progress
+        const { currentCombat, progressUpdates, offlineProgressMs } =
+            await this.idleManager.loadIdleActivitiesOnLogin(userId);
+
+        // Apply progress updates to user data using memory-first approach
+        if (progressUpdates?.length > 0) {
+            logger.info(`📈 Applying ${progressUpdates.length} offline progress updates for user ${userId}`);
+
+            const addedItems = await applyProgressUpdatesToUser(user, progressUpdates);
+
+            // Log what was added during offline progress
+            if (addedItems.length > 0) {
+                const itemCount = addedItems.filter(item => item.type === 'item').length;
+                const equipmentCount = addedItems.filter(item => item.type === 'equipment').length;
+                logger.info(`✅ Offline progress added: ${itemCount} items, ${equipmentCount} equipment`);
+            }
+
+            // Memory manager handles all the updates automatically, including:
+            // - User field updates (exp, levels, gold, etc.)
+            // - Inventory additions with temporary IDs
+            // - Slime additions
+            // - Marking user as dirty
+
+            // Check if we have pending changes that need flushing
+            if (this.userMemoryManager.hasPendingChanges(userId)) {
+                logger.info(`💾 User has pending changes from offline progress, queued for next flush cycle`);
+            }
+
+            // Mark snapshot stale for background regeneration
+            if (this.snapshotRedisManager) await this.snapshotRedisManager.markSnapshotStale(userId, "stale_session", 18);
+        }
+
+        // Restore combat session if user was in combat
+        if (currentCombat) {
+            await this.restoreCombatSession(currentCombat, user);
+        }
+
+        // Send updated user data to frontend (includes all offline progress)
+        data.socket.emit(USER_DATA_ON_LOGIN_EVENT, {
+            userId: data.loginPayload.userData.id,
+            payload: user
+        });
+
+        // Send idle progress update
+        data.socket.emit("idle-progress-update", {
+            userId: data.loginPayload.userData.id,
+            payload: {
+                offlineProgressMs,
+                updates: progressUpdates,
+            },
+        });
+    }
+
+
 
     private async restoreCombatSession(currentCombat: any, user: any) {
-        if (currentCombat.combatType === 'Domain') {
-            const domain = await getDomainById(currentCombat.locationId);
-            if (!domain) throw new Error(`Unable to find domain to load offline combat`);
+        try {
+            if (currentCombat.combatType === 'Domain') {
+                const domain = await getDomainById(currentCombat.locationId);
+                if (!domain) throw new Error(`Domain not found: ${currentCombat.locationId}`);
 
-            await this.combatManager.startDomainCombat(
-                this.idleManager,
-                currentCombat.userId,
-                user,
-                currentCombat.userCombat,
-                domain,
-                currentCombat.startTimestamp,
-                currentCombat.monsterToStartWith
-            );
-        } else {
-            const dungeon = await getDungeonById(currentCombat.locationId);
-            if (!dungeon) throw new Error(`Unable to find dungeon to load offline combat`);
+                await this.combatManager.startDomainCombat(
+                    this.idleManager,
+                    currentCombat.userId,
+                    user,
+                    currentCombat.userCombat,
+                    domain,
+                    currentCombat.startTimestamp,
+                    currentCombat.monsterToStartWith
+                );
+            } else {
+                const dungeon = await getDungeonById(currentCombat.locationId);
+                if (!dungeon) throw new Error(`Dungeon not found: ${currentCombat.locationId}`);
 
-            await this.combatManager.startDungeonCombat(
-                this.idleManager,
-                currentCombat.userId,
-                user,
-                currentCombat.userCombat,
-                dungeon,
-                currentCombat.startTimestamp,
-                currentCombat.monsterToStartWith,
-                currentCombat.dungeonState
-            );
+                await this.combatManager.startDungeonCombat(
+                    this.idleManager,
+                    currentCombat.userId,
+                    user,
+                    currentCombat.userCombat,
+                    dungeon,
+                    currentCombat.startTimestamp,
+                    currentCombat.monsterToStartWith,
+                    currentCombat.dungeonState
+                );
+            }
+            logger.info(`⚔️ Restored ${currentCombat.combatType} combat session for user ${currentCombat.userId}`);
+        } catch (error) {
+            logger.error(`❌ Failed to restore combat session: ${error}`);
         }
     }
 
-    private async loadUserMission(userId: string) {
-        let currMission = await getUserMissionByUserId(userId);
-        if (!currMission) {
-            currMission = await generateNewMission(userId, currMission);
+    private async sendMissionData(userId: string, socket: Socket) {
+        try {
+            let mission = await getUserMissionByUserId(userId);
+            if (!mission) {
+                mission = await generateNewMission(userId, mission);
+            }
+
+            if (mission && mission.round < 6) {
+                setTimeout(() => {
+                    socket.emit(MISSION_UPDATE, {
+                        userId: parseInt(userId),
+                        payload: {
+                            ...mission,
+                            rewardDitto: mission.rewardDitto?.toString(),
+                        },
+                    });
+                }, 5000);
+            }
+        } catch (error) {
+            logger.error(`❌ Error loading mission data for user ${userId}: ${error}`);
         }
-        return currMission;
     }
 
     private handleLoginTimeout(userId: string) {
         if (!this.loginQueue.has(userId)) return;
 
-        logger.warn(`User ${userId} login attempt timed out.`);
+        logger.warn(`⏰ Login timeout for user ${userId}`);
 
-        const loginQueueElement = this.loginQueue.get(userId)!;
+        const loginData = this.loginQueue.get(userId)!;
 
-        if (!loginQueueElement.isInitUserSocketInLedgerSuccess) {
-            logger.error(`Ledger did not confirm socket for ${userId}. Login failed.`);
+        if (!loginData.isInitUserSocketInLedgerSuccess) {
+            logger.error(`❌ Ledger socket init failed for user ${userId}`);
         }
 
-        loginQueueElement.socket.emit(LOGIN_INVALID_EVENT, {
-            userId: loginQueueElement.loginPayload.userData.id,
+        loginData.socket.emit(LOGIN_INVALID_EVENT, {
+            userId: loginData.loginPayload.userData.id,
             msg: 'Login request timed out'
         });
 
         this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId);
-        this.cleanUpQueueAndTimer(userId);
+        this.cleanupLoginQueue(userId);
     }
 
-    private cleanUpQueueAndTimer(userId: string) {
+    private cleanupLoginQueue(userId: string) {
         this.loginQueue.delete(userId);
         this.loginTimers.delete(userId);
     }
 
-    private isInitDataValid(telegramInitData: string, botToken: string): boolean {
+    private isInitDataValid(telegramInitData: string): boolean {
         try {
-            // The data is a query string, which is composed of a series of field-value pairs.
             const encoded = decodeURIComponent(telegramInitData);
-
-            // Data-check-string is a chain of all received fields'.
             const arr = encoded.split('&');
             const hashIndex = arr.findIndex(str => str.startsWith('hash='));
 
             if (hashIndex === -1) return false;
 
             const hash = arr.splice(hashIndex)[0].split('=')[1];
-
-            // sorted alphabetically
             arr.sort((a, b) => a.localeCompare(b));
-
-            // in the format key=<value> with a line feed character ('\n', 0x0A) used as separator
             const dataCheckString = arr.join('\n');
 
-            // The hexadecimal representation of the HMAC-SHA-256 signature with the cached secret key
-            const _hash = crypto
+            const computedHash = crypto
                 .createHmac('sha256', this.secretKey)
                 .update(dataCheckString)
                 .digest('hex');
 
-            return _hash === hash;
+            return computedHash === hash;
         } catch (error) {
-            logger.error(`Error validating init data: ${error}`);
+            logger.error(`❌ Init data validation error: ${error}`);
             return false;
+        }
+    }
+
+    /**
+     * Handle user disconnect - cleanup across all memory managers
+     */
+    async handleUserDisconnect(userId: string) {
+        try {
+            if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
+            if (!this.activityLogMemoryManager) throw new Error(`Activity log memory manager not available`);
+
+            logger.info(`👋 User ${userId} disconnecting`);
+
+            // Check if user has any pending changes that need to be saved
+            if (this.userMemoryManager.hasUser(userId)) {
+                const isDirty = this.userMemoryManager.isDirty(userId);
+                const hasPending = this.userMemoryManager.hasPendingChanges(userId);
+
+                if (isDirty || hasPending) {
+                    logger.info(`💾 Flushing user ${userId} on disconnect (dirty: ${isDirty}, pending: ${hasPending})`);
+
+                    // Use targeted flushing based on what actually changed
+                    if (this.userMemoryManager.pendingCreateSlimes.has(userId) || this.userMemoryManager.pendingBurnSlimeIds.has(userId)) {
+                        await this.userMemoryManager.flushUserSlimes(userId);
+                        logger.debug(`🧪 Flushed slime changes for user ${userId}`);
+                    }
+
+                    if (this.userMemoryManager.pendingCreateInventory.has(userId) || this.userMemoryManager.pendingBurnInventoryIds.has(userId)) {
+                        await this.userMemoryManager.flushUserInventory(userId);
+                        logger.debug(`📦 Flushed inventory changes for user ${userId}`);
+                    }
+
+                    // Flush any remaining user field changes
+                    if (isDirty) {
+                        const user = this.userMemoryManager.getUser(userId);
+                        if (user) {
+                            await prismaSaveUser(user);
+                            this.userMemoryManager.markClean(userId);
+                            logger.debug(`👤 Flushed user field changes for user ${userId}`);
+                        }
+                    }
+                }
+
+                // Mark snapshot stale for background regeneration
+                if (this.snapshotRedisManager) await this.snapshotRedisManager.markSnapshotStale(userId, "stale_session", 19);
+
+                // Remove from memory after grace period (allows quick reconnects)
+                setTimeout(() => {
+                    if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
+
+                    if (this.userMemoryManager.hasUser(userId)) {
+                        // Check one more time if user is still inactive and clean
+                        const lastActivity = this.userMemoryManager.getLastActivity(userId);
+                        const now = Date.now();
+
+                        // Only remove if user hasn't been active and has no pending changes
+                        if (lastActivity && (now - lastActivity) > 25000 && !this.userMemoryManager.hasPendingChanges(userId)) {
+                            this.userMemoryManager.removeUser(userId);
+                            logger.info(`🗑️ Removed inactive user ${userId} from memory`);
+                        } else {
+                            logger.debug(`⏳ Keeping user ${userId} in memory (recently active or has pending changes)`);
+                        }
+                    }
+                }, 30000); // 30 second grace period
+            }
+
+            // Flush any pending activity logs
+            if (this.activityLogMemoryManager.hasUser(userId)) {
+                await this.activityLogMemoryManager.flushUser(userId);
+                logger.info(`📝 Flushed activity logs for user ${userId}`);
+            }
+
+        } catch (error) {
+            logger.error(`❌ Error handling disconnect for user ${userId}: ${error}`);
         }
     }
 }

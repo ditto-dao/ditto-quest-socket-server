@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { trimIdleActivitiesForAllUsers } from "../../redis/idle-activity-redis";
+import { deleteAllIdleActivityQueueElementsForAllUsers, trimIdleActivitiesForAllUsers } from "../../redis/idle-activity-redis";
 import { logger } from "../../utils/logger";
 
 async function main() {
@@ -14,6 +14,7 @@ async function main() {
     logger.info("Connected to Redis");
 
     await trimIdleActivitiesForAllUsers(redisClient);
+    await deleteAllIdleActivityQueueElementsForAllUsers(redisClient);
   } catch (err) {
     logger.error(`Error running trim script: ${err}`);
   } finally {

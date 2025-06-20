@@ -1,21 +1,8 @@
-import { Item, Rarity } from "@prisma/client";
-import { GameCodexManager } from "../managers/game-codex/game-codex-manager";
+import { Item, Rarity, StatEffect } from "@prisma/client";
 import { logger } from "../utils/logger";
 import { prisma } from "./client";
 
-export async function getAllItems(): Promise<Item[]> {
-    try {
-        // Try memory cache first
-        if (GameCodexManager.isReady()) {
-            const items = GameCodexManager.getAllItems();
-            logger.debug(`Retrieved ${items.length} items from memory cache`);
-            return items;
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for getAllItems: ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchAllItems(): Promise<Item[]> {
     try {
         logger.info(`Falling back to database for getAllItems`);
         const items = await prisma.item.findMany();
@@ -26,21 +13,7 @@ export async function getAllItems(): Promise<Item[]> {
     }
 }
 
-export async function getItemById(itemId: number): Promise<Item | null> {
-    try {
-        // Try memory cache first - O(1) lookup
-        if (GameCodexManager.isReady()) {
-            const item = GameCodexManager.getItem(itemId);
-            if (item) {
-                logger.debug(`Retrieved item ${itemId} from memory cache`);
-                return item;
-            }
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for getItemById(${itemId}): ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchItemById(itemId: number): Promise<Item & { statEffect: StatEffect | null } | null> {
     try {
         logger.info(`Falling back to database for getItemById(${itemId})`);
         const item = await prisma.item.findUnique({
@@ -54,20 +27,7 @@ export async function getItemById(itemId: number): Promise<Item | null> {
     }
 }
 
-export async function getItemsByRarity(rarity: Rarity): Promise<Item[]> {
-    try {
-        // Try memory cache first
-        if (GameCodexManager.isReady()) {
-            const allItems = GameCodexManager.getAllItems();
-            const items = allItems.filter(item => item.rarity === rarity);
-            logger.debug(`Retrieved ${items.length} items with rarity ${rarity} from memory cache`);
-            return items;
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for getItemsByRarity(${rarity}): ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchItemsByRarity(rarity: Rarity): Promise<Item[]> {
     try {
         logger.info(`Falling back to database for getItemsByRarity(${rarity})`);
         const items = await prisma.item.findMany({
@@ -80,29 +40,10 @@ export async function getItemsByRarity(rarity: Rarity): Promise<Item[]> {
     }
 }
 
-export async function getRandomItemByRarity(rarity: Rarity): Promise<Item | null> {
-    try {
-        // Try memory cache first
-        if (GameCodexManager.isReady()) {
-            const items = await getItemsByRarity(rarity);
-            
-            if (items.length === 0) {
-                logger.error(`No items found with rarity: ${rarity}`);
-                return null;
-            }
-
-            const randomIndex = Math.floor(Math.random() * items.length);
-            logger.debug(`Retrieved random item with rarity ${rarity} from memory cache`);
-            return items[randomIndex];
-        }
-    } catch (error) {
-        logger.warn(`Memory cache failed for getRandomItemByRarity(${rarity}): ${error}`);
-    }
-
-    // Fallback to database
+export async function prismaFetchRandomItemByRarity(rarity: Rarity): Promise<Item | null> {
     try {
         logger.info(`Falling back to database for getRandomItemByRarity(${rarity})`);
-        
+
         // Count items of the specified rarity
         const count = await prisma.item.count({
             where: { rarity }
