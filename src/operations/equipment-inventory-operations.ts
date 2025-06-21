@@ -94,34 +94,29 @@ export async function canUserMintEquipment(
 type PrismaEquipmentWithStatEffect = Prisma.InventoryGetPayload<{ include: { equipment: { include: { statEffect: true } } } }>;
 type PrismaEquipmentInventory = Prisma.InventoryGetPayload<{ include: { equipment: true } }>;
 
+// Fixed mintEquipmentToUser function
 export async function mintEquipmentToUser(
     telegramId: string,
     equipmentId: number,
     quantity: number = 1
 ): Promise<PrismaEquipmentWithStatEffect> {
     try {
-        // Try memory first
         const userMemoryManager = requireUserMemoryManager();
         const snapshotRedisManager = requireSnapshotRedisManager();
 
+        // Try memory first
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
-            const user = userMemoryManager.getUser(telegramId)!;
-
-            if (!user.inventory) user.inventory = [];
-
-            // Check if equipment already exists
             const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
 
             if (existingItem) {
-                // Update existing quantity
+                // Update existing item quantity
                 const newQuantity = existingItem.quantity + quantity;
                 userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
 
-                if (snapshotRedisManager) await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
+                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
-                logger.info(`📦 Updated equipment ${equipmentId} quantity for user ${telegramId} in memory`);
+                logger.info(`📦 Updated equipment ${equipmentId} quantity for user ${telegramId} in memory (${existingItem.quantity} -> ${newQuantity})`);
 
-                // Cast to match Prisma return type (remove item field)
                 return {
                     id: existingItem.id,
                     itemId: existingItem.itemId,
@@ -132,9 +127,11 @@ export async function mintEquipmentToUser(
                     equipment: existingItem.equipment
                 } as PrismaEquipmentWithStatEffect;
             } else {
+                const uniqueId = -(Date.now() * 1000 + Math.floor(Math.random() * 10000) + equipmentId);
+
                 // Create new inventory item with temporary ID
                 const newInventoryItem: UserInventoryItem = {
-                    id: -(Date.now() * 1000 + Math.floor(Math.random() * 1000)),
+                    id: uniqueId,
                     itemId: null,
                     equipmentId: equipmentId,
                     quantity: quantity,
@@ -148,9 +145,8 @@ export async function mintEquipmentToUser(
 
                 await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
-                logger.info(`📦 Added new equipment ${equipmentId} to user ${telegramId} in memory`);
+                logger.info(`📦 Added new equipment ${equipmentId} (qty: ${quantity}) to user ${telegramId} in memory with temp ID ${uniqueId}`);
 
-                // Cast to match Prisma return type
                 return {
                     id: newInventoryItem.id,
                     itemId: newInventoryItem.itemId,
@@ -232,7 +228,7 @@ export async function deleteEquipmentFromUserInventory(
 
             const snapshotRedisManager = requireSnapshotRedisManager();
             await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
-            
+
             logger.info(`🗑️ Removed equipment from user ${telegramId} inventory in memory`);
             return updatedInventories;
         }

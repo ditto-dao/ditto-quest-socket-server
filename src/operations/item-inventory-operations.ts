@@ -106,9 +106,11 @@ export async function mintItemToUser(
                     item: existingItem.item
                 } as PrismaItemWithStatEffect;
             } else {
+                const uniqueId = -(Date.now() * 1000 + Math.floor(Math.random() * 10000) + itemId);
+
                 // Create new inventory item with temporary ID
                 const newInventoryItem: UserInventoryItem = {
-                    id: -(Date.now() * 1000 + Math.floor(Math.random() * 1000)),
+                    id: uniqueId,
                     itemId: itemId,
                     equipmentId: null,
                     quantity: quantity,

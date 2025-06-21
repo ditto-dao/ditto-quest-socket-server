@@ -3,6 +3,7 @@ import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
 import { deleteInventoryFromDB, insertInventoryToDB, prismaFetchUserInventory } from "../../sql-services/equipment-inventory-service";
 import { requireSnapshotRedisManager } from "../global-managers/global-managers";
+import { getUserData } from "../../operations/user-operations";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -357,22 +358,52 @@ export class UserMemoryManager {
 
 	/**
 	 * Find inventory items by equipment ID
+	 * Prefers real DB items over temporary items when multiple exist
 	 */
 	findInventoryByEquipmentId(userId: string, equipmentId: number): UserInventoryItem | null {
 		const user = this.users.get(userId);
 		if (!user || !user.inventory) return null;
 
-		return user.inventory.find(inv => inv.equipmentId === equipmentId && inv.itemId === null) || null;
+		// Find all matching equipment items
+		const matchingItems = user.inventory.filter(inv => inv.equipmentId === equipmentId && inv.itemId === null);
+
+		if (matchingItems.length === 0) return null;
+		if (matchingItems.length === 1) return matchingItems[0];
+
+		// If multiple items exist, prefer real DB items (positive IDs) over temp items (negative IDs)
+		const realItems = matchingItems.filter(item => item.id > 0);
+		if (realItems.length > 0) {
+			// Return the real item with highest quantity (most likely to be the stacked one)
+			return realItems.reduce((max, current) => current.quantity > max.quantity ? current : max);
+		}
+
+		// If only temp items exist, return the one with highest quantity
+		return matchingItems.reduce((max, current) => current.quantity > max.quantity ? current : max);
 	}
 
 	/**
-	 * Find inventory items by item ID
-	 */
+	* Find inventory items by item ID
+	* Prefers real DB items over temporary items when multiple exist
+	*/
 	findInventoryByItemId(userId: string, itemId: number): UserInventoryItem | null {
 		const user = this.users.get(userId);
 		if (!user || !user.inventory) return null;
 
-		return user.inventory.find(inv => inv.itemId === itemId && inv.equipmentId === null) || null;
+		// Find all matching item items
+		const matchingItems = user.inventory.filter(inv => inv.itemId === itemId && inv.equipmentId === null);
+
+		if (matchingItems.length === 0) return null;
+		if (matchingItems.length === 1) return matchingItems[0];
+
+		// If multiple items exist, prefer real DB items (positive IDs) over temp items (negative IDs)
+		const realItems = matchingItems.filter(item => item.id > 0);
+		if (realItems.length > 0) {
+			// Return the real item with highest quantity (most likely to be the stacked one)
+			return realItems.reduce((max, current) => current.quantity > max.quantity ? current : max);
+		}
+
+		// If only temp items exist, return the one with highest quantity
+		return matchingItems.reduce((max, current) => current.quantity > max.quantity ? current : max);
 	}
 
 	/**
@@ -439,9 +470,6 @@ export class UserMemoryManager {
 		}
 	}
 
-	/**
-		* Enhanced flush method with better error handling and validation
-		*/
 	async flushUserInventory(userId: string): Promise<void> {
 		const createInventory = this.pendingCreateInventory.get(userId) || [];
 		const burnInventoryIds = this.pendingBurnInventoryIds.get(userId) || [];
@@ -454,37 +482,83 @@ export class UserMemoryManager {
 		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${burnInventoryIds.length} deletes`);
 
 		try {
-			// Insert new inventory items
+			// 1. Insert new inventory items first
 			if (createInventory.length > 0) {
 				await insertInventoryToDB(userId, createInventory);
 				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
 			}
 
-			// Get fresh inventory from DB for ID remapping
+			// 2. Get fresh inventory from DB for ID remapping with delay to ensure consistency
+			await new Promise(resolve => setTimeout(resolve, 50)); // Small delay for DB consistency
 			const freshInventory = await prismaFetchUserInventory(userId);
 			const remap = new Map<number, number>();
 
-			// Map temporary IDs to real IDs
-			for (const inventoryItem of freshInventory) {
-				const matchingFake = createInventory.find(f =>
-					((f.equipmentId === inventoryItem.equipmentId && f.equipmentId !== null) ||
-						(f.itemId === inventoryItem.itemId && f.itemId !== null)) &&
-					f.id < 0
-				);
-				if (matchingFake) {
-					remap.set(matchingFake.id, inventoryItem.id);
-					logger.debug(`🔗 Remapped temp ID ${matchingFake.id} to real ID ${inventoryItem.id}`);
+			const usedDbItems = new Set<number>();
+
+			// Sort both arrays for better matching
+			const sortedCreateInventory = [...createInventory].filter(f => f.id < 0)
+				.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+			const sortedFreshInventory = [...freshInventory]
+				.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+			for (const fakeItem of sortedCreateInventory) {
+				// Find the best matching DB item
+				let bestMatch = null;
+				let bestScore = 0;
+
+				for (const dbItem of sortedFreshInventory) {
+					if (usedDbItems.has(dbItem.id)) continue;
+
+					// Calculate match score
+					let score = 0;
+
+					// Equipment/Item ID match (required)
+					if (fakeItem.equipmentId && fakeItem.equipmentId === dbItem.equipmentId) score += 100;
+					if (fakeItem.itemId && fakeItem.itemId === dbItem.itemId) score += 100;
+					if (score === 0) continue; // No ID match, skip
+
+					// Quantity match bonus
+					if (fakeItem.quantity === dbItem.quantity) score += 50;
+
+					// Creation time proximity (within 5 seconds)
+					const timeDiff = Math.abs(dbItem.createdAt.getTime() - fakeItem.createdAt.getTime());
+					if (timeDiff < 5000) score += Math.max(0, 25 - (timeDiff / 200)); // 25 points max, decreasing
+
+					if (score > bestScore) {
+						bestScore = score;
+						bestMatch = dbItem;
+					}
+				}
+
+				if (bestMatch && bestScore >= 100) { // Minimum score threshold
+					remap.set(fakeItem.id, bestMatch.id);
+					usedDbItems.add(bestMatch.id);
+					logger.debug(`🔗 Remapped temp ID ${fakeItem.id} to real ID ${bestMatch.id} (score: ${bestScore}, qty: ${fakeItem.quantity})`);
+				} else {
+					logger.warn(`⚠️ No suitable match found for temp ID ${fakeItem.id} (equipmentId: ${fakeItem.equipmentId}, itemId: ${fakeItem.itemId}, quantity: ${fakeItem.quantity})`);
 				}
 			}
 
-			// Delete inventory items (using remapped IDs)
-			const realBurnIds = burnInventoryIds.map(fakeId => remap.get(fakeId) || fakeId);
+			// 3. Delete inventory items using remapped IDs
+			const realBurnIds = burnInventoryIds.map(fakeId => {
+				if (fakeId < 0) {
+					const realId = remap.get(fakeId);
+					if (!realId) {
+						logger.warn(`⚠️ Could not remap temp ID ${fakeId} for deletion - skipping`);
+						return null;
+					}
+					return realId;
+				}
+				return fakeId; // Already a real ID
+			}).filter(id => id !== null) as number[];
+
 			if (realBurnIds.length > 0) {
 				await deleteInventoryFromDB(userId, realBurnIds);
 				logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId}`);
 			}
 
-			// Update memory with fresh data
+			// 4. Update memory with fresh data
 			const finalInventory = await prismaFetchUserInventory(userId);
 			this.updateInventory(userId, finalInventory);
 
@@ -502,13 +576,10 @@ export class UserMemoryManager {
 				this.markClean(userId);
 			}
 
-			logger.info(`✅ Successfully flushed inventory for user ${userId}`);
+			logger.info(`✅ Successfully flushed inventory for user ${userId} with ${remap.size} ID remappings`);
 
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
-
-			// CRITICAL: Don't clear pending operations if flush failed
-			// This ensures we can retry the flush later
 			throw err;
 		}
 	}
@@ -519,18 +590,28 @@ export class UserMemoryManager {
 	async flushAllUserUpdates(userId: string): Promise<boolean> {
 		try {
 			logger.info(`🔍 DEBUG: Before flush - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
-			await this.flushUserSlimes(userId);
-			logger.info(`🔍 DEBUG: After slimes - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
-			await this.flushUserInventory(userId);
-			logger.info(`🔍 DEBUG: After inventory - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
 
 			const user = this.getUser(userId);
-			if (user) {
-				await prismaSaveUser(user);
-			
-				const snapshotRedisManager = requireSnapshotRedisManager();
-				await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 95);
+			if (!user) {
+				throw new Error(`User ${userId} not found in memory for flush`);
 			}
+
+			// Start transaction-like flush
+			await Promise.all([
+				this.flushUserSlimes(userId),
+				this.flushUserInventory(userId)
+			]);
+
+			logger.info(`🔍 DEBUG: After inventory/slimes flush - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
+
+			// Save user core data
+			await prismaSaveUser(user);
+
+			await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay to ensure DB commit
+
+			// Mark snapshot stale with immediate priority
+			const snapshotRedisManager = requireSnapshotRedisManager();
+			await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 99);
 
 			this.markClean(userId);
 
@@ -540,7 +621,6 @@ export class UserMemoryManager {
 			return false;
 		}
 	}
-
 	/**
 	 * Batch flush - processes all dirty users
 	 */
@@ -611,6 +691,15 @@ export class UserMemoryManager {
 					}
 					logger.info(`✅ Verified inventory flush completed for user ${userId}`);
 				}
+
+				// ✅ FIX: Force immediate snapshot regeneration after successful flush
+				const snapshotRedisManager = requireSnapshotRedisManager();
+				const freshUser = await getUserData(userId); // Get fresh data from DB
+				if (freshUser) {
+					await snapshotRedisManager.storeSnapshot(userId, freshUser, 'fresh');
+					logger.info(`📸 ✅ Immediately regenerated fresh snapshot for user ${userId} after logout`);
+				}
+
 			} catch (flushError) {
 				logger.error(`❌ CRITICAL: Failed to flush user data during logout for ${userId}: ${flushError}`);
 
