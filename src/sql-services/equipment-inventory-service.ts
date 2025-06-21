@@ -326,7 +326,7 @@ export async function prismaFetchEquipmentOrItemFromInventory(
     }
 }
 
-export async function insertInventoryToDB(userId: string, inventory: UserInventoryItem[]): Promise<void> {
+export async function prismaInsertInventoryToDB(userId: string, inventory: UserInventoryItem[]): Promise<void> {
     try {
         for (const inv of inventory) {
             if (inv.equipmentId) {
@@ -342,7 +342,7 @@ export async function insertInventoryToDB(userId: string, inventory: UserInvento
     }
 }
 
-export async function deleteInventoryFromDB(userId: string, inventoryIds: number[]): Promise<void> {
+export async function prismaDeleteInventoryFromDB(userId: string, inventoryIds: number[]): Promise<void> {
     try {
         await prisma.inventory.deleteMany({
             where: {
@@ -353,6 +353,59 @@ export async function deleteInventoryFromDB(userId: string, inventoryIds: number
         logger.info(`🗑️ Batch deleted ${inventoryIds.length} inventory items for user ${userId}`);
     } catch (error) {
         logger.error(`❌ Failed to batch delete inventory for user ${userId}: ${error}`);
+        throw error;
+    }
+}
+
+/**
+ * Update multiple inventory item quantities in the database
+ */
+export async function prismaUpdateInventoryQuantitiesInDB(
+    userId: string,
+    inventoryItems: UserInventoryItem[]
+): Promise<void> {
+    try {
+        const updatePromises = inventoryItems.map(item =>
+            prisma.inventory.update({
+                where: { id: item.id },
+                data: { quantity: item.quantity }
+            })
+        );
+
+        await Promise.all(updatePromises);
+
+        logger.debug(`🔄 Updated ${inventoryItems.length} inventory quantities in DB for user ${userId}`);
+    } catch (error) {
+        logger.error(`❌ Failed to update inventory quantities in DB for user ${userId}: ${error}`);
+        throw error;
+    }
+}
+
+/**
+ * Alternative batch update approach (more efficient for large quantities)
+ */
+export async function prismaBatchUpdateInventoryQuantitiesInDB(
+    userId: string,
+    inventoryItems: UserInventoryItem[]
+): Promise<void> {
+    try {
+        // Build the update cases for each inventory item
+        const updateCases = inventoryItems.map(item =>
+            `WHEN id = ${item.id} THEN ${item.quantity}`
+        ).join(' ');
+
+        const inventoryIds = inventoryItems.map(item => item.id);
+
+        // Use raw SQL for efficient batch update
+        await prisma.$executeRaw`
+            UPDATE inventory 
+            SET quantity = CASE ${updateCases} END
+            WHERE id IN (${inventoryIds.join(',')})
+        `;
+
+        logger.debug(`🔄 Batch updated ${inventoryItems.length} inventory quantities in DB for user ${userId}`);
+    } catch (error) {
+        logger.error(`❌ Failed to batch update inventory quantities in DB for user ${userId}: ${error}`);
         throw error;
     }
 }

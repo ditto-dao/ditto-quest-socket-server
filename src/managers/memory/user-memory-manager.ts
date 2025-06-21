@@ -1,9 +1,8 @@
+import { prismaDeleteInventoryFromDB, prismaFetchUserInventory, prismaInsertInventoryToDB, prismaUpdateInventoryQuantitiesInDB } from "../../sql-services/equipment-inventory-service";
 import { prismaDeleteSlimesFromDB, prismaFetchSlimesForUser, prismaInsertSlimesToDB, SlimeWithTraits } from "../../sql-services/slime";
 import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
-import { deleteInventoryFromDB, insertInventoryToDB, prismaFetchUserInventory } from "../../sql-services/equipment-inventory-service";
 import { requireSnapshotRedisManager } from "../global-managers/global-managers";
-import { getUserData } from "../../operations/user-operations";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -27,6 +26,7 @@ export class UserMemoryManager {
 	pendingBurnSlimeIds: Map<string, number[]> = new Map();
 
 	pendingCreateInventory: Map<string, UserInventoryItem[]> = new Map();
+	pendingInventoryUpdates = new Map<string, Set<number>>(); // userId -> Set<inventoryId>
 	pendingBurnInventoryIds: Map<string, number[]> = new Map();
 	inventoryIdRemap: Map<string, Map<number, number>> = new Map();
 
@@ -231,7 +231,8 @@ export class UserMemoryManager {
 		return this.pendingCreateSlimes.has(userId) ||
 			this.pendingBurnSlimeIds.has(userId) ||
 			this.pendingCreateInventory.has(userId) ||
-			this.pendingBurnInventoryIds.has(userId);
+			this.pendingBurnInventoryIds.has(userId) ||
+			this.pendingInventoryUpdates.has(userId);
 	}
 
 	/**
@@ -315,7 +316,7 @@ export class UserMemoryManager {
 	}
 
 	/**
-	 * Update inventory item quantity in memory
+	 * Update inventory item quantity in memory AND track for DB persistence
 	 */
 	updateInventoryQuantity(userId: string, inventoryId: number, newQuantity: number): boolean {
 		const user = this.users.get(userId);
@@ -333,12 +334,20 @@ export class UserMemoryManager {
 
 		const oldQuantity = inventoryItem.quantity;
 		inventoryItem.quantity = newQuantity;
+
+		// 🔥 NEW: Track this quantity update for DB persistence
+		if (!this.pendingInventoryUpdates.has(userId)) {
+			this.pendingInventoryUpdates.set(userId, new Set());
+		}
+		this.pendingInventoryUpdates.get(userId)!.add(inventoryId);
+
 		this.markDirty(userId);
 		this.updateActivity(userId);
 
-		logger.info(`📦 Updated inventory ID ${inventoryId} quantity for user ${userId}: ${oldQuantity} -> ${newQuantity} (equipmentId: ${inventoryItem.equipmentId}, itemId: ${inventoryItem.itemId})`);
+		logger.info(`📦 Updated inventory ID ${inventoryId} quantity for user ${userId}: ${oldQuantity} -> ${newQuantity} (equipmentId: ${inventoryItem.equipmentId}, itemId: ${inventoryItem.itemId}) [TRACKED FOR DB UPDATE]`);
 		return true;
 	}
+
 
 	/**
 	 * Remove inventory item from user's memory by ID
@@ -482,74 +491,67 @@ export class UserMemoryManager {
 	async flushUserInventory(userId: string): Promise<void> {
 		const createInventory = this.pendingCreateInventory.get(userId) || [];
 		const burnInventoryIds = this.pendingBurnInventoryIds.get(userId) || [];
+		const updateInventoryIds = this.pendingInventoryUpdates.get(userId) || new Set();
 
-		if (createInventory.length === 0 && burnInventoryIds.length === 0) {
+		if (createInventory.length === 0 && burnInventoryIds.length === 0 && updateInventoryIds.size === 0) {
 			logger.debug(`📦 No pending inventory changes for user ${userId}`);
 			return;
 		}
 
-		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${burnInventoryIds.length} deletes`);
+		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${burnInventoryIds.length} deletes, ${updateInventoryIds.size} updates`);
 
 		try {
 			// 1. Insert new inventory items first
 			if (createInventory.length > 0) {
-				await insertInventoryToDB(userId, createInventory);
+				await prismaInsertInventoryToDB(userId, createInventory);
 				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
 			}
 
-			// 2. Get fresh inventory from DB for ID remapping with delay to ensure consistency
-			await new Promise(resolve => setTimeout(resolve, 50)); // Small delay for DB consistency
+			// 2. Get fresh inventory from DB for accurate ID mapping
 			const freshInventory = await prismaFetchUserInventory(userId);
 			const remap = new Map<number, number>();
 
-			const usedDbItems = new Set<number>();
-
-			// Sort both arrays for better matching
-			const sortedCreateInventory = [...createInventory].filter(f => f.id < 0)
-				.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-			const sortedFreshInventory = [...freshInventory]
-				.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-			for (const fakeItem of sortedCreateInventory) {
-				// Find the best matching DB item
-				let bestMatch = null;
-				let bestScore = 0;
-
-				for (const dbItem of sortedFreshInventory) {
-					if (usedDbItems.has(dbItem.id)) continue;
-
-					// Calculate match score
-					let score = 0;
-
-					// Equipment/Item ID match (required)
-					if (fakeItem.equipmentId && fakeItem.equipmentId === dbItem.equipmentId) score += 100;
-					if (fakeItem.itemId && fakeItem.itemId === dbItem.itemId) score += 100;
-					if (score === 0) continue; // No ID match, skip
-
-					// Quantity match bonus
-					if (fakeItem.quantity === dbItem.quantity) score += 50;
-
-					// Creation time proximity (within 5 seconds)
-					const timeDiff = Math.abs(dbItem.createdAt.getTime() - fakeItem.createdAt.getTime());
-					if (timeDiff < 5000) score += Math.max(0, 25 - (timeDiff / 200)); // 25 points max, decreasing
-
-					if (score > bestScore) {
-						bestScore = score;
-						bestMatch = dbItem;
+			// 3. Handle creates - map temp IDs to real IDs
+			if (createInventory.length > 0) {
+				for (const createdItem of createInventory) {
+					if (createdItem.id < 0) { // temp ID
+						const realItem = freshInventory.find(inv =>
+							inv.equipmentId === createdItem.equipmentId &&
+							inv.itemId === createdItem.itemId &&
+							inv.quantity === createdItem.quantity
+						);
+						if (realItem) {
+							remap.set(createdItem.id, realItem.id);
+							logger.debug(`🔗 Mapped temp ID ${createdItem.id} -> real ID ${realItem.id}`);
+						}
 					}
-				}
-
-				if (bestMatch && bestScore >= 100) { // Minimum score threshold
-					remap.set(fakeItem.id, bestMatch.id);
-					usedDbItems.add(bestMatch.id);
-					logger.debug(`🔗 Remapped temp ID ${fakeItem.id} to real ID ${bestMatch.id} (score: ${bestScore}, qty: ${fakeItem.quantity})`);
-				} else {
-					logger.warn(`⚠️ No suitable match found for temp ID ${fakeItem.id} (equipmentId: ${fakeItem.equipmentId}, itemId: ${fakeItem.itemId}, quantity: ${fakeItem.quantity})`);
 				}
 			}
 
-			// 3. Delete inventory items using remapped IDs
+			// 4. Update existing inventory item quantities (using real IDs)
+			if (updateInventoryIds.size > 0) {
+				const user = this.users.get(userId);
+				if (user && user.inventory) {
+					// Filter items that need quantity updates and map temp IDs to real IDs
+					const itemsToUpdate = user.inventory
+						.filter(inv => updateInventoryIds.has(inv.id))
+						.map(inv => {
+							// If this is a temp ID, get the real ID from mapping
+							if (inv.id < 0 && remap.has(inv.id)) {
+								return { ...inv, id: remap.get(inv.id)! };
+							}
+							return inv;
+						})
+						.filter(inv => inv.id > 0); // Only update items with real IDs
+
+					if (itemsToUpdate.length > 0) {
+						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
+						logger.debug(`🔄 Updated ${itemsToUpdate.length} inventory quantities for ${userId}`);
+					}
+				}
+			}
+
+			// 5. Delete inventory items using remapped IDs
 			const realBurnIds = burnInventoryIds.map(fakeId => {
 				if (fakeId < 0) {
 					const realId = remap.get(fakeId);
@@ -563,16 +565,15 @@ export class UserMemoryManager {
 			}).filter(id => id !== null) as number[];
 
 			if (realBurnIds.length > 0) {
-				await deleteInventoryFromDB(userId, realBurnIds);
+				await prismaDeleteInventoryFromDB(userId, realBurnIds);
 				logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId}`);
 			}
 
+			// 6. Update memory with fresh inventory data from DB
 			const user = this.users.get(userId);
 			if (user) {
-				// Update memory with fresh inventory data from DB
 				user.inventory = freshInventory;
 
-				// Apply any ID remapping to memory objects that reference these IDs
 				if (remap.size > 0) {
 					this.inventoryIdRemap.set(userId, remap);
 					logger.info(`📦 Updated memory inventory for user ${userId} with ${freshInventory.length} items and ${remap.size} ID remappings`);
@@ -591,6 +592,7 @@ export class UserMemoryManager {
 			// Clear pending operations
 			this.pendingCreateInventory.delete(userId);
 			this.pendingBurnInventoryIds.delete(userId);
+			this.pendingInventoryUpdates.delete(userId);
 
 			// Mark clean if no other pending changes
 			if (!this.hasPendingChanges(userId)) {
@@ -690,7 +692,9 @@ export class UserMemoryManager {
 			logger.info(`👋 User ${userId} logging out`);
 
 			// CRITICAL: Check if user has pending inventory changes BEFORE flushing
-			const hasPendingInventory = this.pendingCreateInventory.has(userId) || this.pendingBurnInventoryIds.has(userId);
+			const hasPendingInventory = this.pendingCreateInventory.has(userId) ||
+				this.pendingBurnInventoryIds.has(userId) ||
+				this.pendingInventoryUpdates.has(userId);
 
 			if (hasPendingInventory) {
 				logger.info(`📦 User ${userId} has pending inventory changes - forcing flush before logout`);
@@ -751,6 +755,7 @@ export class UserMemoryManager {
 			this.pendingBurnSlimeIds.delete(userId);
 			this.pendingCreateInventory.delete(userId);
 			this.pendingBurnInventoryIds.delete(userId);
+			this.pendingInventoryUpdates.delete(userId);
 			this.inventoryIdRemap.delete(userId);
 
 			if (removeFromMemory) {
