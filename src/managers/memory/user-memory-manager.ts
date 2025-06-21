@@ -578,9 +578,10 @@ export class UserMemoryManager {
 			await this.flushAllUserUpdates(userId);
 		}
 	}
+
 	/**
 	 * Handle user logout - flush everything and optionally remove from memory
-	 * FIXED VERSION - ensures inventory is properly persisted before cleanup
+	 * Ensures inventory is properly persisted before cleanup
 	 */
 	async logoutUser(userId: string, removeFromMemory: boolean = false): Promise<boolean> {
 		try {
