@@ -1,11 +1,13 @@
 import { prisma } from '../../sql-services/client';
 import { logger } from '../../utils/logger';
+import AsyncLock from 'async-lock';
 
 export class SlimeIDManager {
     private highestSlimeId: number = 0;
     private isInitialized: boolean = false;
+    private lock = new AsyncLock();
 
-    constructor() {}
+    constructor() { }
 
     /**
      * Initialize by fetching highest IDs from database
@@ -38,26 +40,19 @@ export class SlimeIDManager {
     }
 
     /**
-     * Generate next real slime ID
+     * Generate next real slime ID (race-condition safe)
      */
-    getNextSlimeId(): number {
+    async getNextSlimeId(): Promise<number> {
         if (!this.isInitialized) {
             throw new Error('IDManager not initialized');
         }
 
-        this.highestSlimeId++;
-        logger.debug(`🆔 Generated slime ID: ${this.highestSlimeId}`);
-        return this.highestSlimeId;
-    }
-
-    /**
-     * Update highest slime ID (call after batch DB operations)
-     */
-    updateHighestSlimeId(id: number): void {
-        if (id > this.highestSlimeId) {
-            this.highestSlimeId = id;
-            logger.debug(`📈 Updated highest slime ID to: ${this.highestSlimeId}`);
-        }
+        return await this.lock.acquire('slime-id', () => {
+            this.highestSlimeId++;
+            const newId = this.highestSlimeId;
+            logger.debug(`🆔 Generated slime ID: ${newId}`);
+            return newId;
+        });
     }
 
     /**
@@ -71,34 +66,6 @@ export class SlimeIDManager {
             highestSlimeId: this.highestSlimeId,
             isInitialized: this.isInitialized
         };
-    }
-
-    /**
-     * Sync with database (call periodically or after bulk operations)
-     */
-    async syncWithDatabase(): Promise<void> {
-        try {
-            const [highestSlime, highestInventory] = await Promise.all([
-                prisma.slime.findFirst({
-                    select: { id: true },
-                    orderBy: { id: 'desc' }
-                }),
-                prisma.inventory.findFirst({
-                    select: { id: true },
-                    orderBy: { id: 'desc' }
-                })
-            ]);
-
-            const dbSlimeId = highestSlime?.id || 0;
-
-            if (dbSlimeId > this.highestSlimeId) {
-                logger.info(`🔄 Synced slime ID: ${this.highestSlimeId} -> ${dbSlimeId}`);
-                this.highestSlimeId = dbSlimeId;
-            }
-
-        } catch (error) {
-            logger.error('❌ Failed to sync IDManager with database:', error);
-        }
     }
 }
 
