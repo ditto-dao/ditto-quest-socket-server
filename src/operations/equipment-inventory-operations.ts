@@ -134,7 +134,7 @@ export async function mintEquipmentToUser(
             } else {
                 // Create new inventory item with temporary ID
                 const newInventoryItem: UserInventoryItem = {
-                    id: Date.now() * -1, // Temporary negative ID
+                    id: -(Date.now() * 1000 + Math.floor(Math.random() * 1000)),
                     itemId: null,
                     equipmentId: equipmentId,
                     quantity: quantity,
