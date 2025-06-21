@@ -362,7 +362,7 @@ export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = fals
             traitObjFields[`${type}Hidden3`] = h3;
         }
 
-        const realSlimeId = getSlimeIDManager().getNextSlimeId();
+        const realSlimeId = await getSlimeIDManager().getNextSlimeId();
 
         const slime: SlimeWithTraits = {
             id: realSlimeId,
@@ -475,7 +475,7 @@ export async function breedSlimesMemory(ownerId: string, sireId: number, dameId:
             }
         }
 
-        const realSlimeId = getSlimeIDManager().getNextSlimeId();
+        const realSlimeId = await getSlimeIDManager().getNextSlimeId();
 
         const generation = Math.max(sire.generation, dame.generation) + 1;
 
