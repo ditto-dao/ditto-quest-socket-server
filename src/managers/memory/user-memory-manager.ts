@@ -518,16 +518,21 @@ export class UserMemoryManager {
 	 */
 	async flushAllUserUpdates(userId: string): Promise<boolean> {
 		try {
+			logger.info(`🔍 DEBUG: Before flush - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
 			await this.flushUserSlimes(userId);
+			logger.info(`🔍 DEBUG: After slimes - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
 			await this.flushUserInventory(userId);
+			logger.info(`🔍 DEBUG: After inventory - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
 
 			const user = this.getUser(userId);
 			if (user) {
 				await prismaSaveUser(user);
-
+			
 				const snapshotRedisManager = requireSnapshotRedisManager();
 				await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 95);
 			}
+
+			this.markClean(userId);
 
 			return true;
 		} catch (error) {
