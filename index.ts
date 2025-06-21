@@ -225,14 +225,28 @@ async function gracefulShutdown(
     logger.info('🛑 Graceful shutdown initiated...');
 
     try {
-        // Save all user activities
+        const userMemoryManager = getUserMemoryManager();
+        const activityLogMemoryManager = getActivityLogMemoryManager();
+
+        // STEP 1: Save all idle activities (time-sensitive)
         await idleManager.saveAllUsersIdleActivities();
 
-        // Cleanup all global managers
-        await cleanupGlobalManagers();
+        // STEP 2: Flush all pending user data from memory to database
+        if (userMemoryManager) {
+            logger.info("💾 Flushing all dirty users before shutdown...");
+            await userMemoryManager.flushAllDirtyUsers();
+        }
 
-        // Disconnect all users
+        // STEP 3: Flush all activity logs
+        if (activityLogMemoryManager) {
+            await activityLogMemoryManager.flushAll();
+        }
+
+        // STEP 4: Disconnect all users
         socketManager.disconnectAllUsers();
+
+        // STEP 5: Cleanup global managers
+        await cleanupGlobalManagers();
 
         // Close socket server
         io.close(() => {

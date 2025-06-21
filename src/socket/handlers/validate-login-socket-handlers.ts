@@ -7,7 +7,7 @@ import { IdleManager } from "../../managers/idle-managers/idle-manager"
 import { LEDGER_REMOVE_USER_SOCKET_EVENT, LOGOUT_USER_FROM_TMA_EVENT, STORE_FINGERPRINT_EVENT, TG_VALIDATE_ERROR_EVENT, VALIDATE_LOGIN_EVENT } from "../events";
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { storeFingerprint } from "../../sql-services/user-fingerprint";
-import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 
 interface ValidateLoginPayload {
     initData: string
@@ -72,13 +72,18 @@ export async function setupValidateLoginSocketHandlers(
 
             if (!logoutSuccess) {
                 logger.warn(`⚠️ Logout partially failed for user ${userId} - user kept in memory`);
+
+                try {
+                    const user = userMemoryManager.getUser(userId);
+                    if (user) {
+                        const snapshotRedisManager = requireSnapshotRedisManager();
+                        await snapshotRedisManager.storeSnapshot(userId, user, 'fresh');
+                        logger.info(`🚨 Generated emergency snapshot for failed logout: ${userId}`);
+                    }
+                } catch (emergencyErr) {
+                    logger.error(`Failed emergency snapshot: ${emergencyErr}`);
+                }
             }
-
-            // STEP 4: Clean up socket cache and notify ledger
-            socketManager.removeSocketIdCacheForUser(userId);
-            dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-
-            logger.info(`✅ Successfully logged out user ${userId}`);
         } catch (err) {
             logger.error(`❌ Failed to logout user ${userId} in backend: ${err}`);
 

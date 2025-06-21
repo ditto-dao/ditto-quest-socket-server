@@ -14,7 +14,7 @@ import { IdleCombatManager } from "../managers/idle-managers/combat/combat-idle-
 import { setupCombatSocketHandlers } from "./handlers/combat-handlers"
 import AsyncLock from "async-lock"
 import { setupMissionSocketHandlers } from "./handlers/mission-handlers"
-import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../managers/global-managers/global-managers"
+import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../managers/global-managers/global-managers"
 
 export const globalIdleSocketUserLock = new AsyncLock()
 
@@ -78,27 +78,37 @@ export async function setupSocketHandlers(
                         // Save idle activities first (time-sensitive)
                         await idleManager.saveAllIdleActivitiesOnLogout(userId);
 
-                        // Flush all pending user updates from memory to database
-                        await userMemoryManager.flushAllUserUpdates(userId);
-
                         // Flush any buffered activity logs for this user
                         if (activityLogMemoryManager.hasUser(userId)) {
                             await activityLogMemoryManager.flushUser(userId);
                         }
 
-                        // Logout user from memory (keep in memory for potential reconnect)
+                        // SINGLE comprehensive logout (handles everything):
+                        // - Flush all pending user updates to database
+                        // - Generate fresh snapshot FROM memory
+                        // - Remove from memory
                         await userMemoryManager.logoutUser(userId, true);
 
                         logger.info(`✅ Successfully cleaned up user ${userId} (adapter disconnect)`);
                     } catch (userErr) {
                         logger.error(`❌ Failed to cleanup user ${userId} during adapter disconnect: ${userErr}`);
 
-                        // Continue with other users even if one fails
-                        // The user data might be partially saved which is better than nothing
+                        // Emergency cleanup - try to at least generate snapshot
+                        try {
+                            const userMemoryManager = requireUserMemoryManager();
+                            const user = userMemoryManager.getUser(userId);
+                            if (user) {
+                                const snapshotRedisManager = requireSnapshotRedisManager();
+                                await snapshotRedisManager.storeSnapshot(userId, user, 'fresh');
+                                logger.info(`🚨 Emergency snapshot generated for user ${userId}`);
+                            }
+                        } catch (emergencyErr) {
+                            logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
+                        }
                     }
                 });
 
-                // STEP 3: Wait for all user cleanups to complete (with timeout)
+                // STEP 3: Wait for all user cleanups to complete
                 await Promise.allSettled(cleanupPromises);
 
                 logger.info(`🔌 Completed cleanup for adapter disconnect (${userIds.length} users processed)`);

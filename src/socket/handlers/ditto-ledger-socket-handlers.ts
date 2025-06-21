@@ -14,7 +14,7 @@ import { getHighestDominantTraitRarity } from "../../utils/helpers";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
 import { getUserData } from "../../operations/user-operations";
-import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 
 const lock = new AsyncLock();
 
@@ -135,30 +135,40 @@ export async function setupDittoLedgerSocketServerHandlers(
             const userMemoryManager = requireUserMemoryManager();
             const activityLogMemoryManager = requireActivityLogMemoryManager();
 
-            // STEP 1: Save all idle activities for all users (time-sensitive)
+            // Save all idle activities for all users (time-sensitive)
             await idleManager.saveAllUsersIdleActivities();
 
-            // STEP 2: Get all active users from memory
+            // Get all active users from memory
             const activeUsers = userMemoryManager.getActiveUsers();
             logger.info(`🧹 Cleaning up ${activeUsers.length} active users due to ledger disconnect`);
 
             if (activeUsers.length > 0) {
-                // STEP 3: Flush all pending user updates to database
                 logger.info("💾 Flushing all pending user updates...");
                 await userMemoryManager.flushAllDirtyUsers();
 
-                // STEP 4: Flush all activity logs
                 logger.info("📝 Flushing all activity logs...");
                 await activityLogMemoryManager.flushAll();
 
-                // STEP 5: Optional - Clear memory
+                // Generate fresh snapshots for all users before clearing memory
+                logger.info("📸 Generating snapshots for all users...");
+                const snapshotRedisManager = requireSnapshotRedisManager();
+                for (const userId of activeUsers) {
+                    try {
+                        const user = userMemoryManager.getUser(userId);
+                        if (user) {
+                            await snapshotRedisManager.storeSnapshot(userId, user, 'fresh');
+                        }
+                    } catch (snapErr) {
+                        logger.error(`Failed to generate snapshot for user ${userId}: ${snapErr}`);
+                    }
+                }
+
+                // Now safe to clear memory
                 userMemoryManager.clear();
                 activityLogMemoryManager.clear();
-
-                logger.info(`✅ Successfully saved data for ${activeUsers.length} users`);
             }
 
-            // STEP 6: Disconnect all user sockets
+            // Disconnect all user sockets
             socketManager.disconnectAllUsers();
 
             logger.error('🚨 All users disconnected due to ledger socket failure');
