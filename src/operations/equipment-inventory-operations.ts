@@ -94,7 +94,6 @@ export async function canUserMintEquipment(
 type PrismaEquipmentWithStatEffect = Prisma.InventoryGetPayload<{ include: { equipment: { include: { statEffect: true } } } }>;
 type PrismaEquipmentInventory = Prisma.InventoryGetPayload<{ include: { equipment: true } }>;
 
-// Fixed mintEquipmentToUser function
 export async function mintEquipmentToUser(
     telegramId: string,
     equipmentId: number,
@@ -108,10 +107,18 @@ export async function mintEquipmentToUser(
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
             const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
 
+            // ✅ DEBUG: Log what we found
+            logger.info(`🔍 DEBUG: Looking for equipment ${equipmentId} for user ${telegramId}, found: ${existingItem ? `ID ${existingItem.id} with qty ${existingItem.quantity}` : 'NONE'}`);
+
             if (existingItem) {
                 // Update existing item quantity
                 const newQuantity = existingItem.quantity + quantity;
-                userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
+                const updateSuccess = userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
+
+                if (!updateSuccess) {
+                    logger.error(`❌ Failed to update equipment ${equipmentId} quantity for user ${telegramId}`);
+                    throw new Error(`Equipment quantity update failed`);
+                }
 
                 await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 

@@ -89,7 +89,12 @@ export async function mintItemToUser(
             if (existingItem) {
                 // Update existing quantity
                 const newQuantity = existingItem.quantity + quantity;
-                userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
+                const updateSuccess = userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
+
+                if (!updateSuccess) {
+                    logger.error(`❌ Failed to update item ${itemId} quantity for user ${telegramId}`);
+                    throw new Error(`Item quantity update failed`);
+                }
 
                 if (snapshotRedisManager) await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 

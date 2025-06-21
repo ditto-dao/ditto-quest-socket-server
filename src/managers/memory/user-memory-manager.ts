@@ -319,15 +319,24 @@ export class UserMemoryManager {
 	 */
 	updateInventoryQuantity(userId: string, inventoryId: number, newQuantity: number): boolean {
 		const user = this.users.get(userId);
-		if (!user || !user.inventory) return false;
+		if (!user || !user.inventory) {
+			logger.error(`❌ User ${userId} not found or has no inventory for quantity update`);
+			return false;
+		}
 
 		const inventoryItem = user.inventory.find(inv => inv.id === inventoryId);
-		if (!inventoryItem) return false;
+		if (!inventoryItem) {
+			logger.error(`❌ Inventory item with ID ${inventoryId} not found for user ${userId}`);
+			logger.debug(`Available inventory IDs: ${user.inventory.map(inv => inv.id).join(', ')}`);
+			return false;
+		}
 
+		const oldQuantity = inventoryItem.quantity;
 		inventoryItem.quantity = newQuantity;
 		this.markDirty(userId);
 		this.updateActivity(userId);
-		logger.debug(`📦 Updated inventory ID ${inventoryId} quantity to ${newQuantity} for user ${userId}`);
+
+		logger.info(`📦 Updated inventory ID ${inventoryId} quantity for user ${userId}: ${oldQuantity} -> ${newQuantity} (equipmentId: ${inventoryItem.equipmentId}, itemId: ${inventoryItem.itemId})`);
 		return true;
 	}
 
