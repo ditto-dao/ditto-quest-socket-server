@@ -202,6 +202,7 @@ export class IdleCraftingManager {
                 }))
             );
             await updateCraftMission(userId, crafting.equipment.id, repetitions);
+            await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
             return {
                 type: 'crafting',

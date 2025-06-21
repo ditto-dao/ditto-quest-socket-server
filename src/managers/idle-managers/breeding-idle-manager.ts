@@ -199,6 +199,7 @@ export class IdleBreedingManager {
                     });
 
                     await updateBreedMission(userId, getHighestDominantTraitRarity(slime), 1);
+                    await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
                 } catch (err) {
                     logger.error(`Failed to breed slime in loaded breeding activity: ${err}`);
                 }

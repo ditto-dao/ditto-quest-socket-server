@@ -180,6 +180,7 @@ export class IdleFarmingManager {
 
             await logFarmingActivity(userId, farming.item.id, repetitions);
             await updateFarmMission(userId, farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
+            await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
             return {
                 type: 'farming',

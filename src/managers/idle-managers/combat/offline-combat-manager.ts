@@ -10,14 +10,14 @@ import { LEDGER_UPDATE_BALANCE_EVENT } from "../../../socket/events";
 import { calculateHpExpGained } from "../../../utils/helpers";
 import { DungeonManager, DungeonState } from "./dungeon-manager";
 import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
-import { updateCombatMissions } from "../../../sql-services/missions";
+import { emitMissionUpdate, updateCombatMissions } from "../../../sql-services/missions";
 import { FullMonster, prismaUpdateDungeonLeaderboard } from "../../../sql-services/combat-service";
 import { getDomainById, getDungeonById, incrementExpAndHpExpAndCheckLevelUpMemory } from "../../../operations/combat-operations";
 import { getUserLevelMemory, incrementUserGold } from "../../../operations/user-operations";
-import { CombatActivityInput } from "../../../sql-services/user-activity-log";
 import { canUserMintItem, mintItemToUser } from "../../../operations/item-inventory-operations";
 import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
 import { logCombatActivity } from "../../../operations/user-activity-log-operations";
+import { SocketManager } from "../../../socket/socket-manager";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -41,6 +41,7 @@ export class OfflineCombatManager {
   static async handleLoadedCombatActivity(
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
+    socketManager: SocketManager,
   ): Promise<{
     combatUpdate: CombatUpdate | undefined;
     currentCombat: CurrentCombat | undefined;
@@ -57,10 +58,10 @@ export class OfflineCombatManager {
 
     switch (activity.mode) {
       case "domain":
-        return await OfflineCombatManager.handleLoadedDomainCombat(dittoLedgerSocket, activity);
+        return await OfflineCombatManager.handleLoadedDomainCombat(dittoLedgerSocket, activity, socketManager);
 
       case "dungeon":
-        return await OfflineCombatManager.handleLoadedDungeonCombat(dittoLedgerSocket, activity);
+        return await OfflineCombatManager.handleLoadedDungeonCombat(dittoLedgerSocket, activity, socketManager);
       default:
         throw new Error(`Unknown combat mode: ${activity.mode}`);
     }
@@ -69,6 +70,7 @@ export class OfflineCombatManager {
   static async handleLoadedDomainCombat(
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
+    socketManager: SocketManager,
   ): Promise<{
     combatUpdate: CombatUpdate | undefined;
     currentCombat: CurrentCombat | undefined;
@@ -268,6 +270,7 @@ export class OfflineCombatManager {
     }
 
     await updateCombatMissions(missionUpdates);
+    await emitMissionUpdate(socketManager.getSocketByUserId(activity.userId), activity.userId);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
 
@@ -316,6 +319,7 @@ export class OfflineCombatManager {
   static async handleLoadedDungeonCombat(
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
+    socketManager: SocketManager,
   ): Promise<{
     combatUpdate: CombatUpdate | undefined;
     currentCombat: CurrentCombat | undefined;
@@ -543,6 +547,7 @@ export class OfflineCombatManager {
     }
 
     await updateCombatMissions(missionUpdates);
+    await emitMissionUpdate(socketManager.getSocketByUserId(activity.userId), activity.userId);
 
     logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
 
