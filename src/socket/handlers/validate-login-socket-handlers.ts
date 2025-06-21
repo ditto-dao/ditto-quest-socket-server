@@ -84,6 +84,12 @@ export async function setupValidateLoginSocketHandlers(
                     logger.error(`Failed emergency snapshot: ${emergencyErr}`);
                 }
             }
+
+            // STEP 4: Clean up socket cache and notify ledger (ALWAYS do this)
+            socketManager.removeSocketIdCacheForUser(userId);
+            dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+
+            logger.info(`✅ Successfully logged out user ${userId}`);
         } catch (err) {
             logger.error(`❌ Failed to logout user ${userId} in backend: ${err}`);
 
