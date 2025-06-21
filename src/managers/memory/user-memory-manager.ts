@@ -567,9 +567,21 @@ export class UserMemoryManager {
 				logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId}`);
 			}
 
-			// 4. Update memory with fresh data
-			const finalInventory = await prismaFetchUserInventory(userId);
-			this.updateInventory(userId, finalInventory);
+			const user = this.users.get(userId);
+			if (user) {
+				// Update memory with fresh inventory data from DB
+				user.inventory = freshInventory;
+
+				// Apply any ID remapping to memory objects that reference these IDs
+				if (remap.size > 0) {
+					this.inventoryIdRemap.set(userId, remap);
+					logger.info(`📦 Updated memory inventory for user ${userId} with ${freshInventory.length} items and ${remap.size} ID remappings`);
+				} else {
+					logger.debug(`📦 Updated memory inventory for user ${userId} with ${freshInventory.length} items (no remapping needed)`);
+				}
+			} else {
+				logger.warn(`⚠️ User ${userId} not found in memory during inventory flush - cannot update memory`);
+			}
 
 			// Store ID remapping for future reference
 			if (remap.size > 0) {
@@ -701,12 +713,30 @@ export class UserMemoryManager {
 					logger.info(`✅ Verified inventory flush completed for user ${userId}`);
 				}
 
-				// ✅ FIX: Force immediate snapshot regeneration after successful flush
+				await new Promise(resolve => setTimeout(resolve, 150)); // Extra delay for memory updates
+
 				const snapshotRedisManager = requireSnapshotRedisManager();
-				const freshUser = await getUserData(userId); // Get fresh data from DB
-				if (freshUser) {
-					await snapshotRedisManager.storeSnapshot(userId, freshUser, 'fresh');
-					logger.info(`📸 ✅ Immediately regenerated fresh snapshot for user ${userId} after logout`);
+
+				// Get current memory data and verify it's been updated
+				const currentMemoryUser = this.getUser(userId);
+				if (currentMemoryUser) {
+					const inventoryCount = currentMemoryUser.inventory?.length || 0;
+					const equipmentCount = currentMemoryUser.inventory?.filter(inv => inv.equipmentId === 1).reduce((sum, item) => sum + item.quantity, 0) || 0;
+					logger.info(`📊 Pre-snapshot verification: User ${userId} has ${inventoryCount} inventory items, ${equipmentCount} Rustfang swords`);
+
+					// Store snapshot using current memory data (most updated)
+					await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser, 'fresh');
+					logger.info(`📸 ✅ Immediately regenerated fresh snapshot for user ${userId} after logout (from MEMORY)`);
+				} else {
+					logger.error(`❌ User not found in memory for snapshot regeneration after flush`);
+
+					const { getUserData } = await import('../../operations/user-operations');
+					const freshDbUser = await getUserData(userId);
+					if (freshDbUser) {
+						this.setUser(userId, freshDbUser);
+						await snapshotRedisManager.storeSnapshot(userId, freshDbUser, 'fresh');
+						logger.info(`📸 ✅ Regenerated snapshot from DB fallback for user ${userId}`);
+					}
 				}
 
 			} catch (flushError) {
@@ -720,7 +750,7 @@ export class UserMemoryManager {
 				throw flushError;
 			}
 
-			// Clean up pending operation tracking ONLY after successful flush
+			// Clean up pending operation tracking ONLY after successful flush AND snapshot
 			this.pendingCreateSlimes.delete(userId);
 			this.pendingBurnSlimeIds.delete(userId);
 			this.pendingCreateInventory.delete(userId);
@@ -734,6 +764,7 @@ export class UserMemoryManager {
 					return false;
 				}
 
+				// ✅ NOW it's safe to remove from memory - snapshot already generated
 				this.removeUser(userId);
 				logger.info(`🗑️ Removed user ${userId} from memory after logout`);
 			} else {

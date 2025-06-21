@@ -37,7 +37,7 @@ class SnapshotWorker {
     private async processQueue() {
         try {
             // Get stale snapshots that need regeneration from Redis
-            const staleSnapshots = await this.snapshotRedis.getStaleSnapshots(20); // Process in batches
+            const staleSnapshots = await this.snapshotRedis.getStaleSnapshots(20);
 
             if (staleSnapshots.length === 0) return;
 
@@ -48,22 +48,18 @@ class SnapshotWorker {
                     // Mark as regenerating to prevent duplicate processing
                     await this.snapshotRedis.updateSnapshotStatus(snapshotMeta.userId, 'regenerating');
 
-                    // Regenerate the snapshot by fetching fresh data from memory first, if not from db as fallback
                     const freshUserData = await getUserData(snapshotMeta.userId);
 
                     if (freshUserData) {
                         // Store the fresh snapshot in Redis
                         await this.snapshotRedis.storeSnapshot(snapshotMeta.userId, freshUserData, 'fresh');
-
-                        logger.info(`✅ Regenerated snapshot for user ${snapshotMeta.userId}`);
+                        logger.info(`✅ Regenerated snapshot for user ${snapshotMeta.userId} (memory-first approach)`);
                     } else {
                         logger.warn(`⚠️ No user data found for ${snapshotMeta.userId}, marking snapshot stale`);
                         await this.snapshotRedis.updateSnapshotStatus(snapshotMeta.userId, 'stale_session');
                     }
                 } catch (error) {
                     logger.error(`❌ Failed to regenerate snapshot for user ${snapshotMeta.userId}: ${error}`);
-
-                    // Reset status on failure
                     await this.snapshotRedis.updateSnapshotStatus(snapshotMeta.userId, 'stale_session');
                 }
             }

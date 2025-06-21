@@ -53,30 +53,35 @@ export async function setupValidateLoginSocketHandlers(
 
             const userMemoryManager = requireUserMemoryManager();
             const activityLogMemoryManager = requireActivityLogMemoryManager();
-    
+
             // STEP 1: Save all idle activities first (this is time-sensitive)
             await idleManager.saveAllIdleActivitiesOnLogout(userId);
-    
-            // STEP 2: Flush all pending user updates from memory to database
-            // This includes slimes, inventory, and user field changes
-            await userMemoryManager.flushAllUserUpdates(userId);
-    
-            // STEP 3: Flush any buffered activity logs for this user
+
+            // STEP 2: Flush activity logs for this user (before user data flush)
             if (activityLogMemoryManager.hasUser(userId)) {
                 await activityLogMemoryManager.flushUser(userId);
+                logger.info(`✅ Flushed activity logs for user ${userId}`);
             }
-    
-            // STEP 4: Remove user from memory (optional - frees up RAM)
-            await userMemoryManager.logoutUser(userId, true); // true = remove from memory
-    
-            // STEP 5: Clean up socket cache and notify ledger
+
+            // STEP 3: SINGLE comprehensive logout (handles flush + snapshot + memory removal)
+            // This already includes:
+            // - Flush all pending user updates (slimes, inventory, user fields)
+            // - Generate fresh snapshot from memory
+            // - Remove from memory
+            const logoutSuccess = await userMemoryManager.logoutUser(userId, true);
+
+            if (!logoutSuccess) {
+                logger.warn(`⚠️ Logout partially failed for user ${userId} - user kept in memory`);
+            }
+
+            // STEP 4: Clean up socket cache and notify ledger
             socketManager.removeSocketIdCacheForUser(userId);
             dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-    
+
             logger.info(`✅ Successfully logged out user ${userId}`);
         } catch (err) {
             logger.error(`❌ Failed to logout user ${userId} in backend: ${err}`);
-            
+
             // Even if something fails, still clean up socket cache to prevent issues
             try {
                 socketManager.removeSocketIdCacheForUser(userId);
