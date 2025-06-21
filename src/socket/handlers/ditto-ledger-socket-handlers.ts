@@ -156,7 +156,7 @@ export async function setupDittoLedgerSocketServerHandlers(
                     try {
                         const user = userMemoryManager.getUser(userId);
                         if (user) {
-                            await snapshotRedisManager.storeSnapshot(userId, user, 'fresh');
+                            await snapshotRedisManager.storeSnapshot(userId, user);
                         }
                     } catch (snapErr) {
                         logger.error(`Failed to generate snapshot for user ${userId}: ${snapErr}`);

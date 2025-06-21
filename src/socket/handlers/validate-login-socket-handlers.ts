@@ -77,7 +77,7 @@ export async function setupValidateLoginSocketHandlers(
                     const user = userMemoryManager.getUser(userId);
                     if (user) {
                         const snapshotRedisManager = requireSnapshotRedisManager();
-                        await snapshotRedisManager.storeSnapshot(userId, user, 'fresh');
+                        await snapshotRedisManager.storeSnapshot(userId, user);
                         logger.info(`🚨 Generated emergency snapshot for failed logout: ${userId}`);
                     }
                 } catch (emergencyErr) {

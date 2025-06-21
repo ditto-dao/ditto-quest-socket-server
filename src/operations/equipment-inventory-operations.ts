@@ -4,7 +4,7 @@ import { UserInventoryItem } from '../managers/memory/user-memory-manager';
 import { Prisma } from '@prisma/client';
 import { getNextInventoryOrderMemory } from './user-operations';
 import { getEquipmentById } from './equipment-operations';
-import { requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
+import { requireUserMemoryManager } from '../managers/global-managers/global-managers';
 
 export async function doesUserOwnEquipments(
     telegramId: string,
@@ -101,7 +101,6 @@ export async function mintEquipmentToUser(
 ): Promise<PrismaEquipmentWithStatEffect> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
@@ -119,8 +118,6 @@ export async function mintEquipmentToUser(
                     logger.error(`❌ Failed to update equipment ${equipmentId} quantity for user ${telegramId}`);
                     throw new Error(`Equipment quantity update failed`);
                 }
-
-                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
                 logger.info(`📦 Updated equipment ${equipmentId} quantity for user ${telegramId} in memory (${existingItem.quantity} -> ${newQuantity})`);
 
@@ -149,8 +146,6 @@ export async function mintEquipmentToUser(
                 };
 
                 userMemoryManager.appendInventory(telegramId, newInventoryItem);
-
-                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
                 logger.info(`📦 Added new equipment ${equipmentId} (qty: ${quantity}) to user ${telegramId} in memory with temp ID ${uniqueId}`);
 
@@ -232,9 +227,6 @@ export async function deleteEquipmentFromUserInventory(
                     } as PrismaEquipmentInventory);
                 }
             }
-
-            const snapshotRedisManager = requireSnapshotRedisManager();
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             logger.info(`🗑️ Removed equipment from user ${telegramId} inventory in memory`);
             return updatedInventories;

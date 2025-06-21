@@ -3,7 +3,6 @@ import { prisma } from './client';
 import { logger } from '../utils/logger';
 import { rarities } from '../utils/helpers';
 import { prismaRecalculateAndUpdateUserBaseStats, UserStatsWithCombat } from './user-service';
-import { requireSnapshotRedisManager } from '../managers/global-managers/global-managers';
 
 export type SlimeWithTraits = Slime & {
   owner: Pick<User, 'telegramId'>;
@@ -262,10 +261,6 @@ export async function prismaEquipSlimeForUser(
 
     const result = await prismaRecalculateAndUpdateUserBaseStats(telegramId);
 
-    const snapshotRedisManager = requireSnapshotRedisManager();
-
-    await snapshotRedisManager.markSnapshotStale(slime.ownerId, "stale_session", 19);
-
     return result;
   } catch (err) {
     throw new Error(`Failed to equip slime ${slime.id} for user ${telegramId}: ${err}`);
@@ -284,10 +279,6 @@ export async function prismaUnequipSlimeForUser(
     });
 
     const result = await prismaRecalculateAndUpdateUserBaseStats(telegramId);
-
-    const snapshotRedisManager = requireSnapshotRedisManager();
-
-    await snapshotRedisManager.markSnapshotStale(telegramId, "stale_session", 19);
 
     return result;
   } catch (err) {

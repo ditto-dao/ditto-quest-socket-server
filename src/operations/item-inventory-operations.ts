@@ -9,7 +9,7 @@ import {
 import { UserInventoryItem } from '../managers/memory/user-memory-manager';
 import { getNextInventoryOrderMemory } from './user-operations';
 import { getItemById } from './item-operations';
-import { requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
+import { requireUserMemoryManager } from '../managers/global-managers/global-managers';
 
 // Define proper return types to match Prisma functions
 type PrismaItemWithStatEffect = Prisma.InventoryGetPayload<{ include: { item: { include: { statEffect: true } } } }>;
@@ -76,7 +76,6 @@ export async function mintItemToUser(
     try {
         // Try memory first
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
             const user = userMemoryManager.getUser(telegramId)!;
@@ -95,8 +94,6 @@ export async function mintItemToUser(
                     logger.error(`❌ Failed to update item ${itemId} quantity for user ${telegramId}`);
                     throw new Error(`Item quantity update failed`);
                 }
-
-                if (snapshotRedisManager) await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
                 logger.info(`📦 Updated item ${itemId} quantity for user ${telegramId} in memory`);
 
@@ -127,7 +124,6 @@ export async function mintItemToUser(
 
                 userMemoryManager.appendInventory(telegramId, newInventoryItem);
 
-                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
                 logger.info(`📦 Added new item ${itemId} to user ${telegramId} in memory`);
 
                 // Cast to match Prisma return type
@@ -164,7 +160,6 @@ export async function deleteItemsFromUserInventory(
 
         // Try memory first
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
             const user = userMemoryManager.getUser(telegramId)!;
@@ -210,8 +205,6 @@ export async function deleteItemsFromUserInventory(
                     } as PrismaItemInventory);
                 }
             }
-
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             logger.info(`🗑️ Removed items from user ${telegramId} inventory in memory`);
 

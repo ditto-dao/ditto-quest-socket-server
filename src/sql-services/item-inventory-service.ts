@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 import { prisma } from './client';
 import { prismaFetchNextInventoryOrder, prismaFetchUserInventorySlotInfo } from './user-service';
-import { requireSnapshotRedisManager } from '../managers/global-managers/global-managers';
 
 // Function to check if a user owns all specified items with the required quantities
 export async function prismaDoesUserOwnItems(
@@ -102,8 +101,6 @@ export async function prismaMintItemToUser(
             }
         });
 
-        const snapshotRedisManager = requireSnapshotRedisManager();
-
         if (existingInventory) {
             // Case 1: Item exists → Increment the quantity
             const updatedInventory = await prisma.inventory.update({
@@ -119,8 +116,6 @@ export async function prismaMintItemToUser(
             logger.info(
                 `Updated quantity for item ${updatedInventory.item?.name}. New quantity: ${updatedInventory.quantity}`
             );
-
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return updatedInventory;
         } else {
@@ -152,8 +147,6 @@ export async function prismaMintItemToUser(
             logger.info(
                 `Added new item ${newInventory.item?.name} to user ${telegramId}. Quantity: ${newInventory.quantity}`
             );
-
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return newInventory;
         }
@@ -239,10 +232,6 @@ export async function prismaDeleteItemsFromUserInventory(
         }
 
         logger.info(`Successfully updated inventory for user ${telegramId}.`);
-
-        const snapshotRedisManager = requireSnapshotRedisManager();
-
-        await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
         return updatedInventories;
     } catch (error) {

@@ -5,7 +5,6 @@ import { DITTO_DECIMALS } from "../utils/config";
 import { DefaultEventsMap, Socket } from "socket.io";
 import { MISSION_UPDATE } from "../socket/events";
 import { logger } from "../utils/logger";
-import { requireSnapshotRedisManager } from "../managers/global-managers/global-managers";
 
 export async function getUserMissionByUserId(userId: string): Promise<UserMission | null> {
     return await prisma.userMission.findFirst({
@@ -137,9 +136,6 @@ export async function updateFarmMission(telegramId: string, itemId: number, quan
         where: { id: mission.id },
         data: { progress: { increment: quantity } },
     });
-
-    const snapshotRedisManager = requireSnapshotRedisManager();
-    await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 12);
 }
 
 // CRAFT
@@ -151,9 +147,6 @@ export async function updateCraftMission(telegramId: string, equipmentId: number
         where: { id: mission.id },
         data: { progress: { increment: quantity } },
     });
-
-    const snapshotRedisManager = requireSnapshotRedisManager();
-    await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 12);
 }
 
 // COMBAT
@@ -165,9 +158,6 @@ export async function updateCombatMission(telegramId: string, monsterId: number,
         where: { id: mission.id },
         data: { progress: { increment: quantity } },
     });
-
-    const snapshotRedisManager = requireSnapshotRedisManager();
-    await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 12);
 }
 
 // COMBAT (Batch)

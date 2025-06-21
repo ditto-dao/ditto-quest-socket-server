@@ -8,7 +8,7 @@ import { GACHA_PULL_ODDS_NERF, GACHA_PULL_ODDS } from '../utils/config';
 import { DOMINANT_TRAITS_GACHA_SPECS, HIDDEN_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits } from '../utils/gacha-odds';
 import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserBaseStatsMemory } from './user-operations';
 import { UserStatsWithCombat } from '../sql-services/user-service';
-import { getSlimeIDManager, requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
+import { getSlimeIDManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
 
 /**
  * Get SlimeTrait by ID using:
@@ -84,7 +84,6 @@ export async function burnSlimeMemory(
 ): Promise<number> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -121,9 +120,6 @@ export async function burnSlimeMemory(
             }
 
             logger.info(`Successfully burned slime with ID: ${slimeId} (MEMORY)`);
-
-            // Mark snapshot stale
-            await snapshotRedisManager.markSnapshotStale(telegramId, "stale_session", 15);
 
             return slimeId;
         }
@@ -184,7 +180,6 @@ export async function equipSlimeForUserMemory(
 ): Promise<UserStatsWithCombat> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         if (userMemoryManager.hasUser(telegramId)) {
             // Ensure we have a real ID
@@ -208,7 +203,6 @@ export async function equipSlimeForUserMemory(
 
             logger.info(`✅ Equipment persisted for user ${telegramId}`);
 
-            await snapshotRedisManager.markSnapshotStale(telegramId, "stale_session", 19);
             return result;
         }
 
@@ -226,7 +220,6 @@ export async function unequipSlimeForUserMemory(
 ): Promise<UserStatsWithCombat> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -250,9 +243,6 @@ export async function unequipSlimeForUserMemory(
 
             // Recalculate stats in memory
             const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
-
-            // Mark snapshot stale
-            await snapshotRedisManager.markSnapshotStale(telegramId, "stale_session", 19);
 
             return result;
         }
@@ -303,7 +293,6 @@ interface GachaPullRes {
 export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = false): Promise<GachaPullRes> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Memory-first version of canUserMintSlime check
         if (!(await canUserMintSlimeMemory(ownerId))) {
@@ -383,7 +372,6 @@ export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = fals
 
         // Add slime to memory (this queues it for DB insertion later)
         userMemoryManager.appendSlime(ownerId, slime);
-        await snapshotRedisManager.markSnapshotStale(ownerId, "stale_session", 18);
 
         return {
             slime,
@@ -400,7 +388,6 @@ export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = fals
 export async function breedSlimesMemory(ownerId: string, sireId: number, dameId: number): Promise<SlimeWithTraits> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         const sire = await getSlimeForUserById(ownerId, sireId);
         const dame = await getSlimeForUserById(ownerId, dameId);
@@ -573,7 +560,6 @@ export async function breedSlimesMemory(ownerId: string, sireId: number, dameId:
         childSlime.imageUri = uriRes.uri;
 
         userMemoryManager.appendSlime(userId, childSlime);
-        await snapshotRedisManager.markSnapshotStale(userId, "stale_session", 18);
 
         return childSlime;
     } catch (err) {

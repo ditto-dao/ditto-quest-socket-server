@@ -1,14 +1,12 @@
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis';
 import { SnapshotRedisManager } from '../../redis/snapshot-redis';
 import { logger } from '../../utils/logger';
-import { createSnapshotWorker } from '../../workers/snapshot/snapshot-worker';
 import { ActivityLogMemoryManager } from '../memory/activity-log-memory-manager';
 import { UserMemoryManager } from '../memory/user-memory-manager';
 import { SlimeIDManager, slimeIdManager } from '../slime-id-memory-manager.ts/slime-id-memory-manager';
 
 // Global manager instances
 let snapshotRedisManager: SnapshotRedisManager | null = null;
-let snapshotWorker: ReturnType<typeof createSnapshotWorker> | null = null;
 let userMemoryManager: UserMemoryManager | null = null;
 let activityLogMemoryManager: ActivityLogMemoryManager | null = null;
 
@@ -26,10 +24,6 @@ export async function initializeGlobalManagers(redisClient: RedisClientType<Redi
 
     // Initialize Redis managers
     snapshotRedisManager = new SnapshotRedisManager(redisClient);
-
-    // Initialize and start snapshot worker (Redis-based)
-    snapshotWorker = createSnapshotWorker(redisClient);
-    snapshotWorker.start(30000); // Run every 30 seconds
 
     // Initialize Slime ID manager first
     await slimeIdManager.initialize();
@@ -56,13 +50,6 @@ export function getUserMemoryManager(): UserMemoryManager | null {
  */
 export function getActivityLogMemoryManager(): ActivityLogMemoryManager | null {
     return activityLogMemoryManager;
-}
-
-/**
- * Get snapshot worker (safe for use in other modules)
- */
-export function getSnapshotWorker(): ReturnType<typeof createSnapshotWorker> | null {
-    return snapshotWorker;
 }
 
 /**
@@ -112,11 +99,6 @@ export async function cleanupGlobalManagers(): Promise<void> {
         if (activityLogMemoryManager) {
             logger.info("📝 Flushing activity logs...");
             await activityLogMemoryManager.flushAll();
-        }
-
-        // Stop background workers
-        if (snapshotWorker) {
-            snapshotWorker.stop();
         }
 
         logger.info('✅ Global managers cleanup complete');

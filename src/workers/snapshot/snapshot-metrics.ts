@@ -6,16 +6,9 @@ interface SnapshotMetrics {
     snapshotHitRate: number;        // % of successful snapshot loads
     avgSnapshotLoadTime: number;    // ms
     avgFullQueryTime: number;       // ms  
-    dailyRegenerations: number;     // count
-    queueBacklog: number;           // pending snapshots
     compressionRatio: number;       // compressed/uncompressed ratio
     totalUsers: number;
-    snapshotsStored: number;
-    redisStats: {
-        totalSnapshots: number;
-        staleSnapshots: number;
-        freshSnapshots: number;
-    };
+    totalSnapshots: number;
 }
 
 class SnapshotMetricsCollector {
@@ -24,24 +17,22 @@ class SnapshotMetricsCollector {
         snapshotMisses: 0,
         snapshotLoadTimes: [] as number[],
         fullQueryTimes: [] as number[],
-        compressionSamples: [] as { compressed: number; uncompressed: number }[],
-        regenerationsToday: 0,
-        regenerationStartTime: new Date()
+        compressionSamples: [] as { compressed: number; uncompressed: number }[]
     };
 
-    // Call this from getUserDataWithSnapshot
+    // Call this from getUserDataWithSnapshot when snapshot loads successfully
     recordSnapshotHit(loadTimeMs: number) {
         this.metrics.snapshotHits++;
         this.metrics.snapshotLoadTimes.push(loadTimeMs);
     }
 
-    // Call this when falling back to full query
+    // Call this when falling back to full database query
     recordSnapshotMiss(fullQueryTimeMs: number) {
         this.metrics.snapshotMisses++;
         this.metrics.fullQueryTimes.push(fullQueryTimeMs);
     }
 
-    // Call this during snapshot regeneration
+    // Call this during snapshot storage for compression stats
     recordCompression(compressedSize: number, uncompressedSize: number) {
         this.metrics.compressionSamples.push({
             compressed: compressedSize,
@@ -49,19 +40,14 @@ class SnapshotMetricsCollector {
         });
     }
 
-    // Call this when a snapshot is regenerated
-    recordRegeneration() {
-        this.metrics.regenerationsToday++;
-    }
-
     async getMetrics(): Promise<SnapshotMetrics> {
         const [
-            redisStats,
             totalUsers,
+            redisStats,
             compressionStats
         ] = await Promise.all([
-            this.getRedisStats(),
             this.getTotalUsers(),
+            this.getRedisStats(),
             this.getCompressionStats()
         ]);
 
@@ -80,55 +66,32 @@ class SnapshotMetricsCollector {
             snapshotHitRate: Math.round(hitRate * 100) / 100,
             avgSnapshotLoadTime: Math.round(avgSnapshotTime * 100) / 100,
             avgFullQueryTime: Math.round(avgFullQueryTime * 100) / 100,
-            dailyRegenerations: this.getDailyRegenerations(),
-            queueBacklog: redisStats.staleSnapshots, // Stale snapshots are the backlog
             compressionRatio: compressionStats.ratio,
             totalUsers,
-            snapshotsStored: redisStats.totalSnapshots,
-            redisStats
+            totalSnapshots: redisStats.totalSnapshots
         };
     }
 
-    private async getRedisStats(): Promise<{
-        totalSnapshots: number;
-        staleSnapshots: number;
-        freshSnapshots: number;
-    }> {
+    private async getTotalUsers(): Promise<number> {
         try {
-            // Get stats from Redis manager
-            const snapshotRedisManager = requireSnapshotRedisManager();
+            return await prisma.user.count();
+        } catch (error) {
+            logger.error(`Failed to get total users: ${error}`);
+            return 0;
+        }
+    }
 
+    private async getRedisStats(): Promise<{ totalSnapshots: number }> {
+        try {
+            const snapshotRedisManager = requireSnapshotRedisManager();
             return await snapshotRedisManager.getSnapshotStats();
         } catch (error) {
-            logger.error('❌ Failed to get Redis stats:', error);
-            return { totalSnapshots: 0, staleSnapshots: 0, freshSnapshots: 0 };
+            logger.error(`Failed to get Redis stats: ${error}`);
+            return { totalSnapshots: 0 };
         }
     }
 
-    private getDailyRegenerations(): number {
-        // Check if we need to reset daily counter
-        const now = new Date();
-        const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const startOfRecordedDay = new Date(
-            this.metrics.regenerationStartTime.getFullYear(),
-            this.metrics.regenerationStartTime.getMonth(),
-            this.metrics.regenerationStartTime.getDate()
-        );
-
-        // If it's a new day, reset the counter
-        if (startOfToday > startOfRecordedDay) {
-            this.metrics.regenerationsToday = 0;
-            this.metrics.regenerationStartTime = now;
-        }
-
-        return this.metrics.regenerationsToday;
-    }
-
-    private async getTotalUsers(): Promise<number> {
-        return await prisma.user.count();
-    }
-
-    private async getCompressionStats(): Promise<{ ratio: number }> {
+    private getCompressionStats(): { ratio: number } {
         if (this.metrics.compressionSamples.length === 0) {
             return { ratio: 0 };
         }
@@ -140,38 +103,28 @@ class SnapshotMetricsCollector {
         return { ratio: Math.round(ratio * 100) / 100 };
     }
 
-    // Reset metrics (call this hourly, but preserve daily regenerations)
+    // Reset metrics (call this hourly)
     reset() {
-        const dailyRegens = this.metrics.regenerationsToday;
-        const regenStartTime = this.metrics.regenerationStartTime;
-
         this.metrics = {
             snapshotHits: 0,
             snapshotMisses: 0,
             snapshotLoadTimes: [],
             fullQueryTimes: [],
-            compressionSamples: [],
-            regenerationsToday: dailyRegens, // Preserve daily count
-            regenerationStartTime: regenStartTime // Preserve start time
+            compressionSamples: []
         };
     }
 
-    // Log current metrics to console/dashboard
+    // Log current metrics to console
     async logMetrics() {
         const metrics = await this.getMetrics();
 
-        logger.info('📊 Snapshot System Metrics (Redis-based):');
+        logger.info('📊 Snapshot System Metrics:');
         logger.info(`   Hit Rate: ${metrics.snapshotHitRate}%`);
         logger.info(`   Avg Snapshot Load: ${metrics.avgSnapshotLoadTime}ms`);
         logger.info(`   Avg Full Query: ${metrics.avgFullQueryTime}ms`);
-        logger.info(`   Daily Regenerations: ${metrics.dailyRegenerations}`);
-        logger.info(`   Queue Backlog: ${metrics.queueBacklog}`);
         logger.info(`   Compression Ratio: ${metrics.compressionRatio}`);
-        logger.info(`   Redis Stats:`);
-        logger.info(`     - Total Snapshots: ${metrics.redisStats.totalSnapshots}`);
-        logger.info(`     - Fresh: ${metrics.redisStats.freshSnapshots}`);
-        logger.info(`     - Stale: ${metrics.redisStats.staleSnapshots}`);
-        logger.info(`   Users: ${metrics.snapshotsStored}/${metrics.totalUsers} have snapshots`);
+        logger.info(`   Total Snapshots: ${metrics.totalSnapshots}`);
+        logger.info(`   Total Users: ${metrics.totalUsers}`);
 
         // Performance comparison
         if (metrics.avgSnapshotLoadTime > 0 && metrics.avgFullQueryTime > 0) {
@@ -184,7 +137,6 @@ class SnapshotMetricsCollector {
     async getPerformanceSummary(): Promise<{
         speedImprovement: number;
         cacheEfficiency: number;
-        backlogStatus: 'healthy' | 'warning' | 'critical';
     }> {
         const metrics = await this.getMetrics();
 
@@ -194,14 +146,9 @@ class SnapshotMetricsCollector {
 
         const cacheEfficiency = metrics.snapshotHitRate;
 
-        let backlogStatus: 'healthy' | 'warning' | 'critical' = 'healthy';
-        if (metrics.queueBacklog > 100) backlogStatus = 'warning';
-        if (metrics.queueBacklog > 500) backlogStatus = 'critical';
-
         return {
             speedImprovement,
-            cacheEfficiency,
-            backlogStatus
+            cacheEfficiency
         };
     }
 }

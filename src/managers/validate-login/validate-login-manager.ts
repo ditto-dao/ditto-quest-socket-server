@@ -27,7 +27,7 @@ import { getDomainById, getDungeonById } from "../../operations/combat-operation
 import { prismaSaveUser } from "../../sql-services/user-service";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { mintItemToUser } from "../../operations/item-inventory-operations";
-import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../global-managers/global-managers";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -49,7 +49,6 @@ interface LoginQueueData {
 
 export class ValidateLoginManager {
     activityLogMemoryManager = requireActivityLogMemoryManager();
-    snapshotRedisManager = requireSnapshotRedisManager();
     userMemoryManager = requireUserMemoryManager();
 
     private dittoLedgerSocket: DittoLedgerSocket;
@@ -300,9 +299,6 @@ export class ValidateLoginManager {
             if (this.userMemoryManager.hasPendingChanges(userId)) {
                 logger.info(`💾 User has pending changes from offline progress, queued for next flush cycle`);
             }
-
-            // Mark snapshot stale for background regeneration
-            if (this.snapshotRedisManager) await this.snapshotRedisManager.markSnapshotStale(userId, "stale_session", 18);
         }
 
         // Restore combat session if user was in combat
@@ -475,9 +471,6 @@ export class ValidateLoginManager {
                         }
                     }
                 }
-
-                // Mark snapshot stale for background regeneration
-                if (this.snapshotRedisManager) await this.snapshotRedisManager.markSnapshotStale(userId, "stale_session", 19);
 
                 // Remove from memory after grace period (allows quick reconnects)
                 setTimeout(() => {

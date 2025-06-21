@@ -7,28 +7,17 @@ import { FullUserData } from "../sql-services/user-service";
 const gzipAsync = promisify(gzipCallback);
 const gunzipAsync = promisify(gunzipCallback);
 
-export type SnapshotStatus = 'fresh' | 'stale_immediate' | 'stale_session' | 'stale_periodic' | 'regenerating';
-
 export interface SnapshotMetadata {
     userId: string;
-    status: SnapshotStatus;
-    staleSince: number | null; // timestamp
-    lastRegeneration: number; // timestamp
-    priorityScore: number;
+    lastUpdated: number; // timestamp
     version: number;
     uncompressedSize?: number;
     isCompressed: boolean;
 }
 
-export interface SnapshotData {
-    metadata: SnapshotMetadata;
-    userData: string; // JSON string of user data
-}
-
 // Redis key patterns
 const SNAPSHOT_KEY = (userId: string) => `user:snapshot:${userId}`;
 const SNAPSHOT_META_KEY = (userId: string) => `user:snapshot:meta:${userId}`;
-const STALE_SNAPSHOTS_SET = 'snapshots:stale'; // Set of userIds with stale snapshots
 
 export class SnapshotRedisManager {
     constructor(private redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>) { }
@@ -36,7 +25,7 @@ export class SnapshotRedisManager {
     /**
      * Store a snapshot in Redis with compression if large enough
      */
-    async storeSnapshot(userId: string, userData: any, status: SnapshotStatus = 'fresh'): Promise<void> {
+    async storeSnapshot(userId: string, userData: any): Promise<void> {
         try {
             const jsonData = JSON.stringify(userData);
             let dataToStore = jsonData;
@@ -51,13 +40,10 @@ export class SnapshotRedisManager {
                 uncompressedSize = jsonData.length;
             }
 
-            // ✅ Convert all metadata values to strings for Redis
+            // Simple metadata - no stale tracking
             const metadata = {
                 userId: userId,
-                status: status,
-                staleSince: status.startsWith('stale') ? Date.now().toString() : '',
-                lastRegeneration: Date.now().toString(),
-                priorityScore: '0',
+                lastUpdated: Date.now().toString(),
                 version: '1',
                 uncompressedSize: uncompressedSize ? uncompressedSize.toString() : '',
                 isCompressed: isCompressed.toString()
@@ -66,15 +52,7 @@ export class SnapshotRedisManager {
             // Store both data and metadata
             const pipeline = this.redisClient.multi();
             pipeline.set(SNAPSHOT_KEY(userId), dataToStore);
-            pipeline.hSet(SNAPSHOT_META_KEY(userId), metadata);  // ✅ Now all strings
-
-            // If stale, add to stale set
-            if (status.startsWith('stale')) {
-                pipeline.sAdd(STALE_SNAPSHOTS_SET, userId);
-            } else {
-                pipeline.sRem(STALE_SNAPSHOTS_SET, userId);
-            }
-
+            pipeline.hSet(SNAPSHOT_META_KEY(userId), metadata);
             await pipeline.exec();
 
             logger.info(`📸 Stored snapshot for user ${userId} (${jsonData.length} chars, compressed: ${isCompressed})`);
@@ -102,20 +80,11 @@ export class SnapshotRedisManager {
             // Parse metadata
             const metadata: SnapshotMetadata = {
                 userId: metadataObj.userId,
-                status: metadataObj.status as SnapshotStatus,
-                staleSince: metadataObj.staleSince ? parseInt(metadataObj.staleSince) : null,
-                lastRegeneration: parseInt(metadataObj.lastRegeneration),
-                priorityScore: parseInt(metadataObj.priorityScore),
+                lastUpdated: parseInt(metadataObj.lastUpdated),
                 version: parseInt(metadataObj.version),
                 uncompressedSize: metadataObj.uncompressedSize ? parseInt(metadataObj.uncompressedSize) : undefined,
                 isCompressed: metadataObj.isCompressed === 'true'
             };
-
-            // Return null if snapshot is not fresh
-            if (metadata.status !== 'fresh') {
-                logger.info(`📸 Snapshot for user ${userId} is ${metadata.status}, skipping load`);
-                return null;
-            }
 
             // Decompress if needed
             let userData: string;
@@ -138,136 +107,6 @@ export class SnapshotRedisManager {
     }
 
     /**
-     * Mark a snapshot as stale with specific priority
-     */
-    async markSnapshotStale(userId: string, status: SnapshotStatus, priorityScore: number): Promise<void> {
-        try {
-            const metadata = await this.redisClient.hGetAll(SNAPSHOT_META_KEY(userId));
-
-            if (Object.keys(metadata).length === 0) {
-                // Create new metadata if it doesn't exist
-                const newMetadata = {
-                    userId: userId,
-                    status: status,
-                    staleSince: Date.now().toString(),
-                    lastRegeneration: Date.now().toString(),
-                    priorityScore: priorityScore.toString(),
-                    version: '1',
-                    isCompressed: 'false'
-                };
-
-                await this.redisClient.hSet(SNAPSHOT_META_KEY(userId), newMetadata);
-            } else {
-                // Update existing metadata
-                await this.redisClient.hSet(SNAPSHOT_META_KEY(userId), {
-                    status: status,
-                    staleSince: Date.now().toString(),       // ✅ Convert to string
-                    priorityScore: priorityScore.toString()  // ✅ Convert to string
-                });
-            }
-
-            // Add to stale set
-            await this.redisClient.sAdd(STALE_SNAPSHOTS_SET, userId);
-
-            logger.info(`📸 Marked snapshot stale for user ${userId} (${status}, priority: ${priorityScore})`);
-        } catch (error) {
-            logger.error(`❌ Failed to mark snapshot stale for user ${userId}: ${error}`);
-            throw error;
-        }
-    }
-
-    /**
-     * Get all stale snapshots ordered by priority and staleness
-     */
-    async getStaleSnapshots(limit: number = 20): Promise<SnapshotMetadata[]> {
-        try {
-            const staleUserIds = await this.redisClient.sMembers(STALE_SNAPSHOTS_SET);
-
-            if (staleUserIds.length === 0) {
-                return [];
-            }
-
-            // Get metadata for all stale users
-            const metadataPromises = staleUserIds.map(userId =>
-                this.redisClient.hGetAll(SNAPSHOT_META_KEY(userId))
-            );
-
-            const metadataResults = await Promise.all(metadataPromises);
-
-            // Parse and filter valid metadata
-            const staleSnapshots: SnapshotMetadata[] = [];
-            for (let i = 0; i < staleUserIds.length; i++) {
-                const metadataObj = metadataResults[i];
-                if (Object.keys(metadataObj).length === 0) continue;
-
-                const metadata: SnapshotMetadata = {
-                    userId: staleUserIds[i],
-                    status: metadataObj.status as SnapshotStatus,
-                    staleSince: metadataObj.staleSince ? parseInt(metadataObj.staleSince) : null,
-                    lastRegeneration: parseInt(metadataObj.lastRegeneration),
-                    priorityScore: parseInt(metadataObj.priorityScore),
-                    version: parseInt(metadataObj.version),
-                    uncompressedSize: metadataObj.uncompressedSize ? parseInt(metadataObj.uncompressedSize) : undefined,
-                    isCompressed: metadataObj.isCompressed === 'true'
-                };
-
-                // Only include if actually stale
-                if (metadata.status.startsWith('stale')) {
-                    staleSnapshots.push(metadata);
-                }
-            }
-
-            // Sort by priority (desc) then by staleSince (asc - oldest first)
-            staleSnapshots.sort((a, b) => {
-                if (a.priorityScore !== b.priorityScore) {
-                    return b.priorityScore - a.priorityScore; // Higher priority first
-                }
-                const aStale = a.staleSince || 0;
-                const bStale = b.staleSince || 0;
-                return aStale - bStale; // Older first
-            });
-
-            return staleSnapshots.slice(0, limit);
-        } catch (error) {
-            logger.error(`❌ Failed to get stale snapshots: ${error}`);
-            return [];
-        }
-    }
-
-    /**
-     * Update snapshot status after regeneration
-     */
-    async updateSnapshotStatus(userId: string, status: SnapshotStatus): Promise<void> {
-        try {
-            const updates: any = {
-                status,
-                lastRegeneration: Date.now().toString()
-            };
-
-            if (status === 'fresh') {
-                updates.staleSince = '';
-                updates.priorityScore = '0';
-            } else if (status.startsWith('stale')) {
-                updates.staleSince = Date.now().toString();
-            }
-
-            await this.redisClient.hSet(SNAPSHOT_META_KEY(userId), updates);
-
-            // Update stale set
-            if (status === 'fresh') {
-                await this.redisClient.sRem(STALE_SNAPSHOTS_SET, userId);
-            } else if (status.startsWith('stale')) {
-                await this.redisClient.sAdd(STALE_SNAPSHOTS_SET, userId);
-            }
-
-            logger.info(`📸 Updated snapshot status for user ${userId}: ${status}`);
-        } catch (error) {
-            logger.error(`❌ Failed to update snapshot status for user ${userId}: ${error}`);
-            throw error;
-        }
-    }
-
-    /**
      * Delete a snapshot completely
      */
     async deleteSnapshot(userId: string): Promise<void> {
@@ -275,7 +114,6 @@ export class SnapshotRedisManager {
             const pipeline = this.redisClient.multi();
             pipeline.del(SNAPSHOT_KEY(userId));
             pipeline.del(SNAPSHOT_META_KEY(userId));
-            pipeline.sRem(STALE_SNAPSHOTS_SET, userId);
             await pipeline.exec();
 
             logger.info(`📸 Deleted snapshot for user ${userId}`);
@@ -298,10 +136,7 @@ export class SnapshotRedisManager {
 
             return {
                 userId: metadataObj.userId,
-                status: metadataObj.status as SnapshotStatus,
-                staleSince: metadataObj.staleSince ? parseInt(metadataObj.staleSince) : null,
-                lastRegeneration: parseInt(metadataObj.lastRegeneration),
-                priorityScore: parseInt(metadataObj.priorityScore),
+                lastUpdated: parseInt(metadataObj.lastUpdated),
                 version: parseInt(metadataObj.version),
                 uncompressedSize: metadataObj.uncompressedSize ? parseInt(metadataObj.uncompressedSize) : undefined,
                 isCompressed: metadataObj.isCompressed === 'true'
@@ -317,25 +152,18 @@ export class SnapshotRedisManager {
      */
     async getSnapshotStats(): Promise<{
         totalSnapshots: number;
-        staleSnapshots: number;
-        freshSnapshots: number;
     }> {
         try {
-            const staleCount = await this.redisClient.sCard(STALE_SNAPSHOTS_SET);
-
             // Get all snapshot metadata keys
             const metaKeys = await this.redisClient.keys('user:snapshot:meta:*');
             const totalSnapshots = metaKeys.length;
-            const freshSnapshots = totalSnapshots - staleCount;
 
             return {
-                totalSnapshots,
-                staleSnapshots: staleCount,
-                freshSnapshots
+                totalSnapshots
             };
         } catch (error) {
             logger.error(`❌ Failed to get snapshot stats: ${error}`);
-            return { totalSnapshots: 0, staleSnapshots: 0, freshSnapshots: 0 };
+            return { totalSnapshots: 0 };
         }
     }
 }

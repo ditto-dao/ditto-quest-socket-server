@@ -5,7 +5,6 @@ import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client'
 import { MAX_INITIAL_INVENTORY_SLOTS, MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { getBaseMaxHpFromHpLvl, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef, getBaseAccFromLuk, getBaseEvaFromDex, calculateCombatPower } from '../managers/idle-managers/combat/combat-helpers';
 import { applyDelta, calculateNetStatDelta } from '../operations/user-operations';
-import { getSnapshotRedisManager } from '../managers/global-managers/global-managers';
 
 // Interface for user input
 interface CreateUserInput {
@@ -1050,11 +1049,6 @@ export async function prismaEquipEquipmentForUser(
 
         const result = await prismaRecalculateAndUpdateUserStats(telegramId);
 
-        const snapshotManager = getSnapshotRedisManager();
-        if (snapshotManager) {
-            await snapshotManager.markSnapshotStale(telegramId, 'stale_immediate', 15);
-        }
-
         return result;
 
     } catch (error) {
@@ -1108,11 +1102,6 @@ export async function prismaUnequipEquipmentForUser(
         );
 
         const result = await prismaRecalculateAndUpdateUserStats(telegramId);
-
-        const snapshotManager = getSnapshotRedisManager();
-        if (snapshotManager) {
-            await snapshotManager.markSnapshotStale(telegramId, "stale_session", 15);
-        }
 
         return result;
     } catch (error) {
@@ -1186,11 +1175,6 @@ export async function prismaAddFarmingExp(userId: string, expToAdd: number) {
         },
     });
 
-    const snapshotManager = getSnapshotRedisManager();
-    if (snapshotManager) {
-        await snapshotManager.markSnapshotStale(userId, "stale_session", 10);
-    }
-
     return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
 }
 
@@ -1256,11 +1240,6 @@ export async function prismaAddCraftingExp(userId: string, expToAdd: number) {
             expToNextCraftingLevel,
         },
     });
-
-    const snapshotManager = getSnapshotRedisManager();
-    if (snapshotManager) {
-        await snapshotManager.markSnapshotStale(userId, "stale_session", 10);
-    }
 
     return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
 }

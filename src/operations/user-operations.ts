@@ -86,7 +86,7 @@ export async function getUserDataWithSnapshot(telegramId: string): Promise<FullU
         // Generate snapshot in background
         if (fullUserData) {
             setTimeout(() => {
-                snapshotRedisManager.storeSnapshot(telegramId, fullUserData, 'fresh').catch(err => {
+                snapshotRedisManager.storeSnapshot(telegramId, fullUserData).catch(err => {
                     logger.error(`Background snapshot generation failed: ${err}`);
                 });
             }, 100);
@@ -110,7 +110,6 @@ export async function addFarmingExpMemory(telegramId: string, expToAdd: number):
 }> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -133,9 +132,6 @@ export async function addFarmingExpMemory(telegramId: string, expToAdd: number):
             userMemoryManager.updateUserField(telegramId, 'farmingExp', farmingExp);
             userMemoryManager.updateUserField(telegramId, 'farmingLevel', farmingLevel);
             userMemoryManager.updateUserField(telegramId, 'expToNextFarmingLevel', expToNextFarmingLevel);
-
-            // Mark snapshot stale
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 25);
 
             logger.info(`✅ Added farming exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${farmingLevel}`);
 
@@ -162,7 +158,6 @@ export async function addCraftingExpMemory(telegramId: string, expToAdd: number)
 }> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -185,9 +180,6 @@ export async function addCraftingExpMemory(telegramId: string, expToAdd: number)
             userMemoryManager.updateUserField(telegramId, 'craftingExp', craftingExp);
             userMemoryManager.updateUserField(telegramId, 'craftingLevel', craftingLevel);
             userMemoryManager.updateUserField(telegramId, 'expToNextCraftingLevel', expToNextCraftingLevel);
-
-            // Mark snapshot stale
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 25);
 
             logger.info(`✅ Added crafting exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${craftingLevel}`);
 
@@ -369,7 +361,6 @@ const userGoldLock = new AsyncLock();
 export async function incrementUserGold(userId: string, amount: number): Promise<number> {
     return await userGoldLock.acquire(userId, async () => {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         let newBalance;
 
@@ -390,8 +381,6 @@ export async function incrementUserGold(userId: string, amount: number): Promise
             // Fallback to DB - prismaIncrementUserGoldBalance should handle its own atomicity
             newBalance = await prismaIncrementUserGoldBalance(userId, amount);
         }
-
-        await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 10);
 
         return newBalance;
     });
@@ -431,7 +420,6 @@ export async function equipEquipmentForUserMemory(
 ): Promise<UserDataEquipped> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -476,9 +464,6 @@ export async function equipEquipmentForUserMemory(
             await userMemoryManager.flushAllUserUpdates(telegramId);
             logger.info(`✅ Immediately persisted equipment change for user ${telegramId}`);
 
-            // Mark snapshot stale
-            await snapshotRedisManager.markSnapshotStale(telegramId, "stale_session", 15);
-
             return result;
         }
 
@@ -499,7 +484,6 @@ export async function unequipEquipmentForUserMemory(
 ): Promise<UserDataEquipped | undefined> {
     try {
         const userMemoryManager = requireUserMemoryManager();
-        const snapshotRedisManager = requireSnapshotRedisManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -525,9 +509,6 @@ export async function unequipEquipmentForUserMemory(
 
             // Recalculate stats in memory
             const result = await recalculateAndUpdateUserStatsMemory(telegramId);
-
-            // Mark snapshot stale
-            await snapshotRedisManager.markSnapshotStale(telegramId, "stale_session", 15);
 
             return result;
         }

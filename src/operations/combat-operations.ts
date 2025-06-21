@@ -6,7 +6,7 @@ import { FullUserData } from "../sql-services/user-service";
 import { calculateExpForNextLevel, calculateHpExpGained } from "../utils/helpers";
 import { recalculateAndUpdateUserBaseStatsMemory } from "./user-operations";
 import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
-import { requireSnapshotRedisManager, requireUserMemoryManager } from "../managers/global-managers/global-managers";
+import { requireUserMemoryManager } from "../managers/global-managers/global-managers";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -216,19 +216,6 @@ export async function incrementExpAndHpExpAndCheckLevelUpMemory(
                 `User ${telegramId} (MEMORY) → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
             );
 
-            const snapshotRedisManager = requireSnapshotRedisManager();
-
-            // Always marks as immediate with priority 90 regardless
-            if (levelUp) {
-                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
-            }
-            if (hpLevelUp) {
-                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
-            }
-            if (!levelUp && !hpLevelUp) {
-                await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
-            }
-
             return {
                 simpleUser: hpLevelUpdatedUser,
                 levelUp,
@@ -317,10 +304,6 @@ export async function applySkillUpgradesMemory(
             );
 
             await recalculateAndUpdateUserBaseStatsMemory(userId);
-
-            // Mark snapshot stale
-            const snapshotRedisManager = requireSnapshotRedisManager();
-            await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 80);
 
             return { totalPointsUsed: totalPointsNeeded };
         }

@@ -6,7 +6,6 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { calculateExpForNextLevel, calculateHpExpGained } from "../utils/helpers";
 import { prismaRecalculateAndUpdateUserBaseStats, UserStatsWithCombat } from "./user-service";
 import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
-import { requireSnapshotRedisManager } from "../managers/global-managers/global-managers";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -214,9 +213,6 @@ export async function prismaUpdateDungeonLeaderboard(
     });
 
     logger.info(`🏆 Upserted leaderboard for user ${userId} in dungeon ${dungeonId}. monstersKilled: ${monstersKilled}, damageDealt: ${damageDealt}, damageTaken: ${damageTaken}, timeElapsedMs: ${timeElapsedMs}, score: ${newScore}`);
-
-    const snapshotRedisManager = requireSnapshotRedisManager();
-    await snapshotRedisManager.markSnapshotStale(userId, "stale_immediate", 20);
 }
 
 export type DungeonLeaderboardEntry = {
@@ -409,20 +405,6 @@ export async function prismaIncrementExpAndHpExpAndCheckLevelUp(
             `User ${telegramId} → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
         );
 
-        const snapshotRedisManager = requireSnapshotRedisManager();
-
-        if (levelUp) {
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
-        }
-
-        if (hpLevelUp) {
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
-        }
-
-        if (!levelUp && !hpLevelUp) {
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_immediate', 90);
-        }
-
         return {
             simpleUser: (hpLevelUp && hpLevelUpdatedUser) ? hpLevelUpdatedUser : null,
             levelUp,
@@ -536,10 +518,6 @@ export async function prismaApplySkillUpgrades(
     );
 
     await prismaRecalculateAndUpdateUserBaseStats(userId);
-
-    const snapshotRedisManager = requireSnapshotRedisManager();
-
-    await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 80);
 
     return { totalPointsUsed: totalPointsNeeded };
 }

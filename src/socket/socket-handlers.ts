@@ -99,7 +99,7 @@ export async function setupSocketHandlers(
                             const user = userMemoryManager.getUser(userId);
                             if (user) {
                                 const snapshotRedisManager = requireSnapshotRedisManager();
-                                await snapshotRedisManager.storeSnapshot(userId, user, 'fresh');
+                                await snapshotRedisManager.storeSnapshot(userId, user);
                                 logger.info(`🚨 Emergency snapshot generated for user ${userId}`);
                             }
                         } catch (emergencyErr) {

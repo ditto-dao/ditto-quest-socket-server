@@ -14,7 +14,7 @@ import { ValidateLoginManager } from "./src/managers/validate-login/validate-log
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
-import { cleanupGlobalManagers, getActivityLogMemoryManager, getSnapshotWorker, getUserMemoryManager, initializeGlobalManagers } from "./src/managers/global-managers/global-managers"
+import { cleanupGlobalManagers, getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireSnapshotRedisManager } from "./src/managers/global-managers/global-managers"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -141,8 +141,8 @@ async function main() {
     // Health check route
     app.get('/', async (req, res) => {
         try {
-            const worker = getSnapshotWorker();
-            const snapshotStats = worker ? await worker.getWorkerStats() : null;
+            const snapshotManager = requireSnapshotRedisManager();
+            const snapshotStats = snapshotManager ? await snapshotManager.getSnapshotStats() : null;
 
             res.status(200).json({
                 status: 'ok',
@@ -150,10 +150,7 @@ async function main() {
                 gameCodexReady: GameCodexManager.isReady(),
                 gameCodexStats: GameCodexManager.getStats(),
                 snapshotWorker: snapshotStats ? {
-                    running: snapshotStats.isRunning,
-                    fresh: snapshotStats.freshSnapshots,
-                    stale: snapshotStats.staleSnapshots,
-                    total: snapshotStats.totalSnapshots
+                    totalSnapshots: snapshotStats.totalSnapshots,
                 } : null
             });
         } catch (error) {
@@ -181,18 +178,19 @@ async function main() {
         }
     });
 
-    // Snapshot metrics endpoint
+    // Snapshot metrics
     app.get('/admin/snapshot-metrics', async (req, res) => {
         try {
             const metrics = await snapshotMetrics.getMetrics();
-            const worker = getSnapshotWorker();
-            const workerStats = worker ? await worker.getWorkerStats() : null;
+            const snapshotManager = requireSnapshotRedisManager();
+            const redisStats = snapshotManager ? await snapshotManager.getSnapshotStats() : null;
+
             res.json({
                 ...metrics,
-                worker: workerStats
+                redis: redisStats
             });
         } catch (error) {
-            res.status(500).json({ error: 'Failed to get metrics' });
+            res.status(500).json({ error: 'Failed to get snapshot metrics' });
         }
     });
 

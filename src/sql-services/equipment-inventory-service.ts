@@ -4,7 +4,6 @@ import { prisma } from './client';
 import { prismaFetchNextInventoryOrder, prismaFetchUserInventorySlotInfo } from './user-service';
 import { UserInventoryItem } from '../managers/memory/user-memory-manager';
 import { prismaMintItemToUser } from './item-inventory-service';
-import { requireSnapshotRedisManager } from '../managers/global-managers/global-managers';
 
 export async function prismaDoesUserOwnEquipments(
     telegramId: string,
@@ -124,9 +123,6 @@ export async function prismaMintEquipmentToUser(
                 `Updated quantity for equipment ${updatedInventory.equipment?.name}. New quantity: ${updatedInventory.quantity}`
             );
 
-            const snapshotRedisManager = requireSnapshotRedisManager();
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
-
             return updatedInventory;
         } else {
             // Case 2: Equipment does not exist → Create a new entry
@@ -156,10 +152,6 @@ export async function prismaMintEquipmentToUser(
             logger.info(
                 `Added new equipment ${newInventory.equipment?.name} to user ${telegramId}. Quantity: ${newInventory.quantity}`
             );
-
-            const snapshotRedisManager = requireSnapshotRedisManager();
-
-            await snapshotRedisManager.markSnapshotStale(telegramId, 'stale_session', 15);
 
             return newInventory;
         }

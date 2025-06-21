@@ -630,10 +630,6 @@ export class UserMemoryManager {
 
 			await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay to ensure DB commit
 
-			// Mark snapshot stale with immediate priority
-			const snapshotRedisManager = requireSnapshotRedisManager();
-			await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 99);
-
 			this.markClean(userId);
 
 			return true;
@@ -725,7 +721,7 @@ export class UserMemoryManager {
 					logger.info(`📊 Pre-snapshot verification: User ${userId} has ${inventoryCount} inventory items, ${equipmentCount} Rustfang swords`);
 
 					// Store snapshot using current memory data (most updated)
-					await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser, 'fresh');
+					await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser);
 					logger.info(`📸 ✅ Immediately regenerated fresh snapshot for user ${userId} after logout (from MEMORY)`);
 				} else {
 					logger.error(`❌ User not found in memory for snapshot regeneration after flush`);
@@ -734,7 +730,7 @@ export class UserMemoryManager {
 					const freshDbUser = await getUserData(userId);
 					if (freshDbUser) {
 						this.setUser(userId, freshDbUser);
-						await snapshotRedisManager.storeSnapshot(userId, freshDbUser, 'fresh');
+						await snapshotRedisManager.storeSnapshot(userId, freshDbUser);
 						logger.info(`📸 ✅ Regenerated snapshot from DB fallback for user ${userId}`);
 					}
 				}
