@@ -33,23 +33,25 @@ export async function setupItemsSocketHandlers(
     idleManager: IdleManager
 ): Promise<void> {
     socket.on("mint-item", async (data: MintItemPayload) => {
-        try {
-            logger.info(`Received mint-item event from user ${data.userId}`)
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received mint-item event from user ${data.userId}`)
 
-            const res = await mintItemToUser(data.userId.toString(), data.itemId, data.quantity)
+                const res = await mintItemToUser(data.userId.toString(), data.itemId, data.quantity)
 
-            socket.emit("update-inventory", {
-                userId: data.userId,
-                payload: [res]
-            })
+                socket.emit("update-inventory", {
+                    userId: data.userId,
+                    payload: [res]
+                })
 
-        } catch (error) {
-            logger.error(`Error processing mint-item: ${error}`)
-            socket.emit('error', {
-                userId: data.userId,
-                msg: 'Failed to mint item'
-            })
-        }
+            } catch (error) {
+                logger.error(`Error processing mint-item: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to mint item'
+                })
+            }
+        });
     })
 
     socket.on("farm-item", async (data: FarmItemPayload) => {

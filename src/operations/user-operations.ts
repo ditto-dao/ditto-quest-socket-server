@@ -6,6 +6,7 @@ import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client'
 import { calculateCombatPower, getBaseAccFromLuk, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromDex, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../managers/idle-managers/combat/combat-helpers';
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
+import AsyncLock from 'async-lock';
 
 /**
  * Get user data - Memory first, then Redis, then Database
@@ -363,33 +364,37 @@ export async function canUserMintSlimeMemory(ownerId: string): Promise<boolean> 
     }
 }
 
-export async function incrementUserGold(userId: string, amount: number) {
-    const userMemoryManager = requireUserMemoryManager();
-    const snapshotRedisManager = requireSnapshotRedisManager();
+const userGoldLock = new AsyncLock();
 
-    let newBalance;
+export async function incrementUserGold(userId: string, amount: number): Promise<number> {
+    return await userGoldLock.acquire(userId, async () => {
+        const userMemoryManager = requireUserMemoryManager();
+        const snapshotRedisManager = requireSnapshotRedisManager();
 
-    // Try memory first
-    if (userMemoryManager.hasUser(userId)) {
-        const user = userMemoryManager.getUser(userId)!;
-        const currentBalance = user.goldBalance || 0;
-        newBalance = currentBalance + amount;
-        
-        // Ensure balance doesn't go negative
-        if (newBalance < 0) {
-            throw new Error(`Insufficient gold balance (Balance: ${currentBalance} < ${Math.abs(amount)})`);
+        let newBalance;
+
+        // Try memory first
+        if (userMemoryManager.hasUser(userId)) {
+            const user = userMemoryManager.getUser(userId)!;
+            const currentBalance = user.goldBalance || 0;
+            newBalance = currentBalance + amount;
+
+            // Ensure balance doesn't go negative
+            if (newBalance < 0) {
+                throw new Error(`Insufficient gold balance (Balance: ${currentBalance} < ${Math.abs(amount)})`);
+            }
+
+            userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
+            userMemoryManager.markDirty(userId);
+        } else {
+            // Fallback to DB - prismaIncrementUserGoldBalance should handle its own atomicity
+            newBalance = await prismaIncrementUserGoldBalance(userId, amount);
         }
-        
-        userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
-        userMemoryManager.markDirty(userId);
-    } else {
-        // Fallback to DB
-        newBalance = await prismaIncrementUserGoldBalance(userId, amount);
-    }
 
-    await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 10);
+        await snapshotRedisManager.markSnapshotStale(userId, 'stale_immediate', 10);
 
-    return newBalance;
+        return newBalance;
+    });
 }
 
 export async function getEquippedByEquipmentTypeMemory(
