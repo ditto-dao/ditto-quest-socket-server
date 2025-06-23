@@ -1,11 +1,11 @@
-import { Combat, Prisma, Rarity, TraitType } from "@prisma/client";
+import { Prisma, Rarity, TraitType } from "@prisma/client";
 import { HP_EXP_PER_EXP } from "./config";
 import { SlimeWithTraits } from "../sql-services/slime";
 import { COMBAT_UPDATE_EVENT, USER_UPDATE_EVENT } from "../socket/events";
-import { FullUserData, UserDataEquipped, UserStatsWithCombat } from "../sql-services/user-service";
+import { FullUserData, UserDataEquipped } from "../sql-services/user-service";
 import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
-import { Decimal } from "@prisma/client/runtime/library";
+import { UserStatsWithCombat } from "../operations/combat-operations";
 
 // Helper function to calculate experience needed for the next level
 export function calculateExpForNextLevel(nextLevel: number): number {

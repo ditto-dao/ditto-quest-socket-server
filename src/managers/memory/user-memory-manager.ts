@@ -503,7 +503,7 @@ export class UserMemoryManager {
 		try {
 			let remap = new Map<number, number>();
 
-			// Step 1: Handle creates first
+			// Step 1: Handle creates first to establish ID mappings
 			if (createInventory.length > 0) {
 				await prismaInsertInventoryToDB(userId, createInventory);
 				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
@@ -527,20 +527,61 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 2: Handle quantity updates using properly mapped IDs
+			// Step 2: Check if we have unmappable temp IDs in updates
+			const unmappableTempIds = Array.from(updateInventoryIds).filter(id =>
+				id < 0 && !remap.has(id)
+			);
+
+			if (unmappableTempIds.length > 0) {
+				logger.warn(`⚠️ Found ${unmappableTempIds.length} unmappable temp IDs for quantity updates: ${unmappableTempIds.join(', ')}`);
+				logger.info(`🔄 These likely represent existing items that need to be properly resolved`);
+
+				// 🔥 FIX: Don't skip! Instead, try to match with existing inventory
+				const user = this.users.get(userId);
+				if (user && user.inventory) {
+					const currentInventory = await prismaFetchUserInventory(userId);
+
+					// Try to map unmappable temp IDs to existing real inventory items
+					for (const tempId of unmappableTempIds) {
+						const memoryItem = user.inventory.find(inv => inv.id === tempId);
+						if (memoryItem) {
+							// Find matching real item by equipment/item ID and approximate quantity
+							const matchingRealItem = currentInventory.find(realItem =>
+								realItem.equipmentId === memoryItem.equipmentId &&
+								realItem.itemId === memoryItem.itemId
+								// Don't match on exact quantity since it might have changed
+							);
+
+							if (matchingRealItem) {
+								remap.set(tempId, matchingRealItem.id);
+								logger.info(`🔗 Resolved unmappable temp ID ${tempId} -> real ID ${matchingRealItem.id}`);
+							} else {
+								logger.error(`❌ Could not resolve temp ID ${tempId} - no matching real item found`);
+								throw new Error(`Critical: Cannot resolve temp ID ${tempId} for quantity update`);
+							}
+						} else {
+							logger.error(`❌ Temp ID ${tempId} not found in memory inventory`);
+							throw new Error(`Critical: Temp ID ${tempId} not found in memory`);
+						}
+					}
+				}
+			}
+
+			// Step 3: Now ALL temp IDs should be mappable - process quantity updates
 			if (updateInventoryIds.size > 0) {
 				const user = this.users.get(userId);
 				if (user && user.inventory) {
-					// Map temp IDs to real IDs in the pending updates
+					// Map ALL temp IDs to real IDs (no skipping allowed)
 					const mappedUpdateIds = new Set<number>();
 					for (const tempId of updateInventoryIds) {
-						if (tempId < 0 && remap.has(tempId)) {
+						if (tempId < 0) {
+							if (!remap.has(tempId)) {
+								throw new Error(`CRITICAL: Temp ID ${tempId} still unmappable after resolution attempts`);
+							}
 							mappedUpdateIds.add(remap.get(tempId)!);
 							logger.debug(`🔗 Mapped pending update: temp ID ${tempId} -> real ID ${remap.get(tempId)!}`);
-						} else if (tempId > 0) {
-							mappedUpdateIds.add(tempId); // Already a real ID
 						} else {
-							logger.warn(`⚠️ Could not map temp ID ${tempId} for quantity update - skipping`);
+							mappedUpdateIds.add(tempId); // Already a real ID
 						}
 					}
 
@@ -560,23 +601,25 @@ export class UserMemoryManager {
 					if (itemsToUpdate.length > 0) {
 						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
 						logger.debug(`🔄 Updated ${itemsToUpdate.length} inventory quantities for ${userId}`);
+					} else {
+						logger.warn(`⚠️ No items to update after ID mapping for user ${userId}`);
 					}
 				}
 			}
 
-			// Step 3: Handle deletes using properly mapped IDs
+			// Step 4: Handle deletes using properly mapped IDs
 			if (burnInventoryIds.length > 0) {
 				const realBurnIds = burnInventoryIds.map(fakeId => {
 					if (fakeId < 0) {
 						const realId = remap.get(fakeId);
 						if (!realId) {
-							logger.warn(`⚠️ Could not remap temp ID ${fakeId} for deletion - skipping`);
-							return null;
+							logger.error(`❌ Could not remap temp ID ${fakeId} for deletion`);
+							throw new Error(`Critical: Cannot map temp ID ${fakeId} for deletion`);
 						}
 						return realId;
 					}
 					return fakeId; // Already a real ID
-				}).filter(id => id !== null) as number[];
+				});
 
 				if (realBurnIds.length > 0) {
 					await prismaDeleteInventoryFromDB(userId, realBurnIds);
@@ -584,7 +627,7 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 4: Get the final state from database and update memory
+			// Step 5: Get the final state from database and update memory
 			const finalInventory = await prismaFetchUserInventory(userId);
 			const user = this.users.get(userId);
 			if (user) {
@@ -594,7 +637,7 @@ export class UserMemoryManager {
 				logger.warn(`⚠️ User ${userId} not found in memory during inventory flush`);
 			}
 
-			// Step 5: Store ID remapping and cleanup
+			// Step 6: Store ID remapping and cleanup
 			if (remap.size > 0) {
 				this.inventoryIdRemap.set(userId, remap);
 			}
@@ -609,7 +652,7 @@ export class UserMemoryManager {
 				this.markClean(userId);
 			}
 
-			logger.info(`✅ Successfully flushed inventory for user ${userId} with ${remap.size} ID remappings`);
+			logger.info(`✅ Successfully flushed inventory for user ${userId} with ${remap.size} ID remappings - NO UPDATES SKIPPED`);
 
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);

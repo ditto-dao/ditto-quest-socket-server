@@ -1,12 +1,12 @@
-import { Combat, Domain, DomainMonster, Dungeon, DungeonMonsterSequence, Equipment, Item, Monster, MonsterDrop, StatEffect } from "@prisma/client";
+import { Combat, Domain, DomainMonster, Dungeon, DungeonMonsterSequence, Equipment, Item, Monster, MonsterDrop, Prisma, StatEffect } from "@prisma/client";
 import { logger } from "../utils/logger";
 import { GameCodexManager } from "../managers/game-codex/game-codex-manager";
-import { IncrementExpAndHpExpResponse, prismaApplySkillUpgrades, prismaFetchDomainById, prismaFetchDungeonById, prismaFetchMonsterById, prismaIncrementExpAndHpExpAndCheckLevelUp, prismaSetLastBattleEndTimestamp, prismaSetUserCombatHp, SkillUpgradeInput } from "../sql-services/combat-service";
 import { FullUserData } from "../sql-services/user-service";
 import { calculateExpForNextLevel, calculateHpExpGained } from "../utils/helpers";
 import { recalculateAndUpdateUserBaseStatsMemory } from "./user-operations";
 import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
 import { requireUserMemoryManager } from "../managers/global-managers/global-managers";
+import { prismaFetchDomainById, prismaFetchDungeonById, prismaFetchMonsterById } from "../sql-services/combat-service";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -128,9 +128,7 @@ export async function setUserCombatHp(telegramId: string, newHp: number): Promis
             return clampedHp;
         }
 
-        // Fallback to database version
-        return await prismaSetUserCombatHp(telegramId, newHp);
-
+        throw new Error('User memory manager not available');
     } catch (error) {
         logger.error(`❌ Failed to update combat HP for user ${telegramId}:`, error);
         throw error;
@@ -148,7 +146,7 @@ export async function setLastBattleTimestamp(telegramId: string, timestamp: Date
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
             userMemoryManager.updateUserField(telegramId, 'lastBattleEndTimestamp', timestamp);
         } else {
-            await prismaSetLastBattleEndTimestamp(telegramId, timestamp);
+            throw new Error('User memory manager not available');
         }
 
         logger.debug(`⏰ Updated last battle timestamp for user ${telegramId}`);
@@ -156,6 +154,56 @@ export async function setLastBattleTimestamp(telegramId: string, timestamp: Date
         logger.error(`❌ Failed to update battle timestamp for user ${telegramId}:`, error);
         throw error;
     }
+}
+
+// Type for the specific return object you want
+export type UserStatsWithCombat = {
+    // Base stats (from newBaseStats)
+    maxHp: number;
+    atkSpd: number;
+    acc: number;
+    eva: number;
+    maxMeleeDmg: number;
+    maxRangedDmg: number;
+    maxMagicDmg: number;
+    critChance: number;
+    critMultiplier: number;
+    dmgReduction: number;
+    magicDmgReduction: number;
+    hpRegenRate: number;
+    hpRegenAmount: number;
+
+    // User fields
+    outstandingSkillPoints: number;
+    hpLevel: number;
+    expToNextHpLevel: number;
+    expHp: number;
+    str: number;
+    def: number;
+    dex: number;
+    luk: number;
+    magic: number;
+
+    doubleResourceOdds: number;
+    skillIntervalReductionMultiplier: number;
+
+    // Combat relation
+    combat: Prisma.CombatGetPayload<{}> | null;
+};
+
+export interface IncrementExpAndHpExpResponse {
+    simpleUser: UserStatsWithCombat | null
+
+    levelUp: boolean;
+    level: number;
+    exp: number;
+    expToNextLevel: number;
+    outstandingSkillPoints: number;
+
+    hpLevelUp: boolean;
+    hpLevel: number;
+    hpExp: number;
+    expToNextHpLevel: number;
 }
 
 export async function incrementExpAndHpExpAndCheckLevelUpMemory(
@@ -230,13 +278,21 @@ export async function incrementExpAndHpExpAndCheckLevelUpMemory(
             };
         }
 
-        // Fallback to database version
-        return await prismaIncrementExpAndHpExpAndCheckLevelUp(telegramId, expToAdd);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Error in incrementExpAndHpExpAndCheckLevelUpMemory: ${error}`);
         throw error;
     }
+}
+
+export interface SkillUpgradeInput {
+    str?: number;
+    def?: number;
+    dex?: number;
+    luk?: number;
+    magic?: number;
+    hpLevel?: number;
 }
 
 export async function applySkillUpgradesMemory(
@@ -308,8 +364,7 @@ export async function applySkillUpgradesMemory(
             return { totalPointsUsed: totalPointsNeeded };
         }
 
-        // Fallback to database version (which handles its own snapshot marking)
-        return await prismaApplySkillUpgrades(userId, upgrades);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Error in applySkillUpgradesOnlyMemory: ${error}`);

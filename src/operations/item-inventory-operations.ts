@@ -1,11 +1,5 @@
 import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
-import {
-    prismaDoesUserOwnItems,
-    prismaMintItemToUser,
-    prismaDeleteItemsFromUserInventory,
-    prismaCanUserMintItem,
-} from '../sql-services/item-inventory-service';
 import { UserInventoryItem } from '../managers/memory/user-memory-manager';
 import { getNextInventoryOrderMemory } from './user-operations';
 import { getItemById } from './item-operations';
@@ -60,8 +54,8 @@ export async function doesUserOwnItems(
             return ownsAll;
         }
 
-        // Fallback to database
-        return await prismaDoesUserOwnItems(telegramId, itemIds, quantities);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error checking if user ${telegramId} owns items with required quantities: ${error}`);
         throw error;
@@ -139,8 +133,8 @@ export async function mintItemToUser(
             }
         }
 
-        // Fallback to database
-        return await prismaMintItemToUser(telegramId, itemId, quantity);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error minting item to user: ${error}`);
         throw error;
@@ -211,8 +205,8 @@ export async function deleteItemsFromUserInventory(
             return updatedInventories;
         }
 
-        // Fallback to database
-        return await prismaDeleteItemsFromUserInventory(telegramId, itemIds, quantitiesToRemove);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error deleting items from user inventory: ${error}`);
         throw error;
@@ -243,8 +237,8 @@ export async function canUserMintItem(
             return usedSlots < maxSlots;
         }
 
-        // Fallback to database
-        return await prismaCanUserMintItem(telegramId, itemId);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error checking if user can mint item: ${error}`);
         throw error;

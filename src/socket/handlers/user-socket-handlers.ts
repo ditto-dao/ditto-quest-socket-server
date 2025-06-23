@@ -13,8 +13,7 @@ import { equipEquipmentForUserMemory, getEquippedByEquipmentTypeMemory, getUserD
 import { EquippedInventory } from "../../sql-services/user-service";
 import { SlimeWithTraits } from "../../sql-services/slime";
 import { equipSlimeForUserMemory, getEquippedSlimeWithTraitsMemory, getSlimeForUserById, unequipSlimeForUserMemory } from "../../operations/slime-operations";
-import { SkillUpgradeInput } from "../../sql-services/combat-service";
-import { applySkillUpgradesMemory } from "../../operations/combat-operations";
+import { applySkillUpgradesMemory, SkillUpgradeInput } from "../../operations/combat-operations";
 import { requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 import { globalIdleSocketUserLock } from "../socket-handlers";
 

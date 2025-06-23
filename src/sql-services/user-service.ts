@@ -1,10 +1,10 @@
 import { logger } from '../utils/logger';
-import { calculateExpForNextLevel } from '../utils/helpers';
 import { prisma } from './client';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
-import { MAX_INITIAL_INVENTORY_SLOTS, MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { getBaseMaxHpFromHpLvl, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef, getBaseAccFromLuk, getBaseEvaFromDex, calculateCombatPower } from '../managers/idle-managers/combat/combat-helpers';
 import { applyDelta, calculateNetStatDelta } from '../operations/user-operations';
+import { UserStatsWithCombat } from '../operations/combat-operations';
+import { MAX_INITIAL_INVENTORY_SLOTS } from '../utils/config';
 
 // Interface for user input
 interface CreateUserInput {
@@ -714,22 +714,6 @@ export async function prismaFetchBaseUserData(
     });
 }
 
-export async function prismaUpdateUserPartial(
-    telegramId: string,
-    data: Prisma.UserUpdateInput
-): Promise<User> {
-    try {
-        const updatedUser = await prisma.user.update({
-            where: { telegramId },
-            data,
-        });
-
-        return updatedUser;
-    } catch (err) {
-        throw new Error(`Failed to update user ${telegramId}: ${err}`);
-    }
-}
-
 export type UserDataEquipped = Prisma.UserGetPayload<{
     include: {
         combat: true;
@@ -924,49 +908,43 @@ export async function prismaFetchUserEquippedData(
     }
 }
 
+export async function prismaFetchUserInventorySlotInfo(telegramId: string): Promise<{
+    usedSlots: number;
+    maxSlots: number;
+}> {
+    const user = await prisma.user.findUnique({
+        where: { telegramId },
+        select: {
+            maxInventorySlots: true,
+        },
+    });
+
+    if (!user) {
+        throw new Error(`User ${telegramId} not found`);
+    }
+
+    const usedSlots = await prisma.inventory.count({
+        where: { userId: telegramId },
+    });
+
+    logger.info(JSON.stringify({
+        usedSlots,
+        maxSlots: user.maxInventorySlots,
+        fallbackUsed: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS
+    }, null, 2));
+
+    return {
+        usedSlots,
+        maxSlots: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS // fallback default if ever unset
+    };
+}
+
 export async function prismaFetchNextInventoryOrder(telegramId: string): Promise<number> {
     const maxOrder = await prisma.inventory.aggregate({
         where: { userId: telegramId },
         _max: { order: true },
     });
     return (maxOrder._max.order ?? -1) + 1; // Start from 0 if no records exist
-}
-
-// Function to update a user's gold balance (prevents negative values)
-export async function prismaIncrementUserGoldBalance(telegramId: string, increment: number): Promise<number> {
-    try {
-        // Fetch the user's current balance
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
-            select: { goldBalance: true }
-        });
-
-        if (!user) {
-            throw new Error(`User with Telegram ID ${telegramId} not found.`);
-        }
-
-        const newBalance = user.goldBalance + increment;
-
-        // Ensure balance does not go negative
-        if (newBalance < 0) {
-            throw new Error(`Insufficient gold balance (Balance: ${user.goldBalance} < ${increment})`);
-        }
-
-        // Update the user's balance
-        const updatedUser = await prisma.user.update({
-            where: { telegramId },
-            data: {
-                goldBalance: newBalance
-            }
-        });
-
-        logger.info(`User gold balance updated successfully: new balance is ${updatedUser.goldBalance}`);
-
-        return updatedUser.goldBalance;
-    } catch (error) {
-        logger.error(`Error updating user's gold balance: ${error}`);
-        throw error;
-    }
 }
 
 /* USER SPECIFIC EQUIPMENT FUNCTIONS */
@@ -1017,231 +995,6 @@ export async function prismaFetchEquippedByEquipmentType(
         console.error(`Error fetching equipped item for user ${telegramId}:`, error);
         throw error;
     }
-}
-
-// Function to equip equipment
-export async function prismaEquipEquipmentForUser(
-    telegramId: string,
-    equipmentInventory: Prisma.InventoryGetPayload<{ include: { equipment: true } }>
-): Promise<UserDataEquipped> {
-    try {
-        if (!equipmentInventory.equipment) throw new Error(`Equip equipment failed. Input inventory element is not an equipment.`)
-
-        const equipmentType = equipmentInventory.equipment.type;
-        const equipField = `${equipmentType}InventoryId`; // Dynamically construct the inventory ID field name
-
-        // Equip the new equipment
-        const updatedUser = await prisma.user.update({
-            where: { telegramId },
-            data: {
-                [equipField]: equipmentInventory.id,
-            },
-            include: {
-                [equipmentType]: { include: { equipment: true } }, // Include the updated relation details
-            },
-        });
-
-        if (equipmentInventory.equipment.requiredLvlCombat > updatedUser.level) throw new Error(`User does not meet level requirements`);
-
-        logger.info(
-            `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType}.`
-        );
-
-        const result = await prismaRecalculateAndUpdateUserStats(telegramId);
-
-        return result;
-
-    } catch (error) {
-        logger.error(
-            `Failed to equip equipment ${JSON.stringify(equipmentInventory, null, 2)} for user ${telegramId}: ${error}`
-        );
-        throw error;
-    }
-}
-
-// Function to unequip equipment by type for the user
-export async function prismaUnequipEquipmentForUser(
-    telegramId: string,
-    equipmentType: EquipmentType
-): Promise<UserDataEquipped | undefined> {
-    try {
-        // Dynamically construct the inventory ID field name
-        const equipField = `${equipmentType}InventoryId`;
-
-        // Fetch the user's currently equipped item for the given slot
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
-            select: { [equipField]: true }, // Fetch only the relevant field
-        });
-
-        if (!user) {
-            throw new Error(`User with telegramId ${telegramId} not found.`);
-        }
-
-        // Check if the slot is already empty
-        if (user[equipField] === null) {
-            logger.info(
-                `User ${telegramId} already has nothing equipped in the ${equipmentType} slot.`
-            );
-            return;
-        }
-
-        // Perform the unequip operation
-        await prisma.user.update({
-            where: { telegramId },
-            data: {
-                [equipField]: null, // Clear the field for the equipment type
-            },
-            include: {
-                [equipmentType]: true, // Include the related equipment details
-            },
-        });
-
-        logger.info(
-            `User ${telegramId} unequipped equipment of type ${equipmentType}.`
-        );
-
-        const result = await prismaRecalculateAndUpdateUserStats(telegramId);
-
-        return result;
-    } catch (error) {
-        logger.error(
-            `Failed to unequip equipment of type ${equipmentType} for user ${telegramId}: ${error}`
-        );
-        throw error;
-    }
-}
-
-/* USER SPECIFIC FARMING FUNCTIONS */
-
-export async function prismaFetchUserFarmingLevel(telegramId: string): Promise<{
-    farmingLevel: number;
-    farmingExp: number;
-    expToNextFarmingLevel: number;
-}> {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
-            select: {
-                farmingLevel: true,
-                farmingExp: true,
-                expToNextFarmingLevel: true
-            }
-        });
-
-        if (!user) {
-            throw new Error(`User with telegramId ${telegramId} not found.`);
-        }
-
-        return {
-            farmingLevel: user.farmingLevel,
-            farmingExp: user.farmingExp,
-            expToNextFarmingLevel: user.expToNextFarmingLevel
-        };
-    } catch (error) {
-        logger.error(`❌ Failed to fetch farming level for user ${telegramId}:`, error);
-        throw error;
-    }
-}
-
-export async function prismaAddFarmingExp(userId: string, expToAdd: number) {
-    const user = await prisma.user.findUnique({ where: { telegramId: userId.toString() } });
-
-    if (!user) {
-        throw new Error("User not found");
-    }
-
-    let { farmingExp, expToNextFarmingLevel, farmingLevel } = user;
-    let farmingLevelsGained = 0;
-
-    // Add experience
-    farmingExp += expToAdd;
-
-    // Check for level-ups
-    while (farmingExp >= expToNextFarmingLevel) {
-        farmingExp -= expToNextFarmingLevel; // Remove exp required for the current level
-        farmingLevel += 1; // Increment level
-        farmingLevelsGained += 1;
-        expToNextFarmingLevel = calculateExpForNextLevel(farmingLevel + 1); // Calculate new exp requirement
-    }
-
-    // Update the user
-    await prisma.user.update({
-        where: { telegramId: userId.toString() },
-        data: {
-            farmingExp,
-            expToNextFarmingLevel,
-            farmingLevel,
-        },
-    });
-
-    return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
-}
-
-
-/* USER SPECIFIC CRAFTING FUNCTIONS */
-export async function prismaFetchUserCraftingLevel(telegramId: string): Promise<{
-    craftingLevel: number;
-    craftingExp: number;
-    expToNextCraftingLevel: number;
-}> {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { telegramId },
-            select: {
-                craftingLevel: true,
-                craftingExp: true,
-                expToNextCraftingLevel: true
-            }
-        });
-
-        if (!user) {
-            throw new Error(`User with telegramId ${telegramId} not found.`);
-        }
-
-        return {
-            craftingLevel: user.craftingLevel,
-            craftingExp: user.craftingExp,
-            expToNextCraftingLevel: user.expToNextCraftingLevel
-        };
-    } catch (error) {
-        logger.error(`❌ Failed to fetch crafting level for user ${telegramId}:`, error);
-        throw error;
-    }
-}
-
-export async function prismaAddCraftingExp(userId: string, expToAdd: number) {
-    const user = await prisma.user.findUnique({ where: { telegramId: userId.toString() } });
-
-    if (!user) {
-        throw new Error("User not found");
-    }
-
-    let { craftingExp, expToNextCraftingLevel, craftingLevel } = user;
-    let craftingLevelsGained = 0;
-
-    // Add experience
-    craftingExp += expToAdd;
-
-    // Check for level-ups
-    while (craftingExp >= expToNextCraftingLevel) {
-        craftingExp -= expToNextCraftingLevel; // Remove exp required for the current level
-        craftingLevel += 1; // Increment level
-        craftingLevelsGained += 1;
-        expToNextCraftingLevel = calculateExpForNextLevel(craftingLevel + 1); // Calculate new exp requirement
-    }
-
-    // Update the user
-    await prisma.user.update({
-        where: { telegramId: userId.toString() },
-        data: {
-            craftingLevel,
-            craftingExp,
-            expToNextCraftingLevel,
-        },
-    });
-
-    return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
 }
 
 export async function prismaRecalculateAndUpdateUserStats(
@@ -1370,42 +1123,6 @@ export async function prismaRecalculateAndUpdateUserStats(
     };
 }
 
-
-// Type for the specific return object you want
-export type UserStatsWithCombat = {
-    // Base stats (from newBaseStats)
-    maxHp: number;
-    atkSpd: number;
-    acc: number;
-    eva: number;
-    maxMeleeDmg: number;
-    maxRangedDmg: number;
-    maxMagicDmg: number;
-    critChance: number;
-    critMultiplier: number;
-    dmgReduction: number;
-    magicDmgReduction: number;
-    hpRegenRate: number;
-    hpRegenAmount: number;
-
-    // User fields
-    outstandingSkillPoints: number;
-    hpLevel: number;
-    expToNextHpLevel: number;
-    expHp: number;
-    str: number;
-    def: number;
-    dex: number;
-    luk: number;
-    magic: number;
-
-    doubleResourceOdds: number;
-    skillIntervalReductionMultiplier: number;
-
-    // Combat relation
-    combat: Prisma.CombatGetPayload<{}> | null;
-};
-
 export async function prismaRecalculateAndUpdateUserBaseStats(
     telegramId: string
 ): Promise<UserStatsWithCombat> {
@@ -1462,122 +1179,6 @@ export async function prismaRecalculateAndUpdateUserBaseStats(
         logger.error(`❌ Failed to recalculate base stats for ${telegramId}: ${err}`);
         throw err;
     }
-}
-
-// inventory
-export async function fetchEquipmentOrItemFromInventory(
-    telegramId: string,
-    inventoryId: number
-): Promise<Prisma.InventoryGetPayload<{ include: { equipment: true } }> | undefined> {
-    try {
-        // Fetch the equipment from the user's inventory
-        const equipmentInventory = await prisma.inventory.findUnique({
-            where: { id: inventoryId },
-            include: { equipment: true }, // Include equipment details
-        });
-
-        // Check if the equipment exists and belongs to the user
-        if (!equipmentInventory || equipmentInventory.userId.toString() !== telegramId) {
-            throw new Error(`Inventory ID ${inventoryId} not found in inventory for user ${telegramId}`);
-        }
-
-        if (!equipmentInventory.equipment) {
-            throw new Error(`Inventory object is not an equipment`);
-        }
-
-        return equipmentInventory;
-    } catch (err) {
-        console.error(`Error fetching equipment or item from user ${telegramId}'s inventory: ${err}`);
-        throw err; // Re-throw the error for further handling
-    }
-}
-
-export async function prismaFetchUserInventorySlotInfo(telegramId: string): Promise<{
-    usedSlots: number;
-    maxSlots: number;
-}> {
-    const user = await prisma.user.findUnique({
-        where: { telegramId },
-        select: {
-            maxInventorySlots: true,
-        },
-    });
-
-    if (!user) {
-        throw new Error(`User ${telegramId} not found`);
-    }
-
-    const usedSlots = await prisma.inventory.count({
-        where: { userId: telegramId },
-    });
-
-    logger.info(JSON.stringify({
-        usedSlots,
-        maxSlots: user.maxInventorySlots,
-        fallbackUsed: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS
-    }, null, 2));
-
-    return {
-        usedSlots,
-        maxSlots: user.maxInventorySlots ?? MAX_INITIAL_INVENTORY_SLOTS // fallback default if ever unset
-    };
-}
-
-export async function prismaFetchUserSlimeInventoryInfo(telegramId: string): Promise<{
-    usedSlots: number;
-    maxSlots: number;
-}> {
-    const user = await prisma.user.findUnique({
-        where: { telegramId },
-        select: {
-            maxSlimeInventorySlots: true,
-        },
-    });
-
-    if (!user) {
-        throw new Error(`User ${telegramId} not found`);
-    }
-
-    const usedSlots = await prisma.slime.count({
-        where: { ownerId: telegramId },
-    });
-
-    return {
-        usedSlots,
-        maxSlots: user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS,
-    };
-}
-
-export async function prismaCanUserMintSlime(telegramId: string): Promise<boolean> {
-    const user = await prisma.user.findUnique({
-        where: { telegramId },
-        select: { maxSlimeInventorySlots: true },
-    });
-
-    if (!user) {
-        throw new Error(`User ${telegramId} not found`);
-    }
-
-    const usedSlots = await prisma.slime.count({
-        where: { ownerId: telegramId },
-    });
-
-    const maxSlots = user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS;
-
-    return usedSlots < maxSlots;
-}
-
-export async function prismaFetchUserLevel(telegramId: string): Promise<number> {
-    const user = await prisma.user.findUnique({
-        where: { telegramId },
-        select: { level: true },
-    });
-
-    if (!user) {
-        throw new Error(`User with telegramId ${telegramId} not found`);
-    }
-
-    return user.level;
 }
 
 export async function prismaBatchSaveUsers(users: FullUserData[]): Promise<{

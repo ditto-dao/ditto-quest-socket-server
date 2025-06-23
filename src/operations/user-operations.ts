@@ -1,12 +1,13 @@
 import { logger } from '../utils/logger';
 import { calculateExpForNextLevel } from '../utils/helpers';
-import { EquippedInventory, FullUserData, prismaAddCraftingExp, prismaAddFarmingExp, prismaCanUserMintSlime, prismaEquipEquipmentForUser, prismaFetchEquippedByEquipmentType, prismaFetchNextInventoryOrder, prismaFetchUserCraftingLevel, prismaFetchUserData, prismaFetchUserFarmingLevel, prismaFetchUserInventorySlotInfo, prismaFetchUserLevel, prismaIncrementUserGoldBalance, prismaRecalculateAndUpdateUserBaseStats, prismaRecalculateAndUpdateUserStats, prismaUnequipEquipmentForUser, UserDataEquipped, UserStatsWithCombat } from '../sql-services/user-service';
+import { EquippedInventory, FullUserData, prismaFetchEquippedByEquipmentType, prismaFetchUserData, prismaRecalculateAndUpdateUserBaseStats, prismaRecalculateAndUpdateUserStats, UserDataEquipped } from '../sql-services/user-service';
 import { snapshotMetrics } from '../workers/snapshot/snapshot-metrics';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
 import { calculateCombatPower, getBaseAccFromLuk, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromDex, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../managers/idle-managers/combat/combat-helpers';
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
 import AsyncLock from 'async-lock';
+import { UserStatsWithCombat } from './combat-operations';
 
 /**
  * Get user data - Memory first, then Redis, then Database
@@ -138,8 +139,7 @@ export async function addFarmingExpMemory(telegramId: string, expToAdd: number):
             return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
         }
 
-        // Fallback to database version
-        return await prismaAddFarmingExp(telegramId, expToAdd);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`❌ Failed to add farming exp for user ${telegramId} (MEMORY):`, error);
@@ -186,8 +186,7 @@ export async function addCraftingExpMemory(telegramId: string, expToAdd: number)
             return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
         }
 
-        // Fallback to database version
-        return await prismaAddCraftingExp(telegramId, expToAdd);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`❌ Failed to add crafting exp for user ${telegramId} (MEMORY):`, error);
@@ -215,8 +214,7 @@ export async function getUserInventorySlotInfoMemory(telegramId: string): Promis
             return { usedSlots, maxSlots };
         }
 
-        // Fallback to database version
-        return await prismaFetchUserInventorySlotInfo(telegramId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Error getting inventory slot info for user ${telegramId} (MEMORY):`, error);
@@ -237,8 +235,7 @@ export async function getUserLevelMemory(telegramId: string): Promise<number> {
             return user.level;
         }
 
-        // Fallback to database version
-        return await prismaFetchUserLevel(telegramId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Error getting user level for ${telegramId} (MEMORY):`, error);
@@ -265,8 +262,7 @@ export async function getUserFarmingLevelMemory(telegramId: string): Promise<{
             };
         }
 
-        // Fallback to database version
-        return await prismaFetchUserFarmingLevel(telegramId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`❌ Failed to get farming level for user ${telegramId} (MEMORY):`, error);
@@ -293,8 +289,7 @@ export async function getUserCraftingLevelMemory(telegramId: string): Promise<{
             };
         }
 
-        // Fallback to database version
-        return await prismaFetchUserCraftingLevel(telegramId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`❌ Failed to get crafting level for user ${telegramId} (MEMORY):`, error);
@@ -322,13 +317,11 @@ export async function getNextInventoryOrderMemory(telegramId: string): Promise<n
             return maxOrder + 1;
         }
 
-        // Fallback to database version
-        return await prismaFetchNextInventoryOrder(telegramId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Failed to get next inventory order for user ${telegramId} (MEMORY): ${error}`);
-        // Fallback to database on error
-        return await prismaFetchNextInventoryOrder(telegramId);
+        throw error;
     }
 }
 
@@ -347,12 +340,11 @@ export async function canUserMintSlimeMemory(ownerId: string): Promise<boolean> 
             return currentSlimeCount < maxSlots;
         }
 
-        // Fallback to database version
-        return await prismaCanUserMintSlime(ownerId);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Failed to check if user can mint slime (MEMORY): ${error}`);
-        // Fallback to database version on error
-        return await prismaCanUserMintSlime(ownerId);
+        throw error;
     }
 }
 
@@ -378,8 +370,7 @@ export async function incrementUserGold(userId: string, amount: number): Promise
             userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
             userMemoryManager.markDirty(userId);
         } else {
-            // Fallback to DB - prismaIncrementUserGoldBalance should handle its own atomicity
-            newBalance = await prismaIncrementUserGoldBalance(userId, amount);
+            throw new Error('User memory manager not available');
         }
 
         return newBalance;
@@ -503,8 +494,7 @@ export async function equipEquipmentForUserMemory(
             return result;
         }
 
-        // Fallback to database version
-        return await prismaEquipEquipmentForUser(telegramId, equipmentInventory);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(
@@ -549,8 +539,7 @@ export async function unequipEquipmentForUserMemory(
             return result;
         }
 
-        // Fallback to database version
-        return await prismaUnequipEquipmentForUser(telegramId, equipmentType);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(

@@ -1,5 +1,4 @@
 import { logger } from '../utils/logger';
-import { prismaDoesUserOwnEquipments, prismaMintEquipmentToUser, prismaDeleteEquipmentFromUserInventory, prismaCanUserMintEquipment, prismaFetchEquipmentOrItemFromInventory } from '../sql-services/equipment-inventory-service';
 import { UserInventoryItem } from '../managers/memory/user-memory-manager';
 import { Prisma } from '@prisma/client';
 import { getNextInventoryOrderMemory } from './user-operations';
@@ -51,8 +50,8 @@ export async function doesUserOwnEquipments(
             return ownsAll;
         }
 
-        // Fallback to database
-        return await prismaDoesUserOwnEquipments(telegramId, equipmentIds, quantities);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error checking if user ${telegramId} owns equipment with required quantities: ${error}`);
         throw error;
@@ -83,8 +82,8 @@ export async function canUserMintEquipment(
             return usedSlots < maxSlots;
         }
 
-        // Fallback to database
-        return await prismaCanUserMintEquipment(telegramId, equipmentId);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error checking if user can mint equipment: ${error}`);
         throw error;
@@ -161,8 +160,8 @@ export async function mintEquipmentToUser(
             }
         }
 
-        // Fallback to database
-        return await prismaMintEquipmentToUser(telegramId, equipmentId, quantity);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error minting equipment to user: ${error}`);
         throw error;
@@ -232,8 +231,8 @@ export async function deleteEquipmentFromUserInventory(
             return updatedInventories;
         }
 
-        // Fallback to database
-        return await prismaDeleteEquipmentFromUserInventory(telegramId, equipmentIds, quantitiesToRemove);
+        throw new Error('User memory manager not available');
+
     } catch (error) {
         logger.error(`Error deleting equipment from user inventory: ${error}`);
         throw error;
@@ -299,9 +298,7 @@ export async function getEquipmentOrItemFromInventory(
             }
         }
 
-        // Fallback to database
-        logger.debug(`📦 Falling back to database for inventory item ${inventoryId} for user ${telegramId}`);
-        return await prismaFetchEquipmentOrItemFromInventory(telegramId, inventoryId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`❌ Error fetching inventory item ${inventoryId} for user ${telegramId}: ${error}`);

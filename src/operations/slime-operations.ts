@@ -1,14 +1,14 @@
 import { SlimeTrait, TraitType, Rarity, StatEffect } from '@prisma/client';
 import { GameCodexManager } from '../managers/game-codex/game-codex-manager';
 import { logger } from '../utils/logger';
-import { prismaBurnSlime, prismaEquipSlimeForUser, prismaFetchEquippedSlimeWithTraits, prismaFetchRandomSlimeTraitId, prismaFetchSlimeObjectWithTraits, prismaFetchSlimeTraitById, prismaUnequipSlimeForUser, SlimeWithTraits } from '../sql-services/slime';
+import { prismaFetchEquippedSlimeWithTraits, prismaFetchRandomSlimeTraitId, prismaFetchSlimeObjectWithTraits, prismaFetchSlimeTraitById, SlimeWithTraits } from '../sql-services/slime';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
 import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
 import { GACHA_PULL_ODDS_NERF, GACHA_PULL_ODDS } from '../utils/config';
 import { DOMINANT_TRAITS_GACHA_SPECS, HIDDEN_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits } from '../utils/gacha-odds';
 import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserBaseStatsMemory } from './user-operations';
-import { UserStatsWithCombat } from '../sql-services/user-service';
 import { getSlimeIDManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
+import { UserStatsWithCombat } from './combat-operations';
 
 /**
  * Get SlimeTrait by ID using:
@@ -124,8 +124,7 @@ export async function burnSlimeMemory(
             return slimeId;
         }
 
-        // Fallback to database version
-        return await prismaBurnSlime(telegramId, slimeId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Failed to burn slime ${slimeId} for user ${telegramId} (MEMORY): ${error}`);
@@ -206,7 +205,7 @@ export async function equipSlimeForUserMemory(
             return result;
         }
 
-        return await prismaEquipSlimeForUser(telegramId, slime);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(`Failed to equip slime ${slime.id} for user ${telegramId} (MEMORY): ${error}`);
@@ -247,8 +246,7 @@ export async function unequipSlimeForUserMemory(
             return result;
         }
 
-        // Fallback to database version
-        return await prismaUnequipSlimeForUser(telegramId);
+        throw new Error('User memory manager not available');
 
     } catch (error) {
         logger.error(
