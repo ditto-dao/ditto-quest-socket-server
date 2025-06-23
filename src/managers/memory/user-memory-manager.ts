@@ -774,8 +774,10 @@ export class UserMemoryManager {
 				const currentMemoryUser = this.getUser(userId);
 				if (currentMemoryUser) {
 					const inventoryCount = currentMemoryUser.inventory?.length || 0;
-					const equipmentCount = currentMemoryUser.inventory?.filter(inv => inv.equipmentId === 1).reduce((sum, item) => sum + item.quantity, 0) || 0;
-					logger.info(`📊 Pre-snapshot verification: User ${userId} has ${inventoryCount} inventory items, ${equipmentCount} Rustfang swords`);
+					const totalEquipmentCount = currentMemoryUser.inventory?.filter(inv => inv.equipmentId !== null).reduce((sum, item) => sum + item.quantity, 0) || 0;
+					const totalItemCount = currentMemoryUser.inventory?.filter(inv => inv.itemId !== null).reduce((sum, item) => sum + item.quantity, 0) || 0;
+
+					logger.info(`📊 Pre-snapshot verification: User ${userId} has ${inventoryCount} inventory slots, ${totalEquipmentCount} equipment items, ${totalItemCount} regular items`);
 
 					// Store snapshot using current memory data (most updated)
 					await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser);
