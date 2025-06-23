@@ -814,6 +814,12 @@ export function applyDelta(user: User, combat: Combat, delta: ReturnType<typeof 
     user.skillIntervalReductionMultiplier += delta.skillIntervalReductionMultiplier;
 
     combat.maxHp = Math.round(combat.maxHp + delta.maxHp);
+    
+    if (combat.hp > combat.maxHp) {
+        combat.hp = combat.maxHp;
+        logger.debug(`⚕️ Capped HP to new maxHP for user: ${combat.hp}/${combat.maxHp}`);
+    }
+
     combat.atkSpd = Math.round(combat.atkSpd + delta.atkSpd);
     combat.acc = Math.round(combat.acc + delta.acc);
     combat.eva = Math.round(combat.eva + delta.eva);
