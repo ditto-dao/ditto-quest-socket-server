@@ -176,8 +176,18 @@ export async function updateCombatMissions(updates: { telegramId: string; monste
 // BREED
 export async function updateBreedMission(telegramId: string, rarity: Rarity, quantity: number) {
     const mission = await prisma.userMission.findFirst({ where: { telegramId } });
-    if (!mission || mission.type !== MissionType.BREED || mission.slimeRarity === null) return;
+    if (!mission || mission.type !== MissionType.BREED) return;
 
+    // For tutorial mission (slimeRarity is null), accept any rarity
+    if (mission.slimeRarity === null) {
+        await prisma.userMission.update({
+            where: { id: mission.id },
+            data: { progress: { increment: quantity } },
+        });
+        return;
+    }
+
+    // For specific rarity missions, check the rarity requirement
     const rarityOrder: Rarity[] = ["D", "C", "B", "A", "S"];
     if (rarityOrder.indexOf(rarity) >= rarityOrder.indexOf(mission.slimeRarity)) {
         await prisma.userMission.update({
