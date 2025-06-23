@@ -220,6 +220,7 @@ export class ValidateLoginManager {
             username: data.loginPayload.userData.username
         });
 
+        // Load user into memory
         this.userMemoryManager.setUser(userId, user);
 
         // Generate starter rewards using memory-optimized functions
@@ -230,7 +231,7 @@ export class ValidateLoginManager {
             isUnclaimedBetaTester(userId)
         ]);
 
-        // Send first login rewards (using fake IDs for now)
+        // Send first login rewards (frontend works fine with temp IDs)
         data.socket.emit(FIRST_LOGIN_EVENT, {
             userId,
             payload: {
@@ -249,27 +250,11 @@ export class ValidateLoginManager {
             data.socket.emit(BETA_TESTER_LOGIN_EVENT, { userId });
         }
 
-        // Flush pending operations with proper ID remapping
-        if (this.userMemoryManager.hasUser(userId) && this.userMemoryManager.hasPendingChanges(userId)) {
-            logger.info(`💾 Flushing new user data to database with ID remapping`);
+        // Return current memory state (temp IDs will be resolved on first logout)
+        const currentUser = this.userMemoryManager.getUser(userId);
+        if (!currentUser) throw new Error(`Failed to get user ${userId} from memory after creation`);
 
-            // Flush slimes first (creates real IDs and remapping)
-            await this.userMemoryManager.flushUserSlimes(userId);
-
-            // Flush inventory (creates real IDs and remapping)
-            await this.userMemoryManager.flushUserInventory(userId);
-
-            if (this.userMemoryManager.inventoryIdRemap.has(userId)) {
-                const invRemap = this.userMemoryManager.inventoryIdRemap.get(userId)!;
-                logger.info(`🔄 Inventory ID remapping: ${invRemap.size} items remapped`);
-            }
-        }
-
-        // Load complete user data using 3-tier system (now with real IDs)
-        const freshUser = await getUserDataWithSnapshot(userId);
-        if (!freshUser) throw new Error(`Failed to reload user data after creation`);
-
-        return freshUser;
+        return currentUser;
     }
 
     private async handleExistingUserLogin(userId: string): Promise<FullUserData> {
