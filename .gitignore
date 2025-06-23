@@ -5,3 +5,4 @@ dist
 pm2_error.log
 pm2_out.log
 logs
+pm2.config.json
