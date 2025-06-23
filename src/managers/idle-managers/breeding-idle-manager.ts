@@ -143,12 +143,24 @@ export class IdleBreedingManager {
             timestamp += breeding.durationS * 1000; // Add duration to timestamp
         }
 
-        // Process breeeding repetitions after logoutTimestamp up to now
+        // Process breeding repetitions after logoutTimestamp up to now
         while (timestamp + breeding.durationS * 1000 <= progressEndTimestamp) {
-            timestamp += breeding.durationS * 1000; // Add duration to timestamp
+            // Check inventory space before allowing completion
+            if (!(await canUserMintSlimeMemory(userId))) {
+                logger.info(`User ${userId} slime inventory full, stopping breeding progression at ${repetitions} repetitions`);
+                break;
+            }
 
-            if (timestamp <= now) {
-                repetitions++
+            //Increment timestamp first, then check completion
+            timestamp += breeding.durationS * 1000;
+
+            // Only count as completed if the breeding cycle actually finished within our time window
+            if (timestamp <= progressEndTimestamp) {
+                repetitions++;
+            } else {
+                // Breeding cycle would extend beyond our progress window, don't count it
+                timestamp -= breeding.durationS * 1000; // Revert timestamp
+                break;
             }
         }
 
@@ -164,27 +176,38 @@ export class IdleBreedingManager {
         logger.info(`Breeding repetition completed after logout: ${repetitions}`);
         logger.info(`Breeding repetition start timestamp: ${currentRepetitionStart}`);
 
-        // Start current repetition
-        IdleBreedingManager.startBreeding(socketManager, idleManager, userId, breeding.sire, breeding.dame, currentRepetitionStart);
+        // Start current repetition (only if there's space)
+        if (await canUserMintSlimeMemory(userId)) {
+            IdleBreedingManager.startBreeding(socketManager, idleManager, userId, breeding.sire, breeding.dame, currentRepetitionStart);
 
-        // Emit breeding-start before queueing activity
-        socketManager.emitEvent(userId, 'breeding-start', {
-            userId: userId,
-            payload: {
-                sireId: breeding.sire.id,
-                dameId: breeding.dame.id,
-                startTimestamp: currentRepetitionStart,
-                durationS: breedingDurationS
-            }
-        });
+            // Emit breeding-start before queueing activity
+            socketManager.emitEvent(userId, 'breeding-start', {
+                userId: userId,
+                payload: {
+                    sireId: breeding.sire.id,
+                    dameId: breeding.dame.id,
+                    startTimestamp: currentRepetitionStart,
+                    durationS: breedingDurationS
+                }
+            });
+        } else {
+            logger.info(`User ${userId} slime inventory full, not starting new breeding cycle`);
+        }
 
         const mintedSlimes = [];
         if (repetitions > 0) {
             // Logic for completed repetitions after logout
             for (let i = 0; i < repetitions; i++) {
                 try {
+                    // Double-check space before each mint (in case something changed)
+                    if (!(await canUserMintSlimeMemory(userId))) {
+                        logger.warn(`User ${userId} ran out of slime inventory space during breeding completion at slime ${i + 1}/${repetitions}`);
+                        break;
+                    }
+
                     const slime = await breedSlimesMemory(userId, breeding.sire.id, breeding.dame.id);
                     mintedSlimes.push(slime);
+
                     await logBreedingActivity({
                         userId: userId,
                         dameId: breeding.dame.id,
@@ -201,7 +224,8 @@ export class IdleBreedingManager {
                     await updateBreedMission(userId, getHighestDominantTraitRarity(slime), 1);
                     await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
                 } catch (err) {
-                    logger.error(`Failed to breed slime in loaded breeding activity: ${err}`);
+                    logger.error(`Failed to breed slime ${i + 1}/${repetitions} in loaded breeding activity: ${err}`);
+                    // Continue with other slimes instead of breaking completely
                 }
             }
 
