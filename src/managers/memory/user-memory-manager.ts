@@ -501,18 +501,17 @@ export class UserMemoryManager {
 		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${burnInventoryIds.length} deletes, ${updateInventoryIds.size} updates`);
 
 		try {
-			// 1. Insert new inventory items first
+			let remap = new Map<number, number>();
+
+			// Step 1: Handle creates first
 			if (createInventory.length > 0) {
 				await prismaInsertInventoryToDB(userId, createInventory);
 				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
-			}
 
-			// 2. Get fresh inventory from DB for accurate ID mapping
-			const freshInventory = await prismaFetchUserInventory(userId);
-			const remap = new Map<number, number>();
+				// Get fresh inventory to map temp IDs to real IDs
+				const freshInventory = await prismaFetchUserInventory(userId);
 
-			// 3. Handle creates - map temp IDs to real IDs
-			if (createInventory.length > 0) {
+				// Build ID mapping for newly created items
 				for (const createdItem of createInventory) {
 					if (createdItem.id < 0) { // temp ID
 						const realItem = freshInventory.find(inv =>
@@ -528,21 +527,35 @@ export class UserMemoryManager {
 				}
 			}
 
-			// 4. Update existing inventory item quantities (using real IDs)
+			// Step 2: Handle quantity updates using properly mapped IDs
 			if (updateInventoryIds.size > 0) {
 				const user = this.users.get(userId);
 				if (user && user.inventory) {
-					// Filter items that need quantity updates and map temp IDs to real IDs
+					// Map temp IDs to real IDs in the pending updates
+					const mappedUpdateIds = new Set<number>();
+					for (const tempId of updateInventoryIds) {
+						if (tempId < 0 && remap.has(tempId)) {
+							mappedUpdateIds.add(remap.get(tempId)!);
+							logger.debug(`🔗 Mapped pending update: temp ID ${tempId} -> real ID ${remap.get(tempId)!}`);
+						} else if (tempId > 0) {
+							mappedUpdateIds.add(tempId); // Already a real ID
+						} else {
+							logger.warn(`⚠️ Could not map temp ID ${tempId} for quantity update - skipping`);
+						}
+					}
+
+					// Get items that need quantity updates (with real IDs only)
 					const itemsToUpdate = user.inventory
-						.filter(inv => updateInventoryIds.has(inv.id))
-						.map(inv => {
-							// If this is a temp ID, get the real ID from mapping
-							if (inv.id < 0 && remap.has(inv.id)) {
-								return { ...inv, id: remap.get(inv.id)! };
-							}
-							return inv;
+						.filter(inv => {
+							// Check both original ID and mapped ID
+							return updateInventoryIds.has(inv.id) || mappedUpdateIds.has(inv.id);
 						})
-						.filter(inv => inv.id > 0); // Only update items with real IDs
+						.map(inv => {
+							// Use mapped ID if available, otherwise use current ID
+							const realId = inv.id < 0 && remap.has(inv.id) ? remap.get(inv.id)! : inv.id;
+							return { ...inv, id: realId };
+						})
+						.filter(inv => inv.id > 0); // Only items with real IDs
 
 					if (itemsToUpdate.length > 0) {
 						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
@@ -551,45 +564,42 @@ export class UserMemoryManager {
 				}
 			}
 
-			// 5. Delete inventory items using remapped IDs
-			const realBurnIds = burnInventoryIds.map(fakeId => {
-				if (fakeId < 0) {
-					const realId = remap.get(fakeId);
-					if (!realId) {
-						logger.warn(`⚠️ Could not remap temp ID ${fakeId} for deletion - skipping`);
-						return null;
+			// Step 3: Handle deletes using properly mapped IDs
+			if (burnInventoryIds.length > 0) {
+				const realBurnIds = burnInventoryIds.map(fakeId => {
+					if (fakeId < 0) {
+						const realId = remap.get(fakeId);
+						if (!realId) {
+							logger.warn(`⚠️ Could not remap temp ID ${fakeId} for deletion - skipping`);
+							return null;
+						}
+						return realId;
 					}
-					return realId;
-				}
-				return fakeId; // Already a real ID
-			}).filter(id => id !== null) as number[];
+					return fakeId; // Already a real ID
+				}).filter(id => id !== null) as number[];
 
-			if (realBurnIds.length > 0) {
-				await prismaDeleteInventoryFromDB(userId, realBurnIds);
-				logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId}`);
+				if (realBurnIds.length > 0) {
+					await prismaDeleteInventoryFromDB(userId, realBurnIds);
+					logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId}`);
+				}
 			}
 
-			// 6. Update memory with fresh inventory data from DB
+			// Step 4: Get the final state from database and update memory
+			const finalInventory = await prismaFetchUserInventory(userId);
 			const user = this.users.get(userId);
 			if (user) {
-				user.inventory = freshInventory;
-
-				if (remap.size > 0) {
-					this.inventoryIdRemap.set(userId, remap);
-					logger.info(`📦 Updated memory inventory for user ${userId} with ${freshInventory.length} items and ${remap.size} ID remappings`);
-				} else {
-					logger.debug(`📦 Updated memory inventory for user ${userId} with ${freshInventory.length} items (no remapping needed)`);
-				}
+				user.inventory = finalInventory;
+				logger.debug(`📦 Updated memory with ${finalInventory.length} inventory items for user ${userId}`);
 			} else {
-				logger.warn(`⚠️ User ${userId} not found in memory during inventory flush - cannot update memory`);
+				logger.warn(`⚠️ User ${userId} not found in memory during inventory flush`);
 			}
 
-			// Store ID remapping for future reference
+			// Step 5: Store ID remapping and cleanup
 			if (remap.size > 0) {
 				this.inventoryIdRemap.set(userId, remap);
 			}
 
-			// Clear pending operations
+			// Clear all pending operations
 			this.pendingCreateInventory.delete(userId);
 			this.pendingBurnInventoryIds.delete(userId);
 			this.pendingInventoryUpdates.delete(userId);

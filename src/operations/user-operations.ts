@@ -437,20 +437,56 @@ export async function equipEquipmentForUserMemory(
                 throw new Error(`User does not meet level requirements`);
             }
 
-            // ✅ CRITICAL FIX: Ensure we have a real inventory ID
-            const realInventoryId = await ensureRealId(telegramId, equipmentInventory.id, 'inventory');
+            let realInventoryId = equipmentInventory.id;
+
+            // Handle fake IDs - check if we need to map to real ID
+            if (equipmentInventory.id < 0) {
+                logger.info(`🔍 Equipment has fake ID ${equipmentInventory.id}, checking for real ID mapping`);
+
+                // Check if we have a mapping from previous flush
+                const idRemap = userMemoryManager.inventoryIdRemap.get(telegramId);
+                if (idRemap && idRemap.has(equipmentInventory.id)) {
+                    realInventoryId = idRemap.get(equipmentInventory.id)!;
+                    logger.info(`✅ Found mapped real ID: ${equipmentInventory.id} -> ${realInventoryId}`);
+                } else {
+                    // We need to flush first to get real IDs
+                    logger.info(`⚠️ No mapping found for fake ID ${equipmentInventory.id}, flushing inventory first`);
+
+                    if (userMemoryManager.hasPendingChanges(telegramId)) {
+                        await userMemoryManager.flushUserInventory(telegramId);
+
+                        // Check mapping again after flush
+                        const updatedRemap = userMemoryManager.inventoryIdRemap.get(telegramId);
+                        if (updatedRemap && updatedRemap.has(equipmentInventory.id)) {
+                            realInventoryId = updatedRemap.get(equipmentInventory.id)!;
+                            logger.info(`✅ After flush, mapped: ${equipmentInventory.id} -> ${realInventoryId}`);
+                        } else {
+                            throw new Error(`Unable to resolve fake inventory ID ${equipmentInventory.id} to real ID`);
+                        }
+                    } else {
+                        // Try the ensureRealId fallback
+                        realInventoryId = await ensureRealId(telegramId, equipmentInventory.id, 'inventory');
+                    }
+                }
+            }
+
+            // Verify the real ID exists in user's inventory
+            const inventoryItem = user.inventory?.find(inv => inv.id === realInventoryId);
+            if (!inventoryItem) {
+                throw new Error(`Inventory item with ID ${realInventoryId} not found in user's inventory`);
+            }
 
             // If ID changed, update the equipment inventory object
             if (equipmentInventory.id !== realInventoryId) {
                 equipmentInventory.id = realInventoryId;
-                logger.info(`✅ Using real inventory ID: ${realInventoryId} for equipment ${equipmentInventory.equipment.name}`);
+                logger.info(`✅ Updated equipment inventory to use real ID: ${realInventoryId}`);
             }
 
             // Update equipment ID in memory
             userMemoryManager.updateUserField(telegramId, equipField, realInventoryId);
 
             // Cast the equipment inventory to the expected type
-            const typedEquipmentInventory = equipmentInventory as any; // or create proper type
+            const typedEquipmentInventory = equipmentInventory as any;
             userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, typedEquipmentInventory);
 
             logger.info(
@@ -460,7 +496,7 @@ export async function equipEquipmentForUserMemory(
             // Recalculate stats in memory
             const result = await recalculateAndUpdateUserStatsMemory(telegramId);
 
-            // ✅ IMMEDIATE PERSISTENCE: Critical for equipment changes
+            // Critical for equipment changes - flush to ensure consistency
             await userMemoryManager.flushAllUserUpdates(telegramId);
             logger.info(`✅ Immediately persisted equipment change for user ${telegramId}`);
 
