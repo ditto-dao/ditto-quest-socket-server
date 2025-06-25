@@ -94,34 +94,14 @@ export class ValidateLoginManager {
         if (this.socketManager.isUserSocketCached(userId)) {
             logger.warn(`User already logged in. Disconnecting previous session.`);
 
-            try {
-                // STEP 1: Save all idle activities first (time-sensitive)
-                await this.idleManager.saveAllIdleActivitiesOnLogout(userId);
+            // ✅ Immediate cleanup - clear socket cache first
+            this.socketManager.removeSocketIdCacheForUser(userId);
+            this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
 
-                // STEP 2: Flush activity logs for this user (before user data flush)  
-                if (this.activityLogMemoryManager.hasUser(userId)) {
-                    await this.activityLogMemoryManager.flushUser(userId);
-                    logger.info(`✅ Flushed activity logs for user ${userId}`);
-                }
+            // ✅ Background cleanup - don't await this
+            this.cleanupStaleSessionInBackground(userId);
 
-                // STEP 3: Logout user data (flush + snapshot + memory removal) 
-                const logoutSuccess = await this.userMemoryManager.logoutUser(userId, true);
-
-                if (!logoutSuccess) {
-                    logger.warn(`⚠️ Cleanup partially failed for user ${userId} - user kept in memory`);
-                }
-
-                // STEP 4: Clear socket cache and notify ledger about old session
-                this.socketManager.removeSocketIdCacheForUser(userId);
-                this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-
-                logger.info(`✅ Successfully logged out previous session for user ${userId}`);
-
-            } catch (error) {
-                logger.error(`❌ Failed to logout previous session for user ${userId}: ${error}`);
-            }
-
-            // Always emit the disconnect event regardless of cleanup success/failure
+            // ✅ Immediate response to user
             socket.emit(LOGIN_INVALID_EVENT, {
                 userId: data.userData.id,
                 msg: 'Disconnecting previous session. Please refresh TMA'
@@ -154,6 +134,26 @@ export class ValidateLoginManager {
         } else {
             logger.warn(`User ${userId} tried to validate login but no queued login found.`);
         }
+    }
+
+    private cleanupStaleSessionInBackground(userId: string) {
+        setTimeout(async () => {
+            try {
+                logger.info(`🧹 Starting background cleanup for stale session ${userId}`);
+                
+                await this.idleManager.saveAllIdleActivitiesOnLogout(userId);
+                
+                if (this.activityLogMemoryManager.hasUser(userId)) {
+                    await this.activityLogMemoryManager.flushUser(userId);
+                }
+                
+                await this.userMemoryManager.logoutUser(userId, true);
+                
+                logger.info(`✅ Background cleanup completed for user ${userId}`);
+            } catch (error) {
+                logger.error(`❌ Background cleanup failed for user ${userId}: ${error}`);
+            }
+        }, 100);
     }
 
     async validateUserLogin(userId: string) {
