@@ -651,14 +651,24 @@ export class UserMemoryManager {
 				// Build ID mapping for newly created items
 				for (const createdItem of createInventory) {
 					if (createdItem.id < 0) { // temp ID
-						const realItem = freshInventory.find(inv =>
+						// 🔥 FIX: Find the NEWEST item (highest ID) that matches equipment/item type
+						// This ensures we map to the just-created item, not an existing one
+						const matchingItems = freshInventory.filter(inv =>
 							inv.equipmentId === createdItem.equipmentId &&
-							inv.itemId === createdItem.itemId &&
-							inv.quantity === createdItem.quantity
+							inv.itemId === createdItem.itemId
 						);
-						if (realItem) {
+
+						if (matchingItems.length > 0) {
+							// Get the item with the highest ID (most recently created)
+							const realItem = matchingItems.reduce((newest, current) =>
+								current.id > newest.id ? current : newest
+							);
+
 							remap.set(createdItem.id, realItem.id);
-							logger.debug(`🔗 Mapped temp ID ${createdItem.id} -> real ID ${realItem.id}`);
+							logger.debug(`🔗 Mapped temp ID ${createdItem.id} -> real ID ${realItem.id} (newest of ${matchingItems.length} matching items)`);
+						} else {
+							logger.error(`❌ Could not find any matching items for temp ID ${createdItem.id}`);
+							throw new Error(`Critical: Cannot map temp ID ${createdItem.id} - no matching items found`);
 						}
 					}
 				}
