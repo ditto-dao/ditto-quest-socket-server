@@ -92,7 +92,7 @@ export class ValidateLoginManager {
         }
 
         if (this.socketManager.isUserSocketCached(userId)) {
-            logger.warn(`User ${userId} has stale session. Cleaning up previous session and allowing new login.`);
+            logger.warn(`User already logged in. Disconnecting previous session.`);
 
             try {
                 // STEP 1: Save all idle activities first (time-sensitive)
@@ -115,18 +115,18 @@ export class ValidateLoginManager {
                 this.socketManager.removeSocketIdCacheForUser(userId);
                 this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
 
-                logger.info(`✅ Successfully cleaned up stale session data for user ${userId}, proceeding with new login`);
-
-                // Continue with normal login process - socket cache will be updated with new session
+                logger.info(`✅ Successfully logged out previous session for user ${userId}`);
 
             } catch (error) {
-                logger.error(`❌ Failed to cleanup stale session for user ${userId}: ${error}`);
-                socket.emit(LOGIN_INVALID_EVENT, {
-                    userId: data.userData.id,
-                    msg: 'Failed to cleanup previous session. Please try again.'
-                });
-                return;
+                logger.error(`❌ Failed to logout previous session for user ${userId}: ${error}`);
             }
+
+            // Always emit the disconnect event regardless of cleanup success/failure
+            socket.emit(LOGIN_INVALID_EVENT, {
+                userId: data.userData.id,
+                msg: 'Disconnecting previous session. Please refresh TMA'
+            });
+            return;
         }
 
         // Most expensive check last
