@@ -4,7 +4,7 @@ import { SocketManager } from "../../socket/socket-manager";
 import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { FullUserData, prismaCreateUser, prismaUserExists } from "../../sql-services/user-service";
+import { FullUserData, prismaCreateUser, prismaUpdateUsername, prismaUserExists } from "../../sql-services/user-service";
 import {
     BETA_TESTER_LOGIN_EVENT,
     DISCONNECT_USER_EVENT,
@@ -214,7 +214,7 @@ export class ValidateLoginManager {
             if (isNewUser) {
                 user = await this.handleNewUserCreation(data);
             } else {
-                user = await this.handleExistingUserLogin(userId);
+                user = await this.handleExistingUserLogin(userId, data.loginPayload.userData.username);
             }
 
             if (!user) throw new Error(`Failed to load user data for ${userId}`);
@@ -285,12 +285,24 @@ export class ValidateLoginManager {
         return currentUser;
     }
 
-    private async handleExistingUserLogin(userId: string): Promise<FullUserData> {
+    private async handleExistingUserLogin(userId: string, telegramUsername?: string): Promise<FullUserData> {
         logger.info(`👤 Loading existing user: ${userId}`);
 
-        // Use optimized 3-tier loading: Memory → Snapshot → Database
         const user = await getUserDataWithSnapshot(userId);
         if (!user) throw new Error(`Failed to load existing user data`);
+
+        // Check and update username if changed
+        if (telegramUsername && user.username !== telegramUsername) {
+            logger.info(`📝 Updating username for user ${userId}: "${user.username}" → "${telegramUsername}"`);
+
+            await prismaUpdateUsername(userId, telegramUsername);
+
+            user.username = telegramUsername;
+
+            if (this.userMemoryManager?.hasUser(userId)) {
+                this.userMemoryManager.updateUserField(userId, 'username', telegramUsername);
+            }
+        }
 
         return user;
     }

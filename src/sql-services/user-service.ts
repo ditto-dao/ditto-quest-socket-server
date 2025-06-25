@@ -1181,6 +1181,28 @@ export async function prismaRecalculateAndUpdateUserBaseStats(
     }
 }
 
+/**
+ * Update username for a user in the database
+ * @param telegramId - The user's telegram ID
+ * @param newUsername - The new username to set
+ * @returns Promise<boolean> - true if update was successful, false otherwise
+ */
+export async function prismaUpdateUsername(telegramId: string, newUsername: string | null): Promise<boolean> {
+    try {
+        const result = await prisma.user.update({
+            where: { telegramId },
+            data: { username: newUsername },
+            select: { telegramId: true, username: true }
+        });
+
+        logger.info(`✅ Updated username for user ${telegramId}: "${result.username}"`);
+        return true;
+    } catch (error) {
+        logger.error(`❌ Failed to update username for user ${telegramId}: ${error}`);
+        return false;
+    }
+}
+
 export async function prismaBatchSaveUsers(users: FullUserData[]): Promise<{
     successful: string[],
     failed: string[]
