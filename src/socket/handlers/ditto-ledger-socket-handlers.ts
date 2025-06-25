@@ -215,11 +215,17 @@ async function handleMintSlime(userId: string, payload: UserBalanceUpdateRes, so
 
         await updateGachaMission(userId, getHighestDominantTraitRarity(res.slime), 1);
         await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
-    } catch (err) {
-        logger.error(`Error minting gen 0 slime: ${err}`);
+    } catch (error: any) {
+        logger.error(`Error minting gen 0 slime: ${error}`);
+
+        const errorMsg =
+            typeof error.message === 'string' && error.message.toLowerCase().includes('inventory full')
+                ? 'Your slime inventory is full. Please free up some space.'
+                : 'Failed to mint slime'
+
         socketManager.emitEvent(userId, 'mint-slime-error', {
             userId: userId,
-            msg: `Failed to mint slime.`
+            msg: errorMsg
         });
 
         revertTrxToLedger(ledgerSocket, userId, DEVELOPMENT_FUNDS_KEY, payload);

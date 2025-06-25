@@ -205,7 +205,7 @@ export class IdleBreedingManager {
                         break;
                     }
 
-                    const slime = await breedSlimesMemory(userId, breeding.sire.id, breeding.dame.id);
+                    const slime = await breedSlimesMemory(userId, breeding.sire, breeding.dame);
                     mintedSlimes.push(slime);
 
                     await logBreedingActivity({
@@ -254,7 +254,7 @@ export class IdleBreedingManager {
                 throw new Error(`Insufficient slime inventory space to complete breeding`);
             }
 
-            const slime = await breedSlimesMemory(userId, sire.id, dame.id);
+            const slime = await breedSlimesMemory(userId, sire, dame);
 
             socketManager.emitEvent(userId, 'update-slime-inventory', {
                 userId: userId,

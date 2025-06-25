@@ -129,11 +129,17 @@ export async function setupSlimeSocketHandlers(
 
                 IdleBreedingManager.startBreeding(socketManager, idleManager, data.userId, sire, dame, Date.now())
 
-            } catch (error) {
+            } catch (error: any) {
                 logger.error(`Error processing breed-slime: ${error}`)
+
+                const errorMsg =
+                    typeof error.message === 'string' && error.message.toLowerCase().includes('inventory full')
+                        ? 'Your slime inventory is full. Please free up space before breeding.'
+                        : 'Failed to breed slime'
+    
                 socket.emit('error', {
                     userId: data.userId,
-                    msg: 'Failed to breed slime'
+                    msg: errorMsg
                 })
             }
         })

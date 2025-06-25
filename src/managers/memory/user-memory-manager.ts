@@ -1,8 +1,10 @@
+import AsyncLock from "async-lock";
 import { prismaDeleteInventoryFromDB, prismaFetchUserInventory, prismaInsertInventoryToDB, prismaUpdateInventoryQuantitiesInDB } from "../../sql-services/equipment-inventory-service";
 import { prismaDeleteSlimesFromDB, prismaFetchSlimesForUser, prismaInsertSlimesToDB, SlimeWithTraits } from "../../sql-services/slime";
 import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
 import { requireSnapshotRedisManager } from "../global-managers/global-managers";
+import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from "../../utils/config";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -29,6 +31,8 @@ export class UserMemoryManager {
 	pendingInventoryUpdates = new Map<string, Set<number>>(); // userId -> Set<inventoryId>
 	pendingBurnInventoryIds: Map<string, number[]> = new Map();
 	inventoryIdRemap: Map<string, Map<number, number>> = new Map();
+
+	private userOperationLocks: Map<string, AsyncLock> = new Map();
 
 	constructor() {
 		this.users = new Map();
@@ -58,6 +62,16 @@ export class UserMemoryManager {
 	}
 
 	/**
+	   * Get or create a lock for a specific user
+	   */
+	getUserLock(userId: string): AsyncLock {
+		if (!this.userOperationLocks.has(userId)) {
+			this.userOperationLocks.set(userId, new AsyncLock());
+		}
+		return this.userOperationLocks.get(userId)!;
+	}
+
+	/**
 	 * Set user in memory
 	 */
 	setUser(userId: string, userData: FullUserData): void {
@@ -73,6 +87,7 @@ export class UserMemoryManager {
 		this.users.delete(userId);
 		this.dirtyUsers.delete(userId);
 		this.lastActivity.delete(userId);
+		this.userOperationLocks.delete(userId);
 		logger.debug(`🗑️ Removed user ${userId} from memory`);
 	}
 
@@ -236,15 +251,35 @@ export class UserMemoryManager {
 	}
 
 	/**
-	 * Append a slime to user's memory (gacha, breed, etc)
+	 * Protected slime operations with validation
 	 */
 	appendSlime(userId: string, slime: SlimeWithTraits): boolean {
 		const user = this.users.get(userId);
-		if (!user) return false;
+		if (!user) {
+			logger.error(`❌ Cannot append slime: User ${userId} not found in memory`);
+			return false;
+		}
 
 		if (!user.slimes) user.slimes = [];
 
+		// Validation: Check for duplicate IDs
+		const existingSlime = user.slimes.find(s => s.id === slime.id);
+		if (existingSlime) {
+			logger.error(`❌ SLIME CORRUPTION: Attempting to add duplicate slime ID ${slime.id} for user ${userId}`);
+			logger.error(`   Existing slime: ${existingSlime.id}, New slime: ${slime.id}`);
+			throw new Error(`Duplicate slime ID ${slime.id} detected`);
+		}
+
+		const beforeCount = user.slimes.length;
 		user.slimes.push(slime);
+		const afterCount = user.slimes.length;
+
+		// Validation: Ensure the slime was actually added
+		if (afterCount !== beforeCount + 1) {
+			logger.error(`❌ SLIME CORRUPTION: Slime count mismatch after append for user ${userId}`);
+			logger.error(`   Expected: ${beforeCount + 1}, Actual: ${afterCount}`);
+			throw new Error(`Slime array corruption detected during append`);
+		}
 
 		// Queue for DB insert
 		if (!this.pendingCreateSlimes.has(userId)) this.pendingCreateSlimes.set(userId, []);
@@ -252,33 +287,83 @@ export class UserMemoryManager {
 
 		this.markDirty(userId);
 		this.updateActivity(userId);
-		logger.debug(`🧪 Appended slime ID ${slime.id} (pending) to user ${userId}`);
+
+		logger.info(`✅ Successfully appended slime ID ${slime.id} to user ${userId} (${afterCount}/${user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS} slots)`);
 		return true;
 	}
 
 	/**
-	 * Remove a slime from user's memory by ID (e.g. burn)
+	 * Protected slime removal with validation
 	 */
 	removeSlime(userId: string, slimeId: number): boolean {
 		const user = this.users.get(userId);
-		if (!user || !user.slimes) return false;
-
-		const before = user.slimes.length;
-		user.slimes = user.slimes.filter(s => s.id !== slimeId);
-		const after = user.slimes.length;
-
-		if (after < before) {
-			// Queue for DB deletion
-			if (!this.pendingBurnSlimeIds.has(userId)) this.pendingBurnSlimeIds.set(userId, []);
-			this.pendingBurnSlimeIds.get(userId)!.push(slimeId);
-
-			this.markDirty(userId);
-			this.updateActivity(userId);
-			logger.debug(`🔥 Removed slime ID ${slimeId} (pending delete) from user ${userId}`);
-			return true;
+		if (!user || !user.slimes) {
+			logger.error(`❌ Cannot remove slime: User ${userId} not found or has no slimes`);
+			return false;
 		}
 
-		return false;
+		const beforeCount = user.slimes.length;
+		const slimeToRemove = user.slimes.find(s => s.id === slimeId);
+
+		if (!slimeToRemove) {
+			logger.error(`❌ SLIME CORRUPTION: Attempting to remove non-existent slime ID ${slimeId} for user ${userId}`);
+			logger.error(`   Available slime IDs: ${user.slimes.map(s => s.id).join(', ')}`);
+			return false;
+		}
+
+		user.slimes = user.slimes.filter(s => s.id !== slimeId);
+		const afterCount = user.slimes.length;
+
+		// Validation: Ensure exactly one slime was removed
+		if (afterCount !== beforeCount - 1) {
+			logger.error(`❌ SLIME CORRUPTION: Unexpected count change during removal for user ${userId}`);
+			logger.error(`   Expected: ${beforeCount - 1}, Actual: ${afterCount}`);
+			throw new Error(`Slime array corruption detected during removal`);
+		}
+
+		// Queue for DB deletion
+		if (!this.pendingBurnSlimeIds.has(userId)) this.pendingBurnSlimeIds.set(userId, []);
+		this.pendingBurnSlimeIds.get(userId)!.push(slimeId);
+
+		this.markDirty(userId);
+		this.updateActivity(userId);
+
+		logger.info(`✅ Successfully removed slime ID ${slimeId} from user ${userId} (${afterCount}/${user.maxSlimeInventorySlots ?? MAX_INITIAL_SLIME_INVENTORY_SLOTS} slots)`);
+		return true;
+	}
+
+	/**
+	 * Validate slime array integrity
+	 */
+	validateSlimeIntegrity(userId: string): boolean {
+		const user = this.users.get(userId);
+		if (!user) return false;
+
+		if (!user.slimes) {
+			logger.warn(`⚠️ User ${userId} has null/undefined slimes array`);
+			return false;
+		}
+
+		// Check for duplicate IDs
+		const slimeIds = user.slimes.map(s => s.id);
+		const uniqueIds = new Set(slimeIds);
+
+		if (slimeIds.length !== uniqueIds.size) {
+			logger.error(`❌ SLIME CORRUPTION: Duplicate slime IDs detected for user ${userId}`);
+			logger.error(`   Total slimes: ${slimeIds.length}, Unique IDs: ${uniqueIds.size}`);
+			logger.error(`   IDs: ${slimeIds.join(', ')}`);
+			return false;
+		}
+
+		// Check for null/undefined slimes
+		const invalidSlimes = user.slimes.filter(s => !s || !s.id);
+		if (invalidSlimes.length > 0) {
+			logger.error(`❌ SLIME CORRUPTION: Invalid slime objects detected for user ${userId}`);
+			logger.error(`   Invalid count: ${invalidSlimes.length}`);
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

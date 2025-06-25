@@ -9,6 +9,7 @@ import { DOMINANT_TRAITS_GACHA_SPECS, HIDDEN_TRAITS_GACHA_SPECS, GACHA_PULL_RARI
 import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserBaseStatsMemory } from './user-operations';
 import { getSlimeIDManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
 import { UserStatsWithCombat } from './combat-operations';
+import { USER_LOCK_KEYS } from './user-lock-keys';
 
 /**
  * Get SlimeTrait by ID using:
@@ -82,54 +83,59 @@ export async function burnSlimeMemory(
     telegramId: string,
     slimeId: number
 ): Promise<number> {
-    try {
-        const userMemoryManager = requireUserMemoryManager();
+    const userMemoryManager = requireUserMemoryManager();
+    const userLock = userMemoryManager.getUserLock(telegramId);
 
-        // Try memory first
-        if (userMemoryManager.hasUser(telegramId)) {
-            const user = userMemoryManager.getUser(telegramId)!;
+    return await userLock.acquire(USER_LOCK_KEYS.SLIME_OPERATIONS, async () => {
+        try {
+            const userMemoryManager = requireUserMemoryManager();
 
-            // Check if user has slimes
-            if (!user.slimes || user.slimes.length === 0) {
-                throw new Error(`User ${telegramId} has no slimes.`);
+            // Try memory first
+            if (userMemoryManager.hasUser(telegramId)) {
+                const user = userMemoryManager.getUser(telegramId)!;
+
+                // Check if user has slimes
+                if (!user.slimes || user.slimes.length === 0) {
+                    throw new Error(`User ${telegramId} has no slimes.`);
+                }
+
+                // Find the slime to burn
+                const slimeToburn = user.slimes.find(slime => slime.id === slimeId);
+                if (!slimeToburn) {
+                    throw new Error(`Slime with ID ${slimeId} does not exist in user's collection.`);
+                }
+
+                // Verify ownership (should always match since it's in user's slimes, but good to be explicit)
+                if (slimeToburn.ownerId !== telegramId) {
+                    throw new Error(`Slime with ID ${slimeId} is not owned by user ${telegramId}.`);
+                }
+
+                // Check if the slime is currently equipped - unequip it first
+                if (user.equippedSlimeId === slimeId) {
+                    logger.info(`Unequipping slime ${slimeId} before burning for user ${telegramId}`);
+                    userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
+                    userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
+                }
+
+                // Remove the slime from memory (this also queues it for DB deletion)
+                const removed = userMemoryManager.removeSlime(telegramId, slimeId);
+
+                if (!removed) {
+                    throw new Error(`Failed to remove slime ${slimeId} from memory for user ${telegramId}.`);
+                }
+
+                logger.info(`Successfully burned slime with ID: ${slimeId} (MEMORY)`);
+
+                return slimeId;
             }
 
-            // Find the slime to burn
-            const slimeToburn = user.slimes.find(slime => slime.id === slimeId);
-            if (!slimeToburn) {
-                throw new Error(`Slime with ID ${slimeId} does not exist in user's collection.`);
-            }
+            throw new Error('User memory manager not available');
 
-            // Verify ownership (should always match since it's in user's slimes, but good to be explicit)
-            if (slimeToburn.ownerId !== telegramId) {
-                throw new Error(`Slime with ID ${slimeId} is not owned by user ${telegramId}.`);
-            }
-
-            // Check if the slime is currently equipped - unequip it first
-            if (user.equippedSlimeId === slimeId) {
-                logger.info(`Unequipping slime ${slimeId} before burning for user ${telegramId}`);
-                userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
-                userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
-            }
-
-            // Remove the slime from memory (this also queues it for DB deletion)
-            const removed = userMemoryManager.removeSlime(telegramId, slimeId);
-
-            if (!removed) {
-                throw new Error(`Failed to remove slime ${slimeId} from memory for user ${telegramId}.`);
-            }
-
-            logger.info(`Successfully burned slime with ID: ${slimeId} (MEMORY)`);
-
-            return slimeId;
+        } catch (error) {
+            logger.error(`Failed to burn slime ${slimeId} for user ${telegramId} (MEMORY): ${error}`);
+            throw error;
         }
-
-        throw new Error('User memory manager not available');
-
-    } catch (error) {
-        logger.error(`Failed to burn slime ${slimeId} for user ${telegramId} (MEMORY): ${error}`);
-        throw error;
-    }
+    });
 }
 
 export async function getRandomSlimeTraitId(
@@ -177,83 +183,89 @@ export async function equipSlimeForUserMemory(
     telegramId: string,
     slime: SlimeWithTraits
 ): Promise<UserStatsWithCombat> {
-    try {
-        const userMemoryManager = requireUserMemoryManager();
+    const userMemoryManager = requireUserMemoryManager();
+    const userLock = userMemoryManager.getUserLock(telegramId);
 
-        if (userMemoryManager.hasUser(telegramId)) {
-            // Ensure we have a real ID
-            const realSlimeId = await ensureRealId(telegramId, slime.id, 'slime');
+    return await userLock.acquire(USER_LOCK_KEYS.SLIME_OPERATIONS, async () => {
+        try {
+            if (userMemoryManager.hasUser(telegramId)) {
+                // Ensure we have a real ID
+                const realSlimeId = await ensureRealId(telegramId, slime.id, 'slime');
 
-            // Update slime object with real ID if it changed
-            if (slime.id !== realSlimeId) {
-                slime.id = realSlimeId;
-                logger.info(`✅ Using real slime ID: ${realSlimeId}`);
+                // Update slime object with real ID if it changed
+                if (slime.id !== realSlimeId) {
+                    slime.id = realSlimeId;
+                    logger.info(`✅ Using real slime ID: ${realSlimeId}`);
+                }
+
+                // Update equipped slime in memory
+                userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', slime.id);
+                userMemoryManager.updateUserField(telegramId, 'equippedSlime', slime);
+
+                logger.info(`User ${telegramId} equipped slime ${slime.id} (MEMORY).`);
+
+                // Recalculate stats and immediately persist
+                const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
+                await userMemoryManager.flushAllUserUpdates(telegramId);
+
+                logger.info(`✅ Equipment persisted for user ${telegramId}`);
+
+                return result;
             }
 
-            // Update equipped slime in memory
-            userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', slime.id);
-            userMemoryManager.updateUserField(telegramId, 'equippedSlime', slime);
+            throw new Error('User memory manager not available');
 
-            logger.info(`User ${telegramId} equipped slime ${slime.id} (MEMORY).`);
-
-            // Recalculate stats and immediately persist
-            const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
-            await userMemoryManager.flushAllUserUpdates(telegramId);
-
-            logger.info(`✅ Equipment persisted for user ${telegramId}`);
-
-            return result;
+        } catch (error) {
+            logger.error(`Failed to equip slime ${slime.id} for user ${telegramId} (MEMORY): ${error}`);
+            throw error;
         }
-
-        throw new Error('User memory manager not available');
-
-    } catch (error) {
-        logger.error(`Failed to equip slime ${slime.id} for user ${telegramId} (MEMORY): ${error}`);
-        throw error;
-    }
+    });
 }
 
 // Memory-based slime unequip function
 export async function unequipSlimeForUserMemory(
     telegramId: string
 ): Promise<UserStatsWithCombat> {
-    try {
-        const userMemoryManager = requireUserMemoryManager();
+    const userMemoryManager = requireUserMemoryManager();
+    const userLock = userMemoryManager.getUserLock(telegramId);
 
-        // Try memory first
-        if (userMemoryManager.hasUser(telegramId)) {
-            const user = userMemoryManager.getUser(telegramId)!;
+    return await userLock.acquire(USER_LOCK_KEYS.SLIME_OPERATIONS, async () => {
+        try {
+            // Try memory first
+            if (userMemoryManager.hasUser(telegramId)) {
+                const user = userMemoryManager.getUser(telegramId)!;
 
-            // Check if already no slime equipped
-            if (user.equippedSlimeId === null) {
+                // Check if already no slime equipped
+                if (user.equippedSlimeId === null) {
+                    logger.info(
+                        `User ${telegramId} already has no slime equipped (MEMORY).`
+                    );
+                    return user;
+                }
+
+                // Perform the unequip operation in memory
+                userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
+                userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
+
                 logger.info(
-                    `User ${telegramId} already has no slime equipped (MEMORY).`
+                    `User ${telegramId} unequipped slime (MEMORY).`
                 );
-                return user;
+
+                // Recalculate stats in memory
+                const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
+
+                return result;
             }
 
-            // Perform the unequip operation in memory
-            userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
-            userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
+            throw new Error('User memory manager not available');
 
-            logger.info(
-                `User ${telegramId} unequipped slime (MEMORY).`
+        } catch (error) {
+            logger.error(
+                `Failed to unequip slime for user ${telegramId} (MEMORY): ${error}`
             );
-
-            // Recalculate stats in memory
-            const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
-
-            return result;
+            throw error;
         }
-
-        throw new Error('User memory manager not available');
-
-    } catch (error) {
-        logger.error(
-            `Failed to unequip slime for user ${telegramId} (MEMORY): ${error}`
-        );
-        throw error;
-    }
+    });
 }
 
 // Memory-based getter for equipped slime with traits
@@ -289,281 +301,285 @@ interface GachaPullRes {
 }
 
 export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = false): Promise<GachaPullRes> {
-    try {
-        const userMemoryManager = requireUserMemoryManager();
+    const userMemoryManager = requireUserMemoryManager();
+    const userLock = userMemoryManager.getUserLock(ownerId);
 
-        // Memory-first version of canUserMintSlime check
-        if (!(await canUserMintSlimeMemory(ownerId))) {
-            throw new Error(`Slime inventory full. Please clear space or upgrade your slots`);
-        }
-
-        const rankPull = getGachaPullRarity(nerf);
-        const domOdds = DOMINANT_TRAITS_GACHA_SPECS[rankPull];
-        const hidOdds = HIDDEN_TRAITS_GACHA_SPECS[rankPull];
-
-        const domProbs = [domOdds.chanceD, domOdds.chanceC, domOdds.chanceB, domOdds.chanceA, domOdds.chanceS];
-        const confirmProbs = getDominantTraitConfirmProbs(rankPull);
-        const cappedProbs = getNormalizedProbsWhenMaxCountReached(rankPull, domProbs);
-        const hidProbs = [hidOdds.chanceD, hidOdds.chanceC, hidOdds.chanceB, hidOdds.chanceA, hidOdds.chanceS];
-
-        const { min, max } = getMinMaxForRank(rankPull, DOMINANT_TRAITS_GACHA_SPECS);
-        let count = 0;
-
-        const traitIdFields: Record<string, number> = {};
-        const traitObjFields: Record<string, SlimeTrait & { statEffect: StatEffect | null }> = {};
-
-        for (const type of traitTypes) {
-            let dom: { traitId: number; rarity: Rarity };
-
-            const traitsLeft = traitTypes.length - Object.keys(traitIdFields).filter(k => k.endsWith('_D')).length;
-            if (traitsLeft === min - count) {
-                dom = await getRandomSlimeTraitId(type, confirmProbs);
-            } else if (count >= max) {
-                dom = await getRandomSlimeTraitId(type, cappedProbs);
-            } else {
-                dom = await getRandomSlimeTraitId(type, domProbs);
+    return await userLock.acquire(USER_LOCK_KEYS.SLIME_OPERATIONS, async () => {
+        try {
+            // Memory-first version of canUserMintSlime check
+            if (!(await canUserMintSlimeMemory(ownerId))) {
+                throw new Error(`Slime inventory full. Please clear space or upgrade your slots`);
             }
 
-            if (dom.rarity === rankPull || (rankPull === 'SS' && dom.rarity === 'S')) {
-                count++;
+            const rankPull = getGachaPullRarity(nerf);
+            const domOdds = DOMINANT_TRAITS_GACHA_SPECS[rankPull];
+            const hidOdds = HIDDEN_TRAITS_GACHA_SPECS[rankPull];
+
+            const domProbs = [domOdds.chanceD, domOdds.chanceC, domOdds.chanceB, domOdds.chanceA, domOdds.chanceS];
+            const confirmProbs = getDominantTraitConfirmProbs(rankPull);
+            const cappedProbs = getNormalizedProbsWhenMaxCountReached(rankPull, domProbs);
+            const hidProbs = [hidOdds.chanceD, hidOdds.chanceC, hidOdds.chanceB, hidOdds.chanceA, hidOdds.chanceS];
+
+            const { min, max } = getMinMaxForRank(rankPull, DOMINANT_TRAITS_GACHA_SPECS);
+            let count = 0;
+
+            const traitIdFields: Record<string, number> = {};
+            const traitObjFields: Record<string, SlimeTrait & { statEffect: StatEffect | null }> = {};
+
+            for (const type of traitTypes) {
+                let dom: { traitId: number; rarity: Rarity };
+
+                const traitsLeft = traitTypes.length - Object.keys(traitIdFields).filter(k => k.endsWith('_D')).length;
+                if (traitsLeft === min - count) {
+                    dom = await getRandomSlimeTraitId(type, confirmProbs);
+                } else if (count >= max) {
+                    dom = await getRandomSlimeTraitId(type, cappedProbs);
+                } else {
+                    dom = await getRandomSlimeTraitId(type, domProbs);
+                }
+
+                if (dom.rarity === rankPull || (rankPull === 'SS' && dom.rarity === 'S')) {
+                    count++;
+                }
+
+                const domFull = await getSlimeTraitById(dom.traitId);
+                const h1 = await getSlimeTraitById((await getRandomSlimeTraitId(type, hidProbs)).traitId);
+                const h2 = await getSlimeTraitById((await getRandomSlimeTraitId(type, hidProbs)).traitId);
+                const h3 = await getSlimeTraitById((await getRandomSlimeTraitId(type, hidProbs)).traitId);
+
+                if (!domFull || !h1 || !h2 || !h3) {
+                    throw new Error(`Missing traits for ${type}`);
+                }
+
+                // Use correct field names that match your SlimeWithTraits interface
+                traitIdFields[`${type}_D`] = domFull.id;
+                traitIdFields[`${type}_H1`] = h1.id;
+                traitIdFields[`${type}_H2`] = h2.id;
+                traitIdFields[`${type}_H3`] = h3.id;
+
+                traitObjFields[`${type}Dominant`] = domFull;
+                traitObjFields[`${type}Hidden1`] = h1;
+                traitObjFields[`${type}Hidden2`] = h2;
+                traitObjFields[`${type}Hidden3`] = h3;
             }
 
-            const domFull = await getSlimeTraitById(dom.traitId);
-            const h1 = await getSlimeTraitById((await getRandomSlimeTraitId(type, hidProbs)).traitId);
-            const h2 = await getSlimeTraitById((await getRandomSlimeTraitId(type, hidProbs)).traitId);
-            const h3 = await getSlimeTraitById((await getRandomSlimeTraitId(type, hidProbs)).traitId);
+            const realSlimeId = await getSlimeIDManager().getNextSlimeId();
 
-            if (!domFull || !h1 || !h2 || !h3) {
-                throw new Error(`Missing traits for ${type}`);
-            }
+            const slime: SlimeWithTraits = {
+                id: realSlimeId,
+                ownerId,
+                generation: 0,
+                imageUri: '', // temp, filled after image gen
+                owner: { telegramId: ownerId },
 
-            // Use correct field names that match your SlimeWithTraits interface
-            traitIdFields[`${type}_D`] = domFull.id;
-            traitIdFields[`${type}_H1`] = h1.id;
-            traitIdFields[`${type}_H2`] = h2.id;
-            traitIdFields[`${type}_H3`] = h3.id;
+                // Spread the trait IDs and objects
+                ...traitIdFields,
+                ...traitObjFields,
+            } as SlimeWithTraits;
 
-            traitObjFields[`${type}Dominant`] = domFull;
-            traitObjFields[`${type}Hidden1`] = h1;
-            traitObjFields[`${type}Hidden2`] = h2;
-            traitObjFields[`${type}Hidden3`] = h3;
-        }
+            const uriRes = await processAndUploadSlimeImage(slime);
+            slime.imageUri = uriRes.uri;
 
-        const realSlimeId = await getSlimeIDManager().getNextSlimeId();
+            logger.info(`✅ Generated in-memory slime (id: ${slime.id})`);
 
-        const slime: SlimeWithTraits = {
-            id: realSlimeId,
-            ownerId,
-            generation: 0,
-            imageUri: '', // temp, filled after image gen
-            owner: { telegramId: ownerId },
+            // Add slime to memory (this queues it for DB insertion later)
+            userMemoryManager.appendSlime(ownerId, slime);
 
-            // Spread the trait IDs and objects
-            ...traitIdFields,
-            ...traitObjFields,
-        } as SlimeWithTraits;
-
-        const uriRes = await processAndUploadSlimeImage(slime);
-        slime.imageUri = uriRes.uri;
-
-        logger.info(`✅ Generated in-memory slime (id: ${slime.id})`);
-
-        // Add slime to memory (this queues it for DB insertion later)
-        userMemoryManager.appendSlime(ownerId, slime);
-
-        return {
-            slime,
-            rankPull,
-            slimeNoBg: uriRes.imageNoBg
-        };
-
-    } catch (error) {
-        logger.error(`Failed to perform slime gacha pull for user ${ownerId} (MEMORY): ${error}`);
-        throw error;
-    }
-}
-
-export async function breedSlimesMemory(ownerId: string, sireId: number, dameId: number): Promise<SlimeWithTraits> {
-    try {
-        const userMemoryManager = requireUserMemoryManager();
-
-        const sire = await getSlimeForUserById(ownerId, sireId);
-        const dame = await getSlimeForUserById(ownerId, dameId);
-
-        if (!sire || !dame) throw new Error("One or both slimes not found");
-        if (sire.ownerId !== dame.ownerId) throw new Error("Owner mismatch");
-
-        const userId = sire.ownerId;
-        if (!(await canUserMintSlimeMemory(userId))) {
-            throw new Error("Slime inventory full. Clear space or upgrade your slots");
-        }
-
-        const childData: Record<string, SlimeTrait & { statEffect: StatEffect | null }> = {};
-
-        for (const type of traitTypes) {
-            const sireD = sire[`${type}Dominant`]!;
-            const sireH1 = sire[`${type}Hidden1`]!;
-            const sireH2 = sire[`${type}Hidden2`]!;
-            const sireH3 = sire[`${type}Hidden3`]!;
-            const dameD = dame[`${type}Dominant`]!;
-            const dameH1 = dame[`${type}Hidden1`]!;
-            const dameH2 = dame[`${type}Hidden2`]!;
-            const dameH3 = dame[`${type}Hidden3`]!;
-
-            // Normal inheritance for dominant trait
-            let childDId = getChildTraitId({
-                sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
-                dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
-            });
-
-            // Check for mutations (these override normal inheritance)
-            if (
-                sireD.pair0Id === dameD.id &&
-                (dameD.pair0Id === sireD.id || dameD.pair1Id === sireD.id) &&
-                (sireD.mutation0Id === dameD.mutation0Id || sireD.mutation0Id === dameD.mutation1Id) &&
-                sireD.mutation0Id &&
-                Math.random() < getMutationProbability(sireD.rarity)
-            ) {
-                childDId = sireD.mutation0Id;
-            } else if (
-                sireD.pair1Id === dameD.id &&
-                (dameD.pair0Id === sireD.id || dameD.pair1Id === sireD.id) &&
-                (sireD.mutation1Id === dameD.mutation0Id || sireD.mutation1Id === dameD.mutation1Id) &&
-                sireD.mutation1Id &&
-                Math.random() < getMutationProbability(sireD.rarity)
-            ) {
-                childDId = sireD.mutation1Id;
-            }
-
-            // Generate trait IDs for all genes (each hidden gene gets its own roll)
-            const ids = {
-                D: childDId,
-                H1: getChildTraitId({
-                    sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
-                    dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
-                }),
-                H2: getChildTraitId({
-                    sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
-                    dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
-                }),
-                H3: getChildTraitId({
-                    sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
-                    dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
-                }),
+            return {
+                slime,
+                rankPull,
+                slimeNoBg: uriRes.imageNoBg
             };
 
-            // Fetch full trait objects for all genes
-            for (const slot of ['D', 'H1', 'H2', 'H3'] as const) {
-                const trait = await getSlimeTraitById(ids[slot]);
-                if (!trait) throw new Error(`Missing trait for ${type}_${slot} ID ${ids[slot]}`);
-                childData[`${type}_${slot}`] = trait;
-            }
+        } catch (error) {
+            logger.error(`Failed to perform slime gacha pull for user ${ownerId} (MEMORY): ${error}`);
+            throw error;
         }
+    });
+}
 
-        const realSlimeId = await getSlimeIDManager().getNextSlimeId();
+export async function breedSlimesMemory(ownerId: string, sire: SlimeWithTraits, dame: SlimeWithTraits): Promise<SlimeWithTraits> {
+    const userMemoryManager = requireUserMemoryManager();
+    const userLock = userMemoryManager.getUserLock(ownerId);
 
-        const generation = Math.max(sire.generation, dame.generation) + 1;
+    return await userLock.acquire(USER_LOCK_KEYS.SLIME_OPERATIONS, async () => {
+        try {
 
-        const childSlime: SlimeWithTraits = {
-            id: realSlimeId,
-            ownerId: userId,
-            generation,
-            imageUri: '',
-            owner: { telegramId: userId },
+            if (!sire || !dame) throw new Error("One or both slimes not found");
+            if (sire.ownerId !== dame.ownerId) throw new Error("Owner mismatch");
 
-            // Flat trait IDs
-            Body_D: childData['Body_D'].id,
-            Body_H1: childData['Body_H1'].id,
-            Body_H2: childData['Body_H2'].id,
-            Body_H3: childData['Body_H3'].id,
+            const userId = sire.ownerId;
+            if (!(await canUserMintSlimeMemory(userId))) {
+                throw new Error("Slime inventory full. Clear space or upgrade your slots");
+            }
 
-            Pattern_D: childData['Pattern_D'].id,
-            Pattern_H1: childData['Pattern_H1'].id,
-            Pattern_H2: childData['Pattern_H2'].id,
-            Pattern_H3: childData['Pattern_H3'].id,
+            const childData: Record<string, SlimeTrait & { statEffect: StatEffect | null }> = {};
 
-            PrimaryColour_D: childData['PrimaryColour_D'].id,
-            PrimaryColour_H1: childData['PrimaryColour_H1'].id,
-            PrimaryColour_H2: childData['PrimaryColour_H2'].id,
-            PrimaryColour_H3: childData['PrimaryColour_H3'].id,
+            for (const type of traitTypes) {
+                const sireD = sire[`${type}Dominant`]!;
+                const sireH1 = sire[`${type}Hidden1`]!;
+                const sireH2 = sire[`${type}Hidden2`]!;
+                const sireH3 = sire[`${type}Hidden3`]!;
+                const dameD = dame[`${type}Dominant`]!;
+                const dameH1 = dame[`${type}Hidden1`]!;
+                const dameH2 = dame[`${type}Hidden2`]!;
+                const dameH3 = dame[`${type}Hidden3`]!;
 
-            Accent_D: childData['Accent_D'].id,
-            Accent_H1: childData['Accent_H1'].id,
-            Accent_H2: childData['Accent_H2'].id,
-            Accent_H3: childData['Accent_H3'].id,
+                // Normal inheritance for dominant trait
+                let childDId = getChildTraitId({
+                    sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
+                    dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
+                });
 
-            Detail_D: childData['Detail_D'].id,
-            Detail_H1: childData['Detail_H1'].id,
-            Detail_H2: childData['Detail_H2'].id,
-            Detail_H3: childData['Detail_H3'].id,
+                // Check for mutations (these override normal inheritance)
+                if (
+                    sireD.pair0Id === dameD.id &&
+                    (dameD.pair0Id === sireD.id || dameD.pair1Id === sireD.id) &&
+                    (sireD.mutation0Id === dameD.mutation0Id || sireD.mutation0Id === dameD.mutation1Id) &&
+                    sireD.mutation0Id &&
+                    Math.random() < getMutationProbability(sireD.rarity)
+                ) {
+                    childDId = sireD.mutation0Id;
+                } else if (
+                    sireD.pair1Id === dameD.id &&
+                    (dameD.pair0Id === sireD.id || dameD.pair1Id === sireD.id) &&
+                    (sireD.mutation1Id === dameD.mutation0Id || sireD.mutation1Id === dameD.mutation1Id) &&
+                    sireD.mutation1Id &&
+                    Math.random() < getMutationProbability(sireD.rarity)
+                ) {
+                    childDId = sireD.mutation1Id;
+                }
 
-            EyeColour_D: childData['EyeColour_D'].id,
-            EyeColour_H1: childData['EyeColour_H1'].id,
-            EyeColour_H2: childData['EyeColour_H2'].id,
-            EyeColour_H3: childData['EyeColour_H3'].id,
+                // Generate trait IDs for all genes (each hidden gene gets its own roll)
+                const ids = {
+                    D: childDId,
+                    H1: getChildTraitId({
+                        sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
+                        dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
+                    }),
+                    H2: getChildTraitId({
+                        sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
+                        dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
+                    }),
+                    H3: getChildTraitId({
+                        sireDId: sireD.id, sireH1Id: sireH1.id, sireH2Id: sireH2.id, sireH3Id: sireH3.id,
+                        dameDId: dameD.id, dameH1Id: dameH1.id, dameH2Id: dameH2.id, dameH3Id: dameH3.id,
+                    }),
+                };
 
-            EyeShape_D: childData['EyeShape_D'].id,
-            EyeShape_H1: childData['EyeShape_H1'].id,
-            EyeShape_H2: childData['EyeShape_H2'].id,
-            EyeShape_H3: childData['EyeShape_H3'].id,
+                // Fetch full trait objects for all genes
+                for (const slot of ['D', 'H1', 'H2', 'H3'] as const) {
+                    const trait = await getSlimeTraitById(ids[slot]);
+                    if (!trait) throw new Error(`Missing trait for ${type}_${slot} ID ${ids[slot]}`);
+                    childData[`${type}_${slot}`] = trait;
+                }
+            }
 
-            Mouth_D: childData['Mouth_D'].id,
-            Mouth_H1: childData['Mouth_H1'].id,
-            Mouth_H2: childData['Mouth_H2'].id,
-            Mouth_H3: childData['Mouth_H3'].id,
+            const realSlimeId = await getSlimeIDManager().getNextSlimeId();
 
-            // Full trait objects
-            BodyDominant: childData['Body_D'],
-            BodyHidden1: childData['Body_H1'],
-            BodyHidden2: childData['Body_H2'],
-            BodyHidden3: childData['Body_H3'],
+            const generation = Math.max(sire.generation, dame.generation) + 1;
 
-            PatternDominant: childData['Pattern_D'],
-            PatternHidden1: childData['Pattern_H1'],
-            PatternHidden2: childData['Pattern_H2'],
-            PatternHidden3: childData['Pattern_H3'],
+            const childSlime: SlimeWithTraits = {
+                id: realSlimeId,
+                ownerId: userId,
+                generation,
+                imageUri: '',
+                owner: { telegramId: userId },
 
-            PrimaryColourDominant: childData['PrimaryColour_D'],
-            PrimaryColourHidden1: childData['PrimaryColour_H1'],
-            PrimaryColourHidden2: childData['PrimaryColour_H2'],
-            PrimaryColourHidden3: childData['PrimaryColour_H3'],
+                // Flat trait IDs
+                Body_D: childData['Body_D'].id,
+                Body_H1: childData['Body_H1'].id,
+                Body_H2: childData['Body_H2'].id,
+                Body_H3: childData['Body_H3'].id,
 
-            AccentDominant: childData['Accent_D'],
-            AccentHidden1: childData['Accent_H1'],
-            AccentHidden2: childData['Accent_H2'],
-            AccentHidden3: childData['Accent_H3'],
+                Pattern_D: childData['Pattern_D'].id,
+                Pattern_H1: childData['Pattern_H1'].id,
+                Pattern_H2: childData['Pattern_H2'].id,
+                Pattern_H3: childData['Pattern_H3'].id,
 
-            DetailDominant: childData['Detail_D'],
-            DetailHidden1: childData['Detail_H1'],
-            DetailHidden2: childData['Detail_H2'],
-            DetailHidden3: childData['Detail_H3'],
+                PrimaryColour_D: childData['PrimaryColour_D'].id,
+                PrimaryColour_H1: childData['PrimaryColour_H1'].id,
+                PrimaryColour_H2: childData['PrimaryColour_H2'].id,
+                PrimaryColour_H3: childData['PrimaryColour_H3'].id,
 
-            EyeColourDominant: childData['EyeColour_D'],
-            EyeColourHidden1: childData['EyeColour_H1'],
-            EyeColourHidden2: childData['EyeColour_H2'],
-            EyeColourHidden3: childData['EyeColour_H3'],
+                Accent_D: childData['Accent_D'].id,
+                Accent_H1: childData['Accent_H1'].id,
+                Accent_H2: childData['Accent_H2'].id,
+                Accent_H3: childData['Accent_H3'].id,
 
-            EyeShapeDominant: childData['EyeShape_D'],
-            EyeShapeHidden1: childData['EyeShape_H1'],
-            EyeShapeHidden2: childData['EyeShape_H2'],
-            EyeShapeHidden3: childData['EyeShape_H3'],
+                Detail_D: childData['Detail_D'].id,
+                Detail_H1: childData['Detail_H1'].id,
+                Detail_H2: childData['Detail_H2'].id,
+                Detail_H3: childData['Detail_H3'].id,
 
-            MouthDominant: childData['Mouth_D'],
-            MouthHidden1: childData['Mouth_H1'],
-            MouthHidden2: childData['Mouth_H2'],
-            MouthHidden3: childData['Mouth_H3'],
-        };
+                EyeColour_D: childData['EyeColour_D'].id,
+                EyeColour_H1: childData['EyeColour_H1'].id,
+                EyeColour_H2: childData['EyeColour_H2'].id,
+                EyeColour_H3: childData['EyeColour_H3'].id,
 
-        const uriRes = await processAndUploadSlimeImage(childSlime);
-        childSlime.imageUri = uriRes.uri;
+                EyeShape_D: childData['EyeShape_D'].id,
+                EyeShape_H1: childData['EyeShape_H1'].id,
+                EyeShape_H2: childData['EyeShape_H2'].id,
+                EyeShape_H3: childData['EyeShape_H3'].id,
 
-        userMemoryManager.appendSlime(userId, childSlime);
+                Mouth_D: childData['Mouth_D'].id,
+                Mouth_H1: childData['Mouth_H1'].id,
+                Mouth_H2: childData['Mouth_H2'].id,
+                Mouth_H3: childData['Mouth_H3'].id,
 
-        return childSlime;
-    } catch (err) {
-        logger.error(`❌ Failed to breed slimes in memory: ${err}`);
-        throw err;
-    }
+                // Full trait objects
+                BodyDominant: childData['Body_D'],
+                BodyHidden1: childData['Body_H1'],
+                BodyHidden2: childData['Body_H2'],
+                BodyHidden3: childData['Body_H3'],
+
+                PatternDominant: childData['Pattern_D'],
+                PatternHidden1: childData['Pattern_H1'],
+                PatternHidden2: childData['Pattern_H2'],
+                PatternHidden3: childData['Pattern_H3'],
+
+                PrimaryColourDominant: childData['PrimaryColour_D'],
+                PrimaryColourHidden1: childData['PrimaryColour_H1'],
+                PrimaryColourHidden2: childData['PrimaryColour_H2'],
+                PrimaryColourHidden3: childData['PrimaryColour_H3'],
+
+                AccentDominant: childData['Accent_D'],
+                AccentHidden1: childData['Accent_H1'],
+                AccentHidden2: childData['Accent_H2'],
+                AccentHidden3: childData['Accent_H3'],
+
+                DetailDominant: childData['Detail_D'],
+                DetailHidden1: childData['Detail_H1'],
+                DetailHidden2: childData['Detail_H2'],
+                DetailHidden3: childData['Detail_H3'],
+
+                EyeColourDominant: childData['EyeColour_D'],
+                EyeColourHidden1: childData['EyeColour_H1'],
+                EyeColourHidden2: childData['EyeColour_H2'],
+                EyeColourHidden3: childData['EyeColour_H3'],
+
+                EyeShapeDominant: childData['EyeShape_D'],
+                EyeShapeHidden1: childData['EyeShape_H1'],
+                EyeShapeHidden2: childData['EyeShape_H2'],
+                EyeShapeHidden3: childData['EyeShape_H3'],
+
+                MouthDominant: childData['Mouth_D'],
+                MouthHidden1: childData['Mouth_H1'],
+                MouthHidden2: childData['Mouth_H2'],
+                MouthHidden3: childData['Mouth_H3'],
+            };
+
+            const uriRes = await processAndUploadSlimeImage(childSlime);
+            childSlime.imageUri = uriRes.uri;
+
+            userMemoryManager.appendSlime(userId, childSlime);
+
+            return childSlime;
+        } catch (err) {
+            logger.error(`❌ Failed to breed slimes in memory: ${err}`);
+            throw err;
+        }
+    });
 }
 
 /* HELPERS */
