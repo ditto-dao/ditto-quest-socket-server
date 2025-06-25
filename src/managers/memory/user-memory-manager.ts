@@ -730,9 +730,20 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 4: Handle deletes - BUT exclude any IDs that were just created
+			// Step 4: Handle deletes - only skip if the exact same temp ID was created and deleted
 			if (burnInventoryIds.length > 0) {
 				const realBurnIds = burnInventoryIds
+					.filter((fakeId) => {
+						// 🔥 CORRECT FIX: Only skip deletion if the exact temp ID being deleted was also created in this flush
+						if (fakeId < 0) {
+							const wasJustCreated = createInventory.some(item => item.id === fakeId);
+							if (wasJustCreated) {
+								logger.warn(`⚠️ Skipping deletion of temp ID ${fakeId} because it was just created in this flush`);
+								return false;
+							}
+						}
+						return true;
+					})
 					.map(fakeId => {
 						if (fakeId < 0) {
 							const realId = remap.get(fakeId);
@@ -743,22 +754,13 @@ export class UserMemoryManager {
 							return realId;
 						}
 						return fakeId; // Already a real ID
-					})
-					.filter(realId => {
-						// 🔥 CRITICAL FIX: Don't delete items that were just created in this flush
-						const justCreated = Array.from(remap.values()).includes(realId);
-						if (justCreated) {
-							logger.warn(`⚠️ Skipping deletion of ID ${realId} because it was just created in this flush`);
-							return false;
-						}
-						return true;
 					});
 
 				if (realBurnIds.length > 0) {
 					await prismaDeleteInventoryFromDB(userId, realBurnIds);
-					logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId} (${burnInventoryIds.length - realBurnIds.length} skipped as just-created)`);
-				} else {
-					logger.debug(`🚫 All ${burnInventoryIds.length} delete operations skipped - items were just created`);
+					logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId} (${burnInventoryIds.length - realBurnIds.length} skipped as same temp ID)`);
+				} else if (burnInventoryIds.length > 0) {
+					logger.debug(`🚫 All ${burnInventoryIds.length} delete operations skipped - same temp IDs were created and deleted`);
 				}
 			}
 
