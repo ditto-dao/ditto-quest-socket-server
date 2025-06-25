@@ -14,7 +14,7 @@ import { ValidateLoginManager } from "./src/managers/validate-login/validate-log
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
-import { cleanupGlobalManagers, getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireSnapshotRedisManager } from "./src/managers/global-managers/global-managers"
+import { cleanupGlobalManagers, getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -102,20 +102,29 @@ async function main() {
         }
     }, 60000);
 
-    // Clean up inactive users from memory every 30 minutes
+    // Auto-logout inactive users with proper cleanup every 10 minutes  
     setInterval(async () => {
         try {
-            const userManager = getUserMemoryManager();
-            if (userManager) {
-                const cleaned = userManager.cleanupInactiveUsers(1800000);
-                if (cleaned > 0) {
-                    logger.info(`🧹 Cleaned ${cleaned} inactive users from memory`);
+            const userMemoryManager = requireUserMemoryManager();
+            const activityLogMemoryManager = requireActivityLogMemoryManager();
+
+            if (userMemoryManager) {
+                const loggedOut = await userMemoryManager.autoLogoutInactiveUsers(
+                    1800000,                    // 30 minutes inactive = logout
+                    socketManager,             
+                    dittoLedgerSocket,         
+                    idleManager,               
+                    activityLogMemoryManager   
+                );
+
+                if (loggedOut > 0) {
+                    logger.info(`🧹 Auto-logged out ${loggedOut} inactive users with full cleanup`);
                 }
             }
         } catch (error) {
-            logger.error("❌ Failed to cleanup memory users:", error);
+            logger.error("❌ Failed to auto-logout inactive users:", error);
         }
-    }, 1800000);
+    }, 600000); // Check every 10 minutes
 
     // Flush all dirty users every 5 minutes
     setInterval(async () => {

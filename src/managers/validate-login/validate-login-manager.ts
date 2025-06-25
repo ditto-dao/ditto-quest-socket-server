@@ -92,13 +92,41 @@ export class ValidateLoginManager {
         }
 
         if (this.socketManager.isUserSocketCached(userId)) {
-            logger.warn(`User already logged in. Disconnecting previous session.`);
-            socket.emit(LOGIN_INVALID_EVENT, {
-                userId: data.userData.id,
-                msg: 'Disconnecting previous session. Please refresh TMA'
-            });
-            this.socketManager.emitEvent(userId, DISCONNECT_USER_EVENT, data.userData.id);
-            return;
+            logger.warn(`User ${userId} has stale session. Cleaning up previous session and allowing new login.`);
+
+            try {
+                // STEP 1: Save all idle activities first (time-sensitive)
+                await this.idleManager.saveAllIdleActivitiesOnLogout(userId);
+
+                // STEP 2: Flush activity logs for this user (before user data flush)  
+                if (this.activityLogMemoryManager.hasUser(userId)) {
+                    await this.activityLogMemoryManager.flushUser(userId);
+                    logger.info(`✅ Flushed activity logs for user ${userId}`);
+                }
+
+                // STEP 3: Logout user data (flush + snapshot + memory removal) 
+                const logoutSuccess = await this.userMemoryManager.logoutUser(userId, true);
+
+                if (!logoutSuccess) {
+                    logger.warn(`⚠️ Cleanup partially failed for user ${userId} - user kept in memory`);
+                }
+
+                // STEP 4: Clear socket cache and notify ledger about old session
+                this.socketManager.removeSocketIdCacheForUser(userId);
+                this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+
+                logger.info(`✅ Successfully cleaned up stale session data for user ${userId}, proceeding with new login`);
+
+                // Continue with normal login process - socket cache will be updated with new session
+
+            } catch (error) {
+                logger.error(`❌ Failed to cleanup stale session for user ${userId}: ${error}`);
+                socket.emit(LOGIN_INVALID_EVENT, {
+                    userId: data.userData.id,
+                    msg: 'Failed to cleanup previous session. Please try again.'
+                });
+                return;
+            }
         }
 
         // Most expensive check last

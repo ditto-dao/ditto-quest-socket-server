@@ -5,6 +5,11 @@ import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
 import { requireSnapshotRedisManager } from "../global-managers/global-managers";
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from "../../utils/config";
+import { LEDGER_REMOVE_USER_SOCKET_EVENT } from "../../socket/events";
+import { SocketManager } from "../../socket/socket-manager";
+import { IdleManager } from "../idle-managers/idle-manager";
+import { ActivityLogMemoryManager } from "./activity-log-memory-manager";
+import { Socket as DittoLedgerSocket } from "socket.io-client";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -149,30 +154,77 @@ export class UserMemoryManager {
 		return this.lastActivity.get(userId) || null;
 	}
 
+
 	/**
-	 * Clean up inactive users from memory
+	 * Auto-logout inactive users with proper cleanup
 	 */
-	cleanupInactiveUsers(maxInactiveMs: number = 3600000): number { // 1 hour default
+	async autoLogoutInactiveUsers(
+		maxInactiveMs: number = 1800000, // 30 minutes default
+		socketManager?: SocketManager,
+		dittoLedgerSocket?: DittoLedgerSocket,
+		idleManager?: IdleManager,
+		activityLogMemoryManager?: ActivityLogMemoryManager
+	): Promise<number> {
 		const now = Date.now();
 		const cutoffTime = now - maxInactiveMs;
-		let cleaned = 0;
+		let loggedOut = 0;
+
+		logger.info(`🔍 Checking for inactive users (cutoff: ${new Date(cutoffTime).toISOString()})`);
 
 		for (const [userId, lastActive] of this.lastActivity.entries()) {
 			if (lastActive < cutoffTime) {
-				// Don't remove if dirty - they need to be synced first
-				if (!this.isDirty(userId)) {
-					this.removeUser(userId);
-					cleaned++;
-					logger.debug(`🧹 Cleaned inactive user ${userId} from memory`);
+				try {
+					logger.info(`⏰ Auto-logging out inactive user ${userId} (last active: ${new Date(lastActive).toISOString()})`);
+
+					// STEP 1: Save idle activities first
+					if (idleManager) {
+						await idleManager.saveAllIdleActivitiesOnLogout(userId);
+					}
+
+					// STEP 2: Flush activity logs
+					if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
+						await activityLogMemoryManager.flushUser(userId);
+						logger.debug(`✅ Flushed activity logs for auto-logout user ${userId}`);
+					}
+
+					// STEP 3: Full logout (flush + snapshot + memory removal)
+					const logoutSuccess = await this.logoutUser(userId, true);
+
+					if (!logoutSuccess) {
+						logger.warn(`⚠️ Auto-logout partially failed for user ${userId} - keeping in memory`);
+						continue; // Skip socket cleanup if logout failed
+					}
+
+					// STEP 4: Clean up socket cache and notify ledger
+					if (socketManager) {
+						socketManager.removeSocketIdCacheForUser(userId);
+					}
+
+					if (dittoLedgerSocket) {
+						dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+					}
+
+					loggedOut++;
+					logger.info(`✅ Auto-logged out inactive user ${userId}`);
+
+				} catch (error) {
+					logger.error(`❌ Failed to auto-logout user ${userId}: ${error}`);
+
+					// Emergency cleanup - at least try to remove from socket cache
+					if (socketManager) {
+						socketManager.removeSocketIdCacheForUser(userId);
+					}
 				}
 			}
 		}
 
-		if (cleaned > 0) {
-			logger.info(`🧹 Cleaned ${cleaned} inactive users from memory`);
+		if (loggedOut > 0) {
+			logger.info(`🧹 Auto-logged out ${loggedOut} inactive users`);
+		} else {
+			logger.debug(`✅ No inactive users found for auto-logout`);
 		}
 
-		return cleaned;
+		return loggedOut;
 	}
 
 	/**
