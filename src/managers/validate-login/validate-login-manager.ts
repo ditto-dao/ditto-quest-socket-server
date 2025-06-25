@@ -4,7 +4,7 @@ import { SocketManager } from "../../socket/socket-manager";
 import { IdleManager } from "../idle-managers/idle-manager";
 import { BOT_TOKEN, LOGIN_TIMEOUT_MS } from "../../utils/config";
 import { logger } from "../../utils/logger";
-import { FullUserData, prismaCreateUser, prismaUpdateUsername, prismaUserExists } from "../../sql-services/user-service";
+import { FullUserData, prismaCreateUser, prismaUserExists } from "../../sql-services/user-service";
 import {
     BETA_TESTER_LOGIN_EVENT,
     DISCONNECT_USER_EVENT,
@@ -93,19 +93,11 @@ export class ValidateLoginManager {
 
         if (this.socketManager.isUserSocketCached(userId)) {
             logger.warn(`User already logged in. Disconnecting previous session.`);
-
-            // ✅ Immediate cleanup - clear socket cache first
-            this.socketManager.removeSocketIdCacheForUser(userId);
-            this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-
-            // ✅ Background cleanup - don't await this
-            this.cleanupStaleSessionInBackground(userId);
-
-            // ✅ Immediate response to user
             socket.emit(LOGIN_INVALID_EVENT, {
                 userId: data.userData.id,
                 msg: 'Disconnecting previous session. Please refresh TMA'
             });
+            this.socketManager.emitEvent(userId, DISCONNECT_USER_EVENT, data.userData.id);
             return;
         }
 
@@ -134,26 +126,6 @@ export class ValidateLoginManager {
         } else {
             logger.warn(`User ${userId} tried to validate login but no queued login found.`);
         }
-    }
-
-    private cleanupStaleSessionInBackground(userId: string) {
-        setTimeout(async () => {
-            try {
-                logger.info(`🧹 Starting background cleanup for stale session ${userId}`);
-                
-                await this.idleManager.saveAllIdleActivitiesOnLogout(userId);
-                
-                if (this.activityLogMemoryManager.hasUser(userId)) {
-                    await this.activityLogMemoryManager.flushUser(userId);
-                }
-                
-                await this.userMemoryManager.logoutUser(userId, true);
-                
-                logger.info(`✅ Background cleanup completed for user ${userId}`);
-            } catch (error) {
-                logger.error(`❌ Background cleanup failed for user ${userId}: ${error}`);
-            }
-        }, 100);
     }
 
     async validateUserLogin(userId: string) {
@@ -214,7 +186,7 @@ export class ValidateLoginManager {
             if (isNewUser) {
                 user = await this.handleNewUserCreation(data);
             } else {
-                user = await this.handleExistingUserLogin(userId, data.loginPayload.userData.username);
+                user = await this.handleExistingUserLogin(userId);
             }
 
             if (!user) throw new Error(`Failed to load user data for ${userId}`);
@@ -285,24 +257,12 @@ export class ValidateLoginManager {
         return currentUser;
     }
 
-    private async handleExistingUserLogin(userId: string, telegramUsername?: string): Promise<FullUserData> {
+    private async handleExistingUserLogin(userId: string): Promise<FullUserData> {
         logger.info(`👤 Loading existing user: ${userId}`);
 
+        // Use optimized 3-tier loading: Memory → Snapshot → Database
         const user = await getUserDataWithSnapshot(userId);
         if (!user) throw new Error(`Failed to load existing user data`);
-
-        // Check and update username if changed
-        if (telegramUsername && user.username !== telegramUsername) {
-            logger.info(`📝 Updating username for user ${userId}: "${user.username}" → "${telegramUsername}"`);
-
-            await prismaUpdateUsername(userId, telegramUsername);
-
-            user.username = telegramUsername;
-
-            if (this.userMemoryManager?.hasUser(userId)) {
-                this.userMemoryManager.updateUserField(userId, 'username', telegramUsername);
-            }
-        }
 
         return user;
     }
