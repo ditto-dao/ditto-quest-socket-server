@@ -469,7 +469,7 @@ export class ValidateLoginManager {
                         logger.debug(`🧪 Flushed slime changes for user ${userId}`);
                     }
 
-                    if (this.userMemoryManager.pendingCreateInventory.has(userId) || this.userMemoryManager.pendingBurnInventoryIds.has(userId)) {
+                    if (this.userMemoryManager.pendingCreateInventory.has(userId) || this.userMemoryManager.pendingInventoryUpdates.has(userId)) {
                         await this.userMemoryManager.flushUserInventory(userId);
                         logger.debug(`📦 Flushed inventory changes for user ${userId}`);
                     }
