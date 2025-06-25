@@ -662,137 +662,117 @@ export class UserMemoryManager {
 		}
 	}
 
+	/**
+	 * Enhanced flush function with better error handling
+	 */
 	async flushUserInventory(userId: string): Promise<void> {
 		const createInventory = this.pendingCreateInventory.get(userId) || [];
 		const updateInventoryIds = this.pendingInventoryUpdates.get(userId) || new Set();
-
+	
 		if (createInventory.length === 0 && updateInventoryIds.size === 0) {
 			logger.debug(`📦 No pending inventory changes for user ${userId}`);
 			return;
 		}
-
+	
 		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${updateInventoryIds.size} updates`);
-
+	
 		try {
 			const user = this.users.get(userId);
 			if (!user || !user.inventory) {
 				throw new Error(`User ${userId} not found in memory during flush`);
 			}
-
-			// STEP 1: Aggregate net changes by item/equipment type
-			const netChanges = new Map<string, {
-				equipmentId: number | null;
-				itemId: number | null;
-				netQuantity: number;
-				existingItems: UserInventoryItem[];
-				operations: string[];
-			}>();
-
-			// Helper to get/create tracker
-			const getTracker = (equipmentId: number | null, itemId: number | null) => {
-				const key = `${equipmentId || 'null'}-${itemId || 'null'}`;
-				if (!netChanges.has(key)) {
-					const existingItems = user.inventory.filter(inv =>
-						inv.equipmentId === equipmentId && inv.itemId === itemId && inv.id > 0
-					);
-
-					netChanges.set(key, {
-						equipmentId,
-						itemId,
-						netQuantity: 0,
-						existingItems,
-						operations: []
-					});
-				}
-				return netChanges.get(key)!;
-			};
-
-			// STEP 2: Process creates (additions)
-			for (const item of createInventory) {
-				const tracker = getTracker(item.equipmentId, item.itemId);
-				tracker.netQuantity += item.quantity;
-				tracker.operations.push(`+${item.quantity} (create)`);
-			}
-
-			// STEP 3: Process updates (including quantity 0 = delete)
-			for (const inventoryId of updateInventoryIds) {
-				const item = user.inventory.find(inv => inv.id === inventoryId);
-				if (item) {
-					const tracker = getTracker(item.equipmentId, item.itemId);
-
-					if (item.quantity === 0) {
-						// Item was "deleted" (set to 0) - we need to know original quantity
-						// Assume it had some positive quantity before (this is the deletion)
-						tracker.operations.push(`delete (qty set to 0) ID:${inventoryId}`);
-						// We'll handle this as a delete in the database operations
-					} else {
-						tracker.operations.push(`update qty to ${item.quantity} (ID:${inventoryId})`);
-					}
-				}
-			}
-
-			// STEP 4: Log aggregated changes
-			for (const [key, tracker] of netChanges) {
-				const itemType = tracker.equipmentId ? `equipment ${tracker.equipmentId}` : `item ${tracker.itemId}`;
-				const currentQty = tracker.existingItems.reduce((sum, item) => sum + item.quantity, 0);
-				logger.info(`📊 ${itemType}: current=${currentQty}, net change=${tracker.netQuantity}, ops=[${tracker.operations.join(', ')}]`);
-			}
-
-			// STEP 5: Execute optimal database operations
+	
+			// STEP 1: Execute optimal database operations
 			const actualCreates: UserInventoryItem[] = [];
 			const actualUpdates: UserInventoryItem[] = [];
 			const actualDeletes: number[] = [];
 			let remap = new Map<number, number>();
-
-			// Handle creates - try to consolidate with existing items
+	
+			// STEP 2: Handle creates - try to consolidate with existing items
 			for (const newItem of createInventory) {
+				// Find existing real item (not fake) of same type
 				const existingItem = user.inventory.find(inv =>
 					inv.equipmentId === newItem.equipmentId &&
 					inv.itemId === newItem.itemId &&
-					inv.id > 0 &&
-					inv.quantity > 0 // Don't consolidate with items being deleted (qty 0)
+					inv.id > 0 && // ✅ Only consolidate with REAL IDs
+					inv.quantity > 0 // Don't consolidate with items being deleted
 				);
-
+	
 				if (existingItem) {
-					// Add to existing item
+					// Add to existing item (consolidation)
 					existingItem.quantity += newItem.quantity;
-					actualUpdates.push(existingItem);
-
+					
+					// Only add to actualUpdates if it's not already there
+					if (!actualUpdates.find(update => update.id === existingItem.id)) {
+						actualUpdates.push(existingItem);
+					}
+	
 					// Map temp ID to real ID
 					if (newItem.id < 0) {
 						remap.set(newItem.id, existingItem.id);
 						logger.debug(`🔗 Mapped temp ID ${newItem.id} -> real ID ${existingItem.id} (consolidation)`);
 					}
-
+	
 					logger.info(`📈 Will add ${newItem.quantity} to existing ${newItem.equipmentId ? 'equipment' : 'item'} ${newItem.equipmentId || newItem.itemId} (new qty: ${existingItem.quantity})`);
 				} else {
-					// Create new item
-					actualCreates.push(newItem);
-					logger.info(`📦 Will create new ${newItem.equipmentId ? 'equipment' : 'item'} ${newItem.equipmentId || newItem.itemId}: ${newItem.quantity}`);
-				}
-			}
-
-			// Handle updates - separate deletes from quantity updates
-			for (const inventoryId of updateInventoryIds) {
-				const item = user.inventory.find(inv => inv.id === inventoryId);
-				if (item && !actualUpdates.includes(item)) { // Don't double-process items already in actualUpdates
-					if (item.quantity === 0) {
-						// Delete items with quantity 0
-						actualDeletes.push(item.id);
-						logger.info(`🗑️ Will delete ${item.equipmentId ? 'equipment' : 'item'} ${item.equipmentId || item.itemId} (quantity set to 0)`);
-					} else {
-						// Update quantity
-						actualUpdates.push(item);
-						logger.info(`🔄 Will update ${item.equipmentId ? 'equipment' : 'item'} ${item.equipmentId || item.itemId} to qty ${item.quantity}`);
+					// Create new item - but only if it has positive quantity
+					if (newItem.quantity > 0) {
+						actualCreates.push(newItem);
+						logger.info(`📦 Will create new ${newItem.equipmentId ? 'equipment' : 'item'} ${newItem.equipmentId || newItem.itemId}: ${newItem.quantity}`);
 					}
 				}
 			}
-
-			// STEP 6: Execute database operations
+	
+			// STEP 3: Handle updates - CRITICAL: Filter out fake IDs before database operations
+			for (const inventoryId of updateInventoryIds) {
+				const item = user.inventory.find(inv => inv.id === inventoryId);
+				if (!item) {
+					logger.warn(`⚠️ Inventory ID ${inventoryId} not found in memory for user ${userId} - skipping`);
+					continue;
+				}
+	
+				// ✅ CRITICAL FIX: Skip fake IDs completely - they should not be updated in DB
+				if (item.id < 0) {
+					logger.warn(`⚠️ Skipping fake ID ${item.id} in updates - fake IDs should be handled as creates`);
+					continue;
+				}
+	
+				// Skip if already in actualUpdates from consolidation
+				if (actualUpdates.find(update => update.id === inventoryId)) {
+					logger.debug(`📝 Inventory ID ${inventoryId} already in updates from consolidation - skipping`);
+					continue;
+				}
+	
+				if (item.quantity === 0) {
+					// Delete items with quantity 0 - but ONLY real IDs
+					actualDeletes.push(item.id);
+					logger.info(`🗑️ Will delete ${item.equipmentId ? 'equipment' : 'item'} ${item.equipmentId || item.itemId} (quantity set to 0)`);
+				} else {
+					// Update quantity - ONLY for real IDs
+					actualUpdates.push(item);
+					logger.info(`🔄 Will update ${item.equipmentId ? 'equipment' : 'item'} ${item.equipmentId || item.itemId} to qty ${item.quantity}`);
+				}
+			}
+	
+			// STEP 4: Validate all IDs before database operations (safety check)
+			const invalidUpdates = actualUpdates.filter(item => item.id < 0);
+			const invalidDeletes = actualDeletes.filter(id => id < 0);
+			
+			if (invalidUpdates.length > 0) {
+				logger.error(`❌ Found ${invalidUpdates.length} fake IDs in actualUpdates: ${invalidUpdates.map(i => i.id).join(', ')}`);
+				throw new Error(`Fake IDs detected in updates - this should not happen`);
+			}
+			
+			if (invalidDeletes.length > 0) {
+				logger.error(`❌ Found ${invalidDeletes.length} fake IDs in actualDeletes: ${invalidDeletes.join(', ')}`);
+				throw new Error(`Fake IDs detected in deletes - this should not happen`);
+			}
+	
+			// STEP 5: Execute database operations
 			if (actualCreates.length > 0) {
 				await prismaInsertInventoryToDB(userId, actualCreates);
 				logger.info(`💾 Inserted ${actualCreates.length} inventory items`);
-
+	
 				// Map temp IDs to real IDs for new creates
 				const freshInventory = await prismaFetchUserInventory(userId);
 				for (const createdItem of actualCreates) {
@@ -811,35 +791,35 @@ export class UserMemoryManager {
 					}
 				}
 			}
-
+	
 			if (actualUpdates.length > 0) {
 				await prismaUpdateInventoryQuantitiesInDB(userId, actualUpdates);
 				logger.info(`🔄 Updated ${actualUpdates.length} inventory quantities`);
 			}
-
+	
 			if (actualDeletes.length > 0) {
 				await prismaDeleteInventoryFromDB(userId, actualDeletes);
 				logger.info(`🗑️ Deleted ${actualDeletes.length} inventory items`);
 			}
-
-			// STEP 7: Reload fresh inventory from database and clean up memory
+	
+			// STEP 6: Reload fresh inventory from database and clean up memory
 			const finalInventory = await prismaFetchUserInventory(userId);
-			user.inventory = finalInventory; // This removes the quantity 0 items from memory
-
-			// STEP 8: Clean up pending operations
+			user.inventory = finalInventory; // This removes any inconsistent data from memory
+	
+			// STEP 7: Clean up pending operations
 			if (remap.size > 0) {
 				this.inventoryIdRemap.set(userId, remap);
 			}
-
+	
 			this.pendingCreateInventory.delete(userId);
 			this.pendingInventoryUpdates.delete(userId);
-
+	
 			if (!this.hasPendingChanges(userId)) {
 				this.markClean(userId);
 			}
-
+	
 			logger.info(`✅ Smart flush completed: ${actualCreates.length} creates, ${actualUpdates.length} updates, ${actualDeletes.length} deletes`);
-
+	
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
 			throw err;
