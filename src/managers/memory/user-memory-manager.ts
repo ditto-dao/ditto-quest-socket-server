@@ -677,156 +677,201 @@ export class UserMemoryManager {
 		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${burnInventoryIds.length} deletes, ${updateInventoryIds.size} updates`);
 
 		try {
+			const user = this.users.get(userId);
+			if (!user || !user.inventory) {
+				throw new Error(`User ${userId} not found in memory during flush`);
+			}
+
+			// Group all operations by item/equipment type
+			const aggregatedOps = new Map<string, {
+				equipmentId: number | null;
+				itemId: number | null;
+				netQuantityChange: number;
+				existingItems: UserInventoryItem[];
+				operations: string[];
+			}>();
+
+			// Step 1: Analyze creates
+			for (const item of createInventory) {
+				const key = `${item.equipmentId || 'null'}-${item.itemId || 'null'}`;
+				if (!aggregatedOps.has(key)) {
+					aggregatedOps.set(key, {
+						equipmentId: item.equipmentId,
+						itemId: item.itemId,
+						netQuantityChange: 0,
+						existingItems: user.inventory.filter(inv =>
+							inv.equipmentId === item.equipmentId && inv.itemId === item.itemId
+						),
+						operations: []
+					});
+				}
+				const op = aggregatedOps.get(key)!;
+				op.netQuantityChange += item.quantity;
+				op.operations.push(`+${item.quantity} (create)`);
+			}
+
+			// Step 2: Analyze deletes
+			for (const inventoryId of burnInventoryIds) {
+				const item = user.inventory.find(inv => inv.id === inventoryId);
+				if (item) {
+					const key = `${item.equipmentId || 'null'}-${item.itemId || 'null'}`;
+					if (!aggregatedOps.has(key)) {
+						aggregatedOps.set(key, {
+							equipmentId: item.equipmentId,
+							itemId: item.itemId,
+							netQuantityChange: 0,
+							existingItems: user.inventory.filter(inv =>
+								inv.equipmentId === item.equipmentId && inv.itemId === item.itemId
+							),
+							operations: []
+						});
+					}
+					const op = aggregatedOps.get(key)!;
+					op.netQuantityChange -= item.quantity;
+					op.operations.push(`-${item.quantity} (delete)`);
+				}
+			}
+
+			// Step 3: Analyze updates
+			for (const inventoryId of updateInventoryIds) {
+				const item = user.inventory.find(inv => inv.id === inventoryId);
+				if (item) {
+					const key = `${item.equipmentId || 'null'}-${item.itemId || 'null'}`;
+					if (!aggregatedOps.has(key)) {
+						aggregatedOps.set(key, {
+							equipmentId: item.equipmentId,
+							itemId: item.itemId,
+							netQuantityChange: 0,
+							existingItems: user.inventory.filter(inv =>
+								inv.equipmentId === item.equipmentId && inv.itemId === item.itemId
+							),
+							operations: []
+						});
+					}
+					const op = aggregatedOps.get(key)!;
+					op.operations.push(`update qty (${item.quantity})`);
+				}
+			}
+
+			// Step 4: Log the smart analysis
+			for (const [key, op] of aggregatedOps) {
+				const itemType = op.equipmentId ? `equipment ${op.equipmentId}` : `item ${op.itemId}`;
+				const currentQty = op.existingItems.reduce((sum, item) => sum + item.quantity, 0);
+				logger.info(`📊 ${itemType}: current=${currentQty}, net change=${op.netQuantityChange}, ops=[${op.operations.join(', ')}]`);
+			}
+
+			// Step 5: Execute smart operations
+			const reallyNeedToCreate: UserInventoryItem[] = [];
+			const reallyNeedToDelete: number[] = [];
+			const reallyNeedToUpdate: UserInventoryItem[] = [];
+
+			for (const [key, op] of aggregatedOps) {
+				const existingRealItems = op.existingItems.filter(item => item.id > 0);
+				const existingTempItems = op.existingItems.filter(item => item.id < 0);
+
+				if (op.netQuantityChange > 0) {
+					// Net positive: we need to add quantity
+					if (existingRealItems.length > 0) {
+						// Add to existing real item
+						const targetItem = existingRealItems[0];
+						targetItem.quantity += op.netQuantityChange;
+						reallyNeedToUpdate.push(targetItem);
+						logger.info(`📈 Will update existing ${op.equipmentId ? 'equipment' : 'item'} ${op.equipmentId || op.itemId}: +${op.netQuantityChange}`);
+					} else {
+						// Create new item
+						const newItem = createInventory.find(item =>
+							item.equipmentId === op.equipmentId && item.itemId === op.itemId
+						);
+						if (newItem) {
+							newItem.quantity = op.netQuantityChange; // Set to net amount
+							reallyNeedToCreate.push(newItem);
+							logger.info(`📦 Will create new ${op.equipmentId ? 'equipment' : 'item'} ${op.equipmentId || op.itemId}: ${op.netQuantityChange}`);
+						}
+					}
+				} else if (op.netQuantityChange < 0) {
+					// Net negative: we need to remove quantity
+					if (existingRealItems.length > 0) {
+						const targetItem = existingRealItems[0];
+						const newQuantity = Math.max(0, targetItem.quantity + op.netQuantityChange);
+						if (newQuantity === 0) {
+							// Delete the item
+							reallyNeedToDelete.push(targetItem.id);
+							logger.info(`🗑️ Will delete ${op.equipmentId ? 'equipment' : 'item'} ${op.equipmentId || op.itemId} (reduced to 0)`);
+						} else {
+							// Update quantity
+							targetItem.quantity = newQuantity;
+							reallyNeedToUpdate.push(targetItem);
+							logger.info(`📉 Will update existing ${op.equipmentId ? 'equipment' : 'item'} ${op.equipmentId || op.itemId}: ${op.netQuantityChange} (new qty: ${newQuantity})`);
+						}
+					}
+				} else {
+					// Net zero: just updates
+					for (const item of op.existingItems) {
+						if (updateInventoryIds.has(item.id)) {
+							reallyNeedToUpdate.push(item);
+						}
+					}
+				}
+			}
+
+			// Step 6: Execute the optimized operations
 			let remap = new Map<number, number>();
 
-			// Step 1: Handle creates first to establish ID mappings
-			if (createInventory.length > 0) {
-				await prismaInsertInventoryToDB(userId, createInventory);
-				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
+			// Creates
+			if (reallyNeedToCreate.length > 0) {
+				await prismaInsertInventoryToDB(userId, reallyNeedToCreate);
+				logger.debug(`💾 Inserted ${reallyNeedToCreate.length} inventory items for ${userId}`);
 
-				// Get fresh inventory to map temp IDs to real IDs
+				// Map temp IDs to real IDs
 				const freshInventory = await prismaFetchUserInventory(userId);
-
-				// Build ID mapping for newly created items
-				for (const createdItem of createInventory) {
-					if (createdItem.id < 0) { // temp ID
-						// Find the NEWEST item (highest ID) that matches equipment/item type
+				for (const createdItem of reallyNeedToCreate) {
+					if (createdItem.id < 0) {
 						const matchingItems = freshInventory.filter(inv =>
 							inv.equipmentId === createdItem.equipmentId &&
 							inv.itemId === createdItem.itemId
 						);
-
 						if (matchingItems.length > 0) {
-							// Get the item with the highest ID (most recently created)
 							const realItem = matchingItems.reduce((newest, current) =>
 								current.id > newest.id ? current : newest
 							);
-
 							remap.set(createdItem.id, realItem.id);
-							logger.debug(`🔗 Mapped temp ID ${createdItem.id} -> real ID ${realItem.id} (newest of ${matchingItems.length} matching items)`);
-						} else {
-							logger.error(`❌ Could not find any matching items for temp ID ${createdItem.id}`);
-							throw new Error(`Critical: Cannot map temp ID ${createdItem.id} - no matching items found`);
+							logger.debug(`🔗 Mapped temp ID ${createdItem.id} -> real ID ${realItem.id}`);
 						}
 					}
 				}
 			}
 
-			// Step 2: Process updates (map temp IDs to real IDs)
-			const mappedUpdateIds = new Set<number>();
-			for (const tempId of updateInventoryIds) {
-				if (tempId < 0) {
-					if (remap.has(tempId)) {
-						// This temp ID was just created in Step 1
-						mappedUpdateIds.add(remap.get(tempId)!);
-						logger.debug(`🔗 Mapped pending update: temp ID ${tempId} -> real ID ${remap.get(tempId)!}`);
-					} else {
-						// This is an existing temp ID that needs resolution
-						const user = this.users.get(userId);
-						if (user && user.inventory) {
-							const memoryItem = user.inventory.find(inv => inv.id === tempId);
-							if (memoryItem) {
-								const currentInventory = await prismaFetchUserInventory(userId);
-								const matchingRealItem = currentInventory.find(realItem =>
-									realItem.equipmentId === memoryItem.equipmentId &&
-									realItem.itemId === memoryItem.itemId
-								);
-
-								if (matchingRealItem) {
-									remap.set(tempId, matchingRealItem.id);
-									mappedUpdateIds.add(matchingRealItem.id);
-									logger.info(`🔗 Resolved unmappable temp ID ${tempId} -> real ID ${matchingRealItem.id}`);
-								} else {
-									logger.error(`❌ Could not resolve temp ID ${tempId} - no matching real item found`);
-									throw new Error(`Critical: Cannot resolve temp ID ${tempId} for quantity update`);
-								}
-							}
-						}
-					}
-				} else {
-					mappedUpdateIds.add(tempId); // Already a real ID
-				}
+			// Updates
+			if (reallyNeedToUpdate.length > 0) {
+				await prismaUpdateInventoryQuantitiesInDB(userId, reallyNeedToUpdate);
+				logger.debug(`🔄 Updated ${reallyNeedToUpdate.length} inventory quantities for ${userId}`);
 			}
 
-			// Step 3: Apply quantity updates
-			if (mappedUpdateIds.size > 0) {
-				const user = this.users.get(userId);
-				if (user && user.inventory) {
-					const itemsToUpdate = user.inventory
-						.filter(inv => {
-							return updateInventoryIds.has(inv.id) || mappedUpdateIds.has(inv.id);
-						})
-						.map(inv => {
-							const realId = inv.id < 0 && remap.has(inv.id) ? remap.get(inv.id)! : inv.id;
-							return { ...inv, id: realId };
-						})
-						.filter(inv => inv.id > 0);
-
-					if (itemsToUpdate.length > 0) {
-						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
-						logger.debug(`🔄 Updated ${itemsToUpdate.length} inventory quantities for ${userId}`);
-					}
-				}
+			// Deletes
+			if (reallyNeedToDelete.length > 0) {
+				await prismaDeleteInventoryFromDB(userId, reallyNeedToDelete);
+				logger.debug(`🗑️ Deleted ${reallyNeedToDelete.length} inventory items for ${userId}`);
 			}
 
-			// Step 4: Handle deletes - only skip if the exact same temp ID was created and deleted
-			if (burnInventoryIds.length > 0) {
-				const realBurnIds = burnInventoryIds
-					.filter((fakeId) => {
-						// 🔥 CORRECT FIX: Only skip deletion if the exact temp ID being deleted was also created in this flush
-						if (fakeId < 0) {
-							const wasJustCreated = createInventory.some(item => item.id === fakeId);
-							if (wasJustCreated) {
-								logger.warn(`⚠️ Skipping deletion of temp ID ${fakeId} because it was just created in this flush`);
-								return false;
-							}
-						}
-						return true;
-					})
-					.map(fakeId => {
-						if (fakeId < 0) {
-							const realId = remap.get(fakeId);
-							if (!realId) {
-								logger.error(`❌ Could not remap temp ID ${fakeId} for deletion`);
-								throw new Error(`Critical: Cannot map temp ID ${fakeId} for deletion`);
-							}
-							return realId;
-						}
-						return fakeId; // Already a real ID
-					});
-
-				if (realBurnIds.length > 0) {
-					await prismaDeleteInventoryFromDB(userId, realBurnIds);
-					logger.debug(`🗑️ Deleted ${realBurnIds.length} inventory items for ${userId} (${burnInventoryIds.length - realBurnIds.length} skipped as same temp ID)`);
-				} else if (burnInventoryIds.length > 0) {
-					logger.debug(`🚫 All ${burnInventoryIds.length} delete operations skipped - same temp IDs were created and deleted`);
-				}
-			}
-
-			// Step 5: Get the final state from database and update memory
+			// Step 7: Refresh memory with final state
 			const finalInventory = await prismaFetchUserInventory(userId);
-			const user = this.users.get(userId);
-			if (user) {
-				user.inventory = finalInventory;
-				logger.debug(`📦 Updated memory with ${finalInventory.length} inventory items for user ${userId}`);
-			}
+			user.inventory = finalInventory;
+			logger.debug(`📦 Updated memory with ${finalInventory.length} inventory items for user ${userId}`);
 
-			// Step 6: Store ID remapping and cleanup
+			// Step 8: Cleanup
 			if (remap.size > 0) {
 				this.inventoryIdRemap.set(userId, remap);
 			}
 
-			// Clear all pending operations
 			this.pendingCreateInventory.delete(userId);
 			this.pendingBurnInventoryIds.delete(userId);
 			this.pendingInventoryUpdates.delete(userId);
 
-			// Mark clean if no other pending changes
 			if (!this.hasPendingChanges(userId)) {
 				this.markClean(userId);
 			}
 
-			logger.info(`✅ Successfully flushed inventory for user ${userId} with ${remap.size} ID remappings - NO UPDATES SKIPPED`);
+			logger.info(`✅ Smart flush completed for user ${userId}: ${reallyNeedToCreate.length} creates, ${reallyNeedToUpdate.length} updates, ${reallyNeedToDelete.length} deletes`);
 
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
