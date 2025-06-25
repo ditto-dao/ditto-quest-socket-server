@@ -433,6 +433,7 @@ export class UserMemoryManager {
 
 	/**
 	 * Add inventory item to user's memory (equipment minting, etc)
+	 * Checks for existing items of same type and consolidates
 	 */
 	appendInventory(userId: string, inventoryItem: UserInventoryItem): boolean {
 		const user = this.users.get(userId);
@@ -440,16 +441,54 @@ export class UserMemoryManager {
 
 		if (!user.inventory) user.inventory = [];
 
-		user.inventory.push(inventoryItem);
+		// Check if there's already an item of the same type
+		let existingItem: UserInventoryItem | null = null;
 
-		// Queue for DB insert
-		if (!this.pendingCreateInventory.has(userId)) this.pendingCreateInventory.set(userId, []);
-		this.pendingCreateInventory.get(userId)!.push(inventoryItem);
+		if (inventoryItem.equipmentId) {
+			// Look for existing equipment of same type
+			existingItem = user.inventory.find(inv =>
+				inv.equipmentId === inventoryItem.equipmentId &&
+				inv.itemId === null
+			) || null;
+		} else if (inventoryItem.itemId) {
+			// Look for existing item of same type
+			existingItem = user.inventory.find(inv =>
+				inv.itemId === inventoryItem.itemId &&
+				inv.equipmentId === null
+			) || null;
+		}
 
-		this.markDirty(userId);
-		this.updateActivity(userId);
-		logger.debug(`📦 Appended inventory ID ${inventoryItem.id} (pending) to user ${userId}`);
-		return true;
+		if (existingItem) {
+			// Add to existing item instead of creating new entry
+			const oldQuantity = existingItem.quantity;
+			const newQuantity = oldQuantity + inventoryItem.quantity;
+
+			existingItem.quantity = newQuantity;
+
+			// Track this as a quantity update instead of a create
+			if (!this.pendingInventoryUpdates.has(userId)) {
+				this.pendingInventoryUpdates.set(userId, new Set());
+			}
+			this.pendingInventoryUpdates.get(userId)!.add(existingItem.id);
+
+			this.markDirty(userId);
+			this.updateActivity(userId);
+
+			logger.info(`📦 Consolidated inventory: Added ${inventoryItem.quantity} to existing ${existingItem.equipmentId ? 'equipment' : 'item'} ${existingItem.equipmentId || existingItem.itemId} (${oldQuantity} -> ${newQuantity}) for user ${userId}`);
+			return true;
+		} else {
+			// 🔥 CREATE NEW: No existing item found, create new entry
+			user.inventory.push(inventoryItem);
+
+			// Queue for DB insert
+			if (!this.pendingCreateInventory.has(userId)) this.pendingCreateInventory.set(userId, []);
+			this.pendingCreateInventory.get(userId)!.push(inventoryItem);
+
+			this.markDirty(userId);
+			this.updateActivity(userId);
+			logger.debug(`📦 Appended new inventory ID ${inventoryItem.id} (pending) to user ${userId}`);
+			return true;
+		}
 	}
 
 	/**
