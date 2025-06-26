@@ -68,7 +68,7 @@ export class UserMemoryManager {
 	/**
 	 * Get or create a lock for a specific user
 	 */
-	getUserLock(userId: string): AsyncLock {
+	private getUserLock(userId: string): AsyncLock {
 		if (!this.userOperationLocks.has(userId)) {
 			this.userOperationLocks.set(userId, new AsyncLock());
 		}
