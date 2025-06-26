@@ -686,6 +686,7 @@ export class UserMemoryManager {
 
 	/**
 	 * Enhanced flush function with better error handling
+	 * Process deletes before creates to prevent delete-after-insert bug
 	 */
 	async flushUserInventory(userId: string): Promise<void> {
 		const createInventory = this.pendingCreateInventory.get(userId) || [];
@@ -701,7 +702,33 @@ export class UserMemoryManager {
 		try {
 			let remap = new Map<number, number>();
 
-			// Step 1: Handle creates first to establish ID mappings
+			// STEP 1: Process deletes FIRST (for items with qty 0)
+			const itemsToDelete: number[] = [];
+			const itemsToUpdate: UserInventoryItem[] = [];
+
+			if (updateInventoryIds.size > 0) {
+				const user = this.users.get(userId);
+				if (user && user.inventory) {
+					// First pass: identify deletes (these use real IDs, no mapping needed)
+					for (const updateId of updateInventoryIds) {
+						if (updateId > 0) { // Only process real IDs for deletes
+							const memoryItem = user.inventory.find(inv => inv.id === updateId);
+							if (memoryItem && memoryItem.quantity === 0) {
+								itemsToDelete.push(updateId);
+								logger.info(`🗑️ Will DELETE ${memoryItem.equipmentId ? 'equipment' : 'item'} ${memoryItem.equipmentId || memoryItem.itemId} (quantity = 0)`);
+							}
+						}
+					}
+
+					// Execute deletes first
+					if (itemsToDelete.length > 0) {
+						await prismaDeleteInventoryFromDB(userId, itemsToDelete);
+						logger.info(`🗑️ Deleted ${itemsToDelete.length} inventory items with zero quantity`);
+					}
+				}
+			}
+
+			// STEP 2: Handle creates to establish ID mappings
 			if (createInventory.length > 0) {
 				await prismaInsertInventoryToDB(userId, createInventory);
 				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
@@ -729,7 +756,7 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 2: Resolve ALL unmappable temp IDs in updates
+			// STEP 3: Resolve remaining temp IDs for updates
 			const unmappableTempIds = Array.from(updateInventoryIds).filter(id =>
 				id < 0 && !remap.has(id)
 			);
@@ -772,16 +799,15 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 3: Process quantity updates - SEPARATE UPDATES FROM DELETES
-			const itemsToUpdate: UserInventoryItem[] = [];
-			const itemsToDelete: number[] = [];
-
+			// STEP 4: Process remaining updates (positive quantities)
 			if (updateInventoryIds.size > 0) {
 				const user = this.users.get(userId);
 				if (user && user.inventory) {
-
 					for (const updateId of updateInventoryIds) {
 						let realId = updateId;
+
+						// Skip items we already deleted
+						if (itemsToDelete.includes(updateId)) continue;
 
 						// If it's a temp ID, get the mapped real ID
 						if (updateId < 0) {
@@ -794,32 +820,18 @@ export class UserMemoryManager {
 
 						// Find the item in memory using the original temp ID
 						const memoryItem = user.inventory.find(inv => inv.id === updateId);
-						if (memoryItem) {
-							if (memoryItem.quantity === 0) {
-								// DELETE: Item has zero quantity
-								itemsToDelete.push(realId);
-								logger.info(`🗑️ Will DELETE ${memoryItem.equipmentId ? 'equipment' : 'item'} ${memoryItem.equipmentId || memoryItem.itemId} (quantity = 0)`);
-							} else {
-								// UPDATE: Item has positive quantity
-								const updateItem = {
-									...memoryItem,
-									id: realId // Use the real ID for database update
-								};
-								itemsToUpdate.push(updateItem);
-								logger.info(`🔄 Will UPDATE ${updateItem.equipmentId ? 'equipment' : 'item'} ${updateItem.equipmentId || updateItem.itemId} to qty ${updateItem.quantity}`);
-							}
-						} else {
-							logger.error(`❌ Update ID ${updateId} not found in memory inventory`);
-							throw new Error(`Critical: Update ID ${updateId} not found in memory`);
+						if (memoryItem && memoryItem.quantity > 0) {
+							// UPDATE: Item has positive quantity
+							const updateItem = {
+								...memoryItem,
+								id: realId // Use the real ID for database update
+							};
+							itemsToUpdate.push(updateItem);
+							logger.info(`🔄 Will UPDATE ${updateItem.equipmentId ? 'equipment' : 'item'} ${updateItem.equipmentId || updateItem.itemId} to qty ${updateItem.quantity}`);
 						}
 					}
 
-					// Execute database operations
-					if (itemsToDelete.length > 0) {
-						await prismaDeleteInventoryFromDB(userId, itemsToDelete);
-						logger.info(`🗑️ Deleted ${itemsToDelete.length} inventory items with zero quantity`);
-					}
-
+					// Execute updates
 					if (itemsToUpdate.length > 0) {
 						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
 						logger.info(`🔄 Updated ${itemsToUpdate.length} inventory quantities`);
@@ -827,14 +839,14 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 4: Get the final state from database and update memory
+			// STEP 5: Get the final state from database and update memory
 			const finalInventory = await prismaFetchUserInventory(userId);
 			const user = this.users.get(userId);
 			if (user) {
 				// Update memory inventory with real IDs and sort by order
 				user.inventory = finalInventory.sort((a, b) => a.order - b.order);
 
-				// ✅ CRITICAL: Update any remaining temp IDs in memory to real IDs
+				// CRITICAL: Update any remaining temp IDs in memory to real IDs
 				if (remap.size > 0) {
 					for (const [tempId, realId] of remap) {
 						// This ensures memory consistency after flush
@@ -847,7 +859,7 @@ export class UserMemoryManager {
 				logger.warn(`⚠️ User ${userId} not found in memory during inventory flush`);
 			}
 
-			// Step 5: Store ID remapping and cleanup
+			// STEP 6: Store ID remapping and cleanup
 			if (remap.size > 0) {
 				this.inventoryIdRemap.set(userId, remap);
 			}
