@@ -1,5 +1,5 @@
 import AsyncLock from "async-lock";
-import { prismaFetchUserInventory, prismaInsertInventoryToDB, prismaUpdateInventoryQuantitiesInDB } from "../../sql-services/equipment-inventory-service";
+import { prismaDeleteInventoryFromDB, prismaFetchUserInventory, prismaInsertInventoryToDB, prismaUpdateInventoryQuantitiesInDB } from "../../sql-services/equipment-inventory-service";
 import { prismaDeleteSlimesFromDB, prismaFetchSlimesForUser, prismaInsertSlimesToDB, SlimeWithTraits } from "../../sql-services/slime";
 import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
@@ -466,13 +466,15 @@ export class UserMemoryManager {
 			// Look for existing equipment of same type
 			existingItem = user.inventory.find(inv =>
 				inv.equipmentId === inventoryItem.equipmentId &&
-				inv.itemId === null
+				inv.itemId === null &&
+				inv.quantity > 0
 			) || null;
 		} else if (inventoryItem.itemId) {
 			// Look for existing item of same type
 			existingItem = user.inventory.find(inv =>
 				inv.itemId === inventoryItem.itemId &&
-				inv.equipmentId === null
+				inv.equipmentId === null &&
+				inv.quantity > 0
 			) || null;
 		}
 
@@ -577,7 +579,7 @@ export class UserMemoryManager {
 		if (!user || !user.inventory) return null;
 
 		// Find all matching equipment items
-		const matchingItems = user.inventory.filter(inv => inv.equipmentId === equipmentId && inv.itemId === null);
+		const matchingItems = user.inventory.filter(inv => inv.equipmentId === equipmentId && inv.itemId === null && inv.quantity > 0);
 
 		if (matchingItems.length === 0) return null;
 		if (matchingItems.length === 1) return matchingItems[0];
@@ -602,7 +604,7 @@ export class UserMemoryManager {
 		if (!user || !user.inventory) return null;
 
 		// Find all matching item items
-		const matchingItems = user.inventory.filter(inv => inv.itemId === itemId && inv.equipmentId === null);
+		const matchingItems = user.inventory.filter(inv => inv.itemId === itemId && inv.equipmentId === null && inv.quantity > 0);
 
 		if (matchingItems.length === 0) return null;
 		if (matchingItems.length === 1) return matchingItems[0];
@@ -770,12 +772,13 @@ export class UserMemoryManager {
 				}
 			}
 
-			// Step 3: Process quantity updates with ALL IDs properly mapped
+			// Step 3: Process quantity updates - SEPARATE UPDATES FROM DELETES
+			const itemsToUpdate: UserInventoryItem[] = [];
+			const itemsToDelete: number[] = [];
+
 			if (updateInventoryIds.size > 0) {
 				const user = this.users.get(userId);
 				if (user && user.inventory) {
-					// Map ALL temp IDs to real IDs (no skipping allowed)
-					const itemsToUpdate: UserInventoryItem[] = [];
 
 					for (const updateId of updateInventoryIds) {
 						let realId = updateId;
@@ -792,25 +795,34 @@ export class UserMemoryManager {
 						// Find the item in memory using the original temp ID
 						const memoryItem = user.inventory.find(inv => inv.id === updateId);
 						if (memoryItem) {
-							// Create update item with real ID but memory quantity
-							const updateItem = {
-								...memoryItem,
-								id: realId // Use the real ID for database update
-							};
-							itemsToUpdate.push(updateItem);
-
-							logger.info(`🔄 Will update ${updateItem.equipmentId ? 'equipment' : 'item'} ${updateItem.equipmentId || updateItem.itemId} to qty ${updateItem.quantity}`);
+							if (memoryItem.quantity === 0) {
+								// DELETE: Item has zero quantity
+								itemsToDelete.push(realId);
+								logger.info(`🗑️ Will DELETE ${memoryItem.equipmentId ? 'equipment' : 'item'} ${memoryItem.equipmentId || memoryItem.itemId} (quantity = 0)`);
+							} else {
+								// UPDATE: Item has positive quantity
+								const updateItem = {
+									...memoryItem,
+									id: realId // Use the real ID for database update
+								};
+								itemsToUpdate.push(updateItem);
+								logger.info(`🔄 Will UPDATE ${updateItem.equipmentId ? 'equipment' : 'item'} ${updateItem.equipmentId || updateItem.itemId} to qty ${updateItem.quantity}`);
+							}
 						} else {
 							logger.error(`❌ Update ID ${updateId} not found in memory inventory`);
 							throw new Error(`Critical: Update ID ${updateId} not found in memory`);
 						}
 					}
 
+					// Execute database operations
+					if (itemsToDelete.length > 0) {
+						await prismaDeleteInventoryFromDB(userId, itemsToDelete);
+						logger.info(`🗑️ Deleted ${itemsToDelete.length} inventory items with zero quantity`);
+					}
+
 					if (itemsToUpdate.length > 0) {
 						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
 						logger.info(`🔄 Updated ${itemsToUpdate.length} inventory quantities`);
-					} else {
-						logger.warn(`⚠️ No items to update after ID mapping for user ${userId}`);
 					}
 				}
 			}
@@ -819,8 +831,8 @@ export class UserMemoryManager {
 			const finalInventory = await prismaFetchUserInventory(userId);
 			const user = this.users.get(userId);
 			if (user) {
-				// Update memory inventory with real IDs
-				user.inventory = finalInventory;
+				// Update memory inventory with real IDs and sort by order
+				user.inventory = finalInventory.sort((a, b) => a.order - b.order);
 
 				// ✅ CRITICAL: Update any remaining temp IDs in memory to real IDs
 				if (remap.size > 0) {
@@ -849,7 +861,7 @@ export class UserMemoryManager {
 				this.markClean(userId);
 			}
 
-			logger.info(`✅ Smart flush completed: ${createInventory.length} creates, ${updateInventoryIds.size} updates, 0 deletes - NO UPDATES SKIPPED`);
+			logger.info(`✅ Smart flush completed: ${createInventory.length} creates, ${itemsToUpdate?.length || 0} updates, ${itemsToDelete?.length || 0} deletes`);
 
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
