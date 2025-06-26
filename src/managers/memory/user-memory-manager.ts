@@ -173,8 +173,14 @@ export class UserMemoryManager {
 		for (const [userId, lastActive] of this.lastActivity.entries()) {
 			if (lastActive < cutoffTime) {
 				try {
-					logger.info(`⏰ Auto-logging out inactive user ${userId} (last active: ${new Date(lastActive).toISOString()})`);
+					// DOUBLE-CHECK: User might have become active during iteration
+					const currentActivity = this.lastActivity.get(userId);
+					if (!currentActivity || currentActivity >= cutoffTime) {
+						logger.info(`⏰ User ${userId} became active during auto-logout check - skipping`);
+						continue;
+					}
 
+					logger.info(`⏰ Auto-logging out inactive user ${userId}`);
 					// STEP 1: Save idle activities first
 					if (idleManager) {
 						await idleManager.saveAllIdleActivitiesOnLogout(userId);
@@ -194,13 +200,17 @@ export class UserMemoryManager {
 						continue; // Skip socket cleanup if logout failed
 					}
 
-					// STEP 4: Clean up socket cache and notify ledger
-					if (socketManager) {
-						socketManager.removeSocketIdCacheForUser(userId);
-					}
-
-					if (dittoLedgerSocket) {
-						dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+					// FINAL CHECK: Don't clear socket cache if user reconnected
+					const finalActivity = this.lastActivity.get(userId);
+					if (finalActivity && finalActivity < cutoffTime) {
+						if (socketManager) {
+							socketManager.removeSocketIdCacheForUser(userId);
+						}
+						if (dittoLedgerSocket) {
+							dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+						}
+					} else {
+						logger.info(`⚠️ User ${userId} reconnected during auto-logout - keeping socket cache`);
 					}
 
 					loggedOut++;

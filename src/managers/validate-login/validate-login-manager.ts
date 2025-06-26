@@ -97,6 +97,11 @@ export class ValidateLoginManager {
                 msg: 'Disconnecting previous session. Please refresh TMA'
             });
             this.socketManager.emitEvent(userId, DISCONNECT_USER_EVENT, data.userData.id);
+
+            // FORCE cleanup the stale cache entry
+            this.socketManager.removeSocketIdCacheForUser(userId);
+            this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+            
             return;
         }
 
