@@ -6,9 +6,7 @@ import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client'
 import { calculateCombatPower, getBaseAccFromLuk, getBaseAtkSpdFromLuk, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseDmgReductionFromDefAndStr, getBaseEvaFromDex, getBaseHpRegenAmtFromHpLvlAndDef, getBaseHpRegenRateFromHpLvlAndDef, getBaseMagicDmgReductionFromDefAndMagic, getBaseMaxDmg, getBaseMaxHpFromHpLvl } from '../managers/idle-managers/combat/combat-helpers';
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
-import AsyncLock from 'async-lock';
 import { UserStatsWithCombat } from './combat-operations';
-import { USER_LOCK_KEYS } from './user-lock-keys';
 
 /**
  * Get user data - Memory first, then Redis, then Database
@@ -110,46 +108,42 @@ export async function addFarmingExpMemory(telegramId: string, expToAdd: number):
     farmingExp: number;
     expToNextFarmingLevel: number;
 }> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return userLock.acquire(USER_LOCK_KEYS.PROGRESSION_OPERATIONS, async () => {
-        try {
+        // Try memory first
+        if (userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
 
-            // Try memory first
-            if (userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
+            let farmingExp = user.farmingExp + expToAdd;
+            let farmingLevel = user.farmingLevel;
+            let farmingLevelsGained = 0;
+            let expToNextFarmingLevel = user.expToNextFarmingLevel;
 
-                let farmingExp = user.farmingExp + expToAdd;
-                let farmingLevel = user.farmingLevel;
-                let farmingLevelsGained = 0;
-                let expToNextFarmingLevel = user.expToNextFarmingLevel;
-
-                // Check for level-ups
-                while (farmingExp >= expToNextFarmingLevel) {
-                    farmingExp -= expToNextFarmingLevel;
-                    farmingLevel++;
-                    farmingLevelsGained++;
-                    expToNextFarmingLevel = calculateExpForNextLevel(farmingLevel + 1);
-                }
-
-                // Update memory
-                userMemoryManager.updateUserField(telegramId, 'farmingExp', farmingExp);
-                userMemoryManager.updateUserField(telegramId, 'farmingLevel', farmingLevel);
-                userMemoryManager.updateUserField(telegramId, 'expToNextFarmingLevel', expToNextFarmingLevel);
-
-                logger.info(`✅ Added farming exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${farmingLevel}`);
-
-                return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
+            // Check for level-ups
+            while (farmingExp >= expToNextFarmingLevel) {
+                farmingExp -= expToNextFarmingLevel;
+                farmingLevel++;
+                farmingLevelsGained++;
+                expToNextFarmingLevel = calculateExpForNextLevel(farmingLevel + 1);
             }
 
-            throw new Error('User memory manager not available');
+            // Update memory
+            userMemoryManager.updateUserField(telegramId, 'farmingExp', farmingExp);
+            userMemoryManager.updateUserField(telegramId, 'farmingLevel', farmingLevel);
+            userMemoryManager.updateUserField(telegramId, 'expToNextFarmingLevel', expToNextFarmingLevel);
 
-        } catch (error) {
-            logger.error(`❌ Failed to add farming exp for user ${telegramId} (MEMORY):`, error);
-            throw error;
+            logger.info(`✅ Added farming exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${farmingLevel}`);
+
+            return { farmingLevel, farmingLevelsGained, farmingExp, expToNextFarmingLevel };
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`❌ Failed to add farming exp for user ${telegramId} (MEMORY):`, error);
+        throw error;
+    }
 }
 
 /**
@@ -161,47 +155,42 @@ export async function addCraftingExpMemory(telegramId: string, expToAdd: number)
     craftingExp: number;
     expToNextCraftingLevel: number;
 }> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return userLock.acquire(USER_LOCK_KEYS.PROGRESSION_OPERATIONS, async () => {
-        try {
-            const userMemoryManager = requireUserMemoryManager();
+        // Try memory first
+        if (userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
 
-            // Try memory first
-            if (userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
+            let craftingExp = user.craftingExp + expToAdd;
+            let craftingLevel = user.craftingLevel;
+            let craftingLevelsGained = 0;
+            let expToNextCraftingLevel = user.expToNextCraftingLevel;
 
-                let craftingExp = user.craftingExp + expToAdd;
-                let craftingLevel = user.craftingLevel;
-                let craftingLevelsGained = 0;
-                let expToNextCraftingLevel = user.expToNextCraftingLevel;
-
-                // Check for level-ups
-                while (craftingExp >= expToNextCraftingLevel) {
-                    craftingExp -= expToNextCraftingLevel;
-                    craftingLevel++;
-                    craftingLevelsGained++;
-                    expToNextCraftingLevel = calculateExpForNextLevel(craftingLevel + 1);
-                }
-
-                // Update memory
-                userMemoryManager.updateUserField(telegramId, 'craftingExp', craftingExp);
-                userMemoryManager.updateUserField(telegramId, 'craftingLevel', craftingLevel);
-                userMemoryManager.updateUserField(telegramId, 'expToNextCraftingLevel', expToNextCraftingLevel);
-
-                logger.info(`✅ Added crafting exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${craftingLevel}`);
-
-                return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
+            // Check for level-ups
+            while (craftingExp >= expToNextCraftingLevel) {
+                craftingExp -= expToNextCraftingLevel;
+                craftingLevel++;
+                craftingLevelsGained++;
+                expToNextCraftingLevel = calculateExpForNextLevel(craftingLevel + 1);
             }
 
-            throw new Error('User memory manager not available');
+            // Update memory
+            userMemoryManager.updateUserField(telegramId, 'craftingExp', craftingExp);
+            userMemoryManager.updateUserField(telegramId, 'craftingLevel', craftingLevel);
+            userMemoryManager.updateUserField(telegramId, 'expToNextCraftingLevel', expToNextCraftingLevel);
 
-        } catch (error) {
-            logger.error(`❌ Failed to add crafting exp for user ${telegramId} (MEMORY):`, error);
-            throw error;
+            logger.info(`✅ Added crafting exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${craftingLevel}`);
+
+            return { craftingLevel, craftingLevelsGained, craftingExp, expToNextCraftingLevel };
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`❌ Failed to add crafting exp for user ${telegramId} (MEMORY):`, error);
+        throw error;
+    }
 }
 
 /**
@@ -383,32 +372,27 @@ export async function canUserMintSlimeMemory(ownerId: string): Promise<boolean> 
 
 export async function incrementUserGold(userId: string, amount: number): Promise<number> {
     const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(userId);
 
-    return await userLock.acquire(USER_LOCK_KEYS.CURRENCY_OPERATIONS, async () => {
-        const userMemoryManager = requireUserMemoryManager();
+    let newBalance;
 
-        let newBalance;
+    // Try memory first
+    if (userMemoryManager.hasUser(userId)) {
+        const user = userMemoryManager.getUser(userId)!;
+        const currentBalance = user.goldBalance || 0;
+        newBalance = currentBalance + amount;
 
-        // Try memory first
-        if (userMemoryManager.hasUser(userId)) {
-            const user = userMemoryManager.getUser(userId)!;
-            const currentBalance = user.goldBalance || 0;
-            newBalance = currentBalance + amount;
-
-            // Ensure balance doesn't go negative
-            if (newBalance < 0) {
-                throw new Error(`Insufficient gold balance (Balance: ${currentBalance} < ${Math.abs(amount)})`);
-            }
-
-            userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
-            userMemoryManager.markDirty(userId);
-        } else {
-            throw new Error('User memory manager not available');
+        // Ensure balance doesn't go negative
+        if (newBalance < 0) {
+            throw new Error(`Insufficient gold balance (Balance: ${currentBalance} < ${Math.abs(amount)})`);
         }
 
-        return newBalance;
-    });
+        userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
+        userMemoryManager.markDirty(userId);
+    } else {
+        throw new Error('User memory manager not available');
+    }
+
+    return newBalance;
 }
 
 export async function getEquippedByEquipmentTypeMemory(
@@ -443,150 +427,144 @@ export async function equipEquipmentForUserMemory(
     telegramId: string,
     equipmentInventory: Prisma.InventoryGetPayload<{ include: { equipment: true } }>
 ): Promise<UserDataEquipped> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.EQUIPMENT_OPERATIONS, async () => {
-        try {
-            // Try memory first
-            if (userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
+        // Try memory first
+        if (userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
 
-                if (!equipmentInventory.equipment) {
-                    throw new Error(`Equip equipment failed. Input inventory element is not an equipment.`);
-                }
-
-                const equipmentType = equipmentInventory.equipment.type;
-                const equipField = `${equipmentType}InventoryId` as keyof FullUserData;
-
-                // Check level requirements
-                if (equipmentInventory.equipment.requiredLvlCombat > user.level) {
-                    throw new Error(`User does not meet level requirements`);
-                }
-
-                let realInventoryId = equipmentInventory.id;
-
-                // Handle fake IDs - check if we need to map to real ID
-                if (equipmentInventory.id < 0) {
-                    logger.info(`🔍 Equipment has fake ID ${equipmentInventory.id}, checking for real ID mapping`);
-
-                    // Check if we have a mapping from previous flush
-                    const idRemap = userMemoryManager.inventoryIdRemap.get(telegramId);
-                    if (idRemap && idRemap.has(equipmentInventory.id)) {
-                        realInventoryId = idRemap.get(equipmentInventory.id)!;
-                        logger.info(`✅ Found mapped real ID: ${equipmentInventory.id} -> ${realInventoryId}`);
-                    } else {
-                        // We need to flush first to get real IDs
-                        logger.info(`⚠️ No mapping found for fake ID ${equipmentInventory.id}, flushing inventory first`);
-
-                        if (userMemoryManager.hasPendingChanges(telegramId)) {
-                            await userMemoryManager.flushUserInventory(telegramId);
-
-                            // Check mapping again after flush
-                            const updatedRemap = userMemoryManager.inventoryIdRemap.get(telegramId);
-                            if (updatedRemap && updatedRemap.has(equipmentInventory.id)) {
-                                realInventoryId = updatedRemap.get(equipmentInventory.id)!;
-                                logger.info(`✅ After flush, mapped: ${equipmentInventory.id} -> ${realInventoryId}`);
-                            } else {
-                                throw new Error(`Unable to resolve fake inventory ID ${equipmentInventory.id} to real ID`);
-                            }
-                        } else {
-                            // Try the ensureRealId fallback
-                            realInventoryId = await ensureRealId(telegramId, equipmentInventory.id, 'inventory');
-                        }
-                    }
-                }
-
-                // Verify the real ID exists in user's inventory
-                const inventoryItem = user.inventory?.find(inv => inv.id === realInventoryId);
-                if (!inventoryItem) {
-                    throw new Error(`Inventory item with ID ${realInventoryId} not found in user's inventory`);
-                }
-
-                // If ID changed, update the equipment inventory object
-                if (equipmentInventory.id !== realInventoryId) {
-                    equipmentInventory.id = realInventoryId;
-                    logger.info(`✅ Updated equipment inventory to use real ID: ${realInventoryId}`);
-                }
-
-                // Update equipment ID in memory
-                userMemoryManager.updateUserField(telegramId, equipField, realInventoryId);
-
-                // Cast the equipment inventory to the expected type
-                const typedEquipmentInventory = equipmentInventory as any;
-                userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, typedEquipmentInventory);
-
-                logger.info(
-                    `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType} (MEMORY).`
-                );
-
-                // Recalculate stats in memory
-                const result = await recalculateAndUpdateUserStatsMemory(telegramId);
-
-                // Critical for equipment changes - flush to ensure consistency
-                await userMemoryManager.flushAllUserUpdates(telegramId);
-                logger.info(`✅ Immediately persisted equipment change for user ${telegramId}`);
-
-                return result;
+            if (!equipmentInventory.equipment) {
+                throw new Error(`Equip equipment failed. Input inventory element is not an equipment.`);
             }
 
-            throw new Error('User memory manager not available');
+            const equipmentType = equipmentInventory.equipment.type;
+            const equipField = `${equipmentType}InventoryId` as keyof FullUserData;
 
-        } catch (error) {
-            logger.error(
-                `Failed to equip equipment for user ${telegramId} (MEMORY): ${error}`
+            // Check level requirements
+            if (equipmentInventory.equipment.requiredLvlCombat > user.level) {
+                throw new Error(`User does not meet level requirements`);
+            }
+
+            let realInventoryId = equipmentInventory.id;
+
+            // Handle fake IDs - check if we need to map to real ID
+            if (equipmentInventory.id < 0) {
+                logger.info(`🔍 Equipment has fake ID ${equipmentInventory.id}, checking for real ID mapping`);
+
+                // Check if we have a mapping from previous flush
+                const idRemap = userMemoryManager.inventoryIdRemap.get(telegramId);
+                if (idRemap && idRemap.has(equipmentInventory.id)) {
+                    realInventoryId = idRemap.get(equipmentInventory.id)!;
+                    logger.info(`✅ Found mapped real ID: ${equipmentInventory.id} -> ${realInventoryId}`);
+                } else {
+                    // We need to flush first to get real IDs
+                    logger.info(`⚠️ No mapping found for fake ID ${equipmentInventory.id}, flushing inventory first`);
+
+                    if (userMemoryManager.hasPendingChanges(telegramId)) {
+                        await userMemoryManager.flushUserInventory(telegramId);
+
+                        // Check mapping again after flush
+                        const updatedRemap = userMemoryManager.inventoryIdRemap.get(telegramId);
+                        if (updatedRemap && updatedRemap.has(equipmentInventory.id)) {
+                            realInventoryId = updatedRemap.get(equipmentInventory.id)!;
+                            logger.info(`✅ After flush, mapped: ${equipmentInventory.id} -> ${realInventoryId}`);
+                        } else {
+                            throw new Error(`Unable to resolve fake inventory ID ${equipmentInventory.id} to real ID`);
+                        }
+                    } else {
+                        // Try the ensureRealId fallback
+                        realInventoryId = await ensureRealId(telegramId, equipmentInventory.id, 'inventory');
+                    }
+                }
+            }
+
+            // Verify the real ID exists in user's inventory
+            const inventoryItem = user.inventory?.find(inv => inv.id === realInventoryId);
+            if (!inventoryItem) {
+                throw new Error(`Inventory item with ID ${realInventoryId} not found in user's inventory`);
+            }
+
+            // If ID changed, update the equipment inventory object
+            if (equipmentInventory.id !== realInventoryId) {
+                equipmentInventory.id = realInventoryId;
+                logger.info(`✅ Updated equipment inventory to use real ID: ${realInventoryId}`);
+            }
+
+            // Update equipment ID in memory
+            userMemoryManager.updateUserField(telegramId, equipField, realInventoryId);
+
+            // Cast the equipment inventory to the expected type
+            const typedEquipmentInventory = equipmentInventory as any;
+            userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, typedEquipmentInventory);
+
+            logger.info(
+                `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType} (MEMORY).`
             );
-            throw error;
+
+            // Recalculate stats in memory
+            const result = await recalculateAndUpdateUserStatsMemory(telegramId);
+
+            // Critical for equipment changes - flush to ensure consistency
+            await userMemoryManager.flushAllUserUpdates(telegramId);
+            logger.info(`✅ Immediately persisted equipment change for user ${telegramId}`);
+
+            return result;
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(
+            `Failed to equip equipment for user ${telegramId} (MEMORY): ${error}`
+        );
+        throw error;
+    }
 }
 
 export async function unequipEquipmentForUserMemory(
     telegramId: string,
     equipmentType: EquipmentType
 ): Promise<UserDataEquipped | undefined> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.EQUIPMENT_OPERATIONS, async () => {
-        try {
-            // Try memory first
-            if (userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
+        // Try memory first
+        if (userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
 
-                const equipField = `${equipmentType}InventoryId` as keyof FullUserData;
+            const equipField = `${equipmentType}InventoryId` as keyof FullUserData;
 
-                // Check if the slot is already empty
-                if (user[equipField] === null) {
-                    logger.info(
-                        `User ${telegramId} already has nothing equipped in the ${equipmentType} slot (MEMORY).`
-                    );
-                    return;
-                }
-
-                // Perform the unequip operation in memory
-                userMemoryManager.updateUserField(telegramId, equipField, null);
-                userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, null);
-
+            // Check if the slot is already empty
+            if (user[equipField] === null) {
                 logger.info(
-                    `User ${telegramId} unequipped equipment of type ${equipmentType} (MEMORY).`
+                    `User ${telegramId} already has nothing equipped in the ${equipmentType} slot (MEMORY).`
                 );
-
-                // Recalculate stats in memory
-                const result = await recalculateAndUpdateUserStatsMemory(telegramId);
-
-                return result;
+                return;
             }
 
-            throw new Error('User memory manager not available');
+            // Perform the unequip operation in memory
+            userMemoryManager.updateUserField(telegramId, equipField, null);
+            userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, null);
 
-        } catch (error) {
-            logger.error(
-                `Failed to unequip equipment of type ${equipmentType} for user ${telegramId} (MEMORY): ${error}`
+            logger.info(
+                `User ${telegramId} unequipped equipment of type ${equipmentType} (MEMORY).`
             );
-            throw error;
+
+            // Recalculate stats in memory
+            const result = await recalculateAndUpdateUserStatsMemory(telegramId);
+
+            return result;
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(
+            `Failed to unequip equipment of type ${equipmentType} for user ${telegramId} (MEMORY): ${error}`
+        );
+        throw error;
+    }
 }
 
 /**
@@ -715,68 +693,65 @@ export async function recalculateAndUpdateUserStatsMemory(
 export async function recalculateAndUpdateUserBaseStatsMemory(
     telegramId: string
 ): Promise<UserStatsWithCombat> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.PROFILE_OPERATIONS, async () => {
-        try {
-            // Try memory first
-            if (userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
+        // Try memory first
+        if (userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
 
-                const { str, def, dex, luk, magic, hpLevel } = user;
+            const { str, def, dex, luk, magic, hpLevel } = user;
 
-                const newBaseStats = {
-                    maxHp: getBaseMaxHpFromHpLvl(hpLevel),
-                    atkSpd: getBaseAtkSpdFromLuk(luk),
-                    acc: getBaseAccFromLuk(luk),
-                    eva: getBaseEvaFromDex(dex),
-                    maxMeleeDmg: getBaseMaxDmg(str),
-                    maxRangedDmg: getBaseMaxDmg(dex),
-                    maxMagicDmg: getBaseMaxDmg(magic),
-                    critChance: getBaseCritChanceFromLuk(luk),
-                    critMultiplier: getBaseCritMulFromLuk(luk),
-                    dmgReduction: getBaseDmgReductionFromDefAndStr(def, str),
-                    magicDmgReduction: getBaseMagicDmgReductionFromDefAndMagic(def, magic),
-                    hpRegenRate: getBaseHpRegenRateFromHpLvlAndDef(hpLevel, def),
-                    hpRegenAmount: getBaseHpRegenAmtFromHpLvlAndDef(hpLevel, def),
-                    doubleResourceOdds: user.doubleResourceOdds,
-                    skillIntervalReductionMultiplier: user.skillIntervalReductionMultiplier,
-                };
+            const newBaseStats = {
+                maxHp: getBaseMaxHpFromHpLvl(hpLevel),
+                atkSpd: getBaseAtkSpdFromLuk(luk),
+                acc: getBaseAccFromLuk(luk),
+                eva: getBaseEvaFromDex(dex),
+                maxMeleeDmg: getBaseMaxDmg(str),
+                maxRangedDmg: getBaseMaxDmg(dex),
+                maxMagicDmg: getBaseMaxDmg(magic),
+                critChance: getBaseCritChanceFromLuk(luk),
+                critMultiplier: getBaseCritMulFromLuk(luk),
+                dmgReduction: getBaseDmgReductionFromDefAndStr(def, str),
+                magicDmgReduction: getBaseMagicDmgReductionFromDefAndMagic(def, magic),
+                hpRegenRate: getBaseHpRegenRateFromHpLvlAndDef(hpLevel, def),
+                hpRegenAmount: getBaseHpRegenAmtFromHpLvlAndDef(hpLevel, def),
+                doubleResourceOdds: user.doubleResourceOdds,
+                skillIntervalReductionMultiplier: user.skillIntervalReductionMultiplier,
+            };
 
-                // Update base stats in memory
-                for (const [key, value] of Object.entries(newBaseStats)) {
-                    userMemoryManager.updateUserField(telegramId, key as keyof FullUserData, value);
-                }
-
-                // Recalculate full stats with equipment/slime bonuses
-                const userDataEquipped = await recalculateAndUpdateUserStatsMemory(telegramId);
-
-                logger.info(`✅ Recalculated base stats for user ${telegramId} (MEMORY)`);
-
-                return {
-                    ...newBaseStats,
-                    outstandingSkillPoints: user.outstandingSkillPoints,
-                    hpLevel: user.hpLevel,
-                    expToNextHpLevel: user.expToNextHpLevel,
-                    expHp: user.expHp,
-                    str: user.str,
-                    def: user.def,
-                    dex: user.dex,
-                    luk: user.luk,
-                    magic: user.magic,
-                    combat: userDataEquipped.combat
-                };
+            // Update base stats in memory
+            for (const [key, value] of Object.entries(newBaseStats)) {
+                userMemoryManager.updateUserField(telegramId, key as keyof FullUserData, value);
             }
 
-            // Fallback to database version
-            return await prismaRecalculateAndUpdateUserBaseStats(telegramId);
+            // Recalculate full stats with equipment/slime bonuses
+            const userDataEquipped = await recalculateAndUpdateUserStatsMemory(telegramId);
 
-        } catch (error) {
-            logger.error(`❌ Failed to recalculate base stats for user ${telegramId} (MEMORY):`, error);
-            throw error;
+            logger.info(`✅ Recalculated base stats for user ${telegramId} (MEMORY)`);
+
+            return {
+                ...newBaseStats,
+                outstandingSkillPoints: user.outstandingSkillPoints,
+                hpLevel: user.hpLevel,
+                expToNextHpLevel: user.expToNextHpLevel,
+                expHp: user.expHp,
+                str: user.str,
+                def: user.def,
+                dex: user.dex,
+                luk: user.luk,
+                magic: user.magic,
+                combat: userDataEquipped.combat
+            };
         }
-    });
+
+        // Fallback to database version
+        return await prismaRecalculateAndUpdateUserBaseStats(telegramId);
+
+    } catch (error) {
+        logger.error(`❌ Failed to recalculate base stats for user ${telegramId} (MEMORY):`, error);
+        throw error;
+    }
 }
 
 export function calculateNetStatDelta(user: User, effects: StatEffect[]) {

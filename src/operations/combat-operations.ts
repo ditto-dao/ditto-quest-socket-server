@@ -7,7 +7,6 @@ import { recalculateAndUpdateUserBaseStatsMemory } from "./user-operations";
 import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
 import { requireUserMemoryManager } from "../managers/global-managers/global-managers";
 import { prismaFetchDomainById, prismaFetchDungeonById, prismaFetchMonsterById } from "../sql-services/combat-service";
-import { USER_LOCK_KEYS } from "./user-lock-keys";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -118,24 +117,21 @@ export async function getDungeonById(dungeonId: number): Promise<DungeonWithMons
  * Update user combat HP
  */
 export async function setUserCombatHp(telegramId: string, newHp: number): Promise<number> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.PROFILE_OPERATIONS, async () => {
-        try {
-            if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
-                const clampedHp = Math.max(0, Math.min(newHp, user.combat.maxHp));
-                userMemoryManager.updateUserCombatField(telegramId, 'hp', clampedHp);
-                return clampedHp;
-            }
-
-            throw new Error('User memory manager not available');
-        } catch (error) {
-            logger.error(`❌ Failed to update combat HP for user ${telegramId}:`, error);
-            throw error;
+        if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
+            const clampedHp = Math.max(0, Math.min(newHp, user.combat.maxHp));
+            userMemoryManager.updateUserCombatField(telegramId, 'hp', clampedHp);
+            return clampedHp;
         }
-    });
+
+        throw new Error('User memory manager not available');
+    } catch (error) {
+        logger.error(`❌ Failed to update combat HP for user ${telegramId}:`, error);
+        throw error;
+    }
 }
 
 /**
@@ -213,82 +209,79 @@ export async function incrementExpAndHpExpAndCheckLevelUpMemory(
     telegramId: string,
     expToAdd: number
 ): Promise<IncrementExpAndHpExpResponse> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.PROFILE_OPERATIONS, async () => {
-        try {
-            if (userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
-                if (!user.combat) throw new Error("User combat data not found.");
+        if (userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
+            if (!user.combat) throw new Error("User combat data not found.");
 
-                // Level Logic
-                let newExp = user.exp + expToAdd;
-                let currLevel = user.level;
-                let outstandingSkillPoints = user.outstandingSkillPoints;
-                let expToNextLevel = user.expToNextLevel;
-                let levelUp = false;
+            // Level Logic
+            let newExp = user.exp + expToAdd;
+            let currLevel = user.level;
+            let outstandingSkillPoints = user.outstandingSkillPoints;
+            let expToNextLevel = user.expToNextLevel;
+            let levelUp = false;
 
-                while (newExp >= calculateExpForNextLevel(currLevel + 1)) {
-                    newExp -= calculateExpForNextLevel(currLevel + 1);
-                    currLevel++;
-                    outstandingSkillPoints += ABILITY_POINTS_PER_LEVEL;
-                    levelUp = true;
-                }
-                expToNextLevel = calculateExpForNextLevel(currLevel + 1);
+            while (newExp >= calculateExpForNextLevel(currLevel + 1)) {
+                newExp -= calculateExpForNextLevel(currLevel + 1);
+                currLevel++;
+                outstandingSkillPoints += ABILITY_POINTS_PER_LEVEL;
+                levelUp = true;
+            }
+            expToNextLevel = calculateExpForNextLevel(currLevel + 1);
 
-                // HP Exp Logic
-                let newHpExp = user.expHp + calculateHpExpGained(expToAdd);
-                let currHpLevel = user.hpLevel;
-                let expToNextHpLevel = user.expToNextHpLevel;
-                let hpLevelUp = false;
+            // HP Exp Logic
+            let newHpExp = user.expHp + calculateHpExpGained(expToAdd);
+            let currHpLevel = user.hpLevel;
+            let expToNextHpLevel = user.expToNextHpLevel;
+            let hpLevelUp = false;
 
-                while (newHpExp >= calculateExpForNextLevel(currHpLevel + 1)) {
-                    newHpExp -= calculateExpForNextLevel(currHpLevel + 1);
-                    currHpLevel++;
-                    hpLevelUp = true;
-                }
-                expToNextHpLevel = calculateExpForNextLevel(currHpLevel + 1);
+            while (newHpExp >= calculateExpForNextLevel(currHpLevel + 1)) {
+                newHpExp -= calculateExpForNextLevel(currHpLevel + 1);
+                currHpLevel++;
+                hpLevelUp = true;
+            }
+            expToNextHpLevel = calculateExpForNextLevel(currHpLevel + 1);
 
-                // Update memory
-                userMemoryManager.updateUserField(telegramId, 'level', currLevel);
-                userMemoryManager.updateUserField(telegramId, 'exp', newExp);
-                userMemoryManager.updateUserField(telegramId, 'expToNextLevel', expToNextLevel);
-                userMemoryManager.updateUserField(telegramId, 'outstandingSkillPoints', outstandingSkillPoints);
-                userMemoryManager.updateUserField(telegramId, 'hpLevel', currHpLevel);
-                userMemoryManager.updateUserField(telegramId, 'expHp', newHpExp);
-                userMemoryManager.updateUserField(telegramId, 'expToNextHpLevel', expToNextHpLevel);
+            // Update memory
+            userMemoryManager.updateUserField(telegramId, 'level', currLevel);
+            userMemoryManager.updateUserField(telegramId, 'exp', newExp);
+            userMemoryManager.updateUserField(telegramId, 'expToNextLevel', expToNextLevel);
+            userMemoryManager.updateUserField(telegramId, 'outstandingSkillPoints', outstandingSkillPoints);
+            userMemoryManager.updateUserField(telegramId, 'hpLevel', currHpLevel);
+            userMemoryManager.updateUserField(telegramId, 'expHp', newHpExp);
+            userMemoryManager.updateUserField(telegramId, 'expToNextHpLevel', expToNextHpLevel);
 
-                let hpLevelUpdatedUser = null;
-                if (hpLevelUp) {
-                    hpLevelUpdatedUser = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
-                }
-
-                logger.info(
-                    `User ${telegramId} (MEMORY) → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
-                );
-
-                return {
-                    simpleUser: hpLevelUpdatedUser,
-                    levelUp,
-                    level: currLevel,
-                    exp: newExp,
-                    expToNextLevel,
-                    outstandingSkillPoints,
-                    hpLevelUp,
-                    hpLevel: currHpLevel,
-                    hpExp: newHpExp,
-                    expToNextHpLevel
-                };
+            let hpLevelUpdatedUser = null;
+            if (hpLevelUp) {
+                hpLevelUpdatedUser = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
             }
 
-            throw new Error('User memory manager not available');
+            logger.info(
+                `User ${telegramId} (MEMORY) → LVL ${currLevel}, EXP ${newExp}/${expToNextLevel} | HP LVL ${currHpLevel}, HP EXP ${newHpExp}/${expToNextHpLevel}`
+            );
 
-        } catch (error) {
-            logger.error(`Error in incrementExpAndHpExpAndCheckLevelUpMemory: ${error}`);
-            throw error;
+            return {
+                simpleUser: hpLevelUpdatedUser,
+                levelUp,
+                level: currLevel,
+                exp: newExp,
+                expToNextLevel,
+                outstandingSkillPoints,
+                hpLevelUp,
+                hpLevel: currHpLevel,
+                hpExp: newHpExp,
+                expToNextHpLevel
+            };
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`Error in incrementExpAndHpExpAndCheckLevelUpMemory: ${error}`);
+        throw error;
+    }
 }
 
 export interface SkillUpgradeInput {
@@ -304,77 +297,74 @@ export async function applySkillUpgradesMemory(
     userId: string,
     upgrades: SkillUpgradeInput,
 ) {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(userId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.PROFILE_OPERATIONS, async () => {
-        try {
-            if (userMemoryManager.hasUser(userId)) {
-                const user = userMemoryManager.getUser(userId)!;
+        if (userMemoryManager.hasUser(userId)) {
+            const user = userMemoryManager.getUser(userId)!;
 
-                const entries = Object.entries(upgrades).filter(([_, v]) => v !== undefined);
-                if (entries.length === 0) {
-                    throw new Error(`No skill upgrades provided for user ${userId}`);
-                }
-
-                let totalPointsNeeded = 0;
-                const validKeys = ["str", "def", "dex", "luk", "magic", "hpLevel"] as const;
-                let isHpUpgrade = false;
-                let hpLevelToAdd = 0;
-
-                // Validate inputs and calculate totals
-                for (const [key, value] of entries) {
-                    if (!validKeys.includes(key as any)) {
-                        throw new Error(`Invalid skill key: "${key}"`);
-                    }
-                    if (typeof value !== "number" || value <= 0 || !Number.isInteger(value)) {
-                        throw new Error(
-                            `Invalid skill upgrade value for "${key}": must be a positive integer`
-                        );
-                    }
-                    totalPointsNeeded += value;
-                    if (key === "hpLevel") {
-                        isHpUpgrade = true;
-                        hpLevelToAdd = value;
-                    }
-                }
-
-                // Check if user has enough skill points
-                if (user.outstandingSkillPoints < totalPointsNeeded) {
-                    throw new Error(
-                        `User ${userId} has ${user.outstandingSkillPoints} skill points, but tried to use ${totalPointsNeeded}`
-                    );
-                }
-
-                // Apply upgrades to memory
-                for (const [key, value] of entries) {
-                    const currentValue = user[key as keyof typeof user] as number;
-                    userMemoryManager.updateUserField(userId, key as keyof FullUserData, currentValue + value);
-                }
-
-                // Handle HP level specific updates
-                if (isHpUpgrade) {
-                    userMemoryManager.updateUserField(userId, 'expHp', 0);
-                    userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextLevel(user.hpLevel + hpLevelToAdd));
-                }
-
-                // Deduct skill points
-                userMemoryManager.updateUserField(userId, 'outstandingSkillPoints', user.outstandingSkillPoints - totalPointsNeeded);
-
-                logger.info(
-                    `✅ Applied skill upgrades to user ${userId} (MEMORY) — used ${totalPointsNeeded} points`
-                );
-
-                await recalculateAndUpdateUserBaseStatsMemory(userId);
-
-                return { totalPointsUsed: totalPointsNeeded };
+            const entries = Object.entries(upgrades).filter(([_, v]) => v !== undefined);
+            if (entries.length === 0) {
+                throw new Error(`No skill upgrades provided for user ${userId}`);
             }
 
-            throw new Error('User memory manager not available');
+            let totalPointsNeeded = 0;
+            const validKeys = ["str", "def", "dex", "luk", "magic", "hpLevel"] as const;
+            let isHpUpgrade = false;
+            let hpLevelToAdd = 0;
 
-        } catch (error) {
-            logger.error(`Error in applySkillUpgradesOnlyMemory: ${error}`);
-            throw error;
+            // Validate inputs and calculate totals
+            for (const [key, value] of entries) {
+                if (!validKeys.includes(key as any)) {
+                    throw new Error(`Invalid skill key: "${key}"`);
+                }
+                if (typeof value !== "number" || value <= 0 || !Number.isInteger(value)) {
+                    throw new Error(
+                        `Invalid skill upgrade value for "${key}": must be a positive integer`
+                    );
+                }
+                totalPointsNeeded += value;
+                if (key === "hpLevel") {
+                    isHpUpgrade = true;
+                    hpLevelToAdd = value;
+                }
+            }
+
+            // Check if user has enough skill points
+            if (user.outstandingSkillPoints < totalPointsNeeded) {
+                throw new Error(
+                    `User ${userId} has ${user.outstandingSkillPoints} skill points, but tried to use ${totalPointsNeeded}`
+                );
+            }
+
+            // Apply upgrades to memory
+            for (const [key, value] of entries) {
+                const currentValue = user[key as keyof typeof user] as number;
+                userMemoryManager.updateUserField(userId, key as keyof FullUserData, currentValue + value);
+            }
+
+            // Handle HP level specific updates
+            if (isHpUpgrade) {
+                userMemoryManager.updateUserField(userId, 'expHp', 0);
+                userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextLevel(user.hpLevel + hpLevelToAdd));
+            }
+
+            // Deduct skill points
+            userMemoryManager.updateUserField(userId, 'outstandingSkillPoints', user.outstandingSkillPoints - totalPointsNeeded);
+
+            logger.info(
+                `✅ Applied skill upgrades to user ${userId} (MEMORY) — used ${totalPointsNeeded} points`
+            );
+
+            await recalculateAndUpdateUserBaseStatsMemory(userId);
+
+            return { totalPointsUsed: totalPointsNeeded };
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`Error in applySkillUpgradesOnlyMemory: ${error}`);
+        throw error;
+    }
 }

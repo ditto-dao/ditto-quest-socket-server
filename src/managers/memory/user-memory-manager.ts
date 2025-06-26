@@ -1,5 +1,5 @@
 import AsyncLock from "async-lock";
-import { prismaDeleteInventoryFromDB, prismaFetchUserInventory, prismaInsertInventoryToDB, prismaUpdateInventoryQuantitiesInDB } from "../../sql-services/equipment-inventory-service";
+import { prismaFetchUserInventory, prismaInsertInventoryToDB, prismaUpdateInventoryQuantitiesInDB } from "../../sql-services/equipment-inventory-service";
 import { prismaDeleteSlimesFromDB, prismaFetchSlimesForUser, prismaInsertSlimesToDB, SlimeWithTraits } from "../../sql-services/slime";
 import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
@@ -66,8 +66,8 @@ export class UserMemoryManager {
 	}
 
 	/**
-	   * Get or create a lock for a specific user
-	   */
+	 * Get or create a lock for a specific user
+	 */
 	getUserLock(userId: string): AsyncLock {
 		if (!this.userOperationLocks.has(userId)) {
 			this.userOperationLocks.set(userId, new AsyncLock());
@@ -252,42 +252,52 @@ export class UserMemoryManager {
 	/**
 	 * Update specific user fields without replacing entire object
 	 * Useful for atomic updates like gold, exp, etc.
+	 * NOW WITH PROPER LOCKING to prevent race conditions
 	 */
-	updateUserField<K extends keyof FullUserData>(
+	async updateUserField<K extends keyof FullUserData>(
 		userId: string,
 		field: K,
 		value: FullUserData[K]
-	): boolean {
-		const user = this.users.get(userId);
-		if (!user) {
-			return false;
-		}
+	): Promise<boolean> {
+		const userLock = this.getUserLock(userId);
 
-		user[field] = value;
-		this.markDirty(userId);
-		this.updateActivity(userId);
+		return await userLock.acquire('user_field_update', async () => {
+			const user = this.users.get(userId);
+			if (!user) {
+				return false;
+			}
 
-		return true;
+			user[field] = value;
+			this.markDirty(userId);
+			this.updateActivity(userId);
+
+			return true;
+		});
 	}
 
 	/**
 	 * Update nested combat fields
+	 * NOW WITH PROPER LOCKING to prevent race conditions
 	 */
-	updateUserCombatField<K extends keyof FullUserData['combat']>(
+	async updateUserCombatField<K extends keyof FullUserData['combat']>(
 		userId: string,
 		field: K,
 		value: FullUserData['combat'][K]
-	): boolean {
-		const user = this.users.get(userId);
-		if (!user || !user.combat) {
-			return false;
-		}
+	): Promise<boolean> {
+		const userLock = this.getUserLock(userId);
 
-		user.combat[field] = value;
-		this.markDirty(userId);
-		this.updateActivity(userId);
+		return await userLock.acquire('user_field_update', async () => {
+			const user = this.users.get(userId);
+			if (!user || !user.combat) {
+				return false;
+			}
 
-		return true;
+			user.combat[field] = value;
+			this.markDirty(userId);
+			this.updateActivity(userId);
+
+			return true;
+		});
 	}
 
 	/**
@@ -830,7 +840,7 @@ export class UserMemoryManager {
 			}
 
 			logger.info(`✅ Smart flush completed: ${createInventory.length} creates, ${updateInventoryIds.size} updates, 0 deletes - NO UPDATES SKIPPED`);
-			
+
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
 			throw err;

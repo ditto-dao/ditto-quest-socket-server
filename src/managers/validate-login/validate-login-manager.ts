@@ -24,7 +24,6 @@ import { generateNewMission, getUserMissionByUserId } from "../../sql-services/m
 import { mintEquipmentToUser } from "../../operations/equipment-inventory-operations";
 import { getUserDataWithSnapshot } from "../../operations/user-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
-import { prismaSaveUser } from "../../sql-services/user-service";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { mintItemToUser } from "../../operations/item-inventory-operations";
 import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../global-managers/global-managers";
@@ -414,77 +413,6 @@ export class ValidateLoginManager {
         } catch (error) {
             logger.error(`❌ Init data validation error: ${error}`);
             return false;
-        }
-    }
-
-    /**
-     * Handle user disconnect - cleanup across all memory managers
-     */
-    async handleUserDisconnect(userId: string) {
-        try {
-            if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
-            if (!this.activityLogMemoryManager) throw new Error(`Activity log memory manager not available`);
-
-            logger.info(`👋 User ${userId} disconnecting`);
-
-            // Check if user has any pending changes that need to be saved
-            if (this.userMemoryManager.hasUser(userId)) {
-                const isDirty = this.userMemoryManager.isDirty(userId);
-                const hasPending = this.userMemoryManager.hasPendingChanges(userId);
-
-                if (isDirty || hasPending) {
-                    logger.info(`💾 Flushing user ${userId} on disconnect (dirty: ${isDirty}, pending: ${hasPending})`);
-
-                    // Use targeted flushing based on what actually changed
-                    if (this.userMemoryManager.pendingCreateSlimes.has(userId) || this.userMemoryManager.pendingBurnSlimeIds.has(userId)) {
-                        await this.userMemoryManager.flushUserSlimes(userId);
-                        logger.debug(`🧪 Flushed slime changes for user ${userId}`);
-                    }
-
-                    if (this.userMemoryManager.pendingCreateInventory.has(userId) || this.userMemoryManager.pendingInventoryUpdates.has(userId)) {
-                        await this.userMemoryManager.flushUserInventory(userId);
-                        logger.debug(`📦 Flushed inventory changes for user ${userId}`);
-                    }
-
-                    // Flush any remaining user field changes
-                    if (isDirty) {
-                        const user = this.userMemoryManager.getUser(userId);
-                        if (user) {
-                            await prismaSaveUser(user);
-                            this.userMemoryManager.markClean(userId);
-                            logger.debug(`👤 Flushed user field changes for user ${userId}`);
-                        }
-                    }
-                }
-
-                // Remove from memory after grace period (allows quick reconnects)
-                setTimeout(() => {
-                    if (!this.userMemoryManager) throw new Error(`User memory manager not available`);
-
-                    if (this.userMemoryManager.hasUser(userId)) {
-                        // Check one more time if user is still inactive and clean
-                        const lastActivity = this.userMemoryManager.getLastActivity(userId);
-                        const now = Date.now();
-
-                        // Only remove if user hasn't been active and has no pending changes
-                        if (lastActivity && (now - lastActivity) > 25000 && !this.userMemoryManager.hasPendingChanges(userId)) {
-                            this.userMemoryManager.removeUser(userId);
-                            logger.info(`🗑️ Removed inactive user ${userId} from memory`);
-                        } else {
-                            logger.debug(`⏳ Keeping user ${userId} in memory (recently active or has pending changes)`);
-                        }
-                    }
-                }, 30000); // 30 second grace period
-            }
-
-            // Flush any pending activity logs
-            if (this.activityLogMemoryManager.hasUser(userId)) {
-                await this.activityLogMemoryManager.flushUser(userId);
-                logger.info(`📝 Flushed activity logs for user ${userId}`);
-            }
-
-        } catch (error) {
-            logger.error(`❌ Error handling disconnect for user ${userId}: ${error}`);
         }
     }
 }

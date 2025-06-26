@@ -15,22 +15,12 @@ export class SocketManager {
         this.dittoLedgerSocket = dittoLedgerSocket
     }
 
-    isUserSocketCached(userId: string): boolean {
-        if (!(userId in this.socketIdByUser)) {
-            return false;
+    isUserSocketCached(userId: string) {
+        if (userId in this.socketIdByUser) {
+            return true
+        } else {
+            return false
         }
-
-        const socketId = this.socketIdByUser[userId];
-        const socket = this.io.sockets.sockets.get(socketId);
-
-        // If socket (adapter) doesn't exist, clean up the cache
-        if (!socket) {
-            logger.warn(`Cleaning up stale socket cache for user ${userId} - adapter no longer exists`);
-            this.removeSocketIdCacheForUser(userId);
-            return false;
-        }
-
-        return true;
     }
 
     getSocketByUserId(userId: string) {
@@ -42,8 +32,7 @@ export class SocketManager {
 
         const socket = this.io.sockets.sockets.get(socketId);
         if (!socket) {
-            logger.warn(`Socket not found for user ${userId} (socketId: ${socketId}), cleaning up cache`);
-            this.removeSocketIdCacheForUser(userId);
+            logger.warn(`Socket not found for user ${userId} (socketId: ${socketId})`);
             return null;
         }
 

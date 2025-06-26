@@ -4,7 +4,6 @@ import { Prisma } from '@prisma/client';
 import { getNextInventoryOrderMemory } from './user-operations';
 import { getEquipmentById } from './equipment-operations';
 import { requireUserMemoryManager } from '../managers/global-managers/global-managers';
-import { USER_LOCK_KEYS } from './user-lock-keys';
 
 export async function doesUserOwnEquipments(
     telegramId: string,
@@ -63,34 +62,31 @@ export async function canUserMintEquipment(
     telegramId: string,
     equipmentId: number
 ): Promise<boolean> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.INVENTORY_OPERATIONS, async () => {
-        try {
-            if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
+        if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
 
-                if (!user.inventory) return true;
+            if (!user.inventory) return true;
 
-                // Check if equipment already exists (stacking allowed)
-                const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
-                if (existingItem) return true; // Already owned = no new slot needed
+            // Check if equipment already exists (stacking allowed)
+            const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
+            if (existingItem) return true; // Already owned = no new slot needed
 
-                // Check free slots using actual user data
-                const usedSlots = user.inventory.length;
-                const maxSlots = user.maxInventorySlots;
+            // Check free slots using actual user data
+            const usedSlots = user.inventory.length;
+            const maxSlots = user.maxInventorySlots;
 
-                return usedSlots < maxSlots;
-            }
-
-            throw new Error('User memory manager not available');
-
-        } catch (error) {
-            logger.error(`Error checking if user can mint equipment: ${error}`);
-            throw error;
+            return usedSlots < maxSlots;
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`Error checking if user can mint equipment: ${error}`);
+        throw error;
+    }
 }
 
 type PrismaEquipmentWithStatEffect = Prisma.InventoryGetPayload<{ include: { equipment: { include: { statEffect: true } } } }>;
@@ -101,75 +97,72 @@ export async function mintEquipmentToUser(
     equipmentId: number,
     quantity: number = 1
 ): Promise<PrismaEquipmentWithStatEffect> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.INVENTORY_OPERATIONS, async () => {
-        try {
-            if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
-                const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
+        if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
+            const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
 
-                logger.info(`🔍 DEBUG: Looking for equipment ${equipmentId} for user ${telegramId}, found: ${existingItem ? `ID ${existingItem.id} with qty ${existingItem.quantity}` : 'NONE'}`);
+            logger.info(`🔍 DEBUG: Looking for equipment ${equipmentId} for user ${telegramId}, found: ${existingItem ? `ID ${existingItem.id} with qty ${existingItem.quantity}` : 'NONE'}`);
 
-                if (existingItem) {
-                    // Update existing item quantity
-                    const newQuantity = existingItem.quantity + quantity;
-                    const updateSuccess = userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
+            if (existingItem) {
+                // Update existing item quantity
+                const newQuantity = existingItem.quantity + quantity;
+                const updateSuccess = userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
 
-                    if (!updateSuccess) {
-                        logger.error(`❌ Failed to update equipment ${equipmentId} quantity for user ${telegramId}`);
-                        throw new Error(`Equipment quantity update failed`);
-                    }
-
-                    logger.info(`📦 Updated equipment ${equipmentId} quantity for user ${telegramId} in memory (${existingItem.quantity} -> ${newQuantity})`);
-
-                    return {
-                        id: existingItem.id,
-                        itemId: existingItem.itemId,
-                        equipmentId: existingItem.equipmentId,
-                        quantity: newQuantity,
-                        order: existingItem.order,
-                        createdAt: existingItem.createdAt,
-                        equipment: existingItem.equipment
-                    } as PrismaEquipmentWithStatEffect;
-                } else {
-                    const uniqueId = -(Date.now() * 1000 + Math.floor(Math.random() * 10000) + equipmentId);
-
-                    // Create new inventory item with temporary ID
-                    const newInventoryItem: UserInventoryItem = {
-                        id: uniqueId,
-                        itemId: null,
-                        equipmentId: equipmentId,
-                        quantity: quantity,
-                        order: await getNextInventoryOrderMemory(telegramId),
-                        createdAt: new Date(),
-                        equipment: await getEquipmentById(equipmentId),
-                        item: null
-                    };
-
-                    userMemoryManager.appendInventory(telegramId, newInventoryItem);
-
-                    logger.info(`📦 Added new equipment ${equipmentId} (qty: ${quantity}) to user ${telegramId} in memory with temp ID ${uniqueId}`);
-
-                    return {
-                        id: newInventoryItem.id,
-                        itemId: newInventoryItem.itemId,
-                        equipmentId: newInventoryItem.equipmentId,
-                        quantity: newInventoryItem.quantity,
-                        order: newInventoryItem.order,
-                        createdAt: newInventoryItem.createdAt,
-                        equipment: newInventoryItem.equipment
-                    } as PrismaEquipmentWithStatEffect;
+                if (!updateSuccess) {
+                    logger.error(`❌ Failed to update equipment ${equipmentId} quantity for user ${telegramId}`);
+                    throw new Error(`Equipment quantity update failed`);
                 }
+
+                logger.info(`📦 Updated equipment ${equipmentId} quantity for user ${telegramId} in memory (${existingItem.quantity} -> ${newQuantity})`);
+
+                return {
+                    id: existingItem.id,
+                    itemId: existingItem.itemId,
+                    equipmentId: existingItem.equipmentId,
+                    quantity: newQuantity,
+                    order: existingItem.order,
+                    createdAt: existingItem.createdAt,
+                    equipment: existingItem.equipment
+                } as PrismaEquipmentWithStatEffect;
+            } else {
+                const uniqueId = -(Date.now() * 1000 + Math.floor(Math.random() * 10000) + equipmentId);
+
+                // Create new inventory item with temporary ID
+                const newInventoryItem: UserInventoryItem = {
+                    id: uniqueId,
+                    itemId: null,
+                    equipmentId: equipmentId,
+                    quantity: quantity,
+                    order: await getNextInventoryOrderMemory(telegramId),
+                    createdAt: new Date(),
+                    equipment: await getEquipmentById(equipmentId),
+                    item: null
+                };
+
+                userMemoryManager.appendInventory(telegramId, newInventoryItem);
+
+                logger.info(`📦 Added new equipment ${equipmentId} (qty: ${quantity}) to user ${telegramId} in memory with temp ID ${uniqueId}`);
+
+                return {
+                    id: newInventoryItem.id,
+                    itemId: newInventoryItem.itemId,
+                    equipmentId: newInventoryItem.equipmentId,
+                    quantity: newInventoryItem.quantity,
+                    order: newInventoryItem.order,
+                    createdAt: newInventoryItem.createdAt,
+                    equipment: newInventoryItem.equipment
+                } as PrismaEquipmentWithStatEffect;
             }
-
-            throw new Error('User memory manager not available');
-
-        } catch (error) {
-            logger.error(`Error minting equipment to user: ${error}`);
-            throw error;
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`Error minting equipment to user: ${error}`);
+        throw error;
+    }
 }
 
 export async function deleteEquipmentFromUserInventory(
@@ -177,72 +170,69 @@ export async function deleteEquipmentFromUserInventory(
     equipmentIds: number[],
     quantitiesToRemove: number[]
 ): Promise<PrismaEquipmentInventory[]> {
-    const userMemoryManager = requireUserMemoryManager();
-    const userLock = userMemoryManager.getUserLock(telegramId);
+    try {
+        const userMemoryManager = requireUserMemoryManager();
 
-    return await userLock.acquire(USER_LOCK_KEYS.INVENTORY_OPERATIONS, async () => {
-        try {
-            // Validate input lengths
-            if (equipmentIds.length !== quantitiesToRemove.length) {
-                throw new Error("Equipment IDs and quantities arrays must have the same length.");
-            }
+        // Validate input lengths
+        if (equipmentIds.length !== quantitiesToRemove.length) {
+            throw new Error("Equipment IDs and quantities arrays must have the same length.");
+        }
 
-            if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
-                const user = userMemoryManager.getUser(telegramId)!;
-                const updatedInventories: PrismaEquipmentInventory[] = [];
+        if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
+            const user = userMemoryManager.getUser(telegramId)!;
+            const updatedInventories: PrismaEquipmentInventory[] = [];
 
-                for (let i = 0; i < equipmentIds.length; i++) {
-                    const equipmentId = equipmentIds[i];
-                    const quantityToRemove = quantitiesToRemove[i];
+            for (let i = 0; i < equipmentIds.length; i++) {
+                const equipmentId = equipmentIds[i];
+                const quantityToRemove = quantitiesToRemove[i];
 
-                    const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
+                const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
 
-                    if (!existingItem) {
-                        logger.warn(`Equipment ${equipmentId} not found for user ${telegramId}`);
-                        continue;
-                    }
-
-                    if (existingItem.quantity > quantityToRemove) {
-                        // Reduce quantity
-                        const newQuantity = existingItem.quantity - quantityToRemove;
-                        userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
-
-                        updatedInventories.push({
-                            id: existingItem.id,
-                            itemId: existingItem.itemId,
-                            equipmentId: existingItem.equipmentId,
-                            quantity: newQuantity,
-                            order: existingItem.order,
-                            createdAt: existingItem.createdAt,
-                            equipment: existingItem.equipment
-                        } as PrismaEquipmentInventory);
-                    } else {
-                        // Remove completely
-                        userMemoryManager.removeInventory(telegramId, existingItem.id);
-
-                        updatedInventories.push({
-                            id: existingItem.id,
-                            itemId: existingItem.itemId,
-                            equipmentId: existingItem.equipmentId,
-                            quantity: 0,
-                            order: existingItem.order,
-                            createdAt: existingItem.createdAt,
-                            equipment: existingItem.equipment
-                        } as PrismaEquipmentInventory);
-                    }
+                if (!existingItem) {
+                    logger.warn(`Equipment ${equipmentId} not found for user ${telegramId}`);
+                    continue;
                 }
 
-                logger.info(`🗑️ Removed equipment from user ${telegramId} inventory in memory`);
-                return updatedInventories;
+                if (existingItem.quantity > quantityToRemove) {
+                    // Reduce quantity
+                    const newQuantity = existingItem.quantity - quantityToRemove;
+                    userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
+
+                    updatedInventories.push({
+                        id: existingItem.id,
+                        itemId: existingItem.itemId,
+                        equipmentId: existingItem.equipmentId,
+                        quantity: newQuantity,
+                        order: existingItem.order,
+                        createdAt: existingItem.createdAt,
+                        equipment: existingItem.equipment
+                    } as PrismaEquipmentInventory);
+                } else {
+                    // Remove completely
+                    userMemoryManager.removeInventory(telegramId, existingItem.id);
+
+                    updatedInventories.push({
+                        id: existingItem.id,
+                        itemId: existingItem.itemId,
+                        equipmentId: existingItem.equipmentId,
+                        quantity: 0,
+                        order: existingItem.order,
+                        createdAt: existingItem.createdAt,
+                        equipment: existingItem.equipment
+                    } as PrismaEquipmentInventory);
+                }
             }
 
-            throw new Error('User memory manager not available');
-
-        } catch (error) {
-            logger.error(`Error deleting equipment from user inventory: ${error}`);
-            throw error;
+            logger.info(`🗑️ Removed equipment from user ${telegramId} inventory in memory`);
+            return updatedInventories;
         }
-    });
+
+        throw new Error('User memory manager not available');
+
+    } catch (error) {
+        logger.error(`Error deleting equipment from user inventory: ${error}`);
+        throw error;
+    }
 }
 
 export type PrismaInventoryWithEquipment = Prisma.InventoryGetPayload<{ include: { equipment: true } }>;
