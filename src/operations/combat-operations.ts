@@ -143,7 +143,7 @@ export async function setLastBattleTimestamp(telegramId: string, timestamp: Date
 
         // Update in memory if available
         if (userMemoryManager.isReady() && userMemoryManager.hasUser(telegramId)) {
-            userMemoryManager.updateUserField(telegramId, 'lastBattleEndTimestamp', timestamp);
+            await userMemoryManager.updateUserField(telegramId, 'lastBattleEndTimestamp', timestamp);
         } else {
             throw new Error('User memory manager not available');
         }
@@ -245,13 +245,13 @@ export async function incrementExpAndHpExpAndCheckLevelUpMemory(
             expToNextHpLevel = calculateExpForNextLevel(currHpLevel + 1);
 
             // Update memory
-            userMemoryManager.updateUserField(telegramId, 'level', currLevel);
-            userMemoryManager.updateUserField(telegramId, 'exp', newExp);
-            userMemoryManager.updateUserField(telegramId, 'expToNextLevel', expToNextLevel);
-            userMemoryManager.updateUserField(telegramId, 'outstandingSkillPoints', outstandingSkillPoints);
-            userMemoryManager.updateUserField(telegramId, 'hpLevel', currHpLevel);
-            userMemoryManager.updateUserField(telegramId, 'expHp', newHpExp);
-            userMemoryManager.updateUserField(telegramId, 'expToNextHpLevel', expToNextHpLevel);
+            await userMemoryManager.updateUserField(telegramId, 'level', currLevel);
+            await userMemoryManager.updateUserField(telegramId, 'exp', newExp);
+            await userMemoryManager.updateUserField(telegramId, 'expToNextLevel', expToNextLevel);
+            await userMemoryManager.updateUserField(telegramId, 'outstandingSkillPoints', outstandingSkillPoints);
+            await userMemoryManager.updateUserField(telegramId, 'hpLevel', currHpLevel);
+            await userMemoryManager.updateUserField(telegramId, 'expHp', newHpExp);
+            await userMemoryManager.updateUserField(telegramId, 'expToNextHpLevel', expToNextHpLevel);
 
             let hpLevelUpdatedUser = null;
             if (hpLevelUp) {
@@ -340,17 +340,17 @@ export async function applySkillUpgradesMemory(
             // Apply upgrades to memory
             for (const [key, value] of entries) {
                 const currentValue = user[key as keyof typeof user] as number;
-                userMemoryManager.updateUserField(userId, key as keyof FullUserData, currentValue + value);
+                await userMemoryManager.updateUserField(userId, key as keyof FullUserData, currentValue + value);
             }
 
             // Handle HP level specific updates
             if (isHpUpgrade) {
-                userMemoryManager.updateUserField(userId, 'expHp', 0);
-                userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextLevel(user.hpLevel + hpLevelToAdd));
+                await userMemoryManager.updateUserField(userId, 'expHp', 0);
+                await userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextLevel(user.hpLevel + hpLevelToAdd));
             }
 
             // Deduct skill points
-            userMemoryManager.updateUserField(userId, 'outstandingSkillPoints', user.outstandingSkillPoints - totalPointsNeeded);
+            await userMemoryManager.updateUserField(userId, 'outstandingSkillPoints', user.outstandingSkillPoints - totalPointsNeeded);
 
             logger.info(
                 `✅ Applied skill upgrades to user ${userId} (MEMORY) — used ${totalPointsNeeded} points`

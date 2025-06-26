@@ -267,7 +267,7 @@ export class UserMemoryManager {
 	async updateUserField<K extends keyof FullUserData>(
 		userId: string,
 		field: K,
-		value: FullUserData[K]
+		value: FullUserData[K] | null
 	): Promise<boolean> {
 		const userLock = this.getUserLock(userId);
 
@@ -277,7 +277,8 @@ export class UserMemoryManager {
 				return false;
 			}
 
-			user[field] = value;
+			user[field] = value as FullUserData[K];
+
 			this.markDirty(userId);
 			this.updateActivity(userId);
 

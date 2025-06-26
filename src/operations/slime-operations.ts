@@ -6,7 +6,7 @@ import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes
 import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
 import { GACHA_PULL_ODDS_NERF, GACHA_PULL_ODDS } from '../utils/config';
 import { DOMINANT_TRAITS_GACHA_SPECS, HIDDEN_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits } from '../utils/gacha-odds';
-import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserBaseStatsMemory } from './user-operations';
+import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserStatsMemory } from './user-operations';
 import { getSlimeIDManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
 import { UserStatsWithCombat } from './combat-operations';
 
@@ -108,8 +108,8 @@ export async function burnSlimeMemory(
             // Check if the slime is currently equipped - unequip it first
             if (user.equippedSlimeId === slimeId) {
                 logger.info(`Unequipping slime ${slimeId} before burning for user ${telegramId}`);
-                userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
-                userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
+                await userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
+                await userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
             }
 
             // Remove the slime from memory (this also queues it for DB deletion)
@@ -191,14 +191,13 @@ export async function equipSlimeForUserMemory(
             }
 
             // Update equipped slime in memory
-            userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', slime.id);
-            userMemoryManager.updateUserField(telegramId, 'equippedSlime', slime);
+            await userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', slime.id);
+            await userMemoryManager.updateUserField(telegramId, 'equippedSlime', slime);
 
             logger.info(`User ${telegramId} equipped slime ${slime.id} (MEMORY).`);
 
             // Recalculate stats and immediately persist
-            const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
-            await userMemoryManager.flushAllUserUpdates(telegramId);
+            const result = await recalculateAndUpdateUserStatsMemory(telegramId);
 
             logger.info(`✅ Equipment persisted for user ${telegramId}`);
 
@@ -233,15 +232,15 @@ export async function unequipSlimeForUserMemory(
             }
 
             // Perform the unequip operation in memory
-            userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
-            userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
+            await userMemoryManager.updateUserField(telegramId, 'equippedSlimeId', null);
+            await userMemoryManager.updateUserField(telegramId, 'equippedSlime', null);
 
             logger.info(
                 `User ${telegramId} unequipped slime (MEMORY).`
             );
 
             // Recalculate stats in memory
-            const result = await recalculateAndUpdateUserBaseStatsMemory(telegramId);
+            const result = await recalculateAndUpdateUserStatsMemory(telegramId);
 
             return result;
         }

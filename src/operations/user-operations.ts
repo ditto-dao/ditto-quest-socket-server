@@ -129,9 +129,9 @@ export async function addFarmingExpMemory(telegramId: string, expToAdd: number):
             }
 
             // Update memory
-            userMemoryManager.updateUserField(telegramId, 'farmingExp', farmingExp);
-            userMemoryManager.updateUserField(telegramId, 'farmingLevel', farmingLevel);
-            userMemoryManager.updateUserField(telegramId, 'expToNextFarmingLevel', expToNextFarmingLevel);
+            await userMemoryManager.updateUserField(telegramId, 'farmingExp', farmingExp);
+            await userMemoryManager.updateUserField(telegramId, 'farmingLevel', farmingLevel);
+            await userMemoryManager.updateUserField(telegramId, 'expToNextFarmingLevel', expToNextFarmingLevel);
 
             logger.info(`✅ Added farming exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${farmingLevel}`);
 
@@ -176,9 +176,9 @@ export async function addCraftingExpMemory(telegramId: string, expToAdd: number)
             }
 
             // Update memory
-            userMemoryManager.updateUserField(telegramId, 'craftingExp', craftingExp);
-            userMemoryManager.updateUserField(telegramId, 'craftingLevel', craftingLevel);
-            userMemoryManager.updateUserField(telegramId, 'expToNextCraftingLevel', expToNextCraftingLevel);
+            await userMemoryManager.updateUserField(telegramId, 'craftingExp', craftingExp);
+            await userMemoryManager.updateUserField(telegramId, 'craftingLevel', craftingLevel);
+            await userMemoryManager.updateUserField(telegramId, 'expToNextCraftingLevel', expToNextCraftingLevel);
 
             logger.info(`✅ Added crafting exp for user ${telegramId} (MEMORY): +${expToAdd} exp, level ${craftingLevel}`);
 
@@ -386,7 +386,7 @@ export async function incrementUserGold(userId: string, amount: number): Promise
             throw new Error(`Insufficient gold balance (Balance: ${currentBalance} < ${Math.abs(amount)})`);
         }
 
-        userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
+        await userMemoryManager.updateUserField(userId, 'goldBalance', newBalance);
         userMemoryManager.markDirty(userId);
     } else {
         throw new Error('User memory manager not available');
@@ -492,22 +492,12 @@ export async function equipEquipmentForUserMemory(
             }
 
             // Update equipment ID in memory
-            userMemoryManager.updateUserField(telegramId, equipField, realInventoryId);
-
-            // Cast the equipment inventory to the expected type
+            await userMemoryManager.updateUserField(telegramId, equipField, realInventoryId);
             const typedEquipmentInventory = equipmentInventory as any;
-            userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, typedEquipmentInventory);
 
-            logger.info(
-                `User ${telegramId} equipped ${equipmentInventory.equipment.name} of type ${equipmentType} (MEMORY).`
-            );
+            await userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, typedEquipmentInventory);
 
-            // Recalculate stats in memory
             const result = await recalculateAndUpdateUserStatsMemory(telegramId);
-
-            // Critical for equipment changes - flush to ensure consistency
-            await userMemoryManager.flushAllUserUpdates(telegramId);
-            logger.info(`✅ Immediately persisted equipment change for user ${telegramId}`);
 
             return result;
         }
@@ -529,27 +519,20 @@ export async function unequipEquipmentForUserMemory(
     try {
         const userMemoryManager = requireUserMemoryManager();
 
-        // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
             const user = userMemoryManager.getUser(telegramId)!;
-
             const equipField = `${equipmentType}InventoryId` as keyof FullUserData;
 
-            // Check if the slot is already empty
             if (user[equipField] === null) {
-                logger.info(
-                    `User ${telegramId} already has nothing equipped in the ${equipmentType} slot (MEMORY).`
-                );
+                logger.info(`User ${telegramId} already has nothing equipped in the ${equipmentType} slot (MEMORY).`);
                 return;
             }
 
             // Perform the unequip operation in memory
-            userMemoryManager.updateUserField(telegramId, equipField, null);
-            userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, null);
+            await userMemoryManager.updateUserField(telegramId, equipField, null);
+            await userMemoryManager.updateUserField(telegramId, equipmentType as keyof FullUserData, null);
 
-            logger.info(
-                `User ${telegramId} unequipped equipment of type ${equipmentType} (MEMORY).`
-            );
+            logger.info(`User ${telegramId} unequipped equipment of type ${equipmentType} (MEMORY).`);
 
             // Recalculate stats in memory
             const result = await recalculateAndUpdateUserStatsMemory(telegramId);
@@ -558,11 +541,8 @@ export async function unequipEquipmentForUserMemory(
         }
 
         throw new Error('User memory manager not available');
-
     } catch (error) {
-        logger.error(
-            `Failed to unequip equipment of type ${equipmentType} for user ${telegramId} (MEMORY): ${error}`
-        );
+        logger.error(`Failed to unequip equipment of type ${equipmentType} for user ${telegramId} (MEMORY): ${error}`);
         throw error;
     }
 }
@@ -666,11 +646,13 @@ export async function recalculateAndUpdateUserStatsMemory(
             userCombat.cp = cp;
 
             // Update user and combat in memory
-            userMemoryManager.updateUserField(telegramId, 'doubleResourceOdds', user.doubleResourceOdds);
-            userMemoryManager.updateUserField(telegramId, 'skillIntervalReductionMultiplier', user.skillIntervalReductionMultiplier);
-            userMemoryManager.updateUserField(telegramId, 'combat', userCombat);
+            await userMemoryManager.updateUserField(telegramId, 'combat', userCombat);
 
             logger.info(`✅ Stats recalculated for user ${telegramId} (MEMORY)`);
+
+            // Right before the return:
+            logger.info(`🔍 RETURN DEBUG - weapon: ${(user.weapon as any)?.equipment?.name || 'null'}`);
+            logger.info(`🔍 RETURN DEBUG - weaponInventoryId: ${user.weaponInventoryId}`);
 
             return {
                 ...user,
@@ -722,7 +704,7 @@ export async function recalculateAndUpdateUserBaseStatsMemory(
 
             // Update base stats in memory
             for (const [key, value] of Object.entries(newBaseStats)) {
-                userMemoryManager.updateUserField(telegramId, key as keyof FullUserData, value);
+                await userMemoryManager.updateUserField(telegramId, key as keyof FullUserData, value);
             }
 
             // Recalculate full stats with equipment/slime bonuses
