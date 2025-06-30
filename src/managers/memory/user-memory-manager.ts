@@ -171,58 +171,92 @@ export class UserMemoryManager {
 
 		logger.info(`🔍 Checking for inactive users (cutoff: ${new Date(cutoffTime).toISOString()})`);
 
-		for (const [userId, lastActive] of this.lastActivity.entries()) {
+		// Create a snapshot of users to check to avoid iterator invalidation
+		const usersToCheck = Array.from(this.lastActivity.entries());
+
+		for (const [userId, lastActive] of usersToCheck) {
 			if (lastActive < cutoffTime) {
+				// CRITICAL: Use user lock to prevent conflicts with concurrent operations
+				const userLock = this.getUserLock(userId);
+
 				try {
-					// DOUBLE-CHECK: User might have become active during iteration
-					const currentActivity = this.lastActivity.get(userId);
-					if (!currentActivity || currentActivity >= cutoffTime) {
-						logger.info(`⏰ User ${userId} became active during auto-logout check - skipping`);
-						continue;
-					}
+					await userLock.acquire('logout', async () => {
+						// DOUBLE-CHECK: User might have become active during lock wait
+						const currentActivity = this.lastActivity.get(userId);
+						if (!currentActivity || currentActivity >= cutoffTime) {
+							logger.info(`⏰ User ${userId} became active during auto-logout lock - skipping`);
+							return;
+						}
 
-					logger.info(`⏰ Auto-logging out inactive user ${userId}`);
-					// STEP 1: Save idle activities first
-					if (idleManager) {
-						await idleManager.saveAllIdleActivitiesOnLogout(userId);
-					}
+						// TRIPLE-CHECK: User might have been removed from memory by another process
+						if (!this.hasUser(userId)) {
+							logger.info(`⏰ User ${userId} no longer in memory - skipping auto-logout`);
+							return;
+						}
 
-					// STEP 2: Flush activity logs
-					if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
-						await activityLogMemoryManager.flushUser(userId);
-						logger.debug(`✅ Flushed activity logs for auto-logout user ${userId}`);
-					}
+						logger.info(`⏰ Auto-logging out inactive user ${userId}`);
 
-					// STEP 3: Full logout (flush + snapshot + memory removal)
-					const logoutSuccess = await this.logoutUser(userId, true);
+						// STORE activity timestamp BEFORE logout (since logout removes it)
+						const activityAtLogout = this.lastActivity.get(userId);
 
-					if (!logoutSuccess) {
-						logger.warn(`⚠️ Auto-logout partially failed for user ${userId} - keeping in memory`);
-						continue; // Skip socket cleanup if logout failed
-					}
+						// STEP 1: Save idle activities first
+						if (idleManager) {
+							await idleManager.saveAllIdleActivitiesOnLogout(userId);
+						}
 
-					// FINAL CHECK: Don't clear socket cache if user reconnected
-					const finalActivity = this.lastActivity.get(userId);
-					if (finalActivity && finalActivity < cutoffTime) {
+						// STEP 2: Flush activity logs
+						if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
+							await activityLogMemoryManager.flushUser(userId);
+							logger.debug(`✅ Flushed activity logs for auto-logout user ${userId}`);
+						}
+
+						// STEP 3: Full logout (flush + snapshot + memory removal)
+						const logoutSuccess = await this.logoutUser(userId, true);
+
+						if (!logoutSuccess) {
+							logger.warn(`⚠️ Auto-logout partially failed for user ${userId} - keeping in memory`);
+							return; // Skip socket cleanup if logout failed
+						}
+
+						// FINAL CHECK: Only clear socket if user was actually inactive at logout time
+						// (Use stored timestamp since user is no longer in memory)
+						if (activityAtLogout && activityAtLogout < cutoffTime) {
+							if (socketManager) {
+								socketManager.removeSocketIdCacheForUser(userId);
+							}
+							if (dittoLedgerSocket) {
+								dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+							}
+
+							loggedOut++;
+							logger.info(`✅ Auto-logged out inactive user ${userId}`);
+						} else {
+							logger.info(`⚠️ User ${userId} activity unclear - skipped socket cleanup`);
+						}
+					});
+
+				} catch (error) {
+					logger.error(`❌ Failed to auto-logout user ${userId}: ${error}`);
+
+					// ENHANCED Emergency cleanup - try to preserve data
+					try {
+						// First attempt: Generate emergency snapshot if user still in memory
+						const user = this.getUser(userId);
+						if (user) {
+							const snapshotRedisManager = requireSnapshotRedisManager();
+							await snapshotRedisManager.storeSnapshot(userId, user);
+							logger.info(`🚨 Generated emergency snapshot for failed auto-logout: ${userId}`);
+						}
+
+						// Then clean up socket cache
 						if (socketManager) {
 							socketManager.removeSocketIdCacheForUser(userId);
 						}
 						if (dittoLedgerSocket) {
 							dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
 						}
-					} else {
-						logger.info(`⚠️ User ${userId} reconnected during auto-logout - keeping socket cache`);
-					}
-
-					loggedOut++;
-					logger.info(`✅ Auto-logged out inactive user ${userId}`);
-
-				} catch (error) {
-					logger.error(`❌ Failed to auto-logout user ${userId}: ${error}`);
-
-					// Emergency cleanup - at least try to remove from socket cache
-					if (socketManager) {
-						socketManager.removeSocketIdCacheForUser(userId);
+					} catch (emergencyErr) {
+						logger.error(`💥 Emergency cleanup failed for user ${userId}: ${emergencyErr}`);
 					}
 				}
 			}
@@ -949,133 +983,137 @@ export class UserMemoryManager {
 	 * FIXED: Always generate snapshot from memory, keep user in memory if DB save fails
 	 */
 	async logoutUser(userId: string, removeFromMemory: boolean = false): Promise<boolean> {
-		try {
-			logger.info(`👋 User ${userId} logging out`);
+		const userLock = this.getUserLock(userId);
 
-			// CRITICAL: Get current memory user BEFORE any operations
-			const currentMemoryUser = this.getUser(userId);
-			if (!currentMemoryUser) {
-				logger.error(`❌ User ${userId} not found in memory for logout`);
-				return false;
-			}
-
-			// CRITICAL: Check if user has pending inventory changes BEFORE flushing
-			const hasPendingInventory = this.pendingCreateInventory.has(userId) ||
-				this.pendingInventoryUpdates.has(userId);
-
-			if (hasPendingInventory) {
-				logger.info(`📦 User ${userId} has pending inventory changes - forcing flush before logout`);
-			}
-
-			// STEP 1: ALWAYS generate snapshot from current memory FIRST
-			// This ensures we never lose data even if database save fails
-			const snapshotRedisManager = requireSnapshotRedisManager();
-
+		return await userLock.acquire('logout', async () => {
 			try {
-				await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser);
-				logger.info(`📸 ✅ Generated snapshot from MEMORY for user ${userId} (BEFORE DB flush)`);
-			} catch (snapshotError) {
-				logger.error(`❌ CRITICAL: Failed to generate snapshot from memory for ${userId}: ${snapshotError}`);
-				// This is critical - if we can't snapshot, don't proceed with logout
-				return false;
-			}
+				logger.info(`👋 User ${userId} logging out`);
 
-			// STEP 2: Attempt to flush to database
-			let databaseSaveSuccessful = false;
-			try {
-				await this.flushAllUserUpdates(userId);
+				// CRITICAL: Get current memory user BEFORE any operations
+				const currentMemoryUser = this.getUser(userId);
+				if (!currentMemoryUser) {
+					logger.error(`❌ User ${userId} not found in memory for logout`);
+					return false;
+				}
 
-				// VERIFY the flush actually completed for inventory
+				// CRITICAL: Check if user has pending inventory changes BEFORE flushing
+				const hasPendingInventory = this.pendingCreateInventory.has(userId) ||
+					this.pendingInventoryUpdates.has(userId);
+
 				if (hasPendingInventory) {
-					const stillHasPending = this.pendingCreateInventory.has(userId) || this.pendingInventoryUpdates.has(userId);
-					if (stillHasPending) {
-						throw new Error(`Inventory flush incomplete - still has pending operations`);
+					logger.info(`📦 User ${userId} has pending inventory changes - forcing flush before logout`);
+				}
+
+				// STEP 1: ALWAYS generate snapshot from current memory FIRST
+				// This ensures we never lose data even if database save fails
+				const snapshotRedisManager = requireSnapshotRedisManager();
+
+				try {
+					await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser);
+					logger.info(`📸 ✅ Generated snapshot from MEMORY for user ${userId} (BEFORE DB flush)`);
+				} catch (snapshotError) {
+					logger.error(`❌ CRITICAL: Failed to generate snapshot from memory for ${userId}: ${snapshotError}`);
+					// This is critical - if we can't snapshot, don't proceed with logout
+					return false;
+				}
+
+				// STEP 2: Attempt to flush to database
+				let databaseSaveSuccessful = false;
+				try {
+					await this.flushAllUserUpdates(userId);
+
+					// VERIFY the flush actually completed for inventory
+					if (hasPendingInventory) {
+						const stillHasPending = this.pendingCreateInventory.has(userId) || this.pendingInventoryUpdates.has(userId);
+						if (stillHasPending) {
+							throw new Error(`Inventory flush incomplete - still has pending operations`);
+						}
+						logger.info(`✅ Verified inventory flush completed for user ${userId}`);
 					}
-					logger.info(`✅ Verified inventory flush completed for user ${userId}`);
+
+					await new Promise(resolve => setTimeout(resolve, 150)); // Extra delay for memory updates
+
+					databaseSaveSuccessful = true;
+					logger.info(`✅ Successfully saved user ${userId} to database`);
+
+					// STEP 3: Generate FRESH snapshot from updated memory after successful DB save
+					const updatedMemoryUser = this.getUser(userId);
+					if (updatedMemoryUser) {
+						await snapshotRedisManager.storeSnapshot(userId, updatedMemoryUser);
+						logger.info(`📸 ✅ Updated snapshot from memory after successful DB save for user ${userId}`);
+					}
+
+				} catch (flushError) {
+					logger.error(`❌ CRITICAL: Failed to flush user data during logout for ${userId}: ${flushError}`);
+					databaseSaveSuccessful = false;
+
+					// DATABASE SAVE FAILED - but we already have snapshot from memory!
+					// Keep user in memory and mark as dirty for retry
+					if (removeFromMemory) {
+						logger.warn(`⚠️ Database save failed - keeping user ${userId} in memory for retry`);
+						this.markDirty(userId); // Ensure they get retried later
+						return false; // Don't remove from memory
+					}
 				}
 
-				await new Promise(resolve => setTimeout(resolve, 150)); // Extra delay for memory updates
-
-				databaseSaveSuccessful = true;
-				logger.info(`✅ Successfully saved user ${userId} to database`);
-
-				// STEP 3: Generate FRESH snapshot from updated memory after successful DB save
-				const updatedMemoryUser = this.getUser(userId);
-				if (updatedMemoryUser) {
-					await snapshotRedisManager.storeSnapshot(userId, updatedMemoryUser);
-					logger.info(`📸 ✅ Updated snapshot from memory after successful DB save for user ${userId}`);
-				}
-
-			} catch (flushError) {
-				logger.error(`❌ CRITICAL: Failed to flush user data during logout for ${userId}: ${flushError}`);
-				databaseSaveSuccessful = false;
-
-				// DATABASE SAVE FAILED - but we already have snapshot from memory!
-				// Keep user in memory and mark as dirty for retry
+				// STEP 4: Handle memory cleanup based on success
 				if (removeFromMemory) {
-					logger.warn(`⚠️ Database save failed - keeping user ${userId} in memory for retry`);
-					this.markDirty(userId); // Ensure they get retried later
-					return false; // Don't remove from memory
-				}
-			}
+					if (databaseSaveSuccessful) {
+						// Database save succeeded - safe to remove from memory
+						this.pendingCreateSlimes.delete(userId);
+						this.pendingBurnSlimeIds.delete(userId);
+						this.pendingCreateInventory.delete(userId);
+						this.pendingInventoryUpdates.delete(userId);
+						this.pendingInventoryDeletes.delete(userId);
+						this.inventoryIdRemap.delete(userId);
 
-			// STEP 4: Handle memory cleanup based on success
-			if (removeFromMemory) {
-				if (databaseSaveSuccessful) {
-					// Database save succeeded - safe to remove from memory
-					this.pendingCreateSlimes.delete(userId);
-					this.pendingBurnSlimeIds.delete(userId);
-					this.pendingCreateInventory.delete(userId);
-					this.pendingInventoryUpdates.delete(userId);
-					this.pendingInventoryDeletes.delete(userId);
-					this.inventoryIdRemap.delete(userId);
+						// Final safety check before removing from memory
+						if (this.isDirty(userId)) {
+							logger.warn(`⚠️ User ${userId} still marked as dirty after flush - keeping in memory`);
+							return false;
+						}
 
-					// Final safety check before removing from memory
-					if (this.isDirty(userId)) {
-						logger.warn(`⚠️ User ${userId} still marked as dirty after flush - keeping in memory`);
+						this.removeUser(userId);
+						logger.info(`🗑️ Removed user ${userId} from memory after successful logout`);
+					} else {
+						// Database save failed - keep in memory for retry
+						logger.warn(`⚠️ Keeping user ${userId} in memory - database save failed but snapshot exists`);
+						this.markDirty(userId);
 						return false;
 					}
-
-					this.removeUser(userId);
-					logger.info(`🗑️ Removed user ${userId} from memory after successful logout`);
 				} else {
-					// Database save failed - keep in memory for retry
-					logger.warn(`⚠️ Keeping user ${userId} in memory - database save failed but snapshot exists`);
-					this.markDirty(userId);
-					return false;
+					// Not removing from memory anyway
+					if (databaseSaveSuccessful) {
+						this.markClean(userId);
+					} else {
+						this.markDirty(userId); // Keep dirty for retry
+					}
 				}
-			} else {
-				// Not removing from memory anyway
-				if (databaseSaveSuccessful) {
-					this.markClean(userId);
-				} else {
-					this.markDirty(userId); // Keep dirty for retry
+
+				return databaseSaveSuccessful;
+
+			} catch (error) {
+				logger.error(`❌ Failed to handle logout for user ${userId}: ${error}`);
+
+				// Emergency: Try to at least generate snapshot from memory if we still have the user
+				try {
+					const emergencyUser = this.getUser(userId);
+					if (emergencyUser) {
+						const snapshotRedisManager = requireSnapshotRedisManager();
+						await snapshotRedisManager.storeSnapshot(userId, emergencyUser);
+						logger.info(`🚨 Generated emergency snapshot from memory for ${userId}`);
+
+						// Keep in memory and mark dirty for retry
+						this.markDirty(userId);
+						return false;
+					}
+				} catch (emergencyErr) {
+					logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
 				}
+
+				return false;
 			}
-
-			return databaseSaveSuccessful;
-
-		} catch (error) {
-			logger.error(`❌ Failed to handle logout for user ${userId}: ${error}`);
-
-			// Emergency: Try to at least generate snapshot from memory if we still have the user
-			try {
-				const emergencyUser = this.getUser(userId);
-				if (emergencyUser) {
-					const snapshotRedisManager = requireSnapshotRedisManager();
-					await snapshotRedisManager.storeSnapshot(userId, emergencyUser);
-					logger.info(`🚨 Generated emergency snapshot from memory for ${userId}`);
-
-					// Keep in memory and mark dirty for retry
-					this.markDirty(userId);
-					return false;
-				}
-			} catch (emergencyErr) {
-				logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
-			}
-
-			return false;
-		}
+		});
 	}
 
 	/**
