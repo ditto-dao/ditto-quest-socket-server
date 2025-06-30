@@ -85,20 +85,18 @@ export function requireSnapshotRedisManager(): SnapshotRedisManager {
  * Cleanup all managers (for graceful shutdown)
  */
 export async function cleanupGlobalManagers(): Promise<void> {
-    logger.info('🧹 Cleaning up global managers...');
+    logger.info('🧹 Final cleanup of global managers...');
 
     try {
-        // Flush all pending user updates
+        // Only clear memory - flushing and snapshots should be done before this
         if (userMemoryManager) {
-            logger.info("💾 Flushing all pending user updates...");
-            await userMemoryManager.flushAllDirtyUsers();
+            logger.info("🗑️ Clearing user memory manager...");
             userMemoryManager.clear();
         }
 
-        // Flush all activity logs
         if (activityLogMemoryManager) {
-            logger.info("📝 Flushing activity logs...");
-            await activityLogMemoryManager.flushAll();
+            logger.info("🗑️ Clearing activity log memory manager...");
+            activityLogMemoryManager.clear();
         }
 
         logger.info('✅ Global managers cleanup complete');

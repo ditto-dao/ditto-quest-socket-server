@@ -1317,7 +1317,7 @@ export async function prismaBatchSaveUsers(users: FullUserData[]): Promise<{
             successful.push(userData.telegramId);
             logger.debug(`✅ Saved user ${userData.telegramId} to database (equipped slime: ${userData.equippedSlimeId})`);
         } catch (error) {
-            logger.error(`❌ Failed to save user ${userData.telegramId} to database:`, error);
+            logger.error(`❌ Failed to save user ${userData.telegramId} to database: ${error}`);
             failed.push(userData.telegramId);
         }
     }
@@ -1335,7 +1335,7 @@ export async function prismaSaveUser(userData: FullUserData): Promise<boolean> {
         const result = await prismaBatchSaveUsers([userData]);
         return result.successful.length === 1;
     } catch (error) {
-        logger.error(`Failed to save user ${userData.telegramId}:`, error);
+        logger.error(`Failed to save user ${userData.telegramId}: ${error}`);
         return false;
     }
 }

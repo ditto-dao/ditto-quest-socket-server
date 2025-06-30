@@ -34,6 +34,7 @@ export class UserMemoryManager {
 
 	pendingCreateInventory: Map<string, UserInventoryItem[]> = new Map();
 	pendingInventoryUpdates = new Map<string, Set<number>>(); // userId -> Set<inventoryId>
+	pendingInventoryDeletes: Map<string, number[]> = new Map();
 	inventoryIdRemap: Map<string, Map<number, number>> = new Map();
 
 	private userOperationLocks: Map<string, AsyncLock> = new Map();
@@ -318,7 +319,8 @@ export class UserMemoryManager {
 		return this.pendingCreateSlimes.has(userId) ||
 			this.pendingBurnSlimeIds.has(userId) ||
 			this.pendingCreateInventory.has(userId) ||
-			this.pendingInventoryUpdates.has(userId);
+			this.pendingInventoryUpdates.has(userId) ||
+			this.pendingInventoryDeletes.has(userId);
 	}
 
 	/**
@@ -460,19 +462,19 @@ export class UserMemoryManager {
 
 		if (!user.inventory) user.inventory = [];
 
-		// Check if there's already an item of the same type
+		// SAFER CONSOLIDATION: Only consolidate with REAL IDs, avoid temp ID conflicts
 		let existingItem: UserInventoryItem | null = null;
 
 		if (inventoryItem.equipmentId) {
-			// Look for existing equipment of same type
 			existingItem = user.inventory.find(inv =>
+				inv.id > 0 && // ONLY REAL IDs for consolidation
 				inv.equipmentId === inventoryItem.equipmentId &&
 				inv.itemId === null &&
 				inv.quantity > 0
 			) || null;
 		} else if (inventoryItem.itemId) {
-			// Look for existing item of same type
 			existingItem = user.inventory.find(inv =>
+				inv.id > 0 && // ONLY REAL IDs for consolidation
 				inv.itemId === inventoryItem.itemId &&
 				inv.equipmentId === null &&
 				inv.quantity > 0
@@ -480,13 +482,12 @@ export class UserMemoryManager {
 		}
 
 		if (existingItem) {
-			// Add to existing item instead of creating new entry
+			// CONSOLIDATE with existing REAL item
 			const oldQuantity = existingItem.quantity;
 			const newQuantity = oldQuantity + inventoryItem.quantity;
-
 			existingItem.quantity = newQuantity;
 
-			// Track this as a quantity update instead of a create
+			// Track for database update
 			if (!this.pendingInventoryUpdates.has(userId)) {
 				this.pendingInventoryUpdates.set(userId, new Set());
 			}
@@ -495,21 +496,86 @@ export class UserMemoryManager {
 			this.markDirty(userId);
 			this.updateActivity(userId);
 
-			logger.info(`📦 Consolidated inventory: Added ${inventoryItem.quantity} to existing ${existingItem.equipmentId ? 'equipment' : 'item'} ${existingItem.equipmentId || existingItem.itemId} (${oldQuantity} -> ${newQuantity}) for user ${userId}`);
+			logger.info(`📦 Consolidated with real ID ${existingItem.id}: ${oldQuantity} + ${inventoryItem.quantity} = ${newQuantity} for user ${userId}`);
 			return true;
 		} else {
-			// 🔥 CREATE NEW: No existing item found, create new entry
+			// CREATE NEW entry (no existing item to consolidate with)
 			user.inventory.push(inventoryItem);
 
-			// Queue for DB insert
-			if (!this.pendingCreateInventory.has(userId)) this.pendingCreateInventory.set(userId, []);
+			if (!this.pendingCreateInventory.has(userId)) {
+				this.pendingCreateInventory.set(userId, []);
+			}
 			this.pendingCreateInventory.get(userId)!.push(inventoryItem);
 
 			this.markDirty(userId);
 			this.updateActivity(userId);
-			logger.debug(`📦 Appended new inventory ID ${inventoryItem.id} (pending) to user ${userId}`);
+
+			logger.info(`📦 Created new inventory entry with ID ${inventoryItem.id} for user ${userId}`);
 			return true;
 		}
+	}
+
+	/**
+	 * Smart removal that handles temp vs real IDs
+	 */
+	removeInventory(userId: string, inventoryId: number): boolean {
+		const user = this.users.get(userId);
+		if (!user || !user.inventory) return false;
+
+		const itemIndex = user.inventory.findIndex(inv => inv.id === inventoryId);
+		if (itemIndex === -1) {
+			logger.error(`❌ Inventory item ${inventoryId} not found for user ${userId}`);
+			return false;
+		}
+
+		user.inventory.splice(itemIndex, 1);
+
+		if (inventoryId < 0) {
+			// TEMP ID: Remove from pending creates, don't queue for delete
+			const pendingCreates = this.pendingCreateInventory.get(userId) || [];
+			const createIndex = pendingCreates.findIndex(item => item.id === inventoryId);
+			if (createIndex !== -1) {
+				pendingCreates.splice(createIndex, 1);
+				logger.info(`🗑️ Cancelled pending create for temp ID ${inventoryId} for user ${userId}`);
+
+				// Clean up if no more pending creates
+				if (pendingCreates.length === 0) {
+					this.pendingCreateInventory.delete(userId);
+				}
+			}
+
+			// Also remove from pending updates if it exists
+			const pendingUpdates = this.pendingInventoryUpdates.get(userId);
+			if (pendingUpdates && pendingUpdates.has(inventoryId)) {
+				pendingUpdates.delete(inventoryId);
+				logger.info(`🗑️ Cancelled pending update for temp ID ${inventoryId} for user ${userId}`);
+
+				// Clean up if no more pending updates
+				if (pendingUpdates.size === 0) {
+					this.pendingInventoryUpdates.delete(userId);
+				}
+			}
+		} else {
+			// REAL ID: Queue for database deletion
+			if (!this.pendingInventoryDeletes.has(userId)) {
+				this.pendingInventoryDeletes.set(userId, []);
+			}
+			this.pendingInventoryDeletes.get(userId)!.push(inventoryId);
+			logger.info(`🗑️ Queued real ID ${inventoryId} for deletion for user ${userId}`);
+
+			// CRITICAL: Remove from pending updates if it exists
+			const pendingUpdates = this.pendingInventoryUpdates.get(userId);
+			if (pendingUpdates && pendingUpdates.has(inventoryId)) {
+				pendingUpdates.delete(inventoryId);
+				logger.info(`🗑️ Cancelled conflicting update for deleted ID ${inventoryId} for user ${userId}`);
+			}
+		}
+
+		this.markDirty(userId);
+		this.updateActivity(userId);
+
+		logger.info(`🗑️ Removed inventory ID ${inventoryId} from user ${userId} memory`);
+		return true;
 	}
 
 	/**
@@ -530,45 +596,35 @@ export class UserMemoryManager {
 		}
 
 		const oldQuantity = inventoryItem.quantity;
-		inventoryItem.quantity = newQuantity;
 
-		// 🔥 NEW: Track this quantity update for DB persistence
-		if (!this.pendingInventoryUpdates.has(userId)) {
-			this.pendingInventoryUpdates.set(userId, new Set());
+		if (newQuantity <= 0) {
+			// ✅ REMOVE completely (handles temp vs real ID properly)
+			return this.removeInventory(userId, inventoryId);
+		} else {
+			// ✅ UPDATE quantity
+			inventoryItem.quantity = newQuantity;
+
+			if (inventoryId < 0) {
+				// TEMP ID: Update the pending create entry
+				const pendingCreates = this.pendingCreateInventory.get(userId) || [];
+				const createItem = pendingCreates.find(item => item.id === inventoryId);
+				if (createItem) {
+					createItem.quantity = newQuantity;
+					logger.info(`📦 Updated pending create temp ID ${inventoryId} quantity: ${oldQuantity} -> ${newQuantity} for user ${userId}`);
+				}
+			} else {
+				// REAL ID: Track for database update
+				if (!this.pendingInventoryUpdates.has(userId)) {
+					this.pendingInventoryUpdates.set(userId, new Set());
+				}
+				this.pendingInventoryUpdates.get(userId)!.add(inventoryId);
+				logger.info(`📦 Queued real ID ${inventoryId} for update: ${oldQuantity} -> ${newQuantity} for user ${userId}`);
+			}
+
+			this.markDirty(userId);
+			this.updateActivity(userId);
+			return true;
 		}
-		this.pendingInventoryUpdates.get(userId)!.add(inventoryId);
-
-		this.markDirty(userId);
-		this.updateActivity(userId);
-
-		logger.info(`📦 Updated inventory ID ${inventoryId} quantity for user ${userId}: ${oldQuantity} -> ${newQuantity} (equipmentId: ${inventoryItem.equipmentId}, itemId: ${inventoryItem.itemId}) [TRACKED FOR DB UPDATE]`);
-		return true;
-	}
-
-
-	/**
-	 * Remove inventory item from user's memory by ID
-	 */
-	removeInventory(userId: string, inventoryId: number): boolean {
-		const user = this.users.get(userId);
-		if (!user || !user.inventory) return false;
-
-		const inventoryItem = user.inventory.find(inv => inv.id === inventoryId);
-		if (!inventoryItem) return false;
-
-		// Set quantity to 0 instead of removing from memory
-		inventoryItem.quantity = 0;
-
-		// Track as quantity update 
-		if (!this.pendingInventoryUpdates.has(userId)) {
-			this.pendingInventoryUpdates.set(userId, new Set());
-		}
-		this.pendingInventoryUpdates.get(userId)!.add(inventoryId);
-
-		this.markDirty(userId);
-		this.updateActivity(userId);
-		logger.debug(`🗑️ Set inventory ID ${inventoryId} quantity to 0 (pending update) for user ${userId}`);
-		return true;
 	}
 
 	/**
@@ -654,31 +710,28 @@ export class UserMemoryManager {
 		if (createSlimes.length === 0 && burnSlimeIds.length === 0) return;
 
 		try {
-			// Insert slimes with their real IDs
+			// Sync to DB
 			if (createSlimes.length > 0) {
 				await prismaInsertSlimesToDB(userId, createSlimes);
 				logger.debug(`💾 Inserted ${createSlimes.length} slimes for ${userId}`);
 			}
-
-			// Delete slimes (using real IDs, no remapping needed)
 			if (burnSlimeIds.length > 0) {
 				await prismaDeleteSlimesFromDB(userId, burnSlimeIds);
 				logger.debug(`🗑️ Deleted ${burnSlimeIds.length} slimes for ${userId}`);
 			}
 
-			// Reload fresh slimes from DB
-			const finalSlimes = await prismaFetchSlimesForUser(userId);
-			this.updateSlimes(userId, finalSlimes);
-
-			// Clear pending operations
+			// Clean up - DON'T reload from DB
 			this.pendingCreateSlimes.delete(userId);
 			this.pendingBurnSlimeIds.delete(userId);
 
-			// Mark clean if no other pending changes
 			if (!this.hasPendingChanges(userId)) {
 				this.markClean(userId);
 			}
 
+			const user = this.users.get(userId);
+			if (user) {
+				logger.info(`✅ Slime flush completed - memory count: ${user.slimes.length} slimes`);
+			}
 		} catch (err) {
 			logger.error(`❌ Slime flush failed for user ${userId}: ${err}`);
 			throw err;
@@ -692,147 +745,69 @@ export class UserMemoryManager {
 	async flushUserInventory(userId: string): Promise<void> {
 		const createInventory = this.pendingCreateInventory.get(userId) || [];
 		const updateInventoryIds = this.pendingInventoryUpdates.get(userId) || new Set();
+		const deleteInventoryIds = this.pendingInventoryDeletes.get(userId) || [];
 
-		if (createInventory.length === 0 && updateInventoryIds.size === 0) {
+		if (createInventory.length === 0 && updateInventoryIds.size === 0 && deleteInventoryIds.length === 0) {
 			logger.debug(`📦 No pending inventory changes for user ${userId}`);
 			return;
 		}
 
-		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${updateInventoryIds.size} updates`);
+		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${updateInventoryIds.size} updates, ${deleteInventoryIds.length} deletes`);
 
 		try {
-			let remap = new Map<number, number>();
+			// STEP 1: Process deletes FIRST (only real IDs)
+			if (deleteInventoryIds.length > 0) {
+				// FILTER: Only delete real IDs (positive), skip any temp IDs that might have leaked in
+				const realDeleteIds = deleteInventoryIds.filter(id => id > 0);
+				if (realDeleteIds.length > 0) {
+					await prismaDeleteInventoryFromDB(userId, realDeleteIds);
+					logger.info(`🗑️ Deleted ${realDeleteIds.length} real inventory items`);
+				}
+				if (realDeleteIds.length !== deleteInventoryIds.length) {
+					logger.warn(`⚠️ Filtered out ${deleteInventoryIds.length - realDeleteIds.length} temp IDs from delete queue`);
+				}
+			}
 
-			// STEP 1: Process deletes FIRST (for items with qty 0)
-			const itemsToDelete: number[] = [];
-			const itemsToUpdate: UserInventoryItem[] = [];
+			// STEP 2: Handle creates (only items that still exist in memory)
+			if (createInventory.length > 0) {
+				const user = this.users.get(userId);
+				if (user && user.inventory) {
+					// FILTER: Only create items that still exist in memory
+					const validCreates = createInventory.filter(createItem =>
+						user.inventory.some(memItem => memItem.id === createItem.id)
+					);
 
+					if (validCreates.length > 0) {
+						await prismaInsertInventoryToDB(userId, validCreates);
+						logger.info(`💾 Inserted ${validCreates.length} valid inventory items`);
+					}
+
+					if (validCreates.length !== createInventory.length) {
+						logger.info(`🧹 Skipped ${createInventory.length - validCreates.length} cancelled creates`);
+					}
+				} else {
+					logger.warn(`⚠️ User ${userId} not found in memory during create flush`);
+				}
+			}
+
+			// STEP 3: Handle updates (only real IDs)
 			if (updateInventoryIds.size > 0) {
 				const user = this.users.get(userId);
 				if (user && user.inventory) {
-					// First pass: identify deletes (these use real IDs, no mapping needed)
+					const itemsToUpdate: UserInventoryItem[] = [];
+
 					for (const updateId of updateInventoryIds) {
-						if (updateId > 0) { // Only process real IDs for deletes
+						if (updateId > 0) { // ONLY REAL IDs
 							const memoryItem = user.inventory.find(inv => inv.id === updateId);
-							if (memoryItem && memoryItem.quantity === 0) {
-								itemsToDelete.push(updateId);
-								logger.info(`🗑️ Will DELETE ${memoryItem.equipmentId ? 'equipment' : 'item'} ${memoryItem.equipmentId || memoryItem.itemId} (quantity = 0)`);
-							}
-						}
-					}
-
-					// Execute deletes first
-					if (itemsToDelete.length > 0) {
-						await prismaDeleteInventoryFromDB(userId, itemsToDelete);
-						logger.info(`🗑️ Deleted ${itemsToDelete.length} inventory items with zero quantity`);
-					}
-				}
-			}
-
-			// STEP 2: Handle creates to establish ID mappings
-			if (createInventory.length > 0) {
-				await prismaInsertInventoryToDB(userId, createInventory);
-				logger.debug(`💾 Inserted ${createInventory.length} inventory items for ${userId}`);
-
-				// Get fresh inventory to map temp IDs to real IDs
-				const freshInventory = await prismaFetchUserInventory(userId);
-
-				// Build ID mapping for newly created items
-				for (const createdItem of createInventory) {
-					if (createdItem.id < 0) { // temp ID
-						// Find the newest matching item (highest ID) to handle duplicates
-						const matchingItems = freshInventory.filter(inv =>
-							inv.equipmentId === createdItem.equipmentId &&
-							inv.itemId === createdItem.itemId
-						);
-
-						if (matchingItems.length > 0) {
-							const realItem = matchingItems.reduce((newest, current) =>
-								current.id > newest.id ? current : newest
-							);
-							remap.set(createdItem.id, realItem.id);
-							logger.debug(`🔗 Mapped temp ID ${createdItem.id} -> real ID ${realItem.id}`);
-						}
-					}
-				}
-			}
-
-			// STEP 3: Resolve remaining temp IDs for updates
-			const unmappableTempIds = Array.from(updateInventoryIds).filter(id =>
-				id < 0 && !remap.has(id)
-			);
-
-			if (unmappableTempIds.length > 0) {
-				logger.warn(`⚠️ Found ${unmappableTempIds.length} unmappable temp IDs for quantity updates: ${unmappableTempIds.join(', ')}`);
-				logger.info(`🔄 These likely represent existing items that need to be properly resolved`);
-
-				const user = this.users.get(userId);
-				if (user && user.inventory) {
-					const currentInventory = await prismaFetchUserInventory(userId);
-
-					// Try to map unmappable temp IDs to existing real inventory items
-					for (const tempId of unmappableTempIds) {
-						const memoryItem = user.inventory.find(inv => inv.id === tempId);
-						if (memoryItem) {
-							// Find matching real item by equipment/item ID
-							const matchingRealItems = currentInventory.filter(realItem =>
-								realItem.equipmentId === memoryItem.equipmentId &&
-								realItem.itemId === memoryItem.itemId
-							);
-
-							if (matchingRealItems.length > 0) {
-								// Use the one with highest ID (most recent)
-								const bestMatch = matchingRealItems.reduce((newest, current) =>
-									current.id > newest.id ? current : newest
-								);
-								remap.set(tempId, bestMatch.id);
-								logger.info(`🔗 Resolved unmappable temp ID ${tempId} -> real ID ${bestMatch.id}`);
-							} else {
-								logger.error(`❌ Could not resolve temp ID ${tempId} - no matching real item found`);
-								logger.error(`   Memory item: equipmentId=${memoryItem.equipmentId}, itemId=${memoryItem.itemId}, qty=${memoryItem.quantity}`);
-								throw new Error(`Critical: Cannot resolve temp ID ${tempId} for quantity update`);
+							if (memoryItem && memoryItem.quantity > 0) {
+								itemsToUpdate.push(memoryItem);
+								logger.info(`🔄 Will UPDATE real ID ${updateId} to qty ${memoryItem.quantity}`);
 							}
 						} else {
-							logger.error(`❌ Temp ID ${tempId} not found in memory inventory`);
-							throw new Error(`Critical: Temp ID ${tempId} not found in memory`);
-						}
-					}
-				}
-			}
-
-			// STEP 4: Process remaining updates (positive quantities)
-			if (updateInventoryIds.size > 0) {
-				const user = this.users.get(userId);
-				if (user && user.inventory) {
-					for (const updateId of updateInventoryIds) {
-						let realId = updateId;
-
-						// Skip items we already deleted
-						if (itemsToDelete.includes(updateId)) continue;
-
-						// If it's a temp ID, get the mapped real ID
-						if (updateId < 0) {
-							if (!remap.has(updateId)) {
-								throw new Error(`CRITICAL: Temp ID ${updateId} still unmappable after resolution attempts`);
-							}
-							realId = remap.get(updateId)!;
-							logger.debug(`🔗 Mapped pending update: temp ID ${updateId} -> real ID ${realId}`);
-						}
-
-						// Find the item in memory using the original temp ID
-						const memoryItem = user.inventory.find(inv => inv.id === updateId);
-						if (memoryItem && memoryItem.quantity > 0) {
-							// UPDATE: Item has positive quantity
-							const updateItem = {
-								...memoryItem,
-								id: realId // Use the real ID for database update
-							};
-							itemsToUpdate.push(updateItem);
-							logger.info(`🔄 Will UPDATE ${updateItem.equipmentId ? 'equipment' : 'item'} ${updateItem.equipmentId || updateItem.itemId} to qty ${updateItem.quantity}`);
+							logger.warn(`⚠️ Skipping temp ID ${updateId} in update queue`);
 						}
 					}
 
-					// Execute updates
 					if (itemsToUpdate.length > 0) {
 						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
 						logger.info(`🔄 Updated ${itemsToUpdate.length} inventory quantities`);
@@ -840,41 +815,52 @@ export class UserMemoryManager {
 				}
 			}
 
-			// STEP 5: Get the final state from database and update memory
+			// STEP 4: Reload fresh data and remap temp IDs
 			const finalInventory = await prismaFetchUserInventory(userId);
 			const user = this.users.get(userId);
-			if (user) {
-				// Update memory inventory with real IDs and sort by order
-				user.inventory = finalInventory.sort((a, b) => a.order - b.order);
+			if (user && user.inventory) {
+				const remap = new Map<number, number>();
 
-				// CRITICAL: Update any remaining temp IDs in memory to real IDs
-				if (remap.size > 0) {
-					for (const [tempId, realId] of remap) {
-						// This ensures memory consistency after flush
-						logger.debug(`🔄 Memory updated: temp ID ${tempId} resolved to real ID ${realId}`);
+				// MAP temp IDs to real IDs based on type matching
+				const tempItems = user.inventory.filter(item => item.id < 0);
+				for (const tempItem of tempItems) {
+					const matchingRealItems = finalInventory.filter(realItem =>
+						realItem.equipmentId === tempItem.equipmentId &&
+						realItem.itemId === tempItem.itemId &&
+						realItem.quantity === tempItem.quantity
+					);
+
+					if (matchingRealItems.length > 0) {
+						// Use the newest matching item (highest ID)
+						const bestMatch = matchingRealItems.reduce((newest, current) =>
+							current.id > newest.id ? current : newest
+						);
+						remap.set(tempItem.id, bestMatch.id);
+						logger.debug(`🔗 Mapped temp ID ${tempItem.id} -> real ID ${bestMatch.id}`);
 					}
 				}
 
-				logger.debug(`📦 Updated memory with ${finalInventory.length} inventory items for user ${userId}`);
-			} else {
-				logger.warn(`⚠️ User ${userId} not found in memory during inventory flush`);
+				// UPDATE memory with real IDs and fresh data
+				user.inventory = finalInventory.sort((a, b) => a.order - b.order);
+
+				// Apply ID remapping to any systems that might reference temp IDs
+				if (remap.size > 0) {
+					this.inventoryIdRemap.set(userId, remap);
+				}
+
+				logger.info(`📦 Updated memory with ${finalInventory.length} inventory items, mapped ${remap.size} temp IDs`);
 			}
 
-			// STEP 6: Store ID remapping and cleanup
-			if (remap.size > 0) {
-				this.inventoryIdRemap.set(userId, remap);
-			}
-
-			// Clear all pending operations
+			// STEP 5: Clean up ALL pending operations
 			this.pendingCreateInventory.delete(userId);
 			this.pendingInventoryUpdates.delete(userId);
+			this.pendingInventoryDeletes.delete(userId);
 
-			// Mark clean if no other pending changes
 			if (!this.hasPendingChanges(userId)) {
 				this.markClean(userId);
 			}
 
-			logger.info(`✅ Smart flush completed: ${createInventory.length} creates, ${itemsToUpdate?.length || 0} updates, ${itemsToDelete?.length || 0} deletes`);
+			logger.info(`✅ Smart flush completed with temp ID handling`);
 
 		} catch (err) {
 			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
@@ -960,11 +946,18 @@ export class UserMemoryManager {
 
 	/**
 	 * Handle user logout - flush everything and optionally remove from memory
-	 * Ensures inventory is properly persisted before cleanup
+	 * FIXED: Always generate snapshot from memory, keep user in memory if DB save fails
 	 */
 	async logoutUser(userId: string, removeFromMemory: boolean = false): Promise<boolean> {
 		try {
 			logger.info(`👋 User ${userId} logging out`);
+
+			// CRITICAL: Get current memory user BEFORE any operations
+			const currentMemoryUser = this.getUser(userId);
+			if (!currentMemoryUser) {
+				logger.error(`❌ User ${userId} not found in memory for logout`);
+				return false;
+			}
 
 			// CRITICAL: Check if user has pending inventory changes BEFORE flushing
 			const hasPendingInventory = this.pendingCreateInventory.has(userId) ||
@@ -974,7 +967,21 @@ export class UserMemoryManager {
 				logger.info(`📦 User ${userId} has pending inventory changes - forcing flush before logout`);
 			}
 
-			// Flush all pending changes with explicit error handling
+			// STEP 1: ALWAYS generate snapshot from current memory FIRST
+			// This ensures we never lose data even if database save fails
+			const snapshotRedisManager = requireSnapshotRedisManager();
+
+			try {
+				await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser);
+				logger.info(`📸 ✅ Generated snapshot from MEMORY for user ${userId} (BEFORE DB flush)`);
+			} catch (snapshotError) {
+				logger.error(`❌ CRITICAL: Failed to generate snapshot from memory for ${userId}: ${snapshotError}`);
+				// This is critical - if we can't snapshot, don't proceed with logout
+				return false;
+			}
+
+			// STEP 2: Attempt to flush to database
+			let databaseSaveSuccessful = false;
 			try {
 				await this.flushAllUserUpdates(userId);
 
@@ -989,68 +996,107 @@ export class UserMemoryManager {
 
 				await new Promise(resolve => setTimeout(resolve, 150)); // Extra delay for memory updates
 
-				const snapshotRedisManager = requireSnapshotRedisManager();
+				databaseSaveSuccessful = true;
+				logger.info(`✅ Successfully saved user ${userId} to database`);
 
-				// Get current memory data and verify it's been updated
-				const currentMemoryUser = this.getUser(userId);
-				if (currentMemoryUser) {
-					const inventoryCount = currentMemoryUser.inventory?.length || 0;
-					const totalEquipmentCount = currentMemoryUser.inventory?.filter(inv => inv.equipmentId !== null).reduce((sum, item) => sum + item.quantity, 0) || 0;
-					const totalItemCount = currentMemoryUser.inventory?.filter(inv => inv.itemId !== null).reduce((sum, item) => sum + item.quantity, 0) || 0;
-
-					logger.info(`📊 Pre-snapshot verification: User ${userId} has ${inventoryCount} inventory slots, ${totalEquipmentCount} equipment items, ${totalItemCount} regular items`);
-
-					// Store snapshot using current memory data (most updated)
-					await snapshotRedisManager.storeSnapshot(userId, currentMemoryUser);
-					logger.info(`📸 ✅ Immediately regenerated fresh snapshot for user ${userId} after logout (from MEMORY)`);
-				} else {
-					logger.error(`❌ User not found in memory for snapshot regeneration after flush`);
-
-					const { getUserData } = await import('../../operations/user-operations');
-					const freshDbUser = await getUserData(userId);
-					if (freshDbUser) {
-						this.setUser(userId, freshDbUser);
-						await snapshotRedisManager.storeSnapshot(userId, freshDbUser);
-						logger.info(`📸 ✅ Regenerated snapshot from DB fallback for user ${userId}`);
-					}
+				// STEP 3: Generate FRESH snapshot from updated memory after successful DB save
+				const updatedMemoryUser = this.getUser(userId);
+				if (updatedMemoryUser) {
+					await snapshotRedisManager.storeSnapshot(userId, updatedMemoryUser);
+					logger.info(`📸 ✅ Updated snapshot from memory after successful DB save for user ${userId}`);
 				}
 
 			} catch (flushError) {
 				logger.error(`❌ CRITICAL: Failed to flush user data during logout for ${userId}: ${flushError}`);
+				databaseSaveSuccessful = false;
 
-				// Don't remove from memory if flush failed - keep dirty state
+				// DATABASE SAVE FAILED - but we already have snapshot from memory!
+				// Keep user in memory and mark as dirty for retry
 				if (removeFromMemory) {
-					logger.warn(`⚠️ Keeping user ${userId} in memory due to flush failure`);
-					return false;
+					logger.warn(`⚠️ Database save failed - keeping user ${userId} in memory for retry`);
+					this.markDirty(userId); // Ensure they get retried later
+					return false; // Don't remove from memory
 				}
-				throw flushError;
 			}
 
-			// Clean up pending operation tracking ONLY after successful flush AND snapshot
-			this.pendingCreateSlimes.delete(userId);
-			this.pendingBurnSlimeIds.delete(userId);
-			this.pendingCreateInventory.delete(userId);
-			this.pendingInventoryUpdates.delete(userId);
-			this.inventoryIdRemap.delete(userId);
-
+			// STEP 4: Handle memory cleanup based on success
 			if (removeFromMemory) {
-				// Final safety check before removing from memory
-				if (this.isDirty(userId)) {
-					logger.warn(`⚠️ User ${userId} still marked as dirty after flush - keeping in memory`);
+				if (databaseSaveSuccessful) {
+					// Database save succeeded - safe to remove from memory
+					this.pendingCreateSlimes.delete(userId);
+					this.pendingBurnSlimeIds.delete(userId);
+					this.pendingCreateInventory.delete(userId);
+					this.pendingInventoryUpdates.delete(userId);
+					this.pendingInventoryDeletes.delete(userId);
+					this.inventoryIdRemap.delete(userId);
+
+					// Final safety check before removing from memory
+					if (this.isDirty(userId)) {
+						logger.warn(`⚠️ User ${userId} still marked as dirty after flush - keeping in memory`);
+						return false;
+					}
+
+					this.removeUser(userId);
+					logger.info(`🗑️ Removed user ${userId} from memory after successful logout`);
+				} else {
+					// Database save failed - keep in memory for retry
+					logger.warn(`⚠️ Keeping user ${userId} in memory - database save failed but snapshot exists`);
+					this.markDirty(userId);
 					return false;
 				}
-
-				// ✅ NOW it's safe to remove from memory - snapshot already generated
-				this.removeUser(userId);
-				logger.info(`🗑️ Removed user ${userId} from memory after logout`);
 			} else {
-				this.markClean(userId);
+				// Not removing from memory anyway
+				if (databaseSaveSuccessful) {
+					this.markClean(userId);
+				} else {
+					this.markDirty(userId); // Keep dirty for retry
+				}
 			}
 
-			return true;
+			return databaseSaveSuccessful;
+
 		} catch (error) {
 			logger.error(`❌ Failed to handle logout for user ${userId}: ${error}`);
+
+			// Emergency: Try to at least generate snapshot from memory if we still have the user
+			try {
+				const emergencyUser = this.getUser(userId);
+				if (emergencyUser) {
+					const snapshotRedisManager = requireSnapshotRedisManager();
+					await snapshotRedisManager.storeSnapshot(userId, emergencyUser);
+					logger.info(`🚨 Generated emergency snapshot from memory for ${userId}`);
+
+					// Keep in memory and mark dirty for retry
+					this.markDirty(userId);
+					return false;
+				}
+			} catch (emergencyErr) {
+				logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
+			}
+
 			return false;
+		}
+	}
+
+	/**
+	 * Retry mechanism for failed database saves
+	 * Call this periodically (e.g., every 30 seconds)
+	 */
+	async retryFailedSaves(): Promise<void> {
+		const dirtyUsers = this.getDirtyUsers();
+		if (dirtyUsers.length === 0) return;
+
+		logger.info(`🔄 Retrying database saves for ${dirtyUsers.length} dirty users`);
+
+		for (const userId of dirtyUsers) {
+			try {
+				await this.flushAllUserUpdates(userId);
+				this.markClean(userId);
+				logger.info(`✅ Retry successful for user ${userId}`);
+			} catch (error) {
+				logger.warn(`⚠️ Retry failed for user ${userId}: ${error}`);
+				// Keep dirty for next retry
+			}
 		}
 	}
 }

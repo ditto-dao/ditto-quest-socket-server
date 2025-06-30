@@ -111,10 +111,10 @@ async function main() {
             if (userMemoryManager) {
                 const loggedOut = await userMemoryManager.autoLogoutInactiveUsers(
                     1800000,                    // 30 minutes inactive = logout
-                    socketManager,             
-                    dittoLedgerSocket,         
-                    idleManager,               
-                    activityLogMemoryManager   
+                    socketManager,
+                    dittoLedgerSocket,
+                    idleManager,
+                    activityLogMemoryManager
                 );
 
                 if (loggedOut > 0) {
@@ -235,38 +235,82 @@ async function gracefulShutdown(
         const userMemoryManager = getUserMemoryManager();
         const activityLogMemoryManager = getActivityLogMemoryManager();
 
+        if (!userMemoryManager || !activityLogMemoryManager) {
+            logger.warn('⚠️ Memory managers not available during shutdown');
+            return;
+        }
+
         // STEP 1: Save all idle activities (time-sensitive)
+        logger.info('⏰ Saving all idle activities...');
         await idleManager.saveAllUsersIdleActivities();
 
         // STEP 2: Flush all pending user data from memory to database
-        if (userMemoryManager) {
-            logger.info("💾 Flushing all dirty users before shutdown...");
-            await userMemoryManager.flushAllDirtyUsers();
-        }
+        logger.info("💾 Flushing all dirty users before shutdown...");
+        await userMemoryManager.flushAllDirtyUsers();
 
         // STEP 3: Flush all activity logs
-        if (activityLogMemoryManager) {
-            await activityLogMemoryManager.flushAll();
+        logger.info("📝 Flushing all activity logs...");
+        await activityLogMemoryManager.flushAll();
+
+        // STEP 4: Generate snapshots for all active users (CRITICAL - BEFORE clearing memory)
+        logger.info("📸 Generating snapshots for all active users...");
+        const activeUsers = userMemoryManager.getActiveUsers();
+
+        if (activeUsers.length > 0) {
+            const snapshotRedisManager = requireSnapshotRedisManager();
+            let snapshotCount = 0;
+
+            const snapshotPromises = activeUsers.map(async (userId) => {
+                try {
+                    const user = userMemoryManager.getUser(userId);
+                    if (user) {
+                        await snapshotRedisManager.storeSnapshot(userId, user);
+                        snapshotCount++;
+                        logger.debug(`📸 Generated snapshot for user ${userId}`);
+                    }
+                } catch (snapErr) {
+                    logger.error(`❌ Failed to generate shutdown snapshot for user ${userId}: ${snapErr}`);
+                }
+            });
+
+            // Wait for all snapshots to complete
+            await Promise.allSettled(snapshotPromises);
+            logger.info(`📸 Generated ${snapshotCount}/${activeUsers.length} user snapshots`);
         }
 
-        // STEP 4: Disconnect all users
+        // STEP 5: Disconnect all users AFTER data is safely persisted
+        logger.info("🔌 Disconnecting all users...");
         socketManager.disconnectAllUsers();
 
-        // STEP 5: Cleanup global managers
-        await cleanupGlobalManagers();
+        // STEP 6: NOW safe to clear memory managers
+        logger.info("🧹 Clearing memory managers...");
+        userMemoryManager.clear();
+        activityLogMemoryManager.clear();
 
         // Close socket server
         io.close(() => {
-            logger.info('Socket server closed.')
+            logger.info('🔌 Socket server closed.')
         })
 
         // Close Redis connection
         await redisClient.quit()
+        logger.info('🔴 Redis connection closed')
 
-        logger.info('✅ Graceful shutdown complete');
+        logger.info('✅ Graceful shutdown complete - all data safely persisted');
         process.exit(0)
+
     } catch (error) {
         logger.error('❌ Error during shutdown:', error);
+
+        // Emergency cleanup attempt
+        try {
+            logger.info('🚨 Attempting emergency cleanup...');
+            socketManager.disconnectAllUsers();
+            await redisClient.quit();
+        } catch (emergencyErr) {
+            logger.error('💥 Emergency cleanup failed:', emergencyErr);
+        }
+
         process.exit(1)
     }
 }
