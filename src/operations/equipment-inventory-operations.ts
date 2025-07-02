@@ -189,13 +189,45 @@ export async function deleteEquipmentFromUserInventory(
                 const existingItem = userMemoryManager.findInventoryByEquipmentId(telegramId, equipmentId);
 
                 if (!existingItem) {
+                    // Enhanced logging for debugging
                     logger.warn(`Equipment ${equipmentId} not found for user ${telegramId}`);
-                    continue;
+
+                    // Check if there are any zero-quantity items of this equipment
+                    const allUserInventory = user.inventory || [];
+                    const zeroQtyItems = allUserInventory.filter(inv =>
+                        inv.equipmentId === equipmentId && inv.quantity <= 0
+                    );
+
+                    if (zeroQtyItems.length > 0) {
+                        logger.warn(`Found ${zeroQtyItems.length} zero-quantity items for equipment ${equipmentId} - cleaning up`);
+
+                        // Remove zero-quantity items from memory
+                        for (const zeroItem of zeroQtyItems) {
+                            userMemoryManager.removeInventory(telegramId, zeroItem.id);
+                            logger.info(`🧹 Removed zero-quantity item ID ${zeroItem.id} from memory`);
+                        }
+                    }
+
+                    // Still throw error since user is trying to delete non-existent equipment
+                    throw new Error(`Unable to delete equipment. Equipment ${equipmentId} not found or has zero quantity for user ${telegramId}`);
+                }
+
+                // Additional safety check for zero or negative quantities
+                if (existingItem.quantity <= 0) {
+                    logger.warn(`Equipment ${equipmentId} has invalid quantity ${existingItem.quantity} for user ${telegramId} - removing from inventory`);
+                    userMemoryManager.removeInventory(telegramId, existingItem.id);
+                    throw new Error(`Equipment ${equipmentId} has zero or negative quantity`);
                 }
 
                 if (existingItem.quantity > quantityToRemove) {
                     // Reduce quantity
                     const newQuantity = existingItem.quantity - quantityToRemove;
+
+                    // Safety check - don't allow negative quantities
+                    if (newQuantity < 0) {
+                        throw new Error(`Cannot remove ${quantityToRemove} from ${existingItem.quantity} - would result in negative quantity`);
+                    }
+
                     userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
 
                     updatedInventories.push({
@@ -207,7 +239,10 @@ export async function deleteEquipmentFromUserInventory(
                         createdAt: existingItem.createdAt,
                         equipment: existingItem.equipment
                     } as PrismaEquipmentInventory);
-                } else {
+
+                    logger.info(`🔄 Reduced equipment ${equipmentId} quantity: ${existingItem.quantity} -> ${newQuantity} for user ${telegramId}`);
+
+                } else if (existingItem.quantity === quantityToRemove) {
                     // Remove completely
                     userMemoryManager.removeInventory(telegramId, existingItem.id);
 
@@ -220,10 +255,16 @@ export async function deleteEquipmentFromUserInventory(
                         createdAt: existingItem.createdAt,
                         equipment: existingItem.equipment
                     } as PrismaEquipmentInventory);
+
+                    logger.info(`🗑️ Completely removed equipment ${equipmentId} for user ${telegramId}`);
+
+                } else {
+                    // Trying to remove more than available
+                    throw new Error(`Cannot remove ${quantityToRemove} units of equipment ${equipmentId} - only ${existingItem.quantity} available`);
                 }
             }
 
-            logger.info(`🗑️ Removed equipment from user ${telegramId} inventory in memory`);
+            logger.info(`🗑️ Successfully processed equipment removal for user ${telegramId}`);
             return updatedInventories;
         }
 

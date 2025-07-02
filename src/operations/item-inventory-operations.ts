@@ -164,13 +164,49 @@ export async function deleteItemsFromUserInventory(
                 const existingItem = userMemoryManager.findInventoryByItemId(telegramId, itemId);
 
                 if (!existingItem) {
+                    // Enhanced logging and cleanup for zero-quantity items
                     logger.warn(`Item ${itemId} not found for user ${telegramId}`);
+
+                    // Check for zero-quantity items and clean them up
+                    const allUserInventory = user.inventory || [];
+                    const zeroQtyItems = allUserInventory.filter(inv =>
+                        inv.itemId === itemId && inv.quantity <= 0
+                    );
+
+                    if (zeroQtyItems.length > 0) {
+                        logger.warn(`Found ${zeroQtyItems.length} zero-quantity items for item ${itemId} - cleaning up`);
+
+                        for (const zeroItem of zeroQtyItems) {
+                            userMemoryManager.removeInventory(telegramId, zeroItem.id);
+                            logger.info(`🧹 Removed zero-quantity item ID ${zeroItem.id} from memory`);
+                        }
+                    }
+
+                    // Log available items for debugging
+                    const availableItemIds = allUserInventory
+                        .filter(inv => inv.itemId && inv.quantity > 0)
+                        .map(inv => inv.itemId);
+                    logger.debug(`Available item IDs for user ${telegramId}: ${availableItemIds.join(', ')}`);
+
+                    continue; // Skip this item instead of throwing error (more graceful)
+                }
+
+                // Additional safety check for zero or negative quantities
+                if (existingItem.quantity <= 0) {
+                    logger.warn(`Item ${itemId} has invalid quantity ${existingItem.quantity} for user ${telegramId} - removing from inventory`);
+                    userMemoryManager.removeInventory(telegramId, existingItem.id);
                     continue;
                 }
 
                 if (existingItem.quantity > quantityToRemove) {
                     // Reduce quantity
                     const newQuantity = existingItem.quantity - quantityToRemove;
+
+                    // Safety check
+                    if (newQuantity < 0) {
+                        throw new Error(`Cannot remove ${quantityToRemove} from ${existingItem.quantity} - would result in negative quantity`);
+                    }
+
                     userMemoryManager.updateInventoryQuantity(telegramId, existingItem.id, newQuantity);
 
                     updatedInventories.push({
@@ -182,7 +218,10 @@ export async function deleteItemsFromUserInventory(
                         createdAt: existingItem.createdAt,
                         item: existingItem.item
                     } as PrismaItemInventory);
-                } else {
+
+                    logger.info(`🔄 Reduced item ${itemId} quantity: ${existingItem.quantity} -> ${newQuantity} for user ${telegramId}`);
+
+                } else if (existingItem.quantity === quantityToRemove) {
                     // Remove completely
                     userMemoryManager.removeInventory(telegramId, existingItem.id);
 
@@ -195,11 +234,17 @@ export async function deleteItemsFromUserInventory(
                         createdAt: existingItem.createdAt,
                         item: existingItem.item
                     } as PrismaItemInventory);
+
+                    logger.info(`🗑️ Completely removed item ${itemId} for user ${telegramId}`);
+
+                } else {
+                    // Trying to remove more than available
+                    logger.warn(`Cannot remove ${quantityToRemove} units of item ${itemId} - only ${existingItem.quantity} available for user ${telegramId}`);
+                    continue; // Skip instead of throwing error
                 }
             }
 
-            logger.info(`🗑️ Removed items from user ${telegramId} inventory in memory`);
-
+            logger.info(`🗑️ Successfully processed ${updatedInventories.length} item removals for user ${telegramId}`);
             return updatedInventories;
         }
 
