@@ -14,7 +14,12 @@ export function calculateExpForNextLevel(nextLevel: number): number {
     const c = 120;
     const d = 1.87;
 
-    return Math.floor(a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d));
+    const baseExp = a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d);
+
+    // Apply 1% increase per level above 100
+    const levelModifier = nextLevel > 100 ? 1 + 0.01 * (nextLevel - 100) : 1;
+
+    return Math.floor(baseExp * levelModifier);
 }
 
 // Helper function to calculate HP experience gained for given EXP gained
