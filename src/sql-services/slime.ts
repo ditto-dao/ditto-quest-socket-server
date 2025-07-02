@@ -229,69 +229,108 @@ export async function prismaFetchEquippedSlimeWithTraits(telegramId: string): Pr
  * Inserts slimes into DB using trait IDs
  */
 export async function prismaInsertSlimesToDB(ownerId: string, slimes: SlimeWithTraits[]): Promise<void> {
-  await prisma.$transaction(async (tx) => {
-    for (const slime of slimes) {
-      await tx.slime.create({
-        data: {
-          ownerId,
-          generation: slime.generation,
-          imageUri: slime.imageUri,
+  logger.debug(`🐌 [DB] Starting transaction to insert ${slimes.length} slimes for owner ${ownerId}`);
 
-          Body_D: slime.Body_D,
-          Body_H1: slime.Body_H1,
-          Body_H2: slime.Body_H2,
-          Body_H3: slime.Body_H3,
+  try {
+    await prisma.$transaction(async (tx) => {
+      logger.debug(`🐌 [DB] Transaction started, processing ${slimes.length} slimes...`);
 
-          Pattern_D: slime.Pattern_D,
-          Pattern_H1: slime.Pattern_H1,
-          Pattern_H2: slime.Pattern_H2,
-          Pattern_H3: slime.Pattern_H3,
+      for (let i = 0; i < slimes.length; i++) {
+        const slime = slimes[i];
+        logger.debug(`🐌 [DB] Creating slime ${i + 1}/${slimes.length} with ID ${slime.id}...`);
 
-          PrimaryColour_D: slime.PrimaryColour_D,
-          PrimaryColour_H1: slime.PrimaryColour_H1,
-          PrimaryColour_H2: slime.PrimaryColour_H2,
-          PrimaryColour_H3: slime.PrimaryColour_H3,
+        try {
+          await tx.slime.create({
+            data: {
+              ownerId,
+              generation: slime.generation,
+              imageUri: slime.imageUri,
+              // All the trait fields...
+              Body_D: slime.Body_D,
+              Body_H1: slime.Body_H1,
+              Body_H2: slime.Body_H2,
+              Body_H3: slime.Body_H3,
+              Pattern_D: slime.Pattern_D,
+              Pattern_H1: slime.Pattern_H1,
+              Pattern_H2: slime.Pattern_H2,
+              Pattern_H3: slime.Pattern_H3,
+              PrimaryColour_D: slime.PrimaryColour_D,
+              PrimaryColour_H1: slime.PrimaryColour_H1,
+              PrimaryColour_H2: slime.PrimaryColour_H2,
+              PrimaryColour_H3: slime.PrimaryColour_H3,
+              Accent_D: slime.Accent_D,
+              Accent_H1: slime.Accent_H1,
+              Accent_H2: slime.Accent_H2,
+              Accent_H3: slime.Accent_H3,
+              Detail_D: slime.Detail_D,
+              Detail_H1: slime.Detail_H1,
+              Detail_H2: slime.Detail_H2,
+              Detail_H3: slime.Detail_H3,
+              EyeColour_D: slime.EyeColour_D,
+              EyeColour_H1: slime.EyeColour_H1,
+              EyeColour_H2: slime.EyeColour_H2,
+              EyeColour_H3: slime.EyeColour_H3,
+              EyeShape_D: slime.EyeShape_D,
+              EyeShape_H1: slime.EyeShape_H1,
+              EyeShape_H2: slime.EyeShape_H2,
+              EyeShape_H3: slime.EyeShape_H3,
+              Mouth_D: slime.Mouth_D,
+              Mouth_H1: slime.Mouth_H1,
+              Mouth_H2: slime.Mouth_H2,
+              Mouth_H3: slime.Mouth_H3,
+            },
+          });
 
-          Accent_D: slime.Accent_D,
-          Accent_H1: slime.Accent_H1,
-          Accent_H2: slime.Accent_H2,
-          Accent_H3: slime.Accent_H3,
+          logger.debug(`🐌 [DB] Successfully created slime ${slime.id}`);
+        } catch (slimeError) {
+          logger.error(`❌ [DB] Failed to create individual slime ${slime.id}:`);
+          logger.error(`   Slime data:`, JSON.stringify(slime, null, 2));
+          throw slimeError;
+        }
+      }
 
-          Detail_D: slime.Detail_D,
-          Detail_H1: slime.Detail_H1,
-          Detail_H2: slime.Detail_H2,
-          Detail_H3: slime.Detail_H3,
+      logger.debug(`🐌 [DB] Transaction completed successfully for ${slimes.length} slimes`);
+    });
 
-          EyeColour_D: slime.EyeColour_D,
-          EyeColour_H1: slime.EyeColour_H1,
-          EyeColour_H2: slime.EyeColour_H2,
-          EyeColour_H3: slime.EyeColour_H3,
+    logger.info(`💾 [DB] Successfully inserted ${slimes.length} slimes for owner ${ownerId}`);
 
-          EyeShape_D: slime.EyeShape_D,
-          EyeShape_H1: slime.EyeShape_H1,
-          EyeShape_H2: slime.EyeShape_H2,
-          EyeShape_H3: slime.EyeShape_H3,
-
-          Mouth_D: slime.Mouth_D,
-          Mouth_H1: slime.Mouth_H1,
-          Mouth_H2: slime.Mouth_H2,
-          Mouth_H3: slime.Mouth_H3,
-        },
-      });
-    }
-  });
+  } catch (error) {
+    logger.error(`❌ [DB] Failed to insert slimes for owner ${ownerId}:`);
+    logger.error(`   Error message: ${(error as Error).message}`);
+    logger.error(`   Number of slimes: ${slimes.length}`);
+    logger.error(`   Slime IDs: [${slimes.map(s => s.id).join(', ')}]`);
+    throw error;
+  }
 }
 
 /**
- * Deletes slimes for a given owner and slimeIds
+ * Enhanced slime deletion with detailed logging
  */
 export async function prismaDeleteSlimesFromDB(ownerId: string, slimeIds: number[]): Promise<void> {
-  await prisma.slime.deleteMany({
-    where: {
-      id: { in: slimeIds },
-      ownerId,
-    },
-  });
+  logger.debug(`🐌 [DB] Starting deletion of ${slimeIds.length} slimes for owner ${ownerId}`);
+  logger.debug(`🐌 [DB] Slime IDs to delete: [${slimeIds.join(', ')}]`);
+
+  try {
+    const result = await prisma.slime.deleteMany({
+      where: {
+        id: { in: slimeIds },
+        ownerId,
+      },
+    });
+
+    logger.info(`🗑️ [DB] Successfully deleted ${result.count} slimes for owner ${ownerId}`);
+
+    if (result.count !== slimeIds.length) {
+      logger.warn(`⚠️ [DB] Expected to delete ${slimeIds.length} slimes but actually deleted ${result.count}`);
+      logger.warn(`   This could mean some slimes didn't exist or belonged to different owner`);
+    }
+
+  } catch (error) {
+    logger.error(`❌ [DB] Failed to delete slimes for owner ${ownerId}:`);
+    logger.error(`   Error message: ${(error as Error).message}`);
+    logger.error(`   Slime IDs: [${slimeIds.join(', ')}]`);
+    throw error;
+  }
 }
 
 /**

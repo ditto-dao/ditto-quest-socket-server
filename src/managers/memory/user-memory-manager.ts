@@ -735,203 +735,443 @@ export class UserMemoryManager {
 	}
 
 	/**
-	 * Flush slimes for a specific user
+	 * Bulletproof slime flush with comprehensive logging
 	 */
 	async flushUserSlimes(userId: string): Promise<void> {
+		logger.debug(`🐌 [${userId}] Starting slime flush check...`);
+
 		const createSlimes = this.pendingCreateSlimes.get(userId) || [];
 		const burnSlimeIds = this.pendingBurnSlimeIds.get(userId) || [];
 
-		if (createSlimes.length === 0 && burnSlimeIds.length === 0) return;
+		logger.debug(`🐌 [${userId}] Pending operations: ${createSlimes.length} creates, ${burnSlimeIds.length} burns`);
+
+		if (createSlimes.length === 0 && burnSlimeIds.length === 0) {
+			logger.debug(`🐌 [${userId}] No pending slime operations - skipping flush`);
+			return;
+		}
+
+		logger.info(`🐌 [${userId}] Starting slime flush: ${createSlimes.length} creates, ${burnSlimeIds.length} burns`);
 
 		try {
-			// Sync to DB
+			// STEP 1: Process slime creations
 			if (createSlimes.length > 0) {
-				await prismaInsertSlimesToDB(userId, createSlimes);
-				logger.debug(`💾 Inserted ${createSlimes.length} slimes for ${userId}`);
+				await this.processSlimeCreations(userId, createSlimes);
+			}
+
+			// STEP 2: Process slime deletions  
+			if (burnSlimeIds.length > 0) {
+				await this.processSlimeDeletions(userId, burnSlimeIds);
+			}
+
+			// STEP 3: Clean up pending operations
+			this.cleanupPendingSlimes(userId);
+
+			// STEP 4: Log final state
+			const user = this.users.get(userId);
+			const memoryCount = user?.slimes?.length ?? 0;
+
+			logger.info(`✅ [${userId}] Slime flush completed successfully - memory now has ${memoryCount} slimes`);
+
+		} catch (error) {
+			logger.error(`❌ [${userId}] Slime flush FAILED:`);
+			logger.error(`   Error message: ${(error as Error).message}`);
+			logger.error(`   Error type: ${(error as Error).constructor.name}`);
+			if ((error as Error).stack) {
+				logger.error(`   Stack trace: ${(error as Error).stack}`);
+			}
+			logger.error(`   Full error object:`, JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+
+			// Log what we were trying to do when it failed
+			logger.error(`   Was processing: ${createSlimes.length} creates, ${burnSlimeIds.length} burns`);
+			if (createSlimes.length > 0) {
+				const createIds = createSlimes.map(s => s.id);
+				logger.error(`   Create slime IDs: [${createIds.join(', ')}]`);
 			}
 			if (burnSlimeIds.length > 0) {
-				await prismaDeleteSlimesFromDB(userId, burnSlimeIds);
-				logger.debug(`🗑️ Deleted ${burnSlimeIds.length} slimes for ${userId}`);
+				logger.error(`   Burn slime IDs: [${burnSlimeIds.join(', ')}]`);
 			}
 
-			// Clean up - DON'T reload from DB
-			this.pendingCreateSlimes.delete(userId);
-			this.pendingBurnSlimeIds.delete(userId);
-
-			if (!this.hasPendingChanges(userId)) {
-				this.markClean(userId);
-			}
-
-			const user = this.users.get(userId);
-			if (user) {
-				logger.info(`✅ Slime flush completed - memory count: ${user.slimes.length} slimes`);
-			}
-		} catch (err) {
-			logger.error(`❌ Slime flush failed for user ${userId}: ${err}`);
-			throw err;
+			throw error;
 		}
+	}
+
+	/**
+	 * STEP 1: Process slime creations with detailed logging
+	 */
+	private async processSlimeCreations(userId: string, createSlimes: SlimeWithTraits[]): Promise<void> {
+		try {
+			logger.debug(`🐌 [${userId}] Step 1: Processing ${createSlimes.length} slime creations...`);
+
+			// Log details of slimes being created
+			const slimeIds = createSlimes.map(s => s.id);
+			logger.debug(`🐌 [${userId}] Step 1: Creating slimes with IDs: [${slimeIds.join(', ')}]`);
+
+			// Validate slimes before DB call
+			for (const slime of createSlimes) {
+				if (!slime.id || !slime.ownerId || !slime.imageUri) {
+					throw new Error(`Invalid slime data: ID=${slime.id}, ownerId=${slime.ownerId}, imageUri=${slime.imageUri}`);
+				}
+				if (slime.ownerId !== userId) {
+					throw new Error(`Slime ownership mismatch: slime.ownerId=${slime.ownerId}, userId=${userId}`);
+				}
+			}
+
+			logger.debug(`🐌 [${userId}] Step 1: All slimes validated, calling database insert...`);
+
+			// Call database
+			await prismaInsertSlimesToDB(userId, createSlimes);
+
+			logger.info(`💾 [${userId}] Step 1: Successfully inserted ${createSlimes.length} slimes to database`);
+			logger.debug(`🐌 [${userId}] Step 1: COMPLETED`);
+
+		} catch (error) {
+			logger.error(`❌ [${userId}] Step 1: FAILED during slime creation`);
+			throw new Error(`Slime creation failed: ${(error as Error).message}`);
+		}
+	}
+
+	/**
+	 * STEP 2: Process slime deletions with detailed logging
+	 */
+	private async processSlimeDeletions(userId: string, burnSlimeIds: number[]): Promise<void> {
+		try {
+			logger.debug(`🐌 [${userId}] Step 2: Processing ${burnSlimeIds.length} slime deletions...`);
+			logger.debug(`🐌 [${userId}] Step 2: Deleting slimes with IDs: [${burnSlimeIds.join(', ')}]`);
+
+			// Validate IDs before DB call
+			for (const slimeId of burnSlimeIds) {
+				if (!slimeId || slimeId <= 0) {
+					throw new Error(`Invalid slime ID for deletion: ${slimeId}`);
+				}
+			}
+
+			logger.debug(`🐌 [${userId}] Step 2: All slime IDs validated, calling database delete...`);
+
+			// Call database
+			await prismaDeleteSlimesFromDB(userId, burnSlimeIds);
+
+			logger.info(`🗑️ [${userId}] Step 2: Successfully deleted ${burnSlimeIds.length} slimes from database`);
+			logger.debug(`🐌 [${userId}] Step 2: COMPLETED`);
+
+		} catch (error) {
+			logger.error(`❌ [${userId}] Step 2: FAILED during slime deletion`);
+			throw new Error(`Slime deletion failed: ${(error as Error).message}`);
+		}
+	}
+
+	/**
+	 * STEP 3: Clean up pending operations
+	 */
+	private cleanupPendingSlimes(userId: string): void {
+		logger.debug(`🐌 [${userId}] Step 3: Cleaning up pending slime operations...`);
+
+		const hadCreates = this.pendingCreateSlimes.has(userId);
+		const hadBurns = this.pendingBurnSlimeIds.has(userId);
+
+		this.pendingCreateSlimes.delete(userId);
+		this.pendingBurnSlimeIds.delete(userId);
+
+		logger.debug(`🐌 [${userId}] Step 3: Cleared pending operations (creates: ${hadCreates}, burns: ${hadBurns})`);
+
+		if (!this.hasPendingChanges(userId)) {
+			this.markClean(userId);
+			logger.debug(`🐌 [${userId}] Step 3: Marked user as clean (no pending changes)`);
+		} else {
+			logger.debug(`🐌 [${userId}] Step 3: User still has pending changes in other areas`);
+		}
+
+		logger.debug(`🐌 [${userId}] Step 3: COMPLETED`);
 	}
 
 	/**
 	 * Enhanced flush function with better error handling
 	 * Process deletes before creates to prevent delete-after-insert bug
 	 */
+	/**
+	 * Clean inventory flush with comprehensive debug logging
+	 */
 	async flushUserInventory(userId: string): Promise<void> {
 		const createInventory = this.pendingCreateInventory.get(userId) || [];
 		const updateInventoryIds = this.pendingInventoryUpdates.get(userId) || new Set();
 		const deleteInventoryIds = this.pendingInventoryDeletes.get(userId) || [];
 
+		// Early exit if nothing to do
 		if (createInventory.length === 0 && updateInventoryIds.size === 0 && deleteInventoryIds.length === 0) {
 			logger.debug(`📦 No pending inventory changes for user ${userId}`);
 			return;
 		}
 
-		logger.info(`📦 Flushing inventory for user ${userId}: ${createInventory.length} creates, ${updateInventoryIds.size} updates, ${deleteInventoryIds.length} deletes`);
+		logger.info(`📦 Starting inventory flush for user ${userId}: ${createInventory.length} creates, ${updateInventoryIds.size} updates, ${deleteInventoryIds.length} deletes`);
 
 		try {
-			// STEP 1: Process deletes FIRST (only real IDs)
-			if (deleteInventoryIds.length > 0) {
-				const realDeleteIds = deleteInventoryIds.filter(id => id > 0);
-				if (realDeleteIds.length > 0) {
-					await prismaDeleteInventoryFromDB(userId, realDeleteIds);
-					logger.info(`🗑️ Deleted ${realDeleteIds.length} real inventory items`);
-				}
+			// STEP 1: Delete items first
+			await this.processInventoryDeletes(userId, deleteInventoryIds);
+
+			// STEP 2: Insert new items
+			await this.processInventoryCreates(userId, createInventory);
+
+			// STEP 3: Update existing items
+			await this.processInventoryUpdates(userId, updateInventoryIds);
+
+			// STEP 4: Sync memory with database
+			await this.syncInventoryFromDatabase(userId);
+
+			// STEP 5: Clean up pending operations
+			this.cleanupPendingInventory(userId);
+
+			logger.info(`✅ Inventory flush completed successfully for user ${userId}`);
+
+		} catch (error) {
+			logger.error(`❌ Inventory flush FAILED for user ${userId}:`);
+			logger.error(`   Error message: ${(error as Error).message}`);
+			logger.error(`   Error type: ${(error as Error).constructor.name}`);
+			if ((error as Error).stack) {
+				logger.error(`   Stack trace: ${(error as Error).stack}`);
 			}
-
-			// STEP 2: Handle creates (only items that still exist in memory)
-			if (createInventory.length > 0) {
-				const user = this.users.get(userId);
-				if (user && user.inventory) {
-					// FILTER: Only create items that still exist in memory AND have quantity > 0
-					const validCreates = createInventory.filter(createItem => {
-						const memItem = user.inventory.some(inv => inv.id === createItem.id && inv.quantity > 0);
-						return memItem;
-					});
-
-					if (validCreates.length > 0) {
-						await prismaInsertInventoryToDB(userId, validCreates);
-						logger.info(`💾 Inserted ${validCreates.length} valid inventory items`);
-					}
-				}
-			}
-
-			// STEP 3: Handle updates (only real IDs with quantity > 0)
-			if (updateInventoryIds.size > 0) {
-				const user = this.users.get(userId);
-				if (user && user.inventory) {
-					const itemsToUpdate: UserInventoryItem[] = [];
-					const zeroQtyItemsToDelete: number[] = [];
-
-					for (const updateId of updateInventoryIds) {
-						if (updateId > 0) { // ONLY REAL IDs
-							const memoryItem = user.inventory.find(inv => inv.id === updateId);
-							if (memoryItem) {
-								if (memoryItem.quantity > 0) {
-									itemsToUpdate.push(memoryItem);
-									logger.info(`🔄 Will UPDATE real ID ${updateId} to qty ${memoryItem.quantity}`);
-								} else {
-									// Zero quantity - mark for deletion instead of update
-									zeroQtyItemsToDelete.push(updateId);
-									logger.info(`🗑️ Will DELETE real ID ${updateId} (zero quantity)`);
-								}
-							}
-						}
-					}
-
-					// Update non-zero quantities
-					if (itemsToUpdate.length > 0) {
-						await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
-						logger.info(`🔄 Updated ${itemsToUpdate.length} inventory quantities`);
-					}
-
-					// Delete zero-quantity items
-					if (zeroQtyItemsToDelete.length > 0) {
-						await prismaDeleteInventoryFromDB(userId, zeroQtyItemsToDelete);
-						logger.info(`🗑️ Deleted ${zeroQtyItemsToDelete.length} zero-quantity items during update`);
-					}
-				}
-			}
-
-			// STEP 4: Clean up memory (remove zero-quantity items)
-			const user = this.users.get(userId);
-			if (user && user.inventory) {
-				const originalCount = user.inventory.length;
-				user.inventory = user.inventory.filter(item => item.quantity > 0);
-				const cleanedCount = originalCount - user.inventory.length;
-
-				if (cleanedCount > 0) {
-					logger.info(`🧹 Cleaned ${cleanedCount} zero-quantity items from memory`);
-				}
-			}
-
-			// STEP 5: Reload fresh data and remap temp IDs
-			const finalInventory = await prismaFetchUserInventory(userId);
-
-			// Additional safety check: filter out any zero-quantity items from DB
-			const cleanedInventory = finalInventory.filter(item => item.quantity > 0);
-
-			if (finalInventory.length !== cleanedInventory.length) {
-				logger.warn(`⚠️ Found ${finalInventory.length - cleanedInventory.length} zero-quantity items in DB for user ${userId}`);
-
-				// Delete zero-quantity items from DB if they somehow still exist
-				const zeroQtyIds = finalInventory
-					.filter(item => item.quantity <= 0)
-					.map(item => item.id);
-
-				if (zeroQtyIds.length > 0) {
-					await prismaDeleteInventoryFromDB(userId, zeroQtyIds);
-					logger.info(`🧹 Emergency cleanup: deleted ${zeroQtyIds.length} zero-qty items from DB`);
-				}
-			}
-
-			if (user && user.inventory) {
-				const remap = new Map<number, number>();
-
-				// MAP temp IDs to real IDs based on type matching
-				const tempItems = user.inventory.filter(item => item.id < 0);
-				for (const tempItem of tempItems) {
-					const matchingRealItems = cleanedInventory.filter(realItem =>
-						realItem.equipmentId === tempItem.equipmentId &&
-						realItem.itemId === tempItem.itemId &&
-						realItem.quantity === tempItem.quantity
-					);
-
-					if (matchingRealItems.length > 0) {
-						const bestMatch = matchingRealItems.reduce((newest, current) =>
-							current.id > newest.id ? current : newest
-						);
-						remap.set(tempItem.id, bestMatch.id);
-						logger.debug(`🔗 Mapped temp ID ${tempItem.id} -> real ID ${bestMatch.id}`);
-					}
-				}
-
-				// UPDATE memory with cleaned data
-				user.inventory = cleanedInventory.sort((a, b) => a.order - b.order);
-
-				if (remap.size > 0) {
-					this.inventoryIdRemap.set(userId, remap);
-				}
-
-				logger.info(`📦 Updated memory with ${cleanedInventory.length} clean inventory items, mapped ${remap.size} temp IDs`);
-			}
-
-			// STEP 6: Clean up ALL pending operations
-			this.pendingCreateInventory.delete(userId);
-			this.pendingInventoryUpdates.delete(userId);
-			this.pendingInventoryDeletes.delete(userId);
-
-			if (!this.hasPendingChanges(userId)) {
-				this.markClean(userId);
-			}
-
-			logger.info(`✅ Smart flush completed with zero-quantity cleanup`);
-
-		} catch (err) {
-			logger.error(`❌ Inventory flush failed for user ${userId}: ${err}`);
-			throw err;
+			logger.error(`   Full error object:`, JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+			throw error;
 		}
 	}
 
+	/**
+	 * STEP 1: Process inventory deletions
+	 */
+	private async processInventoryDeletes(userId: string, deleteInventoryIds: number[]): Promise<void> {
+		if (deleteInventoryIds.length === 0) {
+			logger.debug(`📦 [${userId}] Step 1: No deletions to process`);
+			return;
+		}
+
+		try {
+			logger.debug(`📦 [${userId}] Step 1: Processing ${deleteInventoryIds.length} deletions...`);
+
+			const realDeleteIds = deleteInventoryIds.filter(id => id > 0);
+			logger.debug(`📦 [${userId}] Step 1: Filtered to ${realDeleteIds.length} real IDs: [${realDeleteIds.join(', ')}]`);
+
+			if (realDeleteIds.length > 0) {
+				await prismaDeleteInventoryFromDB(userId, realDeleteIds);
+				logger.info(`🗑️ [${userId}] Step 1: Successfully deleted ${realDeleteIds.length} items from database`);
+			} else {
+				logger.debug(`📦 [${userId}] Step 1: No real IDs to delete (all were temp IDs)`);
+			}
+
+			logger.debug(`📦 [${userId}] Step 1: COMPLETED`);
+		} catch (error) {
+			logger.error(`❌ [${userId}] Step 1: FAILED during deletion`);
+			throw new Error(`Inventory deletion failed: ${(error as Error).message}`);
+		}
+	}
+
+	/**
+	 * STEP 2: Process inventory creations
+	 */
+	private async processInventoryCreates(userId: string, createInventory: UserInventoryItem[]): Promise<void> {
+		if (createInventory.length === 0) {
+			logger.debug(`📦 [${userId}] Step 2: No creations to process`);
+			return;
+		}
+
+		try {
+			logger.debug(`📦 [${userId}] Step 2: Processing ${createInventory.length} creations...`);
+
+			const user = this.users.get(userId);
+			if (!user || !user.inventory) {
+				throw new Error(`User ${userId} not found in memory or has no inventory`);
+			}
+
+			// Filter to items that still exist in memory with quantity > 0
+			const validCreates = createInventory.filter(createItem => {
+				const memoryItem = user.inventory.find(inv => inv.id === createItem.id);
+				const isValid = memoryItem && memoryItem.quantity > 0;
+
+				if (!isValid) {
+					logger.debug(`📦 [${userId}] Step 2: Skipping invalid create item ${createItem.id} (not in memory or zero quantity)`);
+				}
+
+				return isValid;
+			});
+
+			logger.debug(`📦 [${userId}] Step 2: Filtered to ${validCreates.length} valid items to create`);
+
+			if (validCreates.length > 0) {
+				const createIds = validCreates.map(item => item.id);
+				logger.debug(`📦 [${userId}] Step 2: Creating items with IDs: [${createIds.join(', ')}]`);
+
+				await prismaInsertInventoryToDB(userId, validCreates);
+				logger.info(`💾 [${userId}] Step 2: Successfully inserted ${validCreates.length} items to database`);
+			} else {
+				logger.debug(`📦 [${userId}] Step 2: No valid items to create after filtering`);
+			}
+
+			logger.debug(`📦 [${userId}] Step 2: COMPLETED`);
+		} catch (error) {
+			logger.error(`❌ [${userId}] Step 2: FAILED during creation`);
+			throw new Error(`Inventory creation failed: ${(error as Error).message}`);
+		}
+	}
+
+	/**
+	 * STEP 3: Process inventory updates
+	 */
+	private async processInventoryUpdates(userId: string, updateInventoryIds: Set<number>): Promise<void> {
+		if (updateInventoryIds.size === 0) {
+			logger.debug(`📦 [${userId}] Step 3: No updates to process`);
+			return;
+		}
+
+		try {
+			logger.debug(`📦 [${userId}] Step 3: Processing ${updateInventoryIds.size} updates...`);
+
+			const user = this.users.get(userId);
+			if (!user || !user.inventory) {
+				throw new Error(`User ${userId} not found in memory or has no inventory`);
+			}
+
+			const itemsToUpdate: UserInventoryItem[] = [];
+			const itemsToDelete: number[] = [];
+
+			for (const updateId of updateInventoryIds) {
+				if (updateId <= 0) {
+					logger.debug(`📦 [${userId}] Step 3: Skipping temp ID ${updateId}`);
+					continue;
+				}
+
+				const memoryItem = user.inventory.find(inv => inv.id === updateId);
+				if (!memoryItem) {
+					logger.debug(`📦 [${userId}] Step 3: Item ${updateId} not found in memory - skipping`);
+					continue;
+				}
+
+				if (memoryItem.quantity > 0) {
+					itemsToUpdate.push(memoryItem);
+					logger.debug(`📦 [${userId}] Step 3: Will update item ${updateId} to quantity ${memoryItem.quantity}`);
+				} else {
+					itemsToDelete.push(updateId);
+					logger.debug(`📦 [${userId}] Step 3: Will delete item ${updateId} (zero quantity)`);
+				}
+			}
+
+			// Update non-zero quantities
+			if (itemsToUpdate.length > 0) {
+				logger.debug(`📦 [${userId}] Step 3: Updating ${itemsToUpdate.length} items with positive quantities`);
+				await prismaUpdateInventoryQuantitiesInDB(userId, itemsToUpdate);
+				logger.info(`🔄 [${userId}] Step 3: Successfully updated ${itemsToUpdate.length} item quantities`);
+			}
+
+			// Delete zero-quantity items
+			if (itemsToDelete.length > 0) {
+				logger.debug(`📦 [${userId}] Step 3: Deleting ${itemsToDelete.length} zero-quantity items`);
+				await prismaDeleteInventoryFromDB(userId, itemsToDelete);
+				logger.info(`🗑️ [${userId}] Step 3: Successfully deleted ${itemsToDelete.length} zero-quantity items`);
+			}
+
+			logger.debug(`📦 [${userId}] Step 3: COMPLETED`);
+		} catch (error) {
+			logger.error(`❌ [${userId}] Step 3: FAILED during updates`);
+			throw new Error(`Inventory updates failed: ${(error as Error).message}`);
+		}
+	}
+
+	/**
+	 * STEP 4: Sync memory with database
+	 */
+	private async syncInventoryFromDatabase(userId: string): Promise<void> {
+		try {
+			logger.debug(`📦 [${userId}] Step 4: Syncing memory with database...`);
+
+			// Load fresh data from database
+			const dbInventory = await prismaFetchUserInventory(userId);
+			logger.debug(`📦 [${userId}] Step 4: Loaded ${dbInventory.length} items from database`);
+
+			// Filter out any zero-quantity items (safety check)
+			const cleanInventory = dbInventory.filter(item => item.quantity > 0);
+			const removedCount = dbInventory.length - cleanInventory.length;
+
+			if (removedCount > 0) {
+				logger.warn(`⚠️ [${userId}] Step 4: Found ${removedCount} zero-quantity items in database`);
+
+				// Emergency cleanup of zero-quantity items in DB
+				const zeroQtyIds = dbInventory.filter(item => item.quantity <= 0).map(item => item.id);
+				if (zeroQtyIds.length > 0) {
+					await prismaDeleteInventoryFromDB(userId, zeroQtyIds);
+					logger.info(`🧹 [${userId}] Step 4: Emergency cleanup - deleted ${zeroQtyIds.length} zero-qty items from DB`);
+				}
+			}
+
+			// Update memory with clean data
+			const user = this.users.get(userId);
+			if (!user) {
+				throw new Error(`User ${userId} disappeared from memory during sync`);
+			}
+
+			// Map temp IDs to real IDs
+			const tempIdMapping = this.mapTempIdsToRealIds(userId, cleanInventory);
+
+			// Update user inventory in memory
+			user.inventory = cleanInventory.sort((a, b) => a.order - b.order);
+
+			if (tempIdMapping.size > 0) {
+				this.inventoryIdRemap.set(userId, tempIdMapping);
+				logger.debug(`📦 [${userId}] Step 4: Mapped ${tempIdMapping.size} temp IDs to real IDs`);
+			}
+
+			logger.info(`📦 [${userId}] Step 4: Successfully synced ${cleanInventory.length} items to memory`);
+			logger.debug(`📦 [${userId}] Step 4: COMPLETED`);
+		} catch (error) {
+			logger.error(`❌ [${userId}] Step 4: FAILED during database sync`);
+			throw new Error(`Database sync failed: ${(error as Error).message}`);
+		}
+	}
+
+	/**
+	 * Map temp IDs to real IDs for reference updates
+	 */
+	private mapTempIdsToRealIds(userId: string, dbInventory: UserInventoryItem[]): Map<number, number> {
+		const user = this.users.get(userId);
+		if (!user || !user.inventory) return new Map();
+
+		const mapping = new Map<number, number>();
+		const tempItems = user.inventory.filter(item => item.id < 0);
+
+		for (const tempItem of tempItems) {
+			const matchingItems = dbInventory.filter(dbItem =>
+				dbItem.equipmentId === tempItem.equipmentId &&
+				dbItem.itemId === tempItem.itemId &&
+				dbItem.quantity === tempItem.quantity
+			);
+
+			if (matchingItems.length > 0) {
+				// Use the item with highest ID (most recent)
+				const bestMatch = matchingItems.reduce((newest, current) =>
+					current.id > newest.id ? current : newest
+				);
+				mapping.set(tempItem.id, bestMatch.id);
+				logger.debug(`🔗 [${userId}] Mapped temp ID ${tempItem.id} -> real ID ${bestMatch.id}`);
+			}
+		}
+
+		return mapping;
+	}
+
+	/**
+	 * STEP 5: Clean up pending operations
+	 */
+	private cleanupPendingInventory(userId: string): void {
+		logger.debug(`📦 [${userId}] Step 5: Cleaning up pending operations...`);
+
+		this.pendingCreateInventory.delete(userId);
+		this.pendingInventoryUpdates.delete(userId);
+		this.pendingInventoryDeletes.delete(userId);
+
+		if (!this.hasPendingChanges(userId)) {
+			this.markClean(userId);
+			logger.debug(`📦 [${userId}] Step 5: Marked user as clean (no pending changes)`);
+		} else {
+			logger.debug(`📦 [${userId}] Step 5: User still has pending changes in other areas`);
+		}
+
+		logger.debug(`📦 [${userId}] Step 5: COMPLETED`);
+	}
 	/**
 	 * Flush ALL data for a specific user
 	 */
@@ -1066,11 +1306,18 @@ export class UserMemoryManager {
 					databaseSaveSuccessful = true;
 					logger.info(`✅ Successfully saved user ${userId} to database`);
 
-					// STEP 3: Generate FRESH snapshot from updated memory after successful DB save
+					// STEP 3: Generate FRESH snapshot from updated memory after successful DB save (with safety check)
 					const updatedMemoryUser = this.getUser(userId);
 					if (updatedMemoryUser) {
-						await snapshotRedisManager.storeSnapshot(userId, updatedMemoryUser);
-						logger.info(`📸 ✅ Updated snapshot from memory after successful DB save for user ${userId}`);
+						try {
+							await snapshotRedisManager.storeSnapshot(userId, updatedMemoryUser);
+							logger.info(`📸 ✅ Updated snapshot from memory after successful DB save for user ${userId}`);
+						} catch (snapshotError) {
+							logger.warn(`⚠️ Failed to update snapshot after DB save for user ${userId}: ${snapshotError}`);
+							// Don't fail logout - we already have the pre-flush snapshot from STEP 1
+						}
+					} else {
+						logger.debug(`⚠️ User ${userId} no longer in memory for post-flush snapshot - using pre-flush snapshot`);
 					}
 
 				} catch (flushError) {

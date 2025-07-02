@@ -37,7 +37,7 @@ export async function setupSocketHandlers(
     io.on("connection", async (socket) => {
         logger.info("An adapter has connected")
 
-        setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager)
+        setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager)
 
         setupUserSocketHandlers(socket, idleManager, combatManager, dittoLedgerSocket)
 
@@ -77,6 +77,19 @@ export async function setupSocketHandlers(
 
                         // Save idle activities first (time-sensitive)
                         await idleManager.saveAllIdleActivitiesOnLogout(userId);
+
+                        try {
+                            // Stop any active battles immediately
+                            await combatManager.endActiveBattleByUser(userId, false);
+
+                            // Clear any pending battle spawns
+                            await combatManager.stopCombat(idleManager, userId);
+
+                            logger.info(`✅ Ended all combat activities for user ${userId} before logout`);
+                        } catch (battleErr) {
+                            logger.warn(`⚠️ Failed to clean up battles for user ${userId}: ${battleErr}`);
+                            // Continue with logout even if battle cleanup fails
+                        }
 
                         // Flush any buffered activity logs for this user
                         if (activityLogMemoryManager.hasUser(userId)) {

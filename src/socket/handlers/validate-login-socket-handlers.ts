@@ -8,6 +8,7 @@ import { LEDGER_REMOVE_USER_SOCKET_EVENT, LOGOUT_USER_FROM_TMA_EVENT, STORE_FING
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { storeFingerprint } from "../../sql-services/user-fingerprint";
 import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
+import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 
 interface ValidateLoginPayload {
     initData: string
@@ -32,7 +33,8 @@ export async function setupValidateLoginSocketHandlers(
     dittoLedgerSocket: DittoLedgerSocket,
     validateLoginManager: ValidateLoginManager,
     socketManager: SocketManager,
-    idleManager: IdleManager
+    idleManager: IdleManager,
+    combatManager: IdleCombatManager
 ): Promise<void> {
     socket.on(VALIDATE_LOGIN_EVENT, async (data: ValidateLoginPayload) => {
         try {
@@ -54,8 +56,33 @@ export async function setupValidateLoginSocketHandlers(
             const userMemoryManager = requireUserMemoryManager();
             const activityLogMemoryManager = requireActivityLogMemoryManager();
 
+            // Check if user is actually in memory first
+            if (!userMemoryManager.hasUser(userId)) {
+                logger.warn(`⚠️ User ${userId} not in memory during logout - likely already logged out`);
+
+                // Still clean up socket since they triggered logout
+                socketManager.removeSocketIdCacheForUser(userId);
+                dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+
+                logger.info(`✅ Cleaned up socket for already-logged-out user ${userId}`);
+                return;
+            }
+
             // STEP 1: Save all idle activities first (this is time-sensitive)
             await idleManager.saveAllIdleActivitiesOnLogout(userId);
+
+            try {
+                // Stop any active battles immediately
+                await combatManager.endActiveBattleByUser(userId, false);
+
+                // Clear any pending battle spawns
+                await combatManager.stopCombat(idleManager, userId);
+
+                logger.info(`✅ Ended all combat activities for user ${userId} before logout`);
+            } catch (battleErr) {
+                logger.warn(`⚠️ Failed to clean up battles for user ${userId}: ${battleErr}`);
+                // Continue with logout even if battle cleanup fails
+            }
 
             // STEP 2: Flush activity logs for this user (before user data flush)
             if (activityLogMemoryManager.hasUser(userId)) {

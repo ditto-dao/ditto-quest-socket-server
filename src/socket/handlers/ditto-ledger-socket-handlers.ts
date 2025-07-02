@@ -143,9 +143,22 @@ export async function setupDittoLedgerSocketServerHandlers(
             logger.info(`🧹 Cleaning up ${activeUsers.length} active users due to ledger disconnect`);
 
             if (activeUsers.length > 0) {
-                // FIXED: Process each user individually to avoid race conditions
+                // Process each user individually to avoid race conditions
                 const cleanupPromises = activeUsers.map(async (userId) => {
                     try {
+                        try {
+                            // Stop any active battles immediately
+                            await combatManager.endActiveBattleByUser(userId, false);
+
+                            // Clear any pending battle spawns
+                            await combatManager.stopCombat(idleManager, userId);
+
+                            logger.info(`✅ Ended all combat activities for user ${userId} before logout`);
+                        } catch (battleErr) {
+                            logger.warn(`⚠️ Failed to clean up battles for user ${userId}: ${battleErr}`);
+                            // Continue with logout even if battle cleanup fails
+                        }
+
                         // Flush activity logs for this user first
                         if (activityLogMemoryManager.hasUser(userId)) {
                             await activityLogMemoryManager.flushUser(userId);

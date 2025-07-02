@@ -17,6 +17,7 @@ import { logCombatActivity } from "../../../operations/user-activity-log-operati
 import { CombatDropInput } from "../../../sql-services/user-activity-log";
 import { canUserMintItem, mintItemToUser } from "../../../operations/item-inventory-operations";
 import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
+import { requireUserMemoryManager } from "../../global-managers/global-managers";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -264,20 +265,29 @@ export class Battle {
 
     logger.info(`Ended battle for user ${this.user.telegramId}`);
 
-    try {
-      await setUserCombatHp(this.user.telegramId, this.userCombat.hp);
-      logger.info(`Set user HP to ${this.userCombat.hp} / ${this.userCombat.maxHp}`);
-    } catch (err) {
-      logger.error(`Failed to set user HP: ${err}`);
-    }
+    const userMemoryManager = requireUserMemoryManager();
+    const userStillInMemory = userMemoryManager.isReady() && userMemoryManager.hasUser(this.user.telegramId);
 
-    try {
-      const now = new Date();
-      this.user.lastBattleEndTimestamp = now;
-      await setLastBattleTimestamp(this.user.telegramId, now);
-      logger.info(`Set user setLastBattleEndTimestamp to ${now.toLocaleString()}`);
-    } catch (err) {
-      logger.error(`Failed to set last battle end timestamp: ${err}`);
+    if (userStillInMemory) {
+      // User is still in memory - safe to update combat state
+      try {
+        await setUserCombatHp(this.user.telegramId, this.userCombat.hp);
+        logger.info(`Set user HP to ${this.userCombat.hp} / ${this.userCombat.maxHp}`);
+      } catch (err) {
+        logger.error(`Failed to set user HP: ${err}`);
+      }
+
+      try {
+        const now = new Date();
+        this.user.lastBattleEndTimestamp = now;
+        await setLastBattleTimestamp(this.user.telegramId, now);
+        logger.info(`Set user setLastBattleEndTimestamp to ${now.toLocaleString()}`);
+      } catch (err) {
+        logger.error(`Failed to set last battle end timestamp: ${err}`);
+      }
+    } else {
+      // User no longer in memory (likely during logout) - skip combat updates
+      logger.debug(`⚠️ User ${this.user.telegramId} no longer in memory - skipping combat state updates (likely during logout)`);
     }
 
     if (emitStopEvent) {
