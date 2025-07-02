@@ -42,7 +42,8 @@
     "test-combat-system": "ts-node ./src/scripts/simulation/combat-simulation.ts",
     "process-test-eq-csv": "ts-node ./src/encyclopedia/scripts/process-test-eq-csv.ts",
     "generate-monster-stats": "ts-node ./src/encyclopedia/scripts/generate-monster-stats.ts",
-    "update-user-combat": "ts-node ./src/scripts/user-combat/update-user-combat.ts"
+    "update-user-combat": "ts-node ./src/scripts/user-combat/update-user-combat.ts",
+    "add-levels": "ts-node ./src/scripts/user-combat/add-lvls.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.730.0",
