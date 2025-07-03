@@ -15,6 +15,8 @@ import { setupCombatSocketHandlers } from "./handlers/combat-handlers"
 import AsyncLock from "async-lock"
 import { setupMissionSocketHandlers } from "./handlers/mission-handlers"
 import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../managers/global-managers/global-managers"
+import { ActivityLogMemoryManager } from "../managers/memory/activity-log-memory-manager"
+import { UserMemoryManager } from "../managers/memory/user-memory-manager"
 
 export const globalIdleSocketUserLock = new AsyncLock()
 
@@ -29,7 +31,9 @@ export async function setupSocketHandlers(
     socketManager: SocketManager,
     idleManager: IdleManager,
     combatManager: IdleCombatManager,
-    validateLoginManager: ValidateLoginManager
+    validateLoginManager: ValidateLoginManager,
+    userMemoryManager: UserMemoryManager,
+    activityLogMemoryManager: ActivityLogMemoryManager
 ): Promise<void> {
 
     setupDittoLedgerSocketServerHandlers(dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager);
@@ -37,7 +41,7 @@ export async function setupSocketHandlers(
     io.on("connection", async (socket) => {
         logger.info("An adapter has connected")
 
-        setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager)
+        setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager, userMemoryManager, activityLogMemoryManager)
 
         setupUserSocketHandlers(socket, idleManager, combatManager, dittoLedgerSocket)
 
@@ -67,7 +71,7 @@ export async function setupSocketHandlers(
 
                 logger.info(`🧹 Cleaning up ${userIds.length} users from disconnected adapter: ${userIds.join(', ')}`);
 
-                // STEP 2: Process each user's cleanup
+                // STEP 2: Process each user's cleanup using coordinated logout
                 const cleanupPromises = userIds.map(async (userId) => {
                     try {
                         logger.info(`🚪 Processing cleanup for user ${userId} (adapter disconnect)`);
@@ -75,41 +79,25 @@ export async function setupSocketHandlers(
                         const userMemoryManager = requireUserMemoryManager();
                         const activityLogMemoryManager = requireActivityLogMemoryManager();
 
-                        // Flush any buffered activity logs for this user
-                        if (activityLogMemoryManager.hasUser(userId)) {
-                            await activityLogMemoryManager.flushUser(userId);
+                        // Use coordinated logout with socket cleanup since adapter is gone
+                        const success = await userMemoryManager.coordinatedLogout(
+                            userId,
+                            combatManager,
+                            idleManager,
+                            activityLogMemoryManager,
+                            socketManager,     // Pass socketManager for cleanup
+                            dittoLedgerSocket, // Pass ledger socket for cleanup
+                            false              // Don't skip socket cleanup
+                        );
+
+                        if (success) {
+                            logger.info(`✅ Successfully cleaned up user ${userId} (adapter disconnect)`);
+                        } else {
+                            logger.warn(`⚠️ Partial cleanup for user ${userId} (adapter disconnect)`);
                         }
-
-                        combatManager.enableLogoutPreservation(userId);
-
-                        await combatManager.stopCombat(idleManager, userId);
-
-                        await idleManager.saveAllIdleActivitiesOnLogout(userId);
-
-                        await combatManager.cleanupAfterLogout(idleManager, userId);
-
-                        // SINGLE comprehensive logout (handles everything):
-                        // - Flush all pending user updates to database
-                        // - Generate fresh snapshot FROM memory
-                        // - Remove from memory
-                        await userMemoryManager.logoutUser(userId, true);
-
-                        logger.info(`✅ Successfully cleaned up user ${userId} (adapter disconnect)`);
                     } catch (userErr) {
                         logger.error(`❌ Failed to cleanup user ${userId} during adapter disconnect: ${userErr}`);
-
-                        // Emergency cleanup - try to at least generate snapshot
-                        try {
-                            const userMemoryManager = requireUserMemoryManager();
-                            const user = userMemoryManager.getUser(userId);
-                            if (user) {
-                                const snapshotRedisManager = requireSnapshotRedisManager();
-                                await snapshotRedisManager.storeSnapshot(userId, user);
-                                logger.info(`🚨 Emergency snapshot generated for user ${userId}`);
-                            }
-                        } catch (emergencyErr) {
-                            logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
-                        }
+                        // Emergency cleanup is already handled in coordinatedLogout
                     }
                 });
 

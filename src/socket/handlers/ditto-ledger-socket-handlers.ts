@@ -143,42 +143,25 @@ export async function setupDittoLedgerSocketServerHandlers(
                 // Process each user individually to avoid race conditions
                 const cleanupPromises = activeUsers.map(async (userId) => {
                     try {
-                        combatManager.enableLogoutPreservation(userId);
+                        // Use coordinated logout but skip socket cleanup since we're doing mass disconnect anyway
+                        const success = await userMemoryManager.coordinatedLogout(
+                            userId,
+                            combatManager,
+                            idleManager,
+                            activityLogMemoryManager,
+                            undefined, // Don't pass socketManager 
+                            undefined, // Don't pass dittoLedgerSocket
+                            true       // skipSocketCleanup = true
+                        );
 
-                        await combatManager.stopCombat(idleManager, userId);
-
-                        await idleManager.saveAllIdleActivitiesOnLogout(userId);
-
-                        await combatManager.cleanupAfterLogout(idleManager, userId);
-
-                        // Flush activity logs for this user
-                        if (activityLogMemoryManager.hasUser(userId)) {
-                            await activityLogMemoryManager.flushUser(userId);
+                        if (success) {
+                            logger.info(`✅ Cleaned up user ${userId} due to ledger disconnect`);
+                        } else {
+                            logger.warn(`⚠️ Partial cleanup for user ${userId} due to ledger disconnect`);
                         }
-
-                        // Use the same comprehensive logout as other cleanup scenarios
-                        const logoutSuccess = await userMemoryManager.logoutUser(userId, true);
-
-                        if (!logoutSuccess) {
-                            logger.warn(`⚠️ Ledger disconnect logout failed for user ${userId}`);
-                            // Emergency snapshot is handled inside logoutUser
-                        }
-
-                        logger.info(`✅ Cleaned up user ${userId} due to ledger disconnect`);
                     } catch (userErr) {
                         logger.error(`❌ Failed to cleanup user ${userId} during ledger disconnect: ${userErr}`);
-
-                        // Emergency snapshot fallback
-                        try {
-                            const user = userMemoryManager.getUser(userId);
-                            if (user) {
-                                const snapshotRedisManager = requireSnapshotRedisManager();
-                                await snapshotRedisManager.storeSnapshot(userId, user);
-                                logger.info(`🚨 Emergency snapshot for user ${userId}`);
-                            }
-                        } catch (emergencyErr) {
-                            logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
-                        }
+                        // Emergency snapshot is already handled in coordinatedLogout
                     }
                 });
 
@@ -190,7 +173,7 @@ export async function setupDittoLedgerSocketServerHandlers(
                 activityLogMemoryManager.clear();
             }
 
-            // Disconnect all user sockets
+            // Disconnect all user sockets (do this after user cleanup)
             socketManager.disconnectAllUsers();
 
             logger.error('🚨 All users disconnected due to ledger socket failure');

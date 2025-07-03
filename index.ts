@@ -15,6 +15,7 @@ import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-id
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
 import { cleanupGlobalManagers, getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
+import { UserMemoryManager } from "./src/managers/memory/user-memory-manager"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -84,7 +85,7 @@ async function main() {
     const validateLoginManager = new ValidateLoginManager(dittoLedgerSocket, socketManager, idleManager, combatManager)
 
     // ========== STEP 5: SETUP SOCKET HANDLERS ==========
-    await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager)
+    await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager, requireUserMemoryManager(), requireActivityLogMemoryManager());
 
     setupGlobalErrorHandlers()
 

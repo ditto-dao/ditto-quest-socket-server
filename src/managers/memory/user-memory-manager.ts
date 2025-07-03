@@ -10,6 +10,7 @@ import { SocketManager } from "../../socket/socket-manager";
 import { IdleManager } from "../idle-managers/idle-manager";
 import { ActivityLogMemoryManager } from "./activity-log-memory-manager";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
+import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -155,15 +156,13 @@ export class UserMemoryManager {
 	}
 
 
-	/**
-	 * Auto-logout inactive users with proper cleanup
-	 */
 	async autoLogoutInactiveUsers(
-		maxInactiveMs: number = 1800000, // 30 minutes default
+		maxInactiveMs: number = 1800000,
 		socketManager?: SocketManager,
 		dittoLedgerSocket?: DittoLedgerSocket,
 		idleManager?: IdleManager,
-		activityLogMemoryManager?: ActivityLogMemoryManager
+		activityLogMemoryManager?: ActivityLogMemoryManager,
+		combatManager?: IdleCombatManager
 	): Promise<number> {
 		const now = Date.now();
 		const cutoffTime = now - maxInactiveMs;
@@ -171,101 +170,50 @@ export class UserMemoryManager {
 
 		logger.info(`🔍 Checking for inactive users (cutoff: ${new Date(cutoffTime).toISOString()})`);
 
-		// Create a snapshot of users to check to avoid iterator invalidation
 		const usersToCheck = Array.from(this.lastActivity.entries());
 
 		for (const [userId, lastActive] of usersToCheck) {
 			if (lastActive < cutoffTime) {
-				// CRITICAL: Use user lock to prevent conflicts with concurrent operations
-				const userLock = this.getUserLock(userId);
-
 				try {
-					await userLock.acquire('logout', async () => {
-						// DOUBLE-CHECK: User might have become active during lock wait
-						const currentActivity = this.lastActivity.get(userId);
-						if (!currentActivity || currentActivity >= cutoffTime) {
-							logger.info(`⏰ User ${userId} became active during auto-logout lock - skipping`);
-							return;
-						}
+					// Double-check user is still inactive before calling coordinated logout
+					const currentActivity = this.lastActivity.get(userId);
+					if (!currentActivity || currentActivity >= cutoffTime) {
+						continue;
+					}
 
-						// TRIPLE-CHECK: User might have been removed from memory by another process
-						if (!this.hasUser(userId)) {
-							logger.info(`⏰ User ${userId} no longer in memory - skipping auto-logout`);
-							return;
-						}
+					logger.info(`⏰ Auto-logging out inactive user ${userId}`);
 
-						logger.info(`⏰ Auto-logging out inactive user ${userId}`);
+					if (combatManager && idleManager) {
+						const success = await this.coordinatedLogout(
+							userId,
+							combatManager,
+							idleManager,
+							activityLogMemoryManager,
+							socketManager,
+							dittoLedgerSocket
+						);
 
-						// STORE activity timestamp BEFORE logout (since logout removes it)
-						const activityAtLogout = this.lastActivity.get(userId);
-
-						// STEP 1: Save idle activities first
-						if (idleManager) {
-							await idleManager.saveAllIdleActivitiesOnLogout(userId);
-						}
-
-						// STEP 2: Flush activity logs
-						if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
-							await activityLogMemoryManager.flushUser(userId);
-							logger.debug(`✅ Flushed activity logs for auto-logout user ${userId}`);
-						}
-
-						// STEP 3: Full logout (flush + snapshot + memory removal)
-						const logoutSuccess = await this.logoutUser(userId, true);
-
-						if (!logoutSuccess) {
-							logger.warn(`⚠️ Auto-logout partially failed for user ${userId} - keeping in memory`);
-							return; // Skip socket cleanup if logout failed
-						}
-
-						// FINAL CHECK: Only clear socket if user was actually inactive at logout time
-						// (Use stored timestamp since user is no longer in memory)
-						if (activityAtLogout && activityAtLogout < cutoffTime) {
-							if (socketManager) {
-								socketManager.removeSocketIdCacheForUser(userId);
-							}
-							if (dittoLedgerSocket) {
-								dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-							}
-
+						if (success) {
 							loggedOut++;
-							logger.info(`✅ Auto-logged out inactive user ${userId}`);
-						} else {
-							logger.info(`⚠️ User ${userId} activity unclear - skipped socket cleanup`);
 						}
-					});
+					} else {
+						// Fallback to old method if managers not provided
+						const logoutSuccess = await this.logoutUser(userId, true);
+						if (logoutSuccess) {
+							if (socketManager) socketManager.removeSocketIdCacheForUser(userId);
+							if (dittoLedgerSocket) dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+							loggedOut++;
+						}
+					}
 
 				} catch (error) {
 					logger.error(`❌ Failed to auto-logout user ${userId}: ${error}`);
-
-					// ENHANCED Emergency cleanup - try to preserve data
-					try {
-						// First attempt: Generate emergency snapshot if user still in memory
-						const user = this.getUser(userId);
-						if (user) {
-							const snapshotRedisManager = requireSnapshotRedisManager();
-							await snapshotRedisManager.storeSnapshot(userId, user);
-							logger.info(`🚨 Generated emergency snapshot for failed auto-logout: ${userId}`);
-						}
-
-						// Then clean up socket cache
-						if (socketManager) {
-							socketManager.removeSocketIdCacheForUser(userId);
-						}
-						if (dittoLedgerSocket) {
-							dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-						}
-					} catch (emergencyErr) {
-						logger.error(`💥 Emergency cleanup failed for user ${userId}: ${emergencyErr}`);
-					}
 				}
 			}
 		}
 
 		if (loggedOut > 0) {
 			logger.info(`🧹 Auto-logged out ${loggedOut} inactive users`);
-		} else {
-			logger.debug(`✅ No inactive users found for auto-logout`);
 		}
 
 		return loggedOut;
@@ -1386,6 +1334,100 @@ export class UserMemoryManager {
 					}
 				} catch (emergencyErr) {
 					logger.error(`💥 Emergency snapshot failed for user ${userId}: ${emergencyErr}`);
+				}
+
+				return false;
+			}
+		});
+	}
+
+	/**
+	 * Coordinated user logout with full cleanup
+	 * Used by: manual logout, session replacement, auto-logout, etc.
+	 */
+	async coordinatedLogout(
+		userId: string,
+		combatManager: IdleCombatManager,
+		idleManager: IdleManager,
+		activityLogMemoryManager?: ActivityLogMemoryManager,
+		socketManager?: SocketManager,
+		dittoLedgerSocket?: any,
+		skipSocketCleanup: boolean = false
+	): Promise<boolean> {
+		const userLock = this.getUserLock(userId);
+
+		return await userLock.acquire('coordinated-logout', async () => {
+			// Early exit if user already cleaned up
+			if (!this.hasUser(userId)) {
+				logger.warn(`⚠️ User ${userId} not in memory during coordinated logout - already processed`);
+
+				if (!skipSocketCleanup && socketManager) {
+					socketManager.removeSocketIdCacheForUser(userId);
+					if (dittoLedgerSocket) {
+						dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+					}
+				}
+				return true;
+			}
+
+			try {
+				logger.info(`🚪 Starting coordinated logout for user ${userId}`);
+
+				// STEP 1: Combat cleanup
+				combatManager.enableLogoutPreservation(userId);
+				await combatManager.stopCombat(idleManager, userId);
+				await idleManager.saveAllIdleActivitiesOnLogout(userId);
+				await combatManager.cleanupAfterLogout(idleManager, userId);
+
+				// STEP 2: Activity logs
+				if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
+					await activityLogMemoryManager.flushUser(userId);
+					logger.debug(`✅ Flushed activity logs for user ${userId}`);
+				}
+
+				// STEP 3: User data flush + snapshot + memory removal
+				const logoutSuccess = await this.logoutUser(userId, true);
+
+				if (!logoutSuccess) {
+					logger.warn(`⚠️ Coordinated logout partially failed for user ${userId} - user kept in memory`);
+
+					// Emergency snapshot
+					try {
+						const user = this.getUser(userId);
+						if (user) {
+							const snapshotRedisManager = requireSnapshotRedisManager();
+							await snapshotRedisManager.storeSnapshot(userId, user);
+							logger.info(`🚨 Generated emergency snapshot for failed logout: ${userId}`);
+						}
+					} catch (emergencyErr) {
+						logger.error(`💥 Emergency snapshot failed: ${emergencyErr}`);
+					}
+				}
+
+				// STEP 4: Socket cleanup (always do this unless explicitly skipped)
+				if (!skipSocketCleanup && socketManager) {
+					socketManager.removeSocketIdCacheForUser(userId);
+					if (dittoLedgerSocket) {
+						dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+					}
+				}
+
+				logger.info(`✅ Coordinated logout ${logoutSuccess ? 'completed' : 'partially completed'} for user ${userId}`);
+				return logoutSuccess;
+
+			} catch (error) {
+				logger.error(`❌ Coordinated logout failed for user ${userId}: ${error}`);
+
+				// Emergency socket cleanup
+				if (!skipSocketCleanup && socketManager) {
+					try {
+						socketManager.removeSocketIdCacheForUser(userId);
+						if (dittoLedgerSocket) {
+							dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+						}
+					} catch (cleanupErr) {
+						logger.error(`❌ Emergency socket cleanup failed: ${cleanupErr}`);
+					}
 				}
 
 				return false;
