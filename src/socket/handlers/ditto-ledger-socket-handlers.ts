@@ -135,9 +135,6 @@ export async function setupDittoLedgerSocketServerHandlers(
             const userMemoryManager = requireUserMemoryManager();
             const activityLogMemoryManager = requireActivityLogMemoryManager();
 
-            // Save all idle activities for all users (time-sensitive)
-            await idleManager.saveAllUsersIdleActivities();
-
             // Get all active users from memory
             const activeUsers = userMemoryManager.getActiveUsers();
             logger.info(`🧹 Cleaning up ${activeUsers.length} active users due to ledger disconnect`);
@@ -146,20 +143,15 @@ export async function setupDittoLedgerSocketServerHandlers(
                 // Process each user individually to avoid race conditions
                 const cleanupPromises = activeUsers.map(async (userId) => {
                     try {
-                        try {
-                            // Stop any active battles immediately
-                            await combatManager.endActiveBattleByUser(userId, false);
+                        combatManager.enableLogoutPreservation(userId);
 
-                            // Clear any pending battle spawns
-                            await combatManager.stopCombat(idleManager, userId);
+                        await combatManager.stopCombat(idleManager, userId);
 
-                            logger.info(`✅ Ended all combat activities for user ${userId} before logout`);
-                        } catch (battleErr) {
-                            logger.warn(`⚠️ Failed to clean up battles for user ${userId}: ${battleErr}`);
-                            // Continue with logout even if battle cleanup fails
-                        }
+                        await idleManager.saveAllIdleActivitiesOnLogout(userId);
 
-                        // Flush activity logs for this user first
+                        await combatManager.cleanupAfterLogout(idleManager, userId);
+
+                        // Flush activity logs for this user
                         if (activityLogMemoryManager.hasUser(userId)) {
                             await activityLogMemoryManager.flushUser(userId);
                         }

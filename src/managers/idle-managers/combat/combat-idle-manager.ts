@@ -20,6 +20,8 @@ export class IdleCombatManager {
     private stopCombatPromiseByUserId: Record<string, Promise<void> | undefined> = {};
     private pendingStopCombatByUserId: Record<string, boolean> = {};
 
+    private logoutPreservationMode: Set<string> = new Set();
+
     constructor(socketManager: SocketManager, dittoLedgerSocket: DittoLedgerSocket) {
         this.socketManager = socketManager;
         this.dittoLedgerSocket = dittoLedgerSocket;
@@ -40,8 +42,13 @@ export class IdleCombatManager {
                 delete this.activeBattlesByUserId[userId];
                 logger.info(`⛔ Cleared finished battle instance for user ${userId}`);
 
-                await idleManager.removeAllCombatActivities(userId);
-                logger.info(`🧹 Cleared idle combat activity for user ${userId} after death`);
+                // Only remove combat activities if NOT in logout preservation mode
+                if (!this.logoutPreservationMode.has(userId)) {
+                    await idleManager.removeAllCombatActivities(userId);
+                    logger.info(`🧹 Cleared idle combat activity for user ${userId} after death`);
+                } else {
+                    logger.info(`🔒 Logout preservation mode - skipping removeAllCombatActivities in onBattleEnd for user ${userId}`);
+                }
             }
         };
 
@@ -157,10 +164,16 @@ export class IdleCombatManager {
                 delete this.activeBattlesByUserId[userId];
                 logger.info(`⛔ Cleared finished battle instance for user ${userId}`);
 
-                await idleManager.removeAllCombatActivities(userId);
-                logger.info(`🧹 Cleared idle combat activity for user ${userId} after death`);
+                // Only remove combat activities if NOT in logout preservation mode
+                if (!this.logoutPreservationMode.has(userId)) {
+                    await idleManager.removeAllCombatActivities(userId);
+                    logger.info(`🧹 Cleared idle combat activity for user ${userId} after death`);
+                } else {
+                    logger.info(`🔒 Logout preservation mode - skipping removeAllCombatActivities in onBattleEnd for user ${userId}`);
+                }
             }
         };
+
 
         battle.onNextBattle = async () => {
             if (this.stopCombatPromiseByUserId[userId]) {
@@ -441,7 +454,7 @@ export class IdleCombatManager {
                 logger.error(`Error while stopping battle for user ${userId}: ${err}`);
                 throw err;
             } finally {
-                delete this.endingBattlePromise[userId]; // clean up
+                delete this.endingBattlePromise[userId];
             }
         })();
 
@@ -453,7 +466,7 @@ export class IdleCombatManager {
         const stopPromise = (async () => {
             this.pendingStopCombatByUserId[userId] = true;
 
-            // 🚫 Preemptively neuter onNextBattle to avoid race
+            // Neutralize onNextBattle to prevent battle chains
             const battle = this.activeBattlesByUserId[userId];
             if (battle) {
                 battle.onNextBattle = async () => {
@@ -467,7 +480,7 @@ export class IdleCombatManager {
                 await nextBattle;
             }
 
-            // 🧯 Final race guard: manually end battle if still running
+            // End current battle if running
             if (battle && battle.battleEnded === false) {
                 logger.warn(`🧯 stopCombat found battle still running for user ${userId}, calling endBattle manually`);
                 await battle.endBattle(true);
@@ -482,9 +495,15 @@ export class IdleCombatManager {
                 }
             }
 
-            try {
-                await idleManager.removeAllCombatActivities(userId);
-            } finally {
+            // Only remove idle activities if NOT in logout preservation mode
+            if (!this.logoutPreservationMode.has(userId)) {
+                try {
+                    await idleManager.removeAllCombatActivities(userId);
+                } finally {
+                    delete this.pendingStopCombatByUserId[userId];
+                }
+            } else {
+                logger.info(`🔒 Logout preservation mode - skipping removeAllCombatActivities for user ${userId}`);
                 delete this.pendingStopCombatByUserId[userId];
             }
         })();
@@ -530,6 +549,21 @@ export class IdleCombatManager {
     updateUserCombatMidBattle(userId: string, combat: Combat, updatedHp?: number) {
         if (this.activeBattlesByUserId[userId]) {
             this.activeBattlesByUserId[userId].updateUserCombat(combat, updatedHp);
+        }
+    }
+
+    enableLogoutPreservation(userId: string): void {
+        this.logoutPreservationMode.add(userId);
+        logger.info(`🔒 Enabled logout preservation mode for user ${userId}`);
+    }
+
+    async cleanupAfterLogout(idleManager: IdleManager, userId: string): Promise<void> {
+        try {
+            await idleManager.removeAllCombatActivities(userId);
+            logger.info(`🧹 Cleaned up combat activities after logout for user ${userId}`);
+        } finally {
+            this.logoutPreservationMode.delete(userId);
+            logger.info(`🔓 Disabled logout preservation mode for user ${userId}`);
         }
     }
 }

@@ -261,9 +261,6 @@ export class IdleManager {
                         await this.popIdleActivityByUser(userId);
                     }
                 }
-
-                // Remove the user's activities from the in-memory list
-                logger.info(`Saved and cleared ${userActivities.length} idle activities for user ${userId}.`);
             } catch (error) {
                 logger.error(`Error saving all idle activities for user ${userId}: ${error}`);
             }

@@ -75,26 +75,18 @@ export async function setupSocketHandlers(
                         const userMemoryManager = requireUserMemoryManager();
                         const activityLogMemoryManager = requireActivityLogMemoryManager();
 
-                        // Save idle activities first (time-sensitive)
-                        await idleManager.saveAllIdleActivitiesOnLogout(userId);
-
-                        try {
-                            // Stop any active battles immediately
-                            await combatManager.endActiveBattleByUser(userId, false);
-
-                            // Clear any pending battle spawns
-                            await combatManager.stopCombat(idleManager, userId);
-
-                            logger.info(`✅ Ended all combat activities for user ${userId} before logout`);
-                        } catch (battleErr) {
-                            logger.warn(`⚠️ Failed to clean up battles for user ${userId}: ${battleErr}`);
-                            // Continue with logout even if battle cleanup fails
-                        }
-
                         // Flush any buffered activity logs for this user
                         if (activityLogMemoryManager.hasUser(userId)) {
                             await activityLogMemoryManager.flushUser(userId);
                         }
+
+                        combatManager.enableLogoutPreservation(userId);
+
+                        await combatManager.stopCombat(idleManager, userId);
+
+                        await idleManager.saveAllIdleActivitiesOnLogout(userId);
+
+                        await combatManager.cleanupAfterLogout(idleManager, userId);
 
                         // SINGLE comprehensive logout (handles everything):
                         // - Flush all pending user updates to database

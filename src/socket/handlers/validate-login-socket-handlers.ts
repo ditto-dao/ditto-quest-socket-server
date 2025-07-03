@@ -68,21 +68,14 @@ export async function setupValidateLoginSocketHandlers(
                 return;
             }
 
+            combatManager.enableLogoutPreservation(userId);
+
+            await combatManager.stopCombat(idleManager, userId);
+
             // STEP 1: Save all idle activities first (this is time-sensitive)
             await idleManager.saveAllIdleActivitiesOnLogout(userId);
 
-            try {
-                // Stop any active battles immediately
-                await combatManager.endActiveBattleByUser(userId, false);
-
-                // Clear any pending battle spawns
-                await combatManager.stopCombat(idleManager, userId);
-
-                logger.info(`✅ Ended all combat activities for user ${userId} before logout`);
-            } catch (battleErr) {
-                logger.warn(`⚠️ Failed to clean up battles for user ${userId}: ${battleErr}`);
-                // Continue with logout even if battle cleanup fails
-            }
+            await combatManager.cleanupAfterLogout(idleManager, userId);
 
             // STEP 2: Flush activity logs for this user (before user data flush)
             if (activityLogMemoryManager.hasUser(userId)) {
