@@ -31,7 +31,6 @@ export interface CurrentCombat {
 
 export class OfflineCombatManager {
 
-  static SPEED_MULTIPLIER = 0.25;
   static DROP_NERF_MULTIPLIER = 0.25;
   static EXP_NERF_MULTIPLIER = 0.5;
   static USER_NERF_MULTIPLIER = 0.75;
@@ -79,7 +78,7 @@ export class OfflineCombatManager {
 
     const REAL_ELAPSED_MS = Date.now() - activity.logoutTimestamp!;
     const offlineMs = Math.min(
-      REAL_ELAPSED_MS * OfflineCombatManager.SPEED_MULTIPLIER,
+      REAL_ELAPSED_MS,
       MAX_OFFLINE_IDLE_PROGRESS_S * 1000
     );
     const tickMs = 100;
@@ -328,7 +327,7 @@ export class OfflineCombatManager {
 
     const REAL_ELAPSED_MS = Date.now() - activity.logoutTimestamp!;
     const offlineMs = Math.min(
-      REAL_ELAPSED_MS * OfflineCombatManager.SPEED_MULTIPLIER,
+      REAL_ELAPSED_MS,
       MAX_OFFLINE_IDLE_PROGRESS_S * 1000
     );
     const tickMs = 100;
@@ -691,7 +690,7 @@ export class OfflineCombatManager {
     userCombat.critMultiplier *= multiplier;
     userCombat.dmgReduction *= multiplier;
     userCombat.magicDmgReduction *= multiplier;
-    userCombat.hpRegenRate /= multiplier;
+    userCombat.hpRegenRate *= (1 + (1 - 0.75));
     userCombat.hpRegenAmount *= multiplier;
     userCombat.maxHp *= multiplier;
     userCombat.hp = Math.floor(Math.min(userCombat.hp, userCombat.maxHp)); // clamp HP to new max
