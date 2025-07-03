@@ -98,23 +98,23 @@ export function getAtkCooldownFromAtkSpd(atkSpd: number): number {
 }
 
 /**
- * ACC = (DEX ^ A) * B
+ * ACC = (LUK ^ A) * B
  */
-export function getBaseAccFromLuk(dex: number): number {
+export function getBaseAccFromLuk(luk: number): number {
     const A = 1.1;
     const B = 10;
 
-    return Math.pow(dex, A) * B;
+    return Math.pow(luk, A) * B;
 }
 
 /**
- * EVA = (LUK ^ A) * B
+ * EVA = (DEX ^ A) * B
  */
-export function getBaseEvaFromDex(luk: number): number {
+export function getBaseEvaFromDex(dex: number): number {
     const A = 1.05;
     const B = 10;
 
-    return Math.pow(luk, A) * B;
+    return Math.pow(dex, A) * B;
 }
 
 /**

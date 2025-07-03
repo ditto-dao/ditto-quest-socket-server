@@ -33,7 +33,7 @@ export class OfflineCombatManager {
 
   static DROP_NERF_MULTIPLIER = 0.25;
   static EXP_NERF_MULTIPLIER = 0.5;
-  static USER_NERF_MULTIPLIER = 0.75;
+  static USER_NERF_MULTIPLIER = 0.5;
 
   constructor() { }
 
@@ -690,7 +690,7 @@ export class OfflineCombatManager {
     userCombat.critMultiplier *= multiplier;
     userCombat.dmgReduction *= multiplier;
     userCombat.magicDmgReduction *= multiplier;
-    userCombat.hpRegenRate *= (1 + (1 - 0.75));
+    userCombat.hpRegenRate /= multiplier;
     userCombat.hpRegenAmount *= multiplier;
     userCombat.maxHp *= multiplier;
     userCombat.hp = Math.floor(Math.min(userCombat.hp, userCombat.maxHp)); // clamp HP to new max
