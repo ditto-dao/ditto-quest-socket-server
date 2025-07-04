@@ -243,7 +243,7 @@ async function checkUserValues(telegramId: string) {
 // Main execution function
 async function main() {
     try {
-        const userId = "61483845";
+        const userId = "183055980";
 
         // Connect to Redis once at the start
         await ensureRedisConnection();
