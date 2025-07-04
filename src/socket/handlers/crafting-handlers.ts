@@ -8,8 +8,9 @@ import { globalIdleSocketUserLock } from "../socket-handlers"
 import { USER_UPDATE_EVENT } from "../events";
 import { getEquipmentById } from "../../operations/equipment-operations";
 import { getCraftingRecipeForEquipment } from "../../operations/crafting-operations";
-import { incrementUserGold } from "../../operations/user-operations";
+import { getEquippedByEquipmentTypeMemory, incrementUserGold } from "../../operations/user-operations";
 import { deleteEquipmentFromUserInventory } from "../../operations/equipment-inventory-operations";
+import { requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 
 interface CraftEquipmentPayload {
     userId: string;
@@ -58,15 +59,26 @@ export async function setupCraftingSocketHandlers(
                 const equipment = await getEquipmentById(data.equipmentId);
                 if (!equipment) throw new Error(`Unable to find equipment`);
 
-                const goldBalance = await incrementUserGold(data.userId, equipment.sellPriceGP * data.quantity);
+                const equippedItem = await getEquippedByEquipmentTypeMemory(data.userId, equipment.type);
+                const isEquipped = equippedItem && equippedItem.equipmentId === data.equipmentId;
 
+                const userMemoryManager = requireUserMemoryManager();
+                const inventoryItem = userMemoryManager.findInventoryByEquipmentId(data.userId, data.equipmentId);
+
+                if (!inventoryItem) {
+                    throw new Error(`Equipment not found in inventory`);
+                }
+
+                if (isEquipped && inventoryItem.quantity <= data.quantity) {
+                    throw new Error(`Cannot sell equipped item - unequip first or keep at least 1 in inventory`);
+                }
+
+                const goldBalance = await incrementUserGold(data.userId, equipment.sellPriceGP * data.quantity);
                 const inv = await deleteEquipmentFromUserInventory(data.userId, [data.equipmentId], [data.quantity]);
 
                 socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
                     userId: data.userId,
-                    payload: {
-                        goldBalance
-                    }
+                    payload: { goldBalance }
                 });
 
                 socket.emit("update-inventory", {
@@ -77,7 +89,7 @@ export async function setupCraftingSocketHandlers(
                 logger.error(`Error processing sell-equipment: ${error}`)
                 socket.emit('error', {
                     userId: data.userId,
-                    msg: 'Failed to sell equipment'
+                    msg: `Failed to sell equipment: ${(error as Error).message}`
                 })
             }
         })
