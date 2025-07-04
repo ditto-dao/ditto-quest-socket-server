@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { logger } from '../utils/logger';
-import { getUserDataWithSnapshot } from '../operations/user-operations';
 import { getTotalCombatDitto } from '../redis/intract';
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
+import { peekUserLevel } from '../operations/intract';
 
 export interface IntractVerificationRequest {
     telegram?: string;
@@ -60,10 +60,10 @@ export class IntractVerificationAPI {
      */
     async verifyDitto200Task(req: Request, res: Response): Promise<void> {
         const startTime = Date.now();
-        
+
         try {
             const payload: IntractVerificationRequest = req.body;
-            
+
             // Validate required fields
             if (!payload.telegram) {
                 logger.warn('Ditto 200 verification request missing telegram ID');
@@ -77,7 +77,7 @@ export class IntractVerificationAPI {
             // Check if user has earned >= 200 ditto from combat activities
             const totalCombatDitto = await this.getTotalCombatDittoEarned(telegramId);
             const isCompleted = totalCombatDitto >= 200;
-            
+
             const response: IntractVerificationResponse = {
                 error: {
                     code: 0,
@@ -96,7 +96,7 @@ export class IntractVerificationAPI {
         } catch (error) {
             const processingTime = Date.now() - startTime;
             logger.error(`Error verifying Ditto 200 task (${processingTime}ms): ${error}`);
-            
+
             res.status(200).json(this.createErrorResponse(500, 'Internal server error'));
         }
     }
@@ -107,10 +107,10 @@ export class IntractVerificationAPI {
      */
     async verifyCombatLevel10Task(req: Request, res: Response): Promise<void> {
         const startTime = Date.now();
-        
+
         try {
             const payload: IntractVerificationRequest = req.body;
-            
+
             // Validate required fields
             if (!payload.telegram) {
                 logger.warn('Combat Level 10 verification request missing telegram ID');
@@ -122,9 +122,9 @@ export class IntractVerificationAPI {
             logger.info(`Verifying Combat Level 10 task for Telegram ID: ${telegramId}`);
 
             // Get user and check combat level
-            const user = await getUserDataWithSnapshot(telegramId);
-            
-            if (!user) {
+            const level = await peekUserLevel(telegramId);
+
+            if (!level) {
                 logger.warn(`User not found for Telegram ID: ${telegramId}`);
                 res.status(200).json({
                     error: { code: 0, message: '' },
@@ -134,8 +134,8 @@ export class IntractVerificationAPI {
             }
 
             // Calculate combat level (assuming 1000 exp per level)
-            const isCompleted = user.level >= 10;
-            
+            const isCompleted = level >= 10;
+
             const response: IntractVerificationResponse = {
                 error: {
                     code: 0,
@@ -147,14 +147,14 @@ export class IntractVerificationAPI {
             };
 
             const processingTime = Date.now() - startTime;
-            logger.info(`Combat Level 10 verification completed for ${telegramId}: ${isCompleted} (level: ${user.level}) (${processingTime}ms)`);
+            logger.info(`Combat Level 10 verification completed for ${telegramId}: ${isCompleted} (level: ${level}) (${processingTime}ms)`);
 
             res.status(200).json(response);
 
         } catch (error) {
             const processingTime = Date.now() - startTime;
             logger.error(`Error verifying Combat Level 10 task (${processingTime}ms): ${error}`);
-            
+
             res.status(200).json(this.createErrorResponse(500, 'Internal server error'));
         }
     }
@@ -166,9 +166,9 @@ export class IntractVerificationAPI {
         try {
             // Get total from database (all-time combat activity)
             const totalDitto = await getTotalCombatDitto(this.redisClient, telegramId);
-            
+
             logger.info(`Total combat ditto for ${telegramId}: ${totalDitto}`);
-            
+
             return (totalDitto) ? totalDitto : 0;
 
         } catch (error) {
