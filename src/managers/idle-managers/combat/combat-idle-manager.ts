@@ -9,6 +9,7 @@ import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { sleep } from '../../../utils/helpers';
 import { DungeonManager, DungeonState } from './dungeon-manager';
 import { DomainWithMonsters, DungeonWithMonsters, FullMonster, prismaUpdateDungeonLeaderboard } from '../../../sql-services/combat-service';
+import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
 
 export class IdleCombatManager {
     private activeBattlesByUserId: Record<string, Battle> = {};
@@ -22,9 +23,12 @@ export class IdleCombatManager {
 
     private logoutPreservationMode: Set<string> = new Set();
 
-    constructor(socketManager: SocketManager, dittoLedgerSocket: DittoLedgerSocket) {
+    private redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
+
+    constructor(socketManager: SocketManager, dittoLedgerSocket: DittoLedgerSocket, redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>) {
         this.socketManager = socketManager;
         this.dittoLedgerSocket = dittoLedgerSocket;
+        this.redisClient = redisClient;
     }
 
     private createDomainBattle(
@@ -35,7 +39,7 @@ export class IdleCombatManager {
         domain: DomainWithMonsters,
         userId: string,
     ) {
-        const battle = new Battle('Domain', domain.id, domain.minCombatLevel, domain.maxCombatLevel, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster);
+        const battle = new Battle('Domain', domain.id, domain.minCombatLevel, domain.maxCombatLevel, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster, this.redisClient);
 
         battle.onBattleEnd = async () => {
             if (this.activeBattlesByUserId[userId] === battle) {
@@ -150,7 +154,7 @@ export class IdleCombatManager {
         dungeon: DungeonWithMonsters,
         userId: string,
     ) {
-        const battle = new Battle('Dungeon', dungeon.id, dungeon.minCombatLevel, dungeon.maxCombatLevel, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster);
+        const battle = new Battle('Dungeon', dungeon.id, dungeon.minCombatLevel, dungeon.maxCombatLevel, this.socketManager, this.dittoLedgerSocket, user, userCombat, monster, this.redisClient);
 
         battle.onBattleEnd = async () => {
             const dungeonState = DungeonManager.getState(userId);

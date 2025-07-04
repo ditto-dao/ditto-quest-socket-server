@@ -18,6 +18,8 @@ import { CombatDropInput } from "../../../sql-services/user-activity-log";
 import { canUserMintItem, mintItemToUser } from "../../../operations/item-inventory-operations";
 import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
 import { requireUserMemoryManager } from "../../global-managers/global-managers";
+import { incrementTotalCombatDittoByTelegramId } from "../../../redis/intract";
+import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -56,6 +58,9 @@ export class Battle {
   private userRegenInterval: number = 0;
   private monsterRegenInterval: number = 0;
 
+  // intract
+  private redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>;
+
   constructor(
     combatAreaType: 'Domain' | 'Dungeon',
     combatAreaId: number,
@@ -66,8 +71,11 @@ export class Battle {
     user: User,
     userCombat: Combat,
     monster: FullMonster,
+
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
+
     onBattleEnd?: () => Promise<void>,
-    onNextBattle?: () => Promise<void>
+    onNextBattle?: () => Promise<void>,
   ) {
     this.combatAreaType = combatAreaType;
     this.combatAreaId = combatAreaId;
@@ -78,6 +86,8 @@ export class Battle {
     this.user = user;
     this.userCombat = userCombat;
     this.monster = monster;
+
+    this.redisClient = redisClient;
 
     this.onBattleEnd = onBattleEnd;
     this.onNextBattle = onNextBattle;
@@ -697,6 +707,9 @@ export class Battle {
           sender: DEVELOPMENT_FUNDS_KEY,
           updates,
         });
+
+        // intract
+        await incrementTotalCombatDittoByTelegramId(this.redisClient, this.user.telegramId, dittoDrop);
 
         return dittoDropUserRounded;
       }

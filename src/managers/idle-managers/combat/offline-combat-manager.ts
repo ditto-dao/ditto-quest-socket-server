@@ -18,6 +18,8 @@ import { canUserMintItem, mintItemToUser } from "../../../operations/item-invent
 import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
 import { logCombatActivity } from "../../../operations/user-activity-log-operations";
 import { SocketManager } from "../../../socket/socket-manager";
+import { incrementTotalCombatDittoByTelegramId } from "../../../redis/intract";
+import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -41,6 +43,7 @@ export class OfflineCombatManager {
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
     socketManager: SocketManager,
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
   ): Promise<{
     combatUpdate: CombatUpdate | undefined;
     currentCombat: CurrentCombat | undefined;
@@ -57,10 +60,10 @@ export class OfflineCombatManager {
 
     switch (activity.mode) {
       case "domain":
-        return await OfflineCombatManager.handleLoadedDomainCombat(dittoLedgerSocket, activity, socketManager);
+        return await OfflineCombatManager.handleLoadedDomainCombat(dittoLedgerSocket, activity, socketManager, redisClient);
 
       case "dungeon":
-        return await OfflineCombatManager.handleLoadedDungeonCombat(dittoLedgerSocket, activity, socketManager);
+        return await OfflineCombatManager.handleLoadedDungeonCombat(dittoLedgerSocket, activity, socketManager, redisClient);
       default:
         throw new Error(`Unknown combat mode: ${activity.mode}`);
     }
@@ -70,6 +73,7 @@ export class OfflineCombatManager {
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
     socketManager: SocketManager,
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
   ): Promise<{
     combatUpdate: CombatUpdate | undefined;
     currentCombat: CurrentCombat | undefined;
@@ -255,7 +259,7 @@ export class OfflineCombatManager {
     const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
     await incrementUserGold(activity.userId, totalGold);
 
-    await OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
+    await OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto, redisClient);
 
     for (const itemDrop of itemDrops) {
       if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
@@ -319,6 +323,7 @@ export class OfflineCombatManager {
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
     socketManager: SocketManager,
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
   ): Promise<{
     combatUpdate: CombatUpdate | undefined;
     currentCombat: CurrentCombat | undefined;
@@ -533,7 +538,7 @@ export class OfflineCombatManager {
     // handle increments in db
     const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
     await incrementUserGold(activity.userId, totalGold);
-    OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto);
+    OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto, redisClient);
     for (const itemDrop of itemDrops) {
       if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
         await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
@@ -602,7 +607,8 @@ export class OfflineCombatManager {
   static async handleDittoDrop(
     dittoLedgerSocket: DittoLedgerSocket,
     userId: string,
-    amountDitto: bigint
+    amountDitto: bigint,
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
   ) {
     try {
       const referrer = await getReferrer(userId);
@@ -669,6 +675,9 @@ export class OfflineCombatManager {
           sender: DEVELOPMENT_FUNDS_KEY,
           updates,
         });
+
+        // intract
+        await incrementTotalCombatDittoByTelegramId(redisClient, userId, dittoDrop);
 
         return dittoDropUserRounded;
       }

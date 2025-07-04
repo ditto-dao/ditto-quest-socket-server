@@ -294,7 +294,7 @@ export class IdleManager {
                         progressUpdates.push({ update });
                     } else if (activity.activity === 'combat') {
                         logger.info(`Offline combat activity found.`)
-                        const combatUpdate = await OfflineCombatManager.handleLoadedCombatActivity(this.dittoLedgerSocket, activity, this.socketManager);
+                        const combatUpdate = await OfflineCombatManager.handleLoadedCombatActivity(this.dittoLedgerSocket, activity, this.socketManager, this.redisClient);
                         progressUpdates.push({
                             update: combatUpdate.combatUpdate,
                             currentCombat: combatUpdate.currentCombat

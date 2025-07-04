@@ -14,8 +14,8 @@ import { ValidateLoginManager } from "./src/managers/validate-login/validate-log
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
-import { cleanupGlobalManagers, getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
-import { UserMemoryManager } from "./src/managers/memory/user-memory-manager"
+import { getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
+import { IntractVerificationAPI } from "./src/intract/intract-verification"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -78,7 +78,7 @@ async function main() {
     const socketManager = new SocketManager(dqIo, dittoLedgerSocket)
 
     // Idle manager
-    const combatManager = new IdleCombatManager(socketManager, dittoLedgerSocket)
+    const combatManager = new IdleCombatManager(socketManager, dittoLedgerSocket, redisClient)
     const idleManager = new IdleManager(redisClient, socketManager, dittoLedgerSocket)
 
     // Validate login manager
@@ -147,6 +147,9 @@ async function main() {
     }, 3600000);
 
     // ========== STEP 7: SETUP ADMIN ENDPOINTS ==========
+
+    // Setup Intract API routes
+    setupIntractRoutes(app, redisClient);
 
     // Health check route
     app.get('/', async (req, res) => {
@@ -314,6 +317,29 @@ async function gracefulShutdown(
 
         process.exit(1)
     }
+}
+
+function setupIntractRoutes(app: express.Application, redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>): void {
+    logger.info('🎯 Setting up Intract API routes...');
+
+    // Add JSON middleware FIRST
+    app.use(express.json());
+
+    const router = express.Router();
+    const intractAPI = new IntractVerificationAPI(redisClient);
+
+    // Health check endpoints
+    router.get('/health', (req, res) => intractAPI.healthCheck(req, res));
+    router.get('/ping', (req, res) => intractAPI.healthCheck(req, res));
+
+    // Task verification endpoints
+    router.post('/verify/ditto-200', (req, res) => intractAPI.verifyDitto200Task(req, res));
+    router.post('/verify/combat-level-10', (req, res) => intractAPI.verifyCombatLevel10Task(req, res));
+
+    // Mount the router
+    app.use('/api/intract', router);
+
+    logger.info('✅ Intract API routes configured');
 }
 
 main()
