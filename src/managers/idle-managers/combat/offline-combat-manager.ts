@@ -284,6 +284,31 @@ export class OfflineCombatManager {
       monsterNextRegen -= tickMs;
     }
 
+    // Log aggregated combat activities instead of individual kills
+    for (const monsterActivity of Object.values(combatActivitiesByMonster)) {
+      try {
+        await logCombatActivity({
+          userId: activity.userId,
+          monsterId: monsterActivity.monsterId,
+          quantity: monsterActivity.killCount,
+          expGained: monsterActivity.totalExp,
+          goldEarned: monsterActivity.totalGold,
+          dittoEarned: monsterActivity.totalDitto.toString(),
+          drops: monsterActivity.drops
+        });
+
+        // Add to mission updates (aggregate count per monster)
+        missionUpdates.push({
+          telegramId: activity.userId,
+          monsterId: monsterActivity.monsterId,
+          quantity: monsterActivity.killCount
+        });
+      } catch (error) {
+        logger.error(`Failed to log combat activity for monster ${monsterActivity.monsterId}: ${error}`);
+        // Continue with other monsters
+      }
+    }
+
     // handle increments in db
     const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
     await incrementUserGold(activity.userId, totalGold);
@@ -528,17 +553,6 @@ export class OfflineCombatManager {
             }
           }
 
-          // REMOVED: Individual logCombatActivity call
-          // OLD CODE:
-          // await logCombatActivity({
-          //   userId: activity.userId,
-          //   monsterId: monster.id,
-          //   expGained: exp,
-          //   goldEarned: goldGained,
-          //   dittoEarned: dittoGained.toString(),
-          //   drops: currDrops
-          // });
-
           // handle monster and floor increment
           activity.currentMonsterIndex++;
           if (activity.currentMonsterIndex >= dungeon.monsterSequence.length) {
@@ -603,24 +617,29 @@ export class OfflineCombatManager {
       monsterNextRegen -= tickMs;
     }
 
-    // NEW: Log aggregated combat activities instead of individual kills
+    // Log aggregated combat activities instead of individual kills
     for (const monsterActivity of Object.values(combatActivitiesByMonster)) {
-      await logCombatActivity({
-        userId: activity.userId,
-        monsterId: monsterActivity.monsterId,
-        quantity: monsterActivity.killCount,
-        expGained: monsterActivity.totalExp,
-        goldEarned: monsterActivity.totalGold,
-        dittoEarned: monsterActivity.totalDitto.toString(),
-        drops: monsterActivity.drops
-      });
+      try {
+        await logCombatActivity({
+          userId: activity.userId,
+          monsterId: monsterActivity.monsterId,
+          quantity: monsterActivity.killCount,
+          expGained: monsterActivity.totalExp,
+          goldEarned: monsterActivity.totalGold,
+          dittoEarned: monsterActivity.totalDitto.toString(),
+          drops: monsterActivity.drops
+        });
 
-      // Add to mission updates (aggregate count per monster)
-      missionUpdates.push({
-        telegramId: activity.userId,
-        monsterId: monsterActivity.monsterId,
-        quantity: monsterActivity.killCount // NEW: Use aggregated count
-      });
+        // Add to mission updates (aggregate count per monster)
+        missionUpdates.push({
+          telegramId: activity.userId,
+          monsterId: monsterActivity.monsterId,
+          quantity: monsterActivity.killCount
+        });
+      } catch (error) {
+        logger.error(`Failed to log combat activity for monster ${monsterActivity.monsterId}: ${error}`);
+        // Continue with other monsters
+      }
     }
 
     // handle increments in db

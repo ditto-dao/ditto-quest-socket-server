@@ -2,7 +2,6 @@ import { Rarity } from '@prisma/client';
 import { logger } from '../../utils/logger';
 import { prismaBatchLogBreedingActivities, prismaBatchLogCraftingActivities, prismaBatchLogFarmingActivities, prismaLogCombatActivities } from '../../sql-services/user-activity-log';
 
-// Types matching your Prisma schema
 interface FarmingActivity {
     userId: string;
     itemId: number;
@@ -38,7 +37,7 @@ interface BreedingActivity {
 interface CombatActivity {
     userId: string;
     monsterId: number;
-    quantity: number; // ADD THIS LINE
+    quantity: number;
     expGained: number;
     dittoEarned?: string;
     goldEarned?: number;
@@ -50,22 +49,9 @@ interface CombatActivity {
     timestamp: Date;
 }
 
-// New aggregated interface for batching combat activities
-interface AggregatedCombatActivity {
-    userId: string;
-    monsterId: number;
-    killCount: number;
-    totalExpGained: number;
-    totalDittoEarned: bigint;
-    totalGoldEarned: number;
-    aggregatedDrops: Map<string, { itemId?: number; equipmentId?: number; quantity: number }>;
-    firstKillTimestamp: Date;
-    lastKillTimestamp: Date;
-}
-
 /**
  * ActivityLogMemoryManager - Buffers activity logs in memory for batch database writes
- * Now includes aggregated combat logging to reduce database load
+ * Stores activities in memory and flushes them to database periodically
  */
 export class ActivityLogMemoryManager {
     private farmingActivities: FarmingActivity[] = [];
@@ -73,16 +59,12 @@ export class ActivityLogMemoryManager {
     private breedingActivities: BreedingActivity[] = [];
     private combatActivities: CombatActivity[] = [];
 
-    // New aggregated combat activities - keyed by userId-monsterId
-    private aggregatedCombatActivities: Map<string, AggregatedCombatActivity> = new Map();
-
     private isInitialized: boolean = false;
     private maxBufferSize: number = 1000; // Max activities per type before force flush
-    private maxAggregatedCombatEntries: number = 500; // Max aggregated entries before force flush
 
     constructor() {
         this.isInitialized = true;
-        logger.info("✅ ActivityLogMemoryManager initialized with aggregated combat logging");
+        logger.info("✅ ActivityLogMemoryManager initialized");
     }
 
     /**
@@ -154,8 +136,7 @@ export class ActivityLogMemoryManager {
     }
 
     /**
-     * Add combat activity to buffer - Legacy method for individual kills
-     * Still supported for backward compatibility
+     * Add combat activity to buffer
      */
     addCombatActivity(activity: Omit<CombatActivity, 'timestamp'>): void {
         this.combatActivities.push({
@@ -163,81 +144,11 @@ export class ActivityLogMemoryManager {
             timestamp: new Date()
         });
 
-        logger.debug(`⚔️ Buffered combat activity for user ${activity.userId} vs monster ${activity.monsterId}`);
+        logger.debug(`⚔️ Buffered combat activity for user ${activity.userId} vs monster ${activity.monsterId} (${activity.quantity} kills)`);
 
         if (this.combatActivities.length >= this.maxBufferSize) {
             logger.warn(`⚠️ Combat buffer full (${this.maxBufferSize}), forcing flush`);
             this.flushCombatActivities();
-        }
-    }
-
-    /**
-     * Add aggregated combat activity - New method for batching kills
-     * This should be used for offline combat processing
-     */
-    addAggregatedCombatActivity(input: {
-        userId: string;
-        monsterId: number;
-        expGained: number;
-        dittoEarned?: bigint;
-        goldEarned?: number;
-        drops?: { itemId?: number; equipmentId?: number; quantity: number }[];
-    }): void {
-        const key = `${input.userId}-${input.monsterId}`;
-        const existing = this.aggregatedCombatActivities.get(key);
-        const now = new Date();
-
-        if (existing) {
-            // Aggregate with existing entry
-            existing.killCount += 1;
-            existing.totalExpGained += input.expGained;
-            existing.totalDittoEarned += input.dittoEarned || 0n;
-            existing.totalGoldEarned += input.goldEarned || 0;
-            existing.lastKillTimestamp = now;
-
-            // Aggregate drops
-            if (input.drops) {
-                for (const drop of input.drops) {
-                    const dropKey = drop.itemId ? `item-${drop.itemId}` : `equipment-${drop.equipmentId}`;
-                    const existingDrop = existing.aggregatedDrops.get(dropKey);
-
-                    if (existingDrop) {
-                        existingDrop.quantity += drop.quantity;
-                    } else {
-                        existing.aggregatedDrops.set(dropKey, { ...drop });
-                    }
-                }
-            }
-        } else {
-            // Create new aggregated entry
-            const aggregatedDrops = new Map<string, { itemId?: number; equipmentId?: number; quantity: number }>();
-
-            if (input.drops) {
-                for (const drop of input.drops) {
-                    const dropKey = drop.itemId ? `item-${drop.itemId}` : `equipment-${drop.equipmentId}`;
-                    aggregatedDrops.set(dropKey, { ...drop });
-                }
-            }
-
-            this.aggregatedCombatActivities.set(key, {
-                userId: input.userId,
-                monsterId: input.monsterId,
-                killCount: 1,
-                totalExpGained: input.expGained,
-                totalDittoEarned: input.dittoEarned || 0n,
-                totalGoldEarned: input.goldEarned || 0,
-                aggregatedDrops,
-                firstKillTimestamp: now,
-                lastKillTimestamp: now
-            });
-        }
-
-        logger.debug(`⚔️ Aggregated combat activity for user ${input.userId} vs monster ${input.monsterId} (${this.aggregatedCombatActivities.get(key)?.killCount} total kills)`);
-
-        // Force flush if we have too many aggregated entries
-        if (this.aggregatedCombatActivities.size >= this.maxAggregatedCombatEntries) {
-            logger.warn(`⚠️ Aggregated combat buffer full (${this.maxAggregatedCombatEntries}), forcing flush`);
-            this.flushAggregatedCombatActivities();
         }
     }
 
@@ -249,8 +160,7 @@ export class ActivityLogMemoryManager {
             this.flushFarmingActivities(),
             this.flushCraftingActivities(),
             this.flushBreedingActivities(),
-            this.flushCombatActivities(),
-            this.flushAggregatedCombatActivities()
+            this.flushCombatActivities()
         ];
 
         await Promise.allSettled(promises);
@@ -263,13 +173,14 @@ export class ActivityLogMemoryManager {
         if (this.farmingActivities.length === 0) return;
 
         const activities = [...this.farmingActivities];
-        this.farmingActivities = [];
+        this.farmingActivities = []; // Clear buffer immediately
 
         try {
             await prismaBatchLogFarmingActivities(activities);
             logger.info(`✅ Flushed ${activities.length} farming activities to database`);
         } catch (error) {
             logger.error(`❌ Failed to flush farming activities:`, error);
+            // Re-add to buffer on failure (at the beginning to preserve order)
             this.farmingActivities = [...activities, ...this.farmingActivities];
             throw error;
         }
@@ -282,7 +193,7 @@ export class ActivityLogMemoryManager {
         if (this.craftingActivities.length === 0) return;
 
         const activities = [...this.craftingActivities];
-        this.craftingActivities = [];
+        this.craftingActivities = []; // Clear buffer immediately
 
         try {
             await prismaBatchLogCraftingActivities(activities);
@@ -301,7 +212,7 @@ export class ActivityLogMemoryManager {
         if (this.breedingActivities.length === 0) return;
 
         const activities = [...this.breedingActivities];
-        this.breedingActivities = [];
+        this.breedingActivities = []; // Clear buffer immediately
 
         try {
             await prismaBatchLogBreedingActivities(activities);
@@ -314,19 +225,20 @@ export class ActivityLogMemoryManager {
     }
 
     /**
-     * Flush legacy combat activities to database
+     * Flush combat activities to database
      */
     async flushCombatActivities(): Promise<void> {
         if (this.combatActivities.length === 0) return;
 
         const activities = [...this.combatActivities];
-        this.combatActivities = [];
+        this.combatActivities = []; // Clear buffer immediately
 
         try {
+            // Convert to the expected format
             const inputs = activities.map(activity => ({
                 userId: activity.userId,
                 monsterId: activity.monsterId,
-                quantity: activity.quantity, // ADD THIS LINE
+                quantity: activity.quantity,
                 expGained: activity.expGained,
                 dittoEarned: activity.dittoEarned,
                 goldEarned: activity.goldEarned,
@@ -338,52 +250,12 @@ export class ActivityLogMemoryManager {
             }));
 
             await prismaLogCombatActivities(inputs);
-            logger.info(`✅ Flushed ${activities.length} legacy combat activities to database`);
+
+            const totalKills = activities.reduce((sum, activity) => sum + activity.quantity, 0);
+            logger.info(`✅ Flushed ${activities.length} combat activities (representing ${totalKills} total kills) to database`);
         } catch (error) {
             logger.error(`❌ Failed to flush combat activities:`, error);
             this.combatActivities = [...activities, ...this.combatActivities];
-            throw error;
-        }
-    }
-
-    /**
-     * Flush aggregated combat activities to database
-     * This creates fewer database entries by combining multiple kills per monster
-     */
-    async flushAggregatedCombatActivities(): Promise<void> {
-        if (this.aggregatedCombatActivities.size === 0) return;
-
-        const activities = Array.from(this.aggregatedCombatActivities.values());
-        this.aggregatedCombatActivities.clear();
-
-        try {
-            const inputs = activities.map(activity => ({
-                userId: activity.userId,
-                monsterId: activity.monsterId,
-                quantity: activity.killCount, // ADD THIS LINE - use killCount as quantity
-                expGained: activity.totalExpGained,
-                dittoEarned: activity.totalDittoEarned.toString(),
-                goldEarned: activity.totalGoldEarned,
-                // Add kill count and timing info as metadata in a custom field if needed
-                // For now, we'll aggregate all drops into a single entry
-                drops: Array.from(activity.aggregatedDrops.values()).map(drop => ({
-                    itemId: drop.itemId,
-                    equipmentId: drop.equipmentId,
-                    quantity: drop.quantity
-                }))
-            }));
-
-            await prismaLogCombatActivities(inputs);
-
-            const totalKills = activities.reduce((sum, activity) => sum + activity.killCount, 0);
-            logger.info(`✅ Flushed ${activities.length} aggregated combat activities (representing ${totalKills} total kills) to database`);
-        } catch (error) {
-            logger.error(`❌ Failed to flush aggregated combat activities:`, error);
-            // Re-add activities back to buffer on failure
-            for (const activity of activities) {
-                const key = `${activity.userId}-${activity.monsterId}`;
-                this.aggregatedCombatActivities.set(key, activity);
-            }
             throw error;
         }
     }
@@ -396,25 +268,21 @@ export class ActivityLogMemoryManager {
         crafting: number;
         breeding: number;
         combat: number;
-        aggregatedCombat: number;
-        aggregatedCombatKills: number;
+        combatKills: number;
         total: number;
     } {
-        const aggregatedKills = Array.from(this.aggregatedCombatActivities.values())
-            .reduce((sum, activity) => sum + activity.killCount, 0);
+        const combatKills = this.combatActivities.reduce((sum, activity) => sum + activity.quantity, 0);
 
         return {
             farming: this.farmingActivities.length,
             crafting: this.craftingActivities.length,
             breeding: this.breedingActivities.length,
             combat: this.combatActivities.length,
-            aggregatedCombat: this.aggregatedCombatActivities.size,
-            aggregatedCombatKills: aggregatedKills, // FIX: Use the variable name
+            combatKills,
             total: this.farmingActivities.length +
                 this.craftingActivities.length +
                 this.breedingActivities.length +
-                this.combatActivities.length +
-                this.aggregatedCombatActivities.size
+                this.combatActivities.length
         };
     }
 
@@ -431,7 +299,6 @@ export class ActivityLogMemoryManager {
         this.craftingActivities = [];
         this.breedingActivities = [];
         this.combatActivities = [];
-        this.aggregatedCombatActivities.clear();
 
         logger.info("🗑️ ActivityLogMemoryManager cleared");
     }
@@ -445,26 +312,13 @@ export class ActivityLogMemoryManager {
     }
 
     /**
-     * Set max aggregated combat entries before force flush
-     */
-    setMaxAggregatedCombatEntries(size: number): void {
-        this.maxAggregatedCombatEntries = size;
-        logger.info(`📏 Set max aggregated combat entries to ${size}`);
-    }
-
-    /**
      * Check if user has any activities buffered
      */
     hasUser(userId: string): boolean {
-        const hasInRegularBuffers = this.farmingActivities.some(a => a.userId === userId) ||
+        return this.farmingActivities.some(a => a.userId === userId) ||
             this.craftingActivities.some(a => a.userId === userId) ||
             this.breedingActivities.some(a => a.userId === userId) ||
             this.combatActivities.some(a => a.userId === userId);
-
-        const hasInAggregatedBuffer = Array.from(this.aggregatedCombatActivities.values())
-            .some(a => a.userId === userId);
-
-        return hasInRegularBuffers || hasInAggregatedBuffer;
     }
 
     /**
@@ -475,14 +329,11 @@ export class ActivityLogMemoryManager {
         const userCraftingActivities = this.craftingActivities.filter(a => a.userId === userId);
         const userBreedingActivities = this.breedingActivities.filter(a => a.userId === userId);
         const userCombatActivities = this.combatActivities.filter(a => a.userId === userId);
-        const userAggregatedCombatActivities = Array.from(this.aggregatedCombatActivities.entries())
-            .filter(([key, activity]) => activity.userId === userId);
 
         if (userFarmingActivities.length === 0 &&
             userCraftingActivities.length === 0 &&
             userBreedingActivities.length === 0 &&
-            userCombatActivities.length === 0 &&
-            userAggregatedCombatActivities.length === 0) {
+            userCombatActivities.length === 0) {
             return;
         }
 
@@ -491,11 +342,6 @@ export class ActivityLogMemoryManager {
         this.craftingActivities = this.craftingActivities.filter(a => a.userId !== userId);
         this.breedingActivities = this.breedingActivities.filter(a => a.userId !== userId);
         this.combatActivities = this.combatActivities.filter(a => a.userId !== userId);
-
-        // Remove user's aggregated combat activities
-        for (const [key, activity] of userAggregatedCombatActivities) {
-            this.aggregatedCombatActivities.delete(key);
-        }
 
         try {
             const promises = [];
@@ -516,7 +362,7 @@ export class ActivityLogMemoryManager {
                 const combatInputs = userCombatActivities.map(activity => ({
                     userId: activity.userId,
                     monsterId: activity.monsterId,
-                    quantity: activity.quantity, // ADD THIS LINE
+                    quantity: activity.quantity,
                     expGained: activity.expGained,
                     dittoEarned: activity.dittoEarned,
                     goldEarned: activity.goldEarned,
@@ -529,34 +375,16 @@ export class ActivityLogMemoryManager {
                 promises.push(prismaLogCombatActivities(combatInputs));
             }
 
-            if (userAggregatedCombatActivities.length > 0) {
-                const aggregatedInputs = userAggregatedCombatActivities.map(([key, activity]) => ({
-                    userId: activity.userId,
-                    monsterId: activity.monsterId,
-                    quantity: activity.killCount, // ADD THIS LINE - use killCount as quantity
-                    expGained: activity.totalExpGained,
-                    dittoEarned: activity.totalDittoEarned.toString(),
-                    goldEarned: activity.totalGoldEarned,
-                    drops: Array.from(activity.aggregatedDrops.values()).map(drop => ({
-                        itemId: drop.itemId,
-                        equipmentId: drop.equipmentId,
-                        quantity: drop.quantity
-                    }))
-                }));
-                promises.push(prismaLogCombatActivities(aggregatedInputs));
-            }
-
             await Promise.allSettled(promises);
 
             const totalActivities = userFarmingActivities.length +
                 userCraftingActivities.length +
                 userBreedingActivities.length +
-                userCombatActivities.length +
-                userAggregatedCombatActivities.length;
+                userCombatActivities.length;
 
-            const totalKills = userAggregatedCombatActivities.reduce((sum, [key, activity]) => sum + activity.killCount, 0);
+            const totalKills = userCombatActivities.reduce((sum, activity) => sum + activity.quantity, 0);
 
-            logger.info(`✅ Flushed ${totalActivities} activities for user ${userId} (including ${totalKills} aggregated kills)`);
+            logger.info(`✅ Flushed ${totalActivities} activities for user ${userId} (including ${totalKills} total kills)`);
         } catch (error) {
             logger.error(`❌ Failed to flush activities for user ${userId}:`, error);
 
@@ -565,10 +393,6 @@ export class ActivityLogMemoryManager {
             this.craftingActivities.push(...userCraftingActivities);
             this.breedingActivities.push(...userBreedingActivities);
             this.combatActivities.push(...userCombatActivities);
-
-            for (const [key, activity] of userAggregatedCombatActivities) {
-                this.aggregatedCombatActivities.set(key, activity);
-            }
 
             throw error;
         }
