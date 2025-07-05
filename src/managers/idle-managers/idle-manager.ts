@@ -232,7 +232,7 @@ export class IdleManager {
         if (!activity) return;
 
         Object.assign(activity, updates);
-        logger.info(`Updated combat activity for user ${userId} with: ${JSON.stringify(updates)}`);
+        logger.info(`Updated combat activity for user ${userId} with: ${JSON.stringify(updates, null, 2)}`);
     }
 
     async saveAllIdleActivitiesOnLogout(userId: string): Promise<void> {
