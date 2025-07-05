@@ -749,10 +749,13 @@ model CombatActivityLog {
   dittoEarned Decimal? @db.Decimal(65, 0) // wei
   goldEarned  Int?
 
+  quantity Int @default(1)
+
   user  User         @relation(fields: [userId], references: [telegramId])
   drops CombatDrop[]
 
   @@index([userId, timestamp])
+  @@index([userId, monsterId])
 }
 
 model CombatDrop {

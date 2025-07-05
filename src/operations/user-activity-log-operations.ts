@@ -88,6 +88,7 @@ export async function logBreedingActivity(input: {
 export async function logCombatActivity(input: {
     userId: string;
     monsterId: number;
+    quantity: number;
     expGained: number;
     dittoEarned?: string;
     goldEarned?: number;

@@ -96,9 +96,10 @@ export interface CombatDropInput {
 export interface CombatActivityInput {
     userId: string;
     monsterId: number;
-    expGained: number;
-    dittoEarned?: string;
-    goldEarned?: number;
+    quantity: number;
+    expGained: number; // Total exp from all kills
+    dittoEarned?: string; // Total ditto from all kills
+    goldEarned?: number; // Total gold from all kills
     drops?: CombatDropInput[];
 }
 
@@ -108,6 +109,7 @@ export async function prismaLogCombatActivity(input: CombatActivityInput) {
             data: {
                 userId: input.userId,
                 monsterId: input.monsterId,
+                quantity: input.quantity,
                 expGained: input.expGained,
                 ...(input.dittoEarned ? { dittoEarned: input.dittoEarned } : {}),
                 ...(input.goldEarned ? { goldEarned: input.goldEarned } : {}),
@@ -120,7 +122,7 @@ export async function prismaLogCombatActivity(input: CombatActivityInput) {
                 },
             },
         });
-        logger.info(`✅ Logged combat activity for user ${input.userId} vs monster ${input.monsterId}`);
+        logger.info(`✅ Logged combat activity for user ${input.userId} vs monster ${input.monsterId} (${input.quantity} kills)`);
     } catch (error) {
         logger.error(`❌ Failed to log combat activity for user ${input.userId}:`, error);
         throw error;
@@ -138,6 +140,7 @@ export async function prismaLogCombatActivities(inputs: CombatActivityInput[]) {
                     data: {
                         userId: input.userId,
                         monsterId: input.monsterId,
+                        quantity: input.quantity,
                         expGained: input.expGained,
                         dittoEarned: input.dittoEarned ? input.dittoEarned : undefined,
                         goldEarned: input.goldEarned,
@@ -165,18 +168,17 @@ export async function prismaLogCombatActivities(inputs: CombatActivityInput[]) {
             }
         }
 
-        // Step 3: Insert all drops
+        // Step 3: Insert all drops at once
         if (dropsToInsert.length > 0) {
             await prisma.combatDrop.createMany({
                 data: dropsToInsert,
-                skipDuplicates: true,
             });
-            logger.info(`📦 Logged ${dropsToInsert.length} combat drops.`);
         }
 
-        logger.info(`✅ Batch logged ${inputs.length} combat activities.`);
+        const totalKills = inputs.reduce((sum, input) => sum + input.quantity, 0);
+        logger.info(`✅ Logged ${inputs.length} combat activities representing ${totalKills} total kills`);
     } catch (error) {
-        logger.error(`❌ Failed to batch log combat activities:`, error);
+        logger.error(`❌ Failed to log combat activities:`, error);
         throw error;
     }
 }

@@ -374,6 +374,7 @@ export class Battle {
           await logCombatActivity({
             userId: this.user.telegramId,
             monsterId: this.monster.id,
+            quantity: 1,
             expGained: this.monster.exp,
             goldEarned: (goldDrop && goldDrop > 0) ? goldDrop : undefined,
             dittoEarned: (dittoDrop && dittoDrop > 0n) ? dittoDrop.toString() : undefined,

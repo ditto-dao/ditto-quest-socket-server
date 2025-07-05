@@ -128,10 +128,21 @@ export class OfflineCombatManager {
     let totalDitto = 0n;
     let userDied = false;
 
+    // Aggregate kills by monster ID
     const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
     const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
+
+    // Aggregate combat activities by monster ID
+    const combatActivitiesByMonster: Record<number, {
+      monsterId: number;
+      killCount: number;
+      totalExp: number;
+      totalGold: number;
+      totalDitto: bigint;
+      drops: { itemId?: number; equipmentId?: number; quantity: number }[];
+    }> = {};
 
     for (let t = 0; t < totalTicks; t++) {
       // User attacks
@@ -141,7 +152,7 @@ export class OfflineCombatManager {
         userNextAtk = userAtkCooldown;
 
         if (monster.combat.hp === 0) {
-          // Record kill
+          // Record kill for UI display
           const key = `${monster.name}-${monster.imgsrc}`;
           if (monsterKillCounts[key]) {
             monsterKillCounts[key].quantity += 1;
@@ -153,7 +164,7 @@ export class OfflineCombatManager {
             };
           }
 
-          // Record gains
+          // Calculate rewards
           const exp = Math.floor(monster.exp * OfflineCombatManager.EXP_NERF_MULTIPLIER);
           const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * OfflineCombatManager.DROP_NERF_MULTIPLIER);
           const dittoGained = Battle.roundWeiTo1DecimalPlace(
@@ -162,16 +173,36 @@ export class OfflineCombatManager {
               OfflineCombatManager.DROP_NERF_MULTIPLIER
             )
           );
-          const currDrops: { itemId?: number; equipmentId?: number; quantity: number }[] = [];
 
-          totalExp += exp
+          // Aggregate totals for UI
+          totalExp += exp;
           totalHpExp += calculateHpExpGained(exp);
           totalGold += goldGained;
           totalDitto += dittoGained;
 
+          // Aggregate by monster ID for database logging
+          if (!combatActivitiesByMonster[monster.id]) {
+            combatActivitiesByMonster[monster.id] = {
+              monsterId: monster.id,
+              killCount: 0,
+              totalExp: 0,
+              totalGold: 0,
+              totalDitto: 0n,
+              drops: []
+            };
+          }
+
+          const monsterActivity = combatActivitiesByMonster[monster.id];
+          monsterActivity.killCount += 1;
+          monsterActivity.totalExp += exp;
+          monsterActivity.totalGold += goldGained;
+          monsterActivity.totalDitto += dittoGained;
+
+          // Process drops
           for (const drop of monster.drops) {
             if (Math.random() <= drop.dropRate * OfflineCombatManager.DROP_NERF_MULTIPLIER) {
               if (drop.itemId) {
+                // Aggregate for UI
                 const existing = itemDrops.find(d => d.item.id === drop.item!.id);
                 if (existing) {
                   existing.quantity += drop.quantity;
@@ -179,11 +210,18 @@ export class OfflineCombatManager {
                   itemDrops.push({ item: drop.item!, quantity: drop.quantity });
                 }
 
-                currDrops.push({
-                  itemId: drop.itemId,
-                  quantity: drop.quantity,
-                });
+                // Aggregate for database
+                const existingActivityDrop = monsterActivity.drops.find(d => d.itemId === drop.itemId);
+                if (existingActivityDrop) {
+                  existingActivityDrop.quantity += drop.quantity;
+                } else {
+                  monsterActivity.drops.push({
+                    itemId: drop.itemId,
+                    quantity: drop.quantity,
+                  });
+                }
               } else if (drop.equipmentId) {
+                // Aggregate for UI
                 const existing = equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
                 if (existing) {
                   existing.quantity += drop.quantity;
@@ -191,28 +229,19 @@ export class OfflineCombatManager {
                   equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
                 }
 
-                currDrops.push({
-                  equipmentId: drop.equipmentId,
-                  quantity: drop.quantity,
-                });
+                // Aggregate for database
+                const existingActivityDrop = monsterActivity.drops.find(d => d.equipmentId === drop.equipmentId);
+                if (existingActivityDrop) {
+                  existingActivityDrop.quantity += drop.quantity;
+                } else {
+                  monsterActivity.drops.push({
+                    equipmentId: drop.equipmentId,
+                    quantity: drop.quantity,
+                  });
+                }
               }
             }
           }
-
-          await logCombatActivity({
-            userId: activity.userId,
-            monsterId: monster.id,
-            expGained: exp,
-            goldEarned: goldGained,
-            dittoEarned: dittoGained.toString(),
-            drops: currDrops
-          });
-
-          missionUpdates.push({
-            telegramId: activity.userId,
-            monsterId: monster.id,
-            quantity: 1
-          });
 
           // Replace monster
           monster = DomainManager.getRandomMonsterFromDomain(domain)!;
@@ -382,10 +411,21 @@ export class OfflineCombatManager {
     let totalDitto = 0n;
     let userDied = false;
 
+    // Aggregate kills by monster ID (for UI display)
     const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
     const itemDrops: { item: Item; quantity: number }[] = [];
     const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
     const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
+
+    // NEW: Aggregate combat activities by monster ID (for database logging)
+    const combatActivitiesByMonster: Record<number, {
+      monsterId: number;
+      killCount: number;
+      totalExp: number;
+      totalGold: number;
+      totalDitto: bigint;
+      drops: { itemId?: number; equipmentId?: number; quantity: number }[];
+    }> = {};
 
     for (let t = 0; t < totalTicks; t++) {
       // User attacks
@@ -397,7 +437,7 @@ export class OfflineCombatManager {
         userNextAtk = userAtkCooldown;
 
         if (monster.combat.hp === 0) {
-          // Record kill
+          // Record kill for UI display
           const key = `${monster.name}-${monster.imgsrc}`;
           if (monsterKillCounts[key]) {
             monsterKillCounts[key].quantity += 1;
@@ -409,7 +449,7 @@ export class OfflineCombatManager {
             };
           }
 
-          // Record gains
+          // Calculate rewards
           const exp = Math.floor(monster.exp * OfflineCombatManager.EXP_NERF_MULTIPLIER);
           const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * OfflineCombatManager.DROP_NERF_MULTIPLIER);
           const dittoGained = Battle.roundWeiTo1DecimalPlace(
@@ -418,16 +458,36 @@ export class OfflineCombatManager {
               OfflineCombatManager.DROP_NERF_MULTIPLIER
             )
           );
-          const currDrops: { itemId?: number; equipmentId?: number; quantity: number }[] = [];
 
-          totalExp += exp
+          // Aggregate totals for UI
+          totalExp += exp;
           totalHpExp += calculateHpExpGained(exp);
           totalGold += goldGained;
           totalDitto += dittoGained;
 
+          // NEW: Aggregate by monster ID for database logging
+          if (!combatActivitiesByMonster[monster.id]) {
+            combatActivitiesByMonster[monster.id] = {
+              monsterId: monster.id,
+              killCount: 0,
+              totalExp: 0,
+              totalGold: 0,
+              totalDitto: 0n,
+              drops: []
+            };
+          }
+
+          const monsterActivity = combatActivitiesByMonster[monster.id];
+          monsterActivity.killCount += 1;
+          monsterActivity.totalExp += exp;
+          monsterActivity.totalGold += goldGained;
+          monsterActivity.totalDitto += dittoGained;
+
+          // Process drops
           for (const drop of monster.drops) {
             if (Math.random() <= drop.dropRate * OfflineCombatManager.DROP_NERF_MULTIPLIER) {
               if (drop.itemId) {
+                // Aggregate for UI
                 const existing = itemDrops.find(d => d.item.id === drop.item!.id);
                 if (existing) {
                   existing.quantity += drop.quantity;
@@ -435,11 +495,18 @@ export class OfflineCombatManager {
                   itemDrops.push({ item: drop.item!, quantity: drop.quantity });
                 }
 
-                currDrops.push({
-                  itemId: drop.itemId,
-                  quantity: drop.quantity,
-                });
+                // NEW: Aggregate for database
+                const existingActivityDrop = monsterActivity.drops.find(d => d.itemId === drop.itemId);
+                if (existingActivityDrop) {
+                  existingActivityDrop.quantity += drop.quantity;
+                } else {
+                  monsterActivity.drops.push({
+                    itemId: drop.itemId,
+                    quantity: drop.quantity,
+                  });
+                }
               } else if (drop.equipmentId) {
+                // Aggregate for UI
                 const existing = equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
                 if (existing) {
                   existing.quantity += drop.quantity;
@@ -447,29 +514,30 @@ export class OfflineCombatManager {
                   equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
                 }
 
-                currDrops.push({
-                  equipmentId: drop.equipmentId,
-                  quantity: drop.quantity,
-                });
+                // NEW: Aggregate for database
+                const existingActivityDrop = monsterActivity.drops.find(d => d.equipmentId === drop.equipmentId);
+                if (existingActivityDrop) {
+                  existingActivityDrop.quantity += drop.quantity;
+                } else {
+                  monsterActivity.drops.push({
+                    equipmentId: drop.equipmentId,
+                    quantity: drop.quantity,
+                  });
+                }
               }
             }
           }
 
-          // inside monster defeated block
-          await logCombatActivity({
-            userId: activity.userId,
-            monsterId: monster.id,
-            expGained: exp,
-            goldEarned: goldGained,
-            dittoEarned: dittoGained.toString(),
-            drops: currDrops
-          });
-
-          missionUpdates.push({
-            telegramId: activity.userId,
-            monsterId: monster.id,
-            quantity: 1
-          });
+          // REMOVED: Individual logCombatActivity call
+          // OLD CODE:
+          // await logCombatActivity({
+          //   userId: activity.userId,
+          //   monsterId: monster.id,
+          //   expGained: exp,
+          //   goldEarned: goldGained,
+          //   dittoEarned: dittoGained.toString(),
+          //   drops: currDrops
+          // });
 
           // handle monster and floor increment
           activity.currentMonsterIndex++;
@@ -535,10 +603,31 @@ export class OfflineCombatManager {
       monsterNextRegen -= tickMs;
     }
 
+    // NEW: Log aggregated combat activities instead of individual kills
+    for (const monsterActivity of Object.values(combatActivitiesByMonster)) {
+      await logCombatActivity({
+        userId: activity.userId,
+        monsterId: monsterActivity.monsterId,
+        quantity: monsterActivity.killCount,
+        expGained: monsterActivity.totalExp,
+        goldEarned: monsterActivity.totalGold,
+        dittoEarned: monsterActivity.totalDitto.toString(),
+        drops: monsterActivity.drops
+      });
+
+      // Add to mission updates (aggregate count per monster)
+      missionUpdates.push({
+        telegramId: activity.userId,
+        monsterId: monsterActivity.monsterId,
+        quantity: monsterActivity.killCount // NEW: Use aggregated count
+      });
+    }
+
     // handle increments in db
     const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
     await incrementUserGold(activity.userId, totalGold);
     OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto, redisClient);
+
     for (const itemDrop of itemDrops) {
       if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
         await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
