@@ -133,25 +133,20 @@ export async function setupDittoLedgerSocketServerHandlers(
             logger.error('🔌 Disconnected from ditto ledger socket server - initiating full cleanup');
 
             const userMemoryManager = requireUserMemoryManager();
-            const activityLogMemoryManager = requireActivityLogMemoryManager();
 
             // Get all active users from memory
             const activeUsers = userMemoryManager.getActiveUsers();
             logger.info(`🧹 Cleaning up ${activeUsers.length} active users due to ledger disconnect`);
 
             if (activeUsers.length > 0) {
+                // Use ValidateLoginManager for proper session state handling
                 // Process each user individually to avoid race conditions
                 const cleanupPromises = activeUsers.map(async (userId) => {
                     try {
-                        // Use coordinated logout but skip socket cleanup since we're doing mass disconnect anyway
-                        const success = await userMemoryManager.coordinatedLogout(
+                        // Use ValidateLoginManager which handles UserSessionManager properly
+                        const success = await validateLoginManager.handleLogoutRequest(
                             userId,
-                            combatManager,
-                            idleManager,
-                            activityLogMemoryManager,
-                            undefined, // Don't pass socketManager 
-                            undefined, // Don't pass dittoLedgerSocket
-                            true       // skipSocketCleanup = true
+                            true // Force logout due to ledger disconnect
                         );
 
                         if (success) {
@@ -170,6 +165,8 @@ export async function setupDittoLedgerSocketServerHandlers(
 
                 // Clear remaining memory (should be mostly empty now)
                 userMemoryManager.clear();
+
+                const activityLogMemoryManager = requireActivityLogMemoryManager();
                 activityLogMemoryManager.clear();
             }
 

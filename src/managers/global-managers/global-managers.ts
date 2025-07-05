@@ -4,17 +4,22 @@ import { logger } from '../../utils/logger';
 import { ActivityLogMemoryManager } from '../memory/activity-log-memory-manager';
 import { UserMemoryManager } from '../memory/user-memory-manager';
 import { SlimeIDManager, slimeIdManager } from '../slime-id-memory-manager.ts/slime-id-memory-manager';
+import { UserSessionManager } from '../memory/user-session-manager';
 
 // Global manager instances
 let snapshotRedisManager: SnapshotRedisManager | null = null;
 let userMemoryManager: UserMemoryManager | null = null;
 let activityLogMemoryManager: ActivityLogMemoryManager | null = null;
+let userSessionManager: UserSessionManager | null = null;
 
 /**
  * Initialize all global managers
  */
 export async function initializeGlobalManagers(redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>) {
     logger.info('🔧 Initializing global managers...');
+
+    // Initialize User Session Manager FIRST (it coordinates everything)
+    userSessionManager = new UserSessionManager();
 
     // Initialize User memory manager
     userMemoryManager = new UserMemoryManager();
@@ -53,13 +58,19 @@ export function getActivityLogMemoryManager(): ActivityLogMemoryManager | null {
 }
 
 /**
+ * Get user session manager (safe for use in other modules)
+ */
+export function getUserSessionManager(): UserSessionManager | null {
+    return userSessionManager;
+}
+
+/**
  * Get Slime ID manager (safe for use in other modules)
  */
 export function getSlimeIDManager(): SlimeIDManager {
     return slimeIdManager;
 }
 
-// Add these helper functions to global-managers.ts
 export function requireActivityLogMemoryManager(): ActivityLogMemoryManager {
     if (!activityLogMemoryManager) {
         throw new Error('ActivityLogMemoryManager not initialized');
@@ -82,12 +93,31 @@ export function requireSnapshotRedisManager(): SnapshotRedisManager {
 }
 
 /**
+ * Require user session manager (safe for use in other modules)
+ */
+export function requireUserSessionManager(): UserSessionManager {
+    if (!userSessionManager) {
+        throw new Error('UserSessionManager not initialized');
+    }
+    return userSessionManager;
+}
+
+/**
  * Cleanup all managers (for graceful shutdown)
  */
 export async function cleanupGlobalManagers(): Promise<void> {
     logger.info('🧹 Final cleanup of global managers...');
 
     try {
+        // Emergency cleanup all sessions first
+        if (userSessionManager) {
+            logger.info("🚨 Emergency cleanup of all user sessions...");
+            await userSessionManager.emergencyCleanupAllSessions(async (userId) => {
+                // Simple cleanup - just return true since memory manager will handle the rest
+                return true;
+            });
+        }
+
         // Only clear memory - flushing and snapshots should be done before this
         if (userMemoryManager) {
             logger.info("🗑️ Clearing user memory manager...");

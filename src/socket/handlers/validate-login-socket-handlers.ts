@@ -1,15 +1,9 @@
 import { Socket } from "socket.io"
-import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { logger } from "../../utils/logger"
-import { SocketManager } from "../socket-manager"
-import { IdleManager } from "../../managers/idle-managers/idle-manager"
 import { LOGOUT_USER_FROM_TMA_EVENT, STORE_FINGERPRINT_EVENT, TG_VALIDATE_ERROR_EVENT, VALIDATE_LOGIN_EVENT } from "../events";
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { storeFingerprint } from "../../sql-services/user-fingerprint";
-import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
-import { UserMemoryManager } from "../../managers/memory/user-memory-manager";
-import { ActivityLogMemoryManager } from "../../managers/memory/activity-log-memory-manager";
 
 interface ValidateLoginPayload {
     initData: string
@@ -31,13 +25,7 @@ interface StoreFingerprintPayload {
 
 export async function setupValidateLoginSocketHandlers(
     socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-    dittoLedgerSocket: DittoLedgerSocket,
     validateLoginManager: ValidateLoginManager,
-    socketManager: SocketManager,
-    idleManager: IdleManager,
-    combatManager: IdleCombatManager,
-    userMemoryManager: UserMemoryManager,
-    activityLogMemoryManager: ActivityLogMemoryManager
 ): Promise<void> {
     socket.on(VALIDATE_LOGIN_EVENT, async (data: ValidateLoginPayload) => {
         try {
@@ -54,18 +42,21 @@ export async function setupValidateLoginSocketHandlers(
 
     socket.on(LOGOUT_USER_FROM_TMA_EVENT, async (userId: string) => {
         try {
-            await userMemoryManager.coordinatedLogout(
-                userId,
-                combatManager,
-                idleManager,
-                activityLogMemoryManager,
-                socketManager,
-                dittoLedgerSocket
-            );
+            logger.info(`🚪 Processing manual logout request for user ${userId}`);
+
+            // Use the validateLoginManager which properly handles session state
+            const success = await validateLoginManager.handleLogoutRequest(userId, false);
+
+            if (!success) {
+                logger.warn(`⚠️ Manual logout failed for user ${userId}`);
+            } else {
+                logger.info(`✅ Manual logout completed for user ${userId}`);
+            }
         } catch (err) {
             logger.error(`❌ Failed to logout user ${userId}: ${err}`);
         }
     });
+
 
     socket.on(STORE_FINGERPRINT_EVENT, async (data: StoreFingerprintPayload) => {
         try {

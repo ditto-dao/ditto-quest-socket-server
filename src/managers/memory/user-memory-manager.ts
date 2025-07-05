@@ -3,7 +3,7 @@ import { prismaDeleteInventoryFromDB, prismaFetchUserInventory, prismaInsertInve
 import { prismaDeleteSlimesFromDB, prismaFetchSlimesForUser, prismaInsertSlimesToDB, SlimeWithTraits } from "../../sql-services/slime";
 import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
-import { requireSnapshotRedisManager } from "../global-managers/global-managers";
+import { requireSnapshotRedisManager, requireUserSessionManager } from "../global-managers/global-managers";
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from "../../utils/config";
 import { LEDGER_REMOVE_USER_SOCKET_EVENT } from "../../socket/events";
 import { SocketManager } from "../../socket/socket-manager";
@@ -11,6 +11,7 @@ import { IdleManager } from "../idle-managers/idle-manager";
 import { ActivityLogMemoryManager } from "./activity-log-memory-manager";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
+import { UserSessionManager } from "./user-session-manager";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -155,7 +156,6 @@ export class UserMemoryManager {
 		return this.lastActivity.get(userId) || null;
 	}
 
-
 	async autoLogoutInactiveUsers(
 		maxInactiveMs: number = 1800000,
 		socketManager?: SocketManager,
@@ -163,6 +163,7 @@ export class UserMemoryManager {
 		idleManager?: IdleManager,
 		activityLogMemoryManager?: ActivityLogMemoryManager,
 		combatManager?: IdleCombatManager
+		// REMOVED: sessionManager parameter - we'll get it from global managers
 	): Promise<number> {
 		const now = Date.now();
 		const cutoffTime = now - maxInactiveMs;
@@ -183,26 +184,51 @@ export class UserMemoryManager {
 
 					logger.info(`⏰ Auto-logging out inactive user ${userId}`);
 
-					if (combatManager && idleManager) {
-						const success = await this.coordinatedLogout(
+					// FIXED: Get sessionManager from global managers instead of parameter
+					try {
+						const sessionManager = requireUserSessionManager();
+						const success = await sessionManager.coordinatedLogout(
 							userId,
-							combatManager,
-							idleManager,
-							activityLogMemoryManager,
-							socketManager,
-							dittoLedgerSocket
+							async () => {
+								return await this.coordinatedLogout(
+									userId,
+									combatManager!,
+									idleManager!,
+									activityLogMemoryManager,
+									socketManager,
+									dittoLedgerSocket
+								);
+							},
+							true // force logout
 						);
-
 						if (success) {
 							loggedOut++;
 						}
-					} else {
-						// Fallback to old method if managers not provided
-						const logoutSuccess = await this.logoutUser(userId, true);
-						if (logoutSuccess) {
-							if (socketManager) socketManager.removeSocketIdCacheForUser(userId);
-							if (dittoLedgerSocket) dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-							loggedOut++;
+					} catch (sessionManagerError) {
+						logger.warn(`⚠️ SessionManager not available for user ${userId}, falling back to direct logout`);
+
+						// Fallback to direct call if session manager not available
+						if (combatManager && idleManager) {
+							const success = await this.coordinatedLogout(
+								userId,
+								combatManager,
+								idleManager,
+								activityLogMemoryManager,
+								socketManager,
+								dittoLedgerSocket
+							);
+
+							if (success) {
+								loggedOut++;
+							}
+						} else {
+							// Last resort fallback
+							const logoutSuccess = await this.logoutUser(userId, true);
+							if (logoutSuccess) {
+								if (socketManager) socketManager.removeSocketIdCacheForUser(userId);
+								if (dittoLedgerSocket) dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+								loggedOut++;
+							}
 						}
 					}
 
@@ -1196,10 +1222,6 @@ export class UserMemoryManager {
 		}
 	}
 
-	/**
-	 * Handle user logout - flush everything and optionally remove from memory
-	 * FIXED: Always generate snapshot from memory, keep user in memory if DB save fails
-	 */
 	async logoutUser(userId: string, removeFromMemory: boolean = false): Promise<boolean> {
 		const userLock = this.getUserLock(userId);
 
@@ -1342,8 +1364,9 @@ export class UserMemoryManager {
 	}
 
 	/**
-	 * Coordinated user logout with full cleanup
-	 * Used by: manual logout, session replacement, auto-logout, etc.
+	 * MODIFY the coordinatedLogout method - REMOVE the session lock acquisition
+	 * Since UserSessionManager will handle the session lock, this method should only
+	 * handle the data operations with internal user locks
 	 */
 	async coordinatedLogout(
 		userId: string,
@@ -1354,85 +1377,81 @@ export class UserMemoryManager {
 		dittoLedgerSocket?: any,
 		skipSocketCleanup: boolean = false
 	): Promise<boolean> {
-		const userLock = this.getUserLock(userId);
+		// Early exit if user already cleaned up
+		if (!this.hasUser(userId)) {
+			logger.warn(`⚠️ User ${userId} not in memory during coordinated logout - already processed`);
 
-		return await userLock.acquire('coordinated-logout', async () => {
-			// Early exit if user already cleaned up
-			if (!this.hasUser(userId)) {
-				logger.warn(`⚠️ User ${userId} not in memory during coordinated logout - already processed`);
+			if (!skipSocketCleanup && socketManager) {
+				socketManager.removeSocketIdCacheForUser(userId);
+				if (dittoLedgerSocket) {
+					dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+				}
+			}
+			return true;
+		}
 
-				if (!skipSocketCleanup && socketManager) {
+		try {
+			logger.info(`🚪 Starting coordinated logout for user ${userId} (called from SessionManager)`);
+
+			// STEP 1: Combat cleanup
+			combatManager.enableLogoutPreservation(userId);
+			await combatManager.stopCombat(idleManager, userId);
+			await idleManager.saveAllIdleActivitiesOnLogout(userId);
+			await combatManager.cleanupAfterLogout(idleManager, userId);
+
+			// STEP 2: Activity logs
+			if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
+				await activityLogMemoryManager.flushUser(userId);
+				logger.debug(`✅ Flushed activity logs for user ${userId}`);
+			}
+
+			// STEP 3: User data flush + snapshot + memory removal
+			const logoutSuccess = await this.logoutUser(userId, true);
+
+			if (!logoutSuccess) {
+				logger.warn(`⚠️ Coordinated logout partially failed for user ${userId} - user kept in memory`);
+
+				// Emergency snapshot
+				try {
+					const user = this.getUser(userId);
+					if (user) {
+						const snapshotRedisManager = requireSnapshotRedisManager();
+						await snapshotRedisManager.storeSnapshot(userId, user);
+						logger.info(`🚨 Generated emergency snapshot for failed logout: ${userId}`);
+					}
+				} catch (emergencyErr) {
+					logger.error(`💥 Emergency snapshot failed: ${emergencyErr}`);
+				}
+			}
+
+			// STEP 4: Socket cleanup (always do this unless explicitly skipped)
+			if (!skipSocketCleanup && socketManager) {
+				socketManager.removeSocketIdCacheForUser(userId);
+				if (dittoLedgerSocket) {
+					dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+				}
+			}
+
+			logger.info(`✅ Coordinated logout ${logoutSuccess ? 'completed' : 'partially completed'} for user ${userId}`);
+			return logoutSuccess;
+
+		} catch (error) {
+			logger.error(`❌ Coordinated logout failed for user ${userId}: ${error}`);
+
+			// Emergency socket cleanup
+			if (!skipSocketCleanup && socketManager) {
+				try {
 					socketManager.removeSocketIdCacheForUser(userId);
 					if (dittoLedgerSocket) {
 						dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
 					}
+				} catch (cleanupErr) {
+					logger.error(`❌ Emergency socket cleanup failed: ${cleanupErr}`);
 				}
-				return true;
 			}
 
-			try {
-				logger.info(`🚪 Starting coordinated logout for user ${userId}`);
-
-				// STEP 1: Combat cleanup
-				combatManager.enableLogoutPreservation(userId);
-				await combatManager.stopCombat(idleManager, userId);
-				await idleManager.saveAllIdleActivitiesOnLogout(userId);
-				await combatManager.cleanupAfterLogout(idleManager, userId);
-
-				// STEP 2: Activity logs
-				if (activityLogMemoryManager && activityLogMemoryManager.hasUser(userId)) {
-					await activityLogMemoryManager.flushUser(userId);
-					logger.debug(`✅ Flushed activity logs for user ${userId}`);
-				}
-
-				// STEP 3: User data flush + snapshot + memory removal
-				const logoutSuccess = await this.logoutUser(userId, true);
-
-				if (!logoutSuccess) {
-					logger.warn(`⚠️ Coordinated logout partially failed for user ${userId} - user kept in memory`);
-
-					// Emergency snapshot
-					try {
-						const user = this.getUser(userId);
-						if (user) {
-							const snapshotRedisManager = requireSnapshotRedisManager();
-							await snapshotRedisManager.storeSnapshot(userId, user);
-							logger.info(`🚨 Generated emergency snapshot for failed logout: ${userId}`);
-						}
-					} catch (emergencyErr) {
-						logger.error(`💥 Emergency snapshot failed: ${emergencyErr}`);
-					}
-				}
-
-				// STEP 4: Socket cleanup (always do this unless explicitly skipped)
-				if (!skipSocketCleanup && socketManager) {
-					socketManager.removeSocketIdCacheForUser(userId);
-					if (dittoLedgerSocket) {
-						dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-					}
-				}
-
-				logger.info(`✅ Coordinated logout ${logoutSuccess ? 'completed' : 'partially completed'} for user ${userId}`);
-				return logoutSuccess;
-
-			} catch (error) {
-				logger.error(`❌ Coordinated logout failed for user ${userId}: ${error}`);
-
-				// Emergency socket cleanup
-				if (!skipSocketCleanup && socketManager) {
-					try {
-						socketManager.removeSocketIdCacheForUser(userId);
-						if (dittoLedgerSocket) {
-							dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-						}
-					} catch (cleanupErr) {
-						logger.error(`❌ Emergency socket cleanup failed: ${cleanupErr}`);
-					}
-				}
-
-				return false;
-			}
-		});
+			return false;
+		}
 	}
 
 	/**

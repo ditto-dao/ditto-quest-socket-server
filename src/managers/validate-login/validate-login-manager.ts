@@ -26,7 +26,8 @@ import { getUserDataWithSnapshot } from "../../operations/user-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { mintItemToUser } from "../../operations/item-inventory-operations";
-import { requireActivityLogMemoryManager, requireUserMemoryManager } from "../global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireUserMemoryManager, requireUserSessionManager } from "../global-managers/global-managers";
+import { UserSessionState } from "../memory/user-session-manager";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -47,6 +48,7 @@ interface LoginQueueData {
 }
 
 export class ValidateLoginManager {
+    sessionManager = requireUserSessionManager();
     activityLogMemoryManager = requireActivityLogMemoryManager();
     userMemoryManager = requireUserMemoryManager();
 
@@ -79,7 +81,14 @@ export class ValidateLoginManager {
     async processUserLoginEvent(socket: Socket, data: ValidateLoginPayload) {
         const userId = data.userData.id.toString();
 
-        // Early validation checks (fastest to slowest)
+        // SIMPLIFIED: Let UserSessionManager handle all session state checking
+        const currentState = this.sessionManager.getSessionState(userId);
+        const ongoingOp = this.sessionManager.getOngoingOperation(userId);
+
+        logger.info(`🚪 Processing login for user ${userId}`);
+        logger.info(`   Current state: ${currentState}, Ongoing: ${ongoingOp || 'none'}`);
+
+        // Early validation checks
         if (this.isUserAwaitingLogin(userId)) {
             logger.warn(`User ${userId} is already in login queue.`);
             socket.emit(LOGIN_INVALID_EVENT, {
@@ -90,18 +99,50 @@ export class ValidateLoginManager {
             return;
         }
 
-        if (this.socketManager.isUserSocketCached(userId)) {
-            logger.warn(`User already logged in. Disconnecting previous session.`);
-            socket.emit(LOGIN_INVALID_EVENT, {
-                userId: data.userData.id,
-                msg: 'Disconnecting previous session. Please refresh TMA'
-            });
-            this.socketManager.emitEvent(userId, DISCONNECT_USER_EVENT, data.userData.id);
+        // Handle existing logged-in user - use session replacement
+        if (this.socketManager.isUserSocketCached(userId) || currentState === UserSessionState.LOGGED_IN) {
+            logger.warn(`User already logged in. Starting session replacement.`);
 
-            // FORCE cleanup the stale cache entry
-            this.socketManager.removeSocketIdCacheForUser(userId);
-            this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-            
+            // Use UserSessionManager for session replacement
+            const replacementSuccess = await this.sessionManager.coordinatedSessionReplacement(
+                userId,
+                // Logout operation
+                async () => {
+                    try {
+                        // Force cleanup the stale cache entry
+                        this.socketManager.removeSocketIdCacheForUser(userId);
+                        this.dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
+
+                        // If user is in memory, do coordinated logout
+                        if (this.userMemoryManager?.hasUser(userId)) {
+                            return await this.userMemoryManager.coordinatedLogout(
+                                userId,
+                                this.combatManager,
+                                this.idleManager,
+                                this.activityLogMemoryManager,
+                                this.socketManager,
+                                this.dittoLedgerSocket,
+                                true // Skip socket cleanup since we already did it
+                            );
+                        }
+                        return true;
+                    } catch (error) {
+                        logger.error(`Error during session replacement logout: ${error}`);
+                        return false;
+                    }
+                },
+                // Login operation
+                async () => {
+                    return await this.executeLoginProcess(socket, data);
+                }
+            );
+
+            if (!replacementSuccess) {
+                socket.emit(LOGIN_INVALID_EVENT, {
+                    userId: data.userData.id,
+                    msg: 'Session replacement failed. Please try again.'
+                });
+            }
             return;
         }
 
@@ -116,8 +157,76 @@ export class ValidateLoginManager {
         }
 
         logger.info(`Valid login data for user ${userId}`);
-        this.queueUserLogin(socket, data);
-        this.dittoLedgerSocket.emit(LEDGER_INIT_USER_SOCKET_EVENT, data.userData);
+
+        // Use UserSessionManager for coordinated login
+        const loginSuccess = await this.sessionManager.coordinatedLogin(
+            userId,
+            async () => {
+                return await this.executeLoginProcess(socket, data);
+            }
+        );
+
+        if (!loginSuccess) {
+            socket.emit(LOGIN_INVALID_EVENT, {
+                userId: data.userData.id,
+                msg: 'Login failed. Please try again.'
+            });
+        }
+    }
+
+    /**
+     * Extract the actual login logic into a separate method
+     */
+    private async executeLoginProcess(socket: Socket, data: ValidateLoginPayload): Promise<boolean> {
+        const userId = data.userData.id.toString();
+
+        try {
+            // Queue the login and wait for ledger
+            this.queueUserLogin(socket, data);
+            this.dittoLedgerSocket.emit(LEDGER_INIT_USER_SOCKET_EVENT, data.userData);
+
+            // Return true since the actual validation happens in validateUserLogin
+            return true;
+
+        } catch (error) {
+            logger.error(`Login execution failed for user ${userId}: ${error}`);
+            this.cleanupLoginQueue(userId);
+            return false;
+        }
+    }
+
+    /**
+     * Method to handle logout requests from external sources
+     */
+    async handleLogoutRequest(userId: string, forceLogout: boolean = false): Promise<boolean> {
+        return await this.sessionManager.coordinatedLogout(
+            userId,
+            async () => {
+                return await this.userMemoryManager.coordinatedLogout(
+                    userId,
+                    this.combatManager,
+                    this.idleManager,
+                    this.activityLogMemoryManager,
+                    this.socketManager,
+                    this.dittoLedgerSocket
+                );
+            },
+            forceLogout
+        );
+    }
+
+    /**
+     * NEW: Get session debug info through the manager
+     */
+    getSessionDebugInfo() {
+        return this.sessionManager.getSessionDebugInfo();
+    }
+
+    /**
+     * NEW: Clean up session data through the manager
+     */
+    cleanupUserSession(userId: string) {
+        this.sessionManager.cleanupUserSession(userId);
     }
 
     async confirmLedgerSocketInit(userId: string) {

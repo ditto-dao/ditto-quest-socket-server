@@ -41,7 +41,7 @@ export async function setupSocketHandlers(
     io.on("connection", async (socket) => {
         logger.info("An adapter has connected")
 
-        setupValidateLoginSocketHandlers(socket, dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager, userMemoryManager, activityLogMemoryManager)
+        setupValidateLoginSocketHandlers(socket, validateLoginManager)
 
         setupUserSocketHandlers(socket, idleManager, combatManager, dittoLedgerSocket)
 
@@ -71,23 +71,15 @@ export async function setupSocketHandlers(
 
                 logger.info(`🧹 Cleaning up ${userIds.length} users from disconnected adapter: ${userIds.join(', ')}`);
 
-                // STEP 2: Process each user's cleanup using coordinated logout
+                // STEP 2: Process each user's cleanup using coordinated logout through ValidateLoginManager
                 const cleanupPromises = userIds.map(async (userId) => {
                     try {
                         logger.info(`🚪 Processing cleanup for user ${userId} (adapter disconnect)`);
 
-                        const userMemoryManager = requireUserMemoryManager();
-                        const activityLogMemoryManager = requireActivityLogMemoryManager();
-
-                        // Use coordinated logout with socket cleanup since adapter is gone
-                        const success = await userMemoryManager.coordinatedLogout(
+                        // Use ValidateLoginManager which handles UserSessionManager properly
+                        const success = await validateLoginManager.handleLogoutRequest(
                             userId,
-                            combatManager,
-                            idleManager,
-                            activityLogMemoryManager,
-                            socketManager,     // Pass socketManager for cleanup
-                            dittoLedgerSocket, // Pass ledger socket for cleanup
-                            false              // Don't skip socket cleanup
+                            true // Force logout since adapter is disconnected
                         );
 
                         if (success) {
