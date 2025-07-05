@@ -163,7 +163,6 @@ export class UserMemoryManager {
 		idleManager?: IdleManager,
 		activityLogMemoryManager?: ActivityLogMemoryManager,
 		combatManager?: IdleCombatManager
-		// REMOVED: sessionManager parameter - we'll get it from global managers
 	): Promise<number> {
 		const now = Date.now();
 		const cutoffTime = now - maxInactiveMs;
@@ -184,7 +183,7 @@ export class UserMemoryManager {
 
 					logger.info(`⏰ Auto-logging out inactive user ${userId}`);
 
-					// FIXED: Get sessionManager from global managers instead of parameter
+					// ✅ FIXED: Use UserSessionManager for proper session state management
 					try {
 						const sessionManager = requireUserSessionManager();
 						const success = await sessionManager.coordinatedLogout(
@@ -199,7 +198,7 @@ export class UserMemoryManager {
 									dittoLedgerSocket
 								);
 							},
-							true // force logout
+							true // force logout for auto-logout
 						);
 						if (success) {
 							loggedOut++;
