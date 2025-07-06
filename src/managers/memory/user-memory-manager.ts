@@ -11,7 +11,7 @@ import { IdleManager } from "../idle-managers/idle-manager";
 import { ActivityLogMemoryManager } from "./activity-log-memory-manager";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { IdleCombatManager } from "../idle-managers/combat/combat-idle-manager";
-import { UserSessionManager } from "./user-session-manager";
+import { UserSessionManager, UserSessionState } from "./user-session-manager";
 
 export type UserInventoryItem = FullUserData['inventory'][0];
 
@@ -158,11 +158,11 @@ export class UserMemoryManager {
 
 	async autoLogoutInactiveUsers(
 		maxInactiveMs: number = 1800000,
-		socketManager?: SocketManager,
-		dittoLedgerSocket?: DittoLedgerSocket,
-		idleManager?: IdleManager,
-		activityLogMemoryManager?: ActivityLogMemoryManager,
-		combatManager?: IdleCombatManager
+		socketManager: SocketManager,
+		dittoLedgerSocket: DittoLedgerSocket,
+		idleManager: IdleManager,
+		activityLogMemoryManager: ActivityLogMemoryManager,
+		combatManager: IdleCombatManager
 	): Promise<number> {
 		const now = Date.now();
 		const cutoffTime = now - maxInactiveMs;
@@ -181,18 +181,27 @@ export class UserMemoryManager {
 						continue;
 					}
 
+					// ✅ Skip users who are already logged out and not in memory
+					const sessionManager = requireUserSessionManager();
+					const currentState = sessionManager.getSessionState(userId);
+
+					if (currentState === UserSessionState.LOGGED_OUT && !this.hasUser(userId)) {
+						logger.debug(`🔄 User ${userId} already logged out and not in memory - cleaning up activity tracking`);
+						this.lastActivity.delete(userId); // Clean up tracking
+						continue;
+					}
+
 					logger.info(`⏰ Auto-logging out inactive user ${userId}`);
 
-					// ✅ FIXED: Use UserSessionManager for proper session state management
+					// ✅ Use UserSessionManager for proper session state management
 					try {
-						const sessionManager = requireUserSessionManager();
 						const success = await sessionManager.coordinatedLogout(
 							userId,
 							async () => {
 								return await this.coordinatedLogout(
 									userId,
-									combatManager!,
-									idleManager!,
+									combatManager,
+									idleManager,
 									activityLogMemoryManager,
 									socketManager,
 									dittoLedgerSocket
@@ -207,27 +216,17 @@ export class UserMemoryManager {
 						logger.warn(`⚠️ SessionManager not available for user ${userId}, falling back to direct logout`);
 
 						// Fallback to direct call if session manager not available
-						if (combatManager && idleManager) {
-							const success = await this.coordinatedLogout(
-								userId,
-								combatManager,
-								idleManager,
-								activityLogMemoryManager,
-								socketManager,
-								dittoLedgerSocket
-							);
+						const success = await this.coordinatedLogout(
+							userId,
+							combatManager,
+							idleManager,
+							activityLogMemoryManager,
+							socketManager,
+							dittoLedgerSocket
+						);
 
-							if (success) {
-								loggedOut++;
-							}
-						} else {
-							// Last resort fallback
-							const logoutSuccess = await this.logoutUser(userId, true);
-							if (logoutSuccess) {
-								if (socketManager) socketManager.removeSocketIdCacheForUser(userId);
-								if (dittoLedgerSocket) dittoLedgerSocket.emit(LEDGER_REMOVE_USER_SOCKET_EVENT, userId.toString());
-								loggedOut++;
-							}
+						if (success) {
+							loggedOut++;
 						}
 					}
 

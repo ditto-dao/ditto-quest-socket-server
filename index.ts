@@ -115,7 +115,8 @@ async function main() {
                     socketManager,
                     dittoLedgerSocket,
                     idleManager,
-                    activityLogMemoryManager
+                    activityLogMemoryManager,
+                    combatManager
                 );
 
                 if (loggedOut > 0) {
