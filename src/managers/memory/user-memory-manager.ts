@@ -1144,6 +1144,7 @@ export class UserMemoryManager {
 
 		logger.debug(`📦 [${userId}] Step 5: COMPLETED`);
 	}
+
 	/**
 	 * Flush ALL data for a specific user
 	 */
@@ -1156,19 +1157,19 @@ export class UserMemoryManager {
 				throw new Error(`User ${userId} not found in memory for flush`);
 			}
 
-			// Start transaction-like flush
-			await Promise.all([
-				this.flushUserSlimes(userId),
-				this.flushUserInventory(userId)
-			]);
+			// SEQUENTIAL
+			await this.flushUserSlimes(userId);
+			await this.flushUserInventory(userId);
+
+			// Small delay to ensure transaction commits are visible
+			await new Promise(resolve => setTimeout(resolve, 50));
 
 			logger.info(`🔍 DEBUG: After inventory/slimes flush - dirty: ${this.isDirty(userId)}, pending: ${this.hasPendingChanges(userId)}`);
 
-			// Save user core data
+			// Now save user - slimes should be visible
 			await prismaSaveUser(user);
 
-			await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay to ensure DB commit
-
+			await new Promise(resolve => setTimeout(resolve, 100));
 			this.markClean(userId);
 
 			return true;
@@ -1177,6 +1178,7 @@ export class UserMemoryManager {
 			return false;
 		}
 	}
+
 	/**
 	 * Batch flush - processes all dirty users
 	 */
