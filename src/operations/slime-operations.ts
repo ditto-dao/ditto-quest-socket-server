@@ -3,7 +3,7 @@ import { GameCodexManager } from '../managers/game-codex/game-codex-manager';
 import { logger } from '../utils/logger';
 import { prismaFetchEquippedSlimeWithTraits, prismaFetchRandomSlimeTraitId, prismaFetchSlimeObjectWithTraits, prismaFetchSlimeTraitById, SlimeWithTraits } from '../sql-services/slime';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
-import { processAndUploadSlimeImage } from '../slime-generation/slime-image-generation';
+import { generateSlimeImageBuffers, generateSlimeImageUri, processAndUploadSlimeImage, uploadSlimeImageAsync } from '../slime-generation/slime-image-generation';
 import { GACHA_PULL_ODDS_NERF, GACHA_PULL_ODDS } from '../utils/config';
 import { DOMINANT_TRAITS_GACHA_SPECS, HIDDEN_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits } from '../utils/gacha-odds';
 import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserStatsMemory } from './user-operations';
@@ -349,12 +349,15 @@ export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = fals
         }
 
         const realSlimeId = await getSlimeIDManager().getNextSlimeId();
+        const preGeneratedUri = generateSlimeImageUri(realSlimeId);
+
+        logger.info(`📍 Pre-generated URI for slime ${realSlimeId}: ${preGeneratedUri}`);
 
         const slime: SlimeWithTraits = {
             id: realSlimeId,
             ownerId,
             generation: 0,
-            imageUri: '', // temp, filled after image gen
+            imageUri: preGeneratedUri,
             owner: { telegramId: ownerId },
 
             // Spread the trait IDs and objects
@@ -362,18 +365,22 @@ export async function slimeGachaPullMemory(ownerId: string, nerf: boolean = fals
             ...traitObjFields,
         } as SlimeWithTraits;
 
-        const uriRes = await processAndUploadSlimeImage(slime);
-        slime.imageUri = uriRes.uri;
+        // Generate image buffers synchronously (this ensures slimeNoBg is available immediately)
+        logger.info(`🎨 Generating image buffers for slime ${realSlimeId}...`);
+        const { imageWithBg, imageNoBg } = await generateSlimeImageBuffers(slime);
 
-        logger.info(`✅ Generated in-memory slime (id: ${slime.id})`);
-
-        // Add slime to memory (this queues it for DB insertion later)
+        // Add to memory immediately with correct URI
         userMemoryManager.appendSlime(ownerId, slime);
+        logger.info(`✅ Added slime ${realSlimeId} to memory with URI: ${slime.imageUri}`);
 
+        // Upload to S3 asynchronously (non-blocking)
+        uploadSlimeImageAsync(slime, imageWithBg, preGeneratedUri);
+
+        // Return immediately with actual image data
         return {
             slime,
             rankPull,
-            slimeNoBg: uriRes.imageNoBg
+            slimeNoBg: imageNoBg // ✅ Real image data, not empty buffer!
         };
 
     } catch (error) {
@@ -458,13 +465,17 @@ export async function breedSlimesMemory(ownerId: string, sire: SlimeWithTraits, 
 
         const realSlimeId = await getSlimeIDManager().getNextSlimeId();
 
+        const preGeneratedUri = generateSlimeImageUri(realSlimeId);
+
+        logger.info(`📍 Pre-generated URI for bred slime ${realSlimeId}: ${preGeneratedUri}`);
+
         const generation = Math.max(sire.generation, dame.generation) + 1;
 
         const childSlime: SlimeWithTraits = {
             id: realSlimeId,
             ownerId: userId,
             generation,
-            imageUri: '',
+            imageUri: preGeneratedUri,
             owner: { telegramId: userId },
 
             // Flat trait IDs
@@ -550,10 +561,16 @@ export async function breedSlimesMemory(ownerId: string, sire: SlimeWithTraits, 
             MouthHidden3: childData['Mouth_H3'],
         };
 
-        const uriRes = await processAndUploadSlimeImage(childSlime);
-        childSlime.imageUri = uriRes.uri;
+        // Generate image buffers synchronously
+        logger.info(`🎨 Generating image buffers for bred slime ${realSlimeId}...`);
+        const { imageWithBg } = await generateSlimeImageBuffers(childSlime);
 
+        // Add to memory immediately
         userMemoryManager.appendSlime(userId, childSlime);
+        logger.info(`✅ Added bred slime ${realSlimeId} to memory with URI: ${childSlime.imageUri}`);
+
+        // Upload to S3 asynchronously
+        uploadSlimeImageAsync(childSlime, imageWithBg, preGeneratedUri);
 
         return childSlime;
     } catch (err) {
