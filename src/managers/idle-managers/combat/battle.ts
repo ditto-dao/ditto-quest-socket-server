@@ -99,7 +99,7 @@ export class Battle {
 
       const userLevel = await getUserLevelMemory(this.user.telegramId);
 
-      if (this.battleEnded) {
+      if (this.battleEnded || this.battleStopRequested) {
         logger.warn(`❌ Tried to start battle for ${this.user.telegramId} but it was already ended.`);
         return;
       }
@@ -131,7 +131,7 @@ export class Battle {
 
       logger.info(`⏱️ Cooldowns calculated — userAtk: ${this.userAttackCooldown}ms, monsterAtk: ${this.monsterAttackCooldown}ms, userRegen: ${this.userRegenInterval}ms, monsterRegen: ${this.monsterRegenInterval}ms`);
 
-      if (this.battleEnded) {
+      if (this.battleEnded || this.battleStopRequested) {
         logger.warn(`❌ Battle already ended after delay setup for ${this.user.telegramId}. Aborting start.`);
         return;
       }
@@ -421,7 +421,7 @@ export class Battle {
    * Applies health regeneration.
    */
   async applyRegen(combatant: Combat, attackerType: "user" | "monster") {
-    if (this.battleEnded) return;
+    if (this.battleEnded || this.battleStopRequested) return;
 
     if (combatant.hp > 0) {
       const healAmount = Math.floor(combatant.hpRegenAmount);
@@ -593,7 +593,7 @@ export class Battle {
 
   async handleExpGain() {
     try {
-      if (this.battleEnded) return;
+      if (this.battleEnded || this.battleStopRequested) return;
 
       const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, this.monster.exp);
 
@@ -618,7 +618,7 @@ export class Battle {
 
   async handleGoldDrop(): Promise<number | undefined> {
     try {
-      if (this.battleEnded) return;
+      if (this.battleEnded || this.battleStopRequested) return;
 
       const goldDrop = Battle.getAmountDrop(BigInt(this.monster.minGoldDrop), BigInt(this.monster.maxGoldDrop));
       if (goldDrop > 0n) {
@@ -639,7 +639,7 @@ export class Battle {
 
   async handleDittoDrop(): Promise<bigint | undefined> {
     try {
-      if (this.battleEnded) return;
+      if (this.battleEnded || this.battleStopRequested) return;
 
       const referrer = await getReferrer(this.user.telegramId);
 
@@ -720,7 +720,7 @@ export class Battle {
   }
 
   async handleItemAndEquipmentDrop(): Promise<CombatDropInput[] | undefined> {
-    if (this.battleEnded) return;
+    if (this.battleEnded || this.battleStopRequested) return;
 
     const res = [];
 
