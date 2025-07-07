@@ -7,8 +7,21 @@ import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { UserStatsWithCombat } from "../operations/combat-operations";
 
-// Helper function to calculate experience needed for the next level
-export function calculateExpForNextLevel(nextLevel: number): number {
+export function calculateExpForNextSkillLevel(nextLevel: number): number {
+    const a = 450;
+    const b = 1.15;
+    const c = 120;
+    const d = 1.87;
+
+    const baseExp = a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d);
+
+    // Apply 10% increase per level above 100
+    const levelModifier = nextLevel > 100 ? 1 + 0.1 * (nextLevel - 100) : 1;
+
+    return Math.floor(baseExp * levelModifier);
+}
+
+export function calculateExpForNextCombatLevel(nextLevel: number): number {
     const a = 450;
     const b = 1.15;
     const c = 120;

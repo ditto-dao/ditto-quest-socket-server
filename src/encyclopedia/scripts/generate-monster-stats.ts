@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { ABILITY_POINTS_PER_LEVEL } from "../../utils/config";
-import { calculateExpForNextLevel, calculateHpExpGained } from "../../utils/helpers";
+import { calculateExpForNextCombatLevel, calculateHpExpGained } from "../../utils/helpers";
 import { logger } from "../../utils/logger";
 import { createObjectCsvWriter } from 'csv-writer';
 
@@ -10,7 +10,7 @@ function findHpLevel(hpExpGained: number): number {
     let accumulatedExp = 0;
 
     while (true) {
-        const expForNext = calculateExpForNextLevel(hpLvl);
+        const expForNext = calculateExpForNextCombatLevel(hpLvl);
         if (accumulatedExp + expForNext > hpExpGained) {
             return hpLvl; // Stop when next level exceeds exp
         }
@@ -36,7 +36,7 @@ const data = [];
 for (let monsterLvl = 1; monsterLvl <= 500; monsterLvl++) {
     let expGained = 0;
     for (let i = 1; i <= monsterLvl; i++) {
-        expGained += calculateExpForNextLevel(i);
+        expGained += calculateExpForNextCombatLevel(i);
     }
 
     const hpExpGained = calculateHpExpGained(expGained);

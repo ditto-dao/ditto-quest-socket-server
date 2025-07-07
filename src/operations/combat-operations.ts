@@ -2,7 +2,7 @@ import { Combat, Domain, DomainMonster, Dungeon, DungeonMonsterSequence, Equipme
 import { logger } from "../utils/logger";
 import { GameCodexManager } from "../managers/game-codex/game-codex-manager";
 import { FullUserData } from "../sql-services/user-service";
-import { calculateExpForNextLevel, calculateHpExpGained } from "../utils/helpers";
+import { calculateExpForNextCombatLevel, calculateHpExpGained } from "../utils/helpers";
 import { recalculateAndUpdateUserBaseStatsMemory } from "./user-operations";
 import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
 import { requireUserMemoryManager } from "../managers/global-managers/global-managers";
@@ -223,13 +223,13 @@ export async function incrementExpAndHpExpAndCheckLevelUpMemory(
             let expToNextLevel = user.expToNextLevel;
             let levelUp = false;
 
-            while (newExp >= calculateExpForNextLevel(currLevel + 1)) {
-                newExp -= calculateExpForNextLevel(currLevel + 1);
+            while (newExp >= calculateExpForNextCombatLevel(currLevel + 1)) {
+                newExp -= calculateExpForNextCombatLevel(currLevel + 1);
                 currLevel++;
                 outstandingSkillPoints += ABILITY_POINTS_PER_LEVEL;
                 levelUp = true;
             }
-            expToNextLevel = calculateExpForNextLevel(currLevel + 1);
+            expToNextLevel = calculateExpForNextCombatLevel(currLevel + 1);
 
             // HP Exp Logic
             let newHpExp = user.expHp + calculateHpExpGained(expToAdd);
@@ -237,12 +237,12 @@ export async function incrementExpAndHpExpAndCheckLevelUpMemory(
             let expToNextHpLevel = user.expToNextHpLevel;
             let hpLevelUp = false;
 
-            while (newHpExp >= calculateExpForNextLevel(currHpLevel + 1)) {
-                newHpExp -= calculateExpForNextLevel(currHpLevel + 1);
+            while (newHpExp >= calculateExpForNextCombatLevel(currHpLevel + 1)) {
+                newHpExp -= calculateExpForNextCombatLevel(currHpLevel + 1);
                 currHpLevel++;
                 hpLevelUp = true;
             }
-            expToNextHpLevel = calculateExpForNextLevel(currHpLevel + 1);
+            expToNextHpLevel = calculateExpForNextCombatLevel(currHpLevel + 1);
 
             // Update memory
             await userMemoryManager.updateUserField(telegramId, 'level', currLevel);
@@ -346,7 +346,7 @@ export async function applySkillUpgradesMemory(
             // Handle HP level specific updates
             if (isHpUpgrade) {
                 await userMemoryManager.updateUserField(userId, 'expHp', 0);
-                await userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextLevel(user.hpLevel + hpLevelToAdd));
+                await userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextCombatLevel(user.hpLevel + hpLevelToAdd));
             }
 
             // Deduct skill points

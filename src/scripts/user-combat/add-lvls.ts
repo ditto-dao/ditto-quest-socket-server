@@ -1,11 +1,11 @@
 // src/scripts/admin/add-levels-and-skill-points.ts
 import { PrismaClient } from '@prisma/client';
 import { ABILITY_POINTS_PER_LEVEL } from '../../utils/config';
-import { calculateExpForNextLevel } from '../../utils/helpers';
 import { logger } from '../../utils/logger';
 import { createClient } from 'redis';
 import { SnapshotRedisManager } from '../../redis/snapshot-redis';
 import { prismaFetchUserData } from '../../sql-services/user-service';
+import { calculateExpForNextCombatLevel } from '../../utils/helpers';
 
 const prisma = new PrismaClient();
 const redis = createClient({
@@ -68,7 +68,7 @@ async function addLevelsAndSkillPoints(input: AddLevelsInput) {
             logger.info(`🎯 Adding ${skillPointsToAdd} skill points (${levelsToAdd} levels × ${ABILITY_POINTS_PER_LEVEL} points per level)`);
         }
 
-        const newExpToNextLevel = calculateExpForNextLevel(newLevel + 1);
+        const newExpToNextLevel = calculateExpForNextCombatLevel(newLevel + 1);
 
         // Update the snapshot data
         fullUserData.level = newLevel;

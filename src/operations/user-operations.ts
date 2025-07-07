@@ -1,5 +1,4 @@
 import { logger } from '../utils/logger';
-import { calculateExpForNextLevel } from '../utils/helpers';
 import { EquippedInventory, FullUserData, prismaFetchEquippedByEquipmentType, prismaFetchUserData, prismaRecalculateAndUpdateUserBaseStats, prismaRecalculateAndUpdateUserStats, UserDataEquipped } from '../sql-services/user-service';
 import { snapshotMetrics } from '../workers/snapshot/snapshot-metrics';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
@@ -7,6 +6,7 @@ import { calculateCombatPower, getBaseAccFromLuk, getBaseAtkSpdFromLuk, getBaseC
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from '../utils/config';
 import { requireSnapshotRedisManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
 import { UserStatsWithCombat } from './combat-operations';
+import { calculateExpForNextSkillLevel } from '../utils/helpers';
 
 /**
  * Get user data - Memory first, then Redis, then Database
@@ -125,7 +125,7 @@ export async function addFarmingExpMemory(telegramId: string, expToAdd: number):
                 farmingExp -= expToNextFarmingLevel;
                 farmingLevel++;
                 farmingLevelsGained++;
-                expToNextFarmingLevel = calculateExpForNextLevel(farmingLevel + 1);
+                expToNextFarmingLevel = calculateExpForNextSkillLevel(farmingLevel + 1);
             }
 
             // Update memory
@@ -172,7 +172,7 @@ export async function addCraftingExpMemory(telegramId: string, expToAdd: number)
                 craftingExp -= expToNextCraftingLevel;
                 craftingLevel++;
                 craftingLevelsGained++;
-                expToNextCraftingLevel = calculateExpForNextLevel(craftingLevel + 1);
+                expToNextCraftingLevel = calculateExpForNextSkillLevel(craftingLevel + 1);
             }
 
             // Update memory
