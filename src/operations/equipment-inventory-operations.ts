@@ -212,6 +212,21 @@ export async function deleteEquipmentFromUserInventory(
                     throw new Error(`Unable to delete equipment. Equipment ${equipmentId} not found or has zero quantity for user ${telegramId}`);
                 }
 
+                if (existingItem.quantity === quantityToRemove) {
+                    const isEquipped = (
+                        user.hatInventoryId === existingItem.id ||
+                        user.armourInventoryId === existingItem.id ||
+                        user.weaponInventoryId === existingItem.id ||
+                        user.shieldInventoryId === existingItem.id ||
+                        user.capeInventoryId === existingItem.id ||
+                        user.necklaceInventoryId === existingItem.id
+                    );
+
+                    if (isEquipped) {
+                        throw new Error(`Cannot delete equipment - it is currently equipped. Please unequip first.`);
+                    }
+                }
+
                 // Additional safety check for zero or negative quantities
                 if (existingItem.quantity <= 0) {
                     logger.warn(`Equipment ${equipmentId} has invalid quantity ${existingItem.quantity} for user ${telegramId} - removing from inventory`);
