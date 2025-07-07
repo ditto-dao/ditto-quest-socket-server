@@ -17,6 +17,7 @@ import { applySkillUpgradesMemory, SkillUpgradeInput } from "../../operations/co
 import { requireUserMemoryManager } from "../../managers/global-managers/global-managers"
 import { globalIdleSocketUserLock } from "../socket-handlers"
 import { requireLoggedInUser } from "../auth-helper"
+import { RestoreObjectRequestFilterSensitiveLog } from "@aws-sdk/client-s3"
 
 interface EquipPayload {
     userId: string
@@ -329,7 +330,7 @@ export async function setupUserSocketHandlers(
         try {
             logger.info(`Received USE_REFERRAL_CODE event from user ${data.userId}`)
 
-            if (!requireLoggedInUser(data.userId, socket)) return
+            if (!requireLoggedInUser(data.userId, socket)) RestoreObjectRequestFilterSensitiveLog
 
             const validation = await validateReferralCodeUsage(data.userId, data.referralCode)
             if (!validation.valid) {
