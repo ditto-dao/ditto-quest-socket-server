@@ -481,20 +481,54 @@ export class IdleCombatManager {
             const nextBattle = this.nextBattlePromiseByUserId[userId];
             if (nextBattle) {
                 logger.info(`🛑 stopCombat waiting for next battle transition to finish for user ${userId}`);
-                await nextBattle;
+
+                // ADD TIMEOUT - Don't wait forever!
+                try {
+                    await Promise.race([
+                        nextBattle,
+                        new Promise((_, reject) =>
+                            setTimeout(() => reject(new Error('Battle transition timeout')), 5000)
+                        )
+                    ]);
+                    logger.info(`✅ Next battle transition completed for user ${userId}`);
+                } catch (error) {
+                    logger.warn(`⚠️ Battle transition timeout/error for user ${userId}: ${(error as Error).message}`);
+                    // Force cleanup the stuck promise
+                    delete this.nextBattlePromiseByUserId[userId];
+                    logger.warn(`🔨 Force cleaned up stuck nextBattlePromise for user ${userId}`);
+                }
             }
 
             // End current battle if running
             if (battle && battle.battleEnded === false) {
                 logger.warn(`🧯 stopCombat found battle still running for user ${userId}, calling endBattle manually`);
-                await battle.endBattle(true);
+
+                try {
+                    await Promise.race([
+                        battle.endBattle(true),
+                        new Promise((_, reject) =>
+                            setTimeout(() => reject(new Error('endBattle timeout')), 5000)
+                        )
+                    ]);
+                } catch (error) {
+                    logger.error(`❌ Battle end timeout/error for user ${userId}: ${(error as Error).message}`);
+                    // Force mark battle as ended
+                    battle.battleEnded = true;
+                    delete this.activeBattlesByUserId[userId];
+                    logger.warn(`🔨 Force ended stuck battle for user ${userId}`);
+                }
 
                 if (battle.onBattleEnd) {
                     try {
                         logger.info(`📊 Manually invoking onBattleEnd for user ${userId}`);
-                        await battle.onBattleEnd();
+                        await Promise.race([
+                            battle.onBattleEnd(),
+                            new Promise((_, reject) =>
+                                setTimeout(() => reject(new Error('onBattleEnd timeout')), 3000)
+                            )
+                        ]);
                     } catch (err) {
-                        logger.error(`Error invoking onBattleEnd for user ${userId}: ${err}`);
+                        logger.error(`Error/timeout in onBattleEnd for user ${userId}: ${(err as Error).message}`);
                     }
                 }
             }
@@ -502,7 +536,14 @@ export class IdleCombatManager {
             // Only remove idle activities if NOT in logout preservation mode
             if (!this.logoutPreservationMode.has(userId)) {
                 try {
-                    await idleManager.removeAllCombatActivities(userId);
+                    await Promise.race([
+                        idleManager.removeAllCombatActivities(userId),
+                        new Promise((_, reject) =>
+                            setTimeout(() => reject(new Error('removeAllCombatActivities timeout')), 3000)
+                        )
+                    ]);
+                } catch (error) {
+                    logger.error(`❌ removeAllCombatActivities timeout for user ${userId}: ${(error as Error).message}`);
                 } finally {
                     delete this.pendingStopCombatByUserId[userId];
                 }
@@ -518,6 +559,11 @@ export class IdleCombatManager {
             await stopPromise;
         } finally {
             delete this.stopCombatPromiseByUserId[userId];
+            // Force cleanup any remaining promises
+            delete this.nextBattlePromiseByUserId[userId];
+            delete this.endingBattlePromise[userId];
+            delete this.pendingStopCombatByUserId[userId];
+            logger.info(`🧹 Force cleaned up all combat promises for user ${userId}`);
         }
     }
 
