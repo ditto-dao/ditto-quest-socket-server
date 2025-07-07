@@ -14,10 +14,10 @@ export function calculateExpForNextLevel(nextLevel: number): number {
     const c = 120;
     const d = 1.87;
 
-    const baseExp = a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d);
+    const baseExp = 2 * (a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d));
 
-    // Apply 1% increase per level above 100
-    const levelModifier = nextLevel > 100 ? 1 + 0.01 * (nextLevel - 100) : 1;
+    // Apply 10% increase per level above 100
+    const levelModifier = nextLevel > 100 ? 1 + 0.1 * (nextLevel - 100) : 1;
 
     return Math.floor(baseExp * levelModifier);
 }
