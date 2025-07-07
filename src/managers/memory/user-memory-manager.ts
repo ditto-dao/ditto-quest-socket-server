@@ -1083,6 +1083,7 @@ export class UserMemoryManager {
 			user.inventory = cleanInventory.sort((a, b) => a.order - b.order);
 
 			if (tempIdMapping.size > 0) {
+				this.updateEquippedReferences(userId, tempIdMapping);
 				this.inventoryIdRemap.set(userId, tempIdMapping);
 				logger.debug(`📦 [${userId}] Step 4: Mapped ${tempIdMapping.size} temp IDs to real IDs`);
 			}
@@ -1207,6 +1208,61 @@ export class UserMemoryManager {
 			} catch (err) {
 				logger.error(`❌ Failed to flush inventory for user ${userId}: ${err}`);
 			}
+		}
+	}
+
+	private updateEquippedReferences(userId: string, tempIdMapping: Map<number, number>): void {
+		const user = this.users.get(userId);
+		if (!user) return;
+
+		let updatedEquipment = false;
+
+		// Check and update each equipped item reference
+		if (user.hatInventoryId && tempIdMapping.has(user.hatInventoryId)) {
+			const realId = tempIdMapping.get(user.hatInventoryId)!;
+			user.hatInventoryId = realId;
+			updatedEquipment = true;
+			logger.info(`🔗 Updated equipped hat: temp ID -> real ID ${realId}`);
+		}
+
+		if (user.armourInventoryId && tempIdMapping.has(user.armourInventoryId)) {
+			const realId = tempIdMapping.get(user.armourInventoryId)!;
+			user.armourInventoryId = realId;
+			updatedEquipment = true;
+			logger.info(`🔗 Updated equipped armor: temp ID -> real ID ${realId}`);
+		}
+
+		if (user.weaponInventoryId && tempIdMapping.has(user.weaponInventoryId)) {
+			const realId = tempIdMapping.get(user.weaponInventoryId)!;
+			user.weaponInventoryId = realId;
+			updatedEquipment = true;
+			logger.info(`🔗 Updated equipped weapon: temp ID -> real ID ${realId}`);
+		}
+
+		if (user.shieldInventoryId && tempIdMapping.has(user.shieldInventoryId)) {
+			const realId = tempIdMapping.get(user.shieldInventoryId)!;
+			user.shieldInventoryId = realId;
+			updatedEquipment = true;
+			logger.info(`🔗 Updated equipped shield: temp ID -> real ID ${realId}`);
+		}
+
+		if (user.capeInventoryId && tempIdMapping.has(user.capeInventoryId)) {
+			const realId = tempIdMapping.get(user.capeInventoryId)!;
+			user.capeInventoryId = realId;
+			updatedEquipment = true;
+			logger.info(`🔗 Updated equipped cape: temp ID -> real ID ${realId}`);
+		}
+
+		if (user.necklaceInventoryId && tempIdMapping.has(user.necklaceInventoryId)) {
+			const realId = tempIdMapping.get(user.necklaceInventoryId)!;
+			user.necklaceInventoryId = realId;
+			updatedEquipment = true;
+			logger.info(`🔗 Updated equipped necklace: temp ID -> real ID ${realId}`);
+		}
+
+		if (updatedEquipment) {
+			this.markDirty(userId); // Ensure user gets saved with updated references
+			logger.info(`✅ Updated equipped references for user ${userId}`);
 		}
 	}
 
