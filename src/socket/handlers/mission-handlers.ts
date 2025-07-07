@@ -5,6 +5,7 @@ import { GET_NEXT_MISSION, LEDGER_UPDATE_BALANCE_EVENT, MISSION_UPDATE } from ".
 import { emitMissionUpdate, generateNewMission, getUserMissionByUserId, isMissionComplete } from "../../sql-services/missions"
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import { DEVELOPMENT_FUNDS_KEY } from "../../utils/config"
+import { requireLoggedInUser } from "../auth-helper"
 
 export async function setupMissionSocketHandlers(
     socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -14,6 +15,9 @@ export async function setupMissionSocketHandlers(
     socket.on(GET_NEXT_MISSION, async (userId: string) => {
         try {
             logger.info(`Received GET_NEXT_MISSION event from user ${userId}`);
+
+            if (!requireLoggedInUser(userId, socket)) return;
+
             const currMision = await getUserMissionByUserId(userId);
 
             if (currMision) {

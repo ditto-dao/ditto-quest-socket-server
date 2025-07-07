@@ -12,6 +12,7 @@ import { USER_UPDATE_EVENT } from "../events"
 import { incrementUserGold } from "../../operations/user-operations"
 import { burnSlimeMemory, getSlimeForUserById, slimeGachaPullMemory } from "../../operations/slime-operations"
 import { SlimeWithTraits } from "../../sql-services/slime"
+import { requireLoggedInUser } from "../auth-helper"
 
 interface BurnSlimeRequest {
     userId: string,
@@ -33,6 +34,8 @@ export async function setupSlimeSocketHandlers(
     socket.on("mint-gen-0-slime", async (userId: string) => {
         try {
             logger.info(`Received mint-gen-0-slime event from user ${userId}`)
+
+            if (!requireLoggedInUser(userId, socket)) return
 
             await incrementUserGold(userId, -SLIME_GACHA_PRICE_GOLD).catch(err => {
                 logger.error(`Error deducting ${SLIME_GACHA_PRICE_GOLD} gold from user balance: ${err}`)
@@ -80,6 +83,8 @@ export async function setupSlimeSocketHandlers(
         try {
             logger.info(`Received burn-slime event from user ${data.userId}`)
 
+            if (!requireLoggedInUser(data.userId, socket)) return
+
             slime = await getSlimeForUserById(data.userId, data.slimeId)
             if (slime === null) throw new Error(`Slime not found`)
 
@@ -122,6 +127,8 @@ export async function setupSlimeSocketHandlers(
             try {
                 logger.info(`Received breed-slimes event from user ${data.userId}`)
 
+                if (!requireLoggedInUser(data.userId, socket)) return
+
                 const sire = await getSlimeForUserById(data.userId, data.sireId)
                 const dame = await getSlimeForUserById(data.userId, data.dameId)
 
@@ -136,7 +143,7 @@ export async function setupSlimeSocketHandlers(
                     typeof error.message === 'string' && error.message.toLowerCase().includes('inventory full')
                         ? 'Your slime inventory is full. Please free up space before breeding.'
                         : 'Failed to breed slime'
-    
+
                 socket.emit('error', {
                     userId: data.userId,
                     msg: errorMsg
@@ -149,6 +156,8 @@ export async function setupSlimeSocketHandlers(
         await globalIdleSocketUserLock.acquire(data.userId, async () => {
             try {
                 logger.info(`Received stop-breed-slimes event from user ${data.userId}`)
+
+                if (!requireLoggedInUser(data.userId, socket)) return
 
                 IdleBreedingManager.stopBreeding(idleManager, data.userId)
             } catch (error) {

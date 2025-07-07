@@ -9,6 +9,7 @@ import { globalIdleSocketUserLock } from "../socket-handlers"
 import { getDomainById, getDungeonById } from "../../operations/combat-operations"
 import { getUserData, incrementUserGold } from "../../operations/user-operations"
 import { prismaFetchDungeonLeaderboardPage } from "../../sql-services/combat-service"
+import { requireLoggedInUser } from "../auth-helper"
 
 interface StartCombatPayload {
     userId: string,
@@ -25,6 +26,8 @@ export async function setupCombatSocketHandlers(
         await globalIdleSocketUserLock.acquire(data.userId, async () => {
             try {
                 logger.info(`Received START_COMBAT_DOMAIN_EVENT event from user ${data.userId}`);
+
+                if (!requireLoggedInUser(data.userId, socket)) return;
 
                 const domain = await getDomainById(data.id);
                 if (!domain) throw new Error(`Unable to find domain of id: ${data.id}`);
@@ -60,6 +63,8 @@ export async function setupCombatSocketHandlers(
         await globalIdleSocketUserLock.acquire(data.userId, async () => {
             try {
                 logger.info(`Received START_COMBAT_DUNGEON_EVENT event from user ${data.userId}`);
+
+                if (!requireLoggedInUser(data.userId, socket)) return;
 
                 const dungeon = await getDungeonById(data.id);
 
@@ -97,6 +102,8 @@ export async function setupCombatSocketHandlers(
             try {
                 logger.info(`Received STOP_COMBAT_EVENT event for user ${userId}`);
 
+                if (!requireLoggedInUser(userId, socket)) return;
+
                 await combatManager.stopCombat(idleManager, userId);
             } catch (error) {
                 logger.error(`Error stopping combat for user ${userId}: ${error}`);
@@ -116,6 +123,8 @@ export async function setupCombatSocketHandlers(
     }) => {
         try {
             logger.info(`Received GET_DUNGEON_LB event for user ${data.userId}: ${JSON.stringify(data, null, 2)}`);
+
+            if (!requireLoggedInUser(data.userId, socket)) return;
 
             const lb = await prismaFetchDungeonLeaderboardPage(data.dungeonId, data.limit, data.cursor);
 

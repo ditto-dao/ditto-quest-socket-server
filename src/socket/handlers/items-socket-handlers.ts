@@ -9,6 +9,7 @@ import { USER_UPDATE_EVENT } from "../events"
 import { deleteItemsFromUserInventory, mintItemToUser } from "../../operations/item-inventory-operations"
 import { getItemById } from "../../operations/item-operations"
 import { incrementUserGold } from "../../operations/user-operations"
+import { requireLoggedInUser } from "../auth-helper"
 
 interface MintItemPayload {
     userId: string,
@@ -17,14 +18,14 @@ interface MintItemPayload {
 }
 
 interface FarmItemPayload {
-    userId: string;
+    userId: string
     itemId: number
 }
 
 interface SellItemPayload {
-    userId: string;
-    itemId: number;
-    quantity: number;
+    userId: string
+    itemId: number
+    quantity: number
 }
 
 export async function setupItemsSocketHandlers(
@@ -36,6 +37,8 @@ export async function setupItemsSocketHandlers(
         await globalIdleSocketUserLock.acquire(data.userId, async () => {
             try {
                 logger.info(`Received mint-item event from user ${data.userId}`)
+
+                if (!requireLoggedInUser(data.userId, socket)) return
 
                 const res = await mintItemToUser(data.userId.toString(), data.itemId, data.quantity)
 
@@ -51,19 +54,21 @@ export async function setupItemsSocketHandlers(
                     msg: 'Failed to mint item'
                 })
             }
-        });
+        })
     })
 
     socket.on("farm-item", async (data: FarmItemPayload) => {
         await globalIdleSocketUserLock.acquire(data.userId, async () => {
             try {
-                logger.info(`Received farm-item event: ${JSON.stringify(data)}`);
+                logger.info(`Received farm-item event: ${JSON.stringify(data)}`)
 
-                const item = await getItemById(data.itemId);
+                if (!requireLoggedInUser(data.userId, socket)) return
 
-                if (!item) throw new Error(`Item not found.`);
+                const item = await getItemById(data.itemId)
 
-                IdleFarmingManager.startFarming(socketManager, idleManager, data.userId, item, Date.now());
+                if (!item) throw new Error(`Item not found.`)
+
+                IdleFarmingManager.startFarming(socketManager, idleManager, data.userId, item, Date.now())
             } catch (error) {
                 logger.error(`Error processing farm-item: ${error}`)
                 socket.emit('error', {
@@ -71,7 +76,7 @@ export async function setupItemsSocketHandlers(
                     msg: 'Failed to farm item'
                 })
             }
-        });
+        })
     })
 
     socket.on("stop-farm-item", async (data: FarmItemPayload) => {
@@ -79,7 +84,9 @@ export async function setupItemsSocketHandlers(
             try {
                 logger.info(`Received stop-farm-item event from user ${data.userId}`)
 
-                IdleFarmingManager.stopFarming(idleManager, data.userId);
+                if (!requireLoggedInUser(data.userId, socket)) return
+
+                IdleFarmingManager.stopFarming(idleManager, data.userId)
 
             } catch (error) {
                 logger.error(`Error processing stop-craft-equipment: ${error}`)
@@ -89,31 +96,33 @@ export async function setupItemsSocketHandlers(
                 })
             }
         })
-    });
+    })
 
     socket.on("sell-item", async (data: SellItemPayload) => {
         await globalIdleSocketUserLock.acquire(data.userId, async () => {
             try {
-                logger.info(`Received sell-item event from user ${data.userId}`);
+                logger.info(`Received sell-item event from user ${data.userId}`)
 
-                const item = await getItemById(data.itemId);
-                if (!item) throw new Error(`Unable to find item`);
+                if (!requireLoggedInUser(data.userId, socket)) return
 
-                const goldBalance = await incrementUserGold(data.userId, item.sellPriceGP * data.quantity);
+                const item = await getItemById(data.itemId)
+                if (!item) throw new Error(`Unable to find item`)
 
-                const inv = await deleteItemsFromUserInventory(data.userId, [data.itemId], [data.quantity]);
+                const goldBalance = await incrementUserGold(data.userId, item.sellPriceGP * data.quantity)
+
+                const inv = await deleteItemsFromUserInventory(data.userId, [data.itemId], [data.quantity])
 
                 socketManager.emitEvent(data.userId, USER_UPDATE_EVENT, {
                     userId: data.userId,
                     payload: {
                         goldBalance
                     }
-                });
+                })
 
                 socket.emit("update-inventory", {
                     userId: data.userId,
                     payload: inv
-                });
+                })
             } catch (error) {
                 logger.error(`Error processing sell-item: ${error}`)
                 socket.emit('error', {
@@ -122,5 +131,5 @@ export async function setupItemsSocketHandlers(
                 })
             }
         })
-    });
+    })
 }
