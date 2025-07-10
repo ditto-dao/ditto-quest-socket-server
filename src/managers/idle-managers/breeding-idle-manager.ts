@@ -155,7 +155,7 @@ export class IdleBreedingManager {
             timestamp += breeding.durationS * 1000;
 
             // Only count as completed if the breeding cycle actually finished within our time window
-            if (timestamp <= progressEndTimestamp) {
+            if (timestamp < progressEndTimestamp) {
                 repetitions++;
             } else {
                 // Breeding cycle would extend beyond our progress window, don't count it
