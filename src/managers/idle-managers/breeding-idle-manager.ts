@@ -176,23 +176,20 @@ export class IdleBreedingManager {
         logger.info(`Breeding repetition completed after logout: ${repetitions}`);
         logger.info(`Breeding repetition start timestamp: ${currentRepetitionStart}`);
 
-        // Start current repetition (only if there's space)
-        if (await canUserMintSlimeMemory(userId)) {
-            IdleBreedingManager.startBreeding(socketManager, idleManager, userId, breeding.sire, breeding.dame, currentRepetitionStart);
+        // Start current repetition 
+        IdleBreedingManager.startBreeding(socketManager, idleManager, userId, breeding.sire, breeding.dame, currentRepetitionStart);
 
-            // Emit breeding-start before queueing activity
-            socketManager.emitEvent(userId, 'breeding-start', {
-                userId: userId,
-                payload: {
-                    sireId: breeding.sire.id,
-                    dameId: breeding.dame.id,
-                    startTimestamp: currentRepetitionStart,
-                    durationS: breedingDurationS
-                }
-            });
-        } else {
-            logger.info(`User ${userId} slime inventory full, not starting new breeding cycle`);
-        }
+        // Emit breeding-start before queueing activity
+        socketManager.emitEvent(userId, 'breeding-start', {
+            userId: userId,
+            payload: {
+                sireId: breeding.sire.id,
+                dameId: breeding.dame.id,
+                startTimestamp: currentRepetitionStart,
+                durationS: breedingDurationS
+            }
+        });
+        logger.info(`Resumed breeding cycle for user ${userId} that was active at logout`);
 
         const mintedSlimes = [];
         if (repetitions > 0) {
