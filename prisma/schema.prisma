@@ -871,11 +871,17 @@ model UserMission {
 
   type MissionType
 
-  // Optional foreign targets
-  itemId      Int? // for farm
-  equipmentId Int? // for craft
-  monsterId   Int? // for combat
-  slimeRarity Rarity? // for breeding
+  // DEPRECATED: Single target IDs (kept for backward compatibility)
+  itemId      Int? // for farm - DEPRECATED, use itemIds
+  equipmentId Int? // for craft - DEPRECATED, use equipmentIds  
+  monsterId   Int? // for combat - DEPRECATED, use monsterIds
+  slimeRarity Rarity? // for breeding - DEPRECATED, use slimeRarities
+
+  // NEW: Multiple target IDs (JSON arrays)
+  itemIds      Json? // Array of item IDs for farm missions
+  equipmentIds Json? // Array of equipment IDs for craft missions
+  monsterIds   Json? // Array of monster IDs for combat missions
+  slimeRarities Json? // Array of slime rarities for breeding missions
 
   quantity    Int
   progress    Int      @default(0)

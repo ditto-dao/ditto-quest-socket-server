@@ -12,12 +12,13 @@ export async function getUserMissionByUserId(userId: string): Promise<UserMissio
     });
 }
 
-const missions = [
+// Updated mission definitions with multiple target support
+export const missions = [
     {
         type: MissionType.FARM,
-        label: "Farm Barkwood x1",
-        itemId: 26,
-        quantity: 1,
+        label: "Farm Barkwood x3",
+        itemIds: [26], // Array of valid item IDs
+        quantity: 3,
         rewardDitto: parseUnits("5000", DITTO_DECIMALS),
         progress: 0,
         round: 1,
@@ -25,8 +26,8 @@ const missions = [
     },
     {
         type: MissionType.CRAFT,
-        label: "Craft Rustfang x1",
-        equipmentId: 1,
+        label: "Craft Rustfang, Barksting, or Twigwand x1",
+        equipmentIds: [1, 21, 41], // Multiple equipment options
         quantity: 1,
         rewardDitto: parseUnits("5000", DITTO_DECIMALS),
         progress: 0,
@@ -35,8 +36,8 @@ const missions = [
     },
     {
         type: MissionType.COMBAT,
-        label: "Kill Spriggloo x1",
-        monsterId: 1,
+        label: "Kill any monster in Sparkroot Clearing",
+        monsterIds: [1, 2, 3, 4, 5, 6], // Multiple monster options
         quantity: 1,
         rewardDitto: parseUnits("5000", DITTO_DECIMALS),
         progress: 0,
@@ -89,6 +90,10 @@ export async function generateNewMission(
                 equipmentId: null,
                 monsterId: null,
                 slimeRarity: null,
+                itemIds: undefined,
+                equipmentIds: undefined,
+                monsterIds: undefined,
+                slimeRarities: undefined,
                 quantity: 0,
                 rewardDitto: "0",
                 progress: 0,
@@ -112,10 +117,16 @@ export async function generateNewMission(
             telegramId,
             label: next.label,
             type: next.type,
-            itemId: "itemId" in next ? next.itemId : null,
-            equipmentId: "equipmentId" in next ? next.equipmentId : null,
-            monsterId: "monsterId" in next ? next.monsterId : null,
-            slimeRarity: "slimeRarity" in next ? next.slimeRarity as Rarity : null,
+            // Set both old and new fields for compatibility
+            itemId: "itemIds" in next && Array.isArray(next.itemIds) && next.itemIds.length > 0 ? next.itemIds[0] : null,
+            equipmentId: "equipmentIds" in next && Array.isArray(next.equipmentIds) && next.equipmentIds.length > 0 ? next.equipmentIds[0] : null,
+            monsterId: "monsterIds" in next && Array.isArray(next.monsterIds) && next.monsterIds.length > 0 ? next.monsterIds[0] : null,
+            slimeRarity: "slimeRarities" in next && Array.isArray(next.slimeRarities) && next.slimeRarities.length > 0 ? next.slimeRarities[0] as Rarity : null,
+            // New array fields
+            itemIds: "itemIds" in next ? JSON.stringify(next.itemIds) : undefined,
+            equipmentIds: "equipmentIds" in next ? JSON.stringify(next.equipmentIds) : undefined,
+            monsterIds: "monsterIds" in next ? JSON.stringify(next.monsterIds) : undefined,
+            slimeRarities: "slimeRarities" in next ? JSON.stringify(next.slimeRarities) : undefined,
             quantity: next.quantity,
             rewardDitto: next.rewardDitto.toString(),
             progress: 0,
@@ -127,10 +138,55 @@ export async function generateNewMission(
     return created;
 }
 
-// FARM
+// Helper function to check if a value is in the mission's target array
+function isValidTarget(mission: UserMission, targetId: number | string, targetType: 'item' | 'equipment' | 'monster' | 'slimeRarity'): boolean {
+    // Try new array format first
+    try {
+        let targetArray: any[] | null = null;
+
+        switch (targetType) {
+            case 'item':
+                targetArray = mission.itemIds ? JSON.parse(mission.itemIds as string) : null;
+                break;
+            case 'equipment':
+                targetArray = mission.equipmentIds ? JSON.parse(mission.equipmentIds as string) : null;
+                break;
+            case 'monster':
+                targetArray = mission.monsterIds ? JSON.parse(mission.monsterIds as string) : null;
+                break;
+            case 'slimeRarity':
+                targetArray = mission.slimeRarities ? JSON.parse(mission.slimeRarities as string) : null;
+                break;
+        }
+
+        if (targetArray && Array.isArray(targetArray)) {
+            return targetArray.includes(targetId);
+        }
+    } catch (error) {
+        logger.error(`Error parsing mission target array for ${targetType}:`, error);
+    }
+
+    // Fallback to old single ID format for backward compatibility
+    switch (targetType) {
+        case 'item':
+            return mission.itemId === targetId;
+        case 'equipment':
+            return mission.equipmentId === targetId;
+        case 'monster':
+            return mission.monsterId === targetId;
+        case 'slimeRarity':
+            return mission.slimeRarity === targetId;
+        default:
+            return false;
+    }
+}
+
+// FARM - Updated to support multiple item IDs
 export async function updateFarmMission(telegramId: string, itemId: number, quantity: number) {
     const mission = await prisma.userMission.findFirst({ where: { telegramId } });
-    if (!mission || mission.type !== MissionType.FARM || mission.itemId !== itemId) return;
+    if (!mission || mission.type !== MissionType.FARM) return;
+
+    if (!isValidTarget(mission, itemId, 'item')) return;
 
     await prisma.userMission.update({
         where: { id: mission.id },
@@ -138,10 +194,12 @@ export async function updateFarmMission(telegramId: string, itemId: number, quan
     });
 }
 
-// CRAFT
+// CRAFT - Updated to support multiple equipment IDs
 export async function updateCraftMission(telegramId: string, equipmentId: number, quantity: number) {
     const mission = await prisma.userMission.findFirst({ where: { telegramId } });
-    if (!mission || mission.type !== MissionType.CRAFT || mission.equipmentId !== equipmentId) return;
+    if (!mission || mission.type !== MissionType.CRAFT) return;
+
+    if (!isValidTarget(mission, equipmentId, 'equipment')) return;
 
     await prisma.userMission.update({
         where: { id: mission.id },
@@ -149,10 +207,12 @@ export async function updateCraftMission(telegramId: string, equipmentId: number
     });
 }
 
-// COMBAT
+// COMBAT - Updated to support multiple monster IDs
 export async function updateCombatMission(telegramId: string, monsterId: number, quantity: number) {
     const mission = await prisma.userMission.findFirst({ where: { telegramId } });
-    if (!mission || mission.type !== MissionType.COMBAT || mission.monsterId !== monsterId) return;
+    if (!mission || mission.type !== MissionType.COMBAT) return;
+
+    if (!isValidTarget(mission, monsterId, 'monster')) return;
 
     await prisma.userMission.update({
         where: { id: mission.id },
@@ -160,11 +220,13 @@ export async function updateCombatMission(telegramId: string, monsterId: number,
     });
 }
 
-// COMBAT (Batch)
+// COMBAT (Batch) - Updated to support multiple monster IDs
 export async function updateCombatMissions(updates: { telegramId: string; monsterId: number; quantity: number }[]) {
     for (const { telegramId, monsterId, quantity } of updates) {
         const mission = await prisma.userMission.findFirst({ where: { telegramId } });
-        if (!mission || mission.type !== MissionType.COMBAT || mission.monsterId !== monsterId) continue;
+        if (!mission || mission.type !== MissionType.COMBAT) continue;
+
+        if (!isValidTarget(mission, monsterId, 'monster')) continue;
 
         await prisma.userMission.update({
             where: { id: mission.id },
@@ -173,13 +235,29 @@ export async function updateCombatMissions(updates: { telegramId: string; monste
     }
 }
 
-// BREED
+// BREED - Updated to support multiple slime rarities
 export async function updateBreedMission(telegramId: string, rarity: Rarity, quantity: number) {
     const mission = await prisma.userMission.findFirst({ where: { telegramId } });
     if (!mission || mission.type !== MissionType.BREED) return;
 
-    // For tutorial mission (slimeRarity is null), accept any rarity
-    if (mission.slimeRarity === null) {
+    // For tutorial mission (no specific rarity requirements), accept any rarity
+    let validRarities: Rarity[] = [];
+    try {
+        if (mission.slimeRarities) {
+            validRarities = JSON.parse(mission.slimeRarities as string);
+        } else if (mission.slimeRarity) {
+            validRarities = [mission.slimeRarity];
+        }
+    } catch (error) {
+        logger.error("Error parsing slime rarities:", error);
+        // Fallback to old format
+        if (mission.slimeRarity) {
+            validRarities = [mission.slimeRarity];
+        }
+    }
+
+    // If no specific rarities defined, accept any rarity (tutorial mission)
+    if (validRarities.length === 0) {
         await prisma.userMission.update({
             where: { id: mission.id },
             data: { progress: { increment: quantity } },
@@ -187,9 +265,16 @@ export async function updateBreedMission(telegramId: string, rarity: Rarity, qua
         return;
     }
 
-    // For specific rarity missions, check the rarity requirement
+    // Check if the bred rarity meets any of the requirements
     const rarityOrder: Rarity[] = ["D", "C", "B", "A", "S"];
-    if (rarityOrder.indexOf(rarity) >= rarityOrder.indexOf(mission.slimeRarity)) {
+    const bredRarityIndex = rarityOrder.indexOf(rarity);
+
+    const meetsRequirement = validRarities.some(requiredRarity => {
+        const requiredRarityIndex = rarityOrder.indexOf(requiredRarity);
+        return bredRarityIndex >= requiredRarityIndex;
+    });
+
+    if (meetsRequirement) {
         await prisma.userMission.update({
             where: { id: mission.id },
             data: { progress: { increment: quantity } },
@@ -197,16 +282,44 @@ export async function updateBreedMission(telegramId: string, rarity: Rarity, qua
     }
 }
 
-// GACHA
+// GACHA - Updated to support multiple slime rarities
 export async function updateGachaMission(telegramId: string, rarity: Rarity, quantity: number) {
     const mission = await prisma.userMission.findFirst({ where: { telegramId } });
     if (!mission || mission.type !== MissionType.GACHA) return;
 
-    const shouldIncrement =
-        mission.slimeRarity === null ||
-        ["D", "C", "B", "A", "S"].indexOf(rarity) >= ["D", "C", "B", "A", "S"].indexOf(mission.slimeRarity);
+    // Similar logic to breeding missions
+    let validRarities: Rarity[] = [];
+    try {
+        if (mission.slimeRarities) {
+            validRarities = JSON.parse(mission.slimeRarities as string);
+        } else if (mission.slimeRarity) {
+            validRarities = [mission.slimeRarity];
+        }
+    } catch (error) {
+        logger.error("Error parsing slime rarities:", error);
+        if (mission.slimeRarity) {
+            validRarities = [mission.slimeRarity];
+        }
+    }
 
-    if (shouldIncrement) {
+    // If no specific rarities defined, accept any rarity
+    if (validRarities.length === 0) {
+        await prisma.userMission.update({
+            where: { id: mission.id },
+            data: { progress: { increment: quantity } },
+        });
+        return;
+    }
+
+    const rarityOrder: Rarity[] = ["D", "C", "B", "A", "S"];
+    const gachaRarityIndex = rarityOrder.indexOf(rarity);
+
+    const meetsRequirement = validRarities.some(requiredRarity => {
+        const requiredRarityIndex = rarityOrder.indexOf(requiredRarity);
+        return gachaRarityIndex >= requiredRarityIndex;
+    });
+
+    if (meetsRequirement) {
         await prisma.userMission.update({
             where: { id: mission.id },
             data: { progress: { increment: quantity } },
@@ -231,7 +344,7 @@ export async function emitMissionUpdate(socket: Socket<DefaultEventsMap, Default
         return;
     }
 
-    if (mission.round >= 5) {
+    if (mission.round >= 6) {
         logger.warn(`User has cleared tutorial missions`);
         return;
     }
