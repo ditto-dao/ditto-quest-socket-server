@@ -50,7 +50,6 @@ export async function doesUserOwnItems(
                 return userQuantity >= requiredQuantity;
             });
 
-            logger.debug(`🔍 Checked item ownership for user ${telegramId} in memory: ${ownsAll}`);
             return ownsAll;
         }
 
