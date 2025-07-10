@@ -28,6 +28,7 @@ import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { mintItemToUser } from "../../operations/item-inventory-operations";
 import { requireActivityLogMemoryManager, requireUserMemoryManager, requireUserSessionManager } from "../global-managers/global-managers";
 import { UserSessionState } from "../memory/user-session-manager";
+import AsyncLock from "async-lock";
 
 interface ValidateLoginPayload {
     initData: string;
@@ -59,6 +60,8 @@ export class ValidateLoginManager {
 
     private loginQueue: Map<string, LoginQueueData> = new Map();
     private loginTimers: Map<string, NodeJS.Timeout> = new Map();
+
+    private loginProcessLock = new AsyncLock();
 
     // Cache HMAC key to avoid recalculating on every login
     private secretKey = crypto
@@ -253,8 +256,10 @@ export class ValidateLoginManager {
         const loginData = this.loginQueue.get(userId)!;
         this.loginQueue.delete(userId);
 
-        await this.processLogin(loginData);
-        logger.info(`User ${userId} successfully validated.`);
+        await this.loginProcessLock.acquire(`login-${userId}`, async () => {
+            await this.processLogin(loginData);
+            logger.info(`User ${userId} successfully validated.`);
+        });
     }
 
     isUserAwaitingLogin(userId: string) {
