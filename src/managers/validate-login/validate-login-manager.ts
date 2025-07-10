@@ -420,8 +420,6 @@ export class ValidateLoginManager {
         });
     }
 
-
-
     private async restoreCombatSession(currentCombat: any, user: any) {
         try {
             if (currentCombat.combatType === 'Domain') {
@@ -435,7 +433,8 @@ export class ValidateLoginManager {
                     currentCombat.userCombat,
                     domain,
                     currentCombat.startTimestamp,
-                    currentCombat.monsterToStartWith
+                    currentCombat.monsterToStartWith,
+                    true
                 );
             } else {
                 const dungeon = await getDungeonById(currentCombat.locationId);
@@ -449,7 +448,8 @@ export class ValidateLoginManager {
                     dungeon,
                     currentCombat.startTimestamp,
                     currentCombat.monsterToStartWith,
-                    currentCombat.dungeonState
+                    currentCombat.dungeonState,
+                    true
                 );
             }
             logger.info(`⚔️ Restored ${currentCombat.combatType} combat session for user ${currentCombat.userId}`);

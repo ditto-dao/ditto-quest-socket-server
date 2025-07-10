@@ -12,7 +12,7 @@ import { DungeonManager, DungeonState } from "./dungeon-manager";
 import { getReferrer, logReferralEarning } from "../../../sql-services/referrals";
 import { emitMissionUpdate, updateCombatMissions } from "../../../sql-services/missions";
 import { FullMonster, prismaUpdateDungeonLeaderboard } from "../../../sql-services/combat-service";
-import { getDomainById, getDungeonById, incrementExpAndHpExpAndCheckLevelUpMemory } from "../../../operations/combat-operations";
+import { getDomainById, getDungeonById, incrementExpAndHpExpAndCheckLevelUpMemory, setUserCombatHp } from "../../../operations/combat-operations";
 import { getUserLevelMemory, incrementUserGold } from "../../../operations/user-operations";
 import { canUserMintItem, mintItemToUser } from "../../../operations/item-inventory-operations";
 import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/equipment-inventory-operations";
@@ -20,6 +20,7 @@ import { logCombatActivity } from "../../../operations/user-activity-log-operati
 import { SocketManager } from "../../../socket/socket-manager";
 import { incrementTotalCombatDittoByTelegramId } from "../../../redis/intract";
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
+import { requireUserMemoryManager } from "../../global-managers/global-managers";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -31,8 +32,41 @@ export interface CurrentCombat {
   dungeonState?: DungeonState,
 }
 
-export class OfflineCombatManager {
+interface CombatStats {
+  totalExp: number;
+  totalHpExp: number;
+  totalGold: number;
+  totalDitto: bigint;
+  userDied: boolean;
+  monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }>;
+  itemDrops: { item: Item; quantity: number }[];
+  equipmentDrops: { equipment: Equipment; quantity: number }[];
+  missionUpdates: { telegramId: string; monsterId: number; quantity: number }[];
+  combatActivitiesByMonster: Record<number, {
+    monsterId: number;
+    killCount: number;
+    totalExp: number;
+    totalGold: number;
+    totalDitto: bigint;
+    drops: { itemId?: number; equipmentId?: number; quantity: number }[];
+  }>;
+}
 
+interface CombatSimulation {
+  userCombat: Combat;
+  monster: FullMonster;
+  userAtkCooldown: number;
+  monsterAtkCooldown: number;
+  userNextAtk: number;
+  monsterNextAtk: number;
+  userRegenTimer: number;
+  monsterRegenTimer: number;
+  userNextRegen: number;
+  monsterNextRegen: number;
+  stats: CombatStats;
+}
+
+export class OfflineCombatManager {
   static DROP_NERF_MULTIPLIER = 0.25;
   static EXP_NERF_MULTIPLIER = 0.5;
   static USER_NERF_MULTIPLIER = 0.5;
@@ -56,569 +90,380 @@ export class OfflineCombatManager {
       throw new Error("Logout timestamp not found in loaded combat activity.");
     }
 
-    logger.info(`Combat activity loaded for user ${activity.userId}: ${JSON.stringify(activity, null, 2)}`);
+    // Log activity with full userCombatState but only monster name and id
+    const logActivity = {
+      ...activity,
+      monster: activity.monster ? {
+        id: activity.monster.id,
+        name: activity.monster.name
+      } : undefined
+    };
+
+    logger.info(`Combat activity loaded for user ${activity.userId}: ${JSON.stringify(logActivity, null, 2)}`);
 
     switch (activity.mode) {
       case "domain":
-        return await OfflineCombatManager.handleLoadedDomainCombat(dittoLedgerSocket, activity, socketManager, redisClient);
+        return await this.handleCombat(dittoLedgerSocket, activity, socketManager, redisClient, {
+          getLocation: (id) => getDomainById(id),
+          getInitialMonster: (location, activity) => {
+            if (activity.monster && activity.monster.combat.hp > 0) return activity.monster;
+            return DomainManager.getRandomMonsterFromDomain(location as any);
+          },
+          getNextMonster: (location) => DomainManager.getRandomMonsterFromDomain(location as any),
+          onMonsterDeath: () => { }, // No special handling for domains
+          onUserDeath: async () => { }, // No special handling for domains
+          trackDamage: false,
+          combatType: 'Domain'
+        });
 
       case "dungeon":
-        return await OfflineCombatManager.handleLoadedDungeonCombat(dittoLedgerSocket, activity, socketManager, redisClient);
+        return await this.handleCombat(dittoLedgerSocket, activity, socketManager, redisClient, {
+          getLocation: (id) => getDungeonById(id),
+          getInitialMonster: (location, activity) => {
+            if (activity.monster && activity.monster.combat.hp > 0) return activity.monster;
+            return DungeonManager.getMonsterFromDungeonByIndex(location as any, activity.currentMonsterIndex!);
+          },
+          getNextMonster: (location, activity) => {
+            const dungeon = location as any;
+            activity.currentMonsterIndex!++;
+            if (activity.currentMonsterIndex! >= dungeon.monsterSequence.length) {
+              activity.currentMonsterIndex = 0;
+              activity.currentFloor!++;
+            }
+            const baseMonster = DungeonManager.getMonsterFromDungeonByIndex(dungeon, activity.currentMonsterIndex!);
+            return DungeonManager.getBuffedFullMonster(baseMonster, Math.pow(dungeon.monsterGrowthFactor, Math.max(1, activity.currentFloor! - 1)));
+          },
+          onMonsterDeath: () => { }, // Progress tracking handled in getNextMonster
+          onUserDeath: async (location, activity) => {
+            const dungeon = location as any;
+            await prismaUpdateDungeonLeaderboard(
+              activity.userId,
+              dungeon.id,
+              {
+                totalDamageDealt: activity.totalDamageDealt!,
+                totalDamageTaken: activity.totalDamageTaken!,
+                floor: activity.currentFloor!,
+                monsterIndex: activity.currentMonsterIndex!,
+                startTimestamp: activity.startTimestamp
+              },
+              dungeon.monsterSequence.length
+            );
+          },
+          trackDamage: true,
+          combatType: 'Dungeon'
+        });
+
       default:
         throw new Error(`Unknown combat mode: ${activity.mode}`);
     }
   }
 
-  static async handleLoadedDomainCombat(
+  private static async handleCombat(
     dittoLedgerSocket: DittoLedgerSocket,
     activity: IdleCombatActivityElement,
     socketManager: SocketManager,
-    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
-  ): Promise<{
-    combatUpdate: CombatUpdate | undefined;
-    currentCombat: CurrentCombat | undefined;
-  }> {
-    if (!activity.domainId) throw new Error(`Domain ID not found for idle combat activity`);
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>,
+    config: {
+      getLocation: (id: number) => Promise<any>;
+      getInitialMonster: (location: any, activity: IdleCombatActivityElement) => FullMonster | null;
+      getNextMonster: (location: any, activity: IdleCombatActivityElement) => FullMonster | null;
+      onMonsterDeath: (location: any, activity: IdleCombatActivityElement) => void;
+      onUserDeath: (location: any, activity: IdleCombatActivityElement) => Promise<void>;
+      trackDamage: boolean;
+      combatType: 'Domain' | 'Dungeon';
+    }
+  ) {
+    // Setup
+    const locationId = activity.domainId || activity.dungeonId;
+    if (!locationId) throw new Error(`Location ID not found for idle combat activity`);
 
+    const location = await config.getLocation(locationId);
+    if (!location) throw new Error(`Location not found: ${locationId}`);
+
+    // Validate level requirements
+    const userLevel = await getUserLevelMemory(activity.userId);
+    if (!this.checkLevelRequirements(userLevel, location)) {
+      logger.warn(`User ${activity.userId} does not meet ${config.combatType.toLowerCase()} level requirements. Skipping offline progress.`);
+      return { combatUpdate: undefined, currentCombat: undefined };
+    }
+
+    // Validate dungeon-specific fields
+    if (config.trackDamage) {
+      if (activity.currentMonsterIndex == null) throw new Error(`Current monster index not found in idle combat activity`);
+      if (activity.currentFloor == null) throw new Error(`Current floor not found in idle combat activity`);
+      if (activity.totalDamageDealt == null) throw new Error(`Total damage dealt not found in idle combat activity`);
+      if (activity.totalDamageTaken == null) throw new Error(`Total damage taken not found in idle combat activity`);
+    }
+
+    // Initialize simulation
     const REAL_ELAPSED_MS = Date.now() - activity.logoutTimestamp!;
-    const offlineMs = Math.min(
-      REAL_ELAPSED_MS,
-      MAX_OFFLINE_IDLE_PROGRESS_S * 1000
-    );
+    const offlineMs = Math.min(REAL_ELAPSED_MS, MAX_OFFLINE_IDLE_PROGRESS_S * 1000);
     const tickMs = 100;
     const totalTicks = Math.floor(offlineMs / tickMs);
 
-    const domain = await getDomainById(activity.domainId);
-    if (!domain) throw new Error(`Domain not found: ${activity.domainId}`);
+    const simulation = this.initializeSimulation(activity, location, config);
+    if (!simulation) throw new Error(`Failed to initialize combat simulation`);
 
-    const userLevel = await getUserLevelMemory(activity.userId);
-    if (
-      userLevel < (domain.minCombatLevel ?? -Infinity) ||
-      userLevel > (domain.maxCombatLevel ?? Infinity)
-    ) {
-      logger.warn(`User ${activity.userId} does not meet domain level requirements. Skipping offline progress.`);
+    // Run simulation
+    await this.runSimulation(simulation, totalTicks, tickMs, location, activity, config);
 
-      return {
-        combatUpdate: undefined,
-        currentCombat: undefined
-      };
-    }
+    // Process results
+    const { originalCombat, expRes } = await this.processResults(
+      activity,
+      simulation.stats,
+      dittoLedgerSocket,
+      socketManager,
+      redisClient
+    );
 
-    let originalCombat = activity.userCombatState;
-    let userCombat = OfflineCombatManager.cloneCombat(originalCombat);
-    OfflineCombatManager.nerfUserCombat(userCombat);
+    logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${simulation.stats.userDied}, TotalTicks=${totalTicks}, Will resume=${!simulation.stats.userDied}`);
 
-    let monster = activity.monster;
-    if (!monster || monster.combat.hp <= 0) monster = DomainManager.getRandomMonsterFromDomain(domain);
-    if (!monster) throw new Error(`Failed to get monster from domain during offline sim.`);
+    return {
+      combatUpdate: this.createCombatUpdate(simulation.stats, expRes, activity),
+      currentCombat: simulation.stats.userDied ? undefined : this.createCurrentCombat(
+        activity,
+        originalCombat,
+        location,
+        simulation.monster,
+        totalTicks,
+        tickMs,
+        config
+      )
+    };
+  }
 
-    let userAtkCooldown = getAtkCooldownFromAtkSpd(userCombat.atkSpd) * 1000;
-    let monsterAtkCooldown = getAtkCooldownFromAtkSpd(monster.combat.atkSpd) * 1000;
-    let userNextAtk = userAtkCooldown;
-    let monsterNextAtk = monsterAtkCooldown;
+  private static checkLevelRequirements(userLevel: number, location: any): boolean {
+    return userLevel >= (location.minCombatLevel ?? -Infinity) &&
+      userLevel <= (location.maxCombatLevel ?? Infinity);
+  }
 
-    let userRegenTimer = userCombat.hpRegenRate * 1000;
-    let monsterRegenTimer = monster.combat.hpRegenRate * 1000;
-    let userNextRegen = userRegenTimer;
-    let monsterNextRegen = monsterRegenTimer;
+  private static initializeSimulation(
+    activity: IdleCombatActivityElement,
+    location: any,
+    config: any
+  ): CombatSimulation | null {
+    const originalCombat = activity.userCombatState;
+    const userCombat = this.cloneCombat(originalCombat);
+    this.nerfUserCombat(userCombat);
 
-    let totalExp = 0;
-    let totalHpExp = 0;
-    let totalGold = 0;
-    let totalDitto = 0n;
-    let userDied = false;
+    const monster = config.getInitialMonster(location, activity);
+    if (!monster) return null;
 
-    // Aggregate kills by monster ID
-    const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
-    const itemDrops: { item: Item; quantity: number }[] = [];
-    const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
-    const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
+    const userAtkCooldown = getAtkCooldownFromAtkSpd(userCombat.atkSpd) * 1000;
+    const monsterAtkCooldown = getAtkCooldownFromAtkSpd(monster.combat.atkSpd) * 1000;
+    const userRegenTimer = userCombat.hpRegenRate * 1000;
+    const monsterRegenTimer = monster.combat.hpRegenRate * 1000;
 
-    // Aggregate combat activities by monster ID
-    const combatActivitiesByMonster: Record<number, {
-      monsterId: number;
-      killCount: number;
-      totalExp: number;
-      totalGold: number;
-      totalDitto: bigint;
-      drops: { itemId?: number; equipmentId?: number; quantity: number }[];
-    }> = {};
+    return {
+      userCombat,
+      monster,
+      userAtkCooldown,
+      monsterAtkCooldown,
+      userNextAtk: userAtkCooldown,
+      monsterNextAtk: monsterAtkCooldown,
+      userRegenTimer,
+      monsterRegenTimer,
+      userNextRegen: userRegenTimer,
+      monsterNextRegen: monsterRegenTimer,
+      stats: {
+        totalExp: 0,
+        totalHpExp: 0,
+        totalGold: 0,
+        totalDitto: 0n,
+        userDied: false,
+        monsterKillCounts: {},
+        itemDrops: [],
+        equipmentDrops: [],
+        missionUpdates: [],
+        combatActivitiesByMonster: {}
+      }
+    };
+  }
 
+  private static async runSimulation(
+    simulation: CombatSimulation,
+    totalTicks: number,
+    tickMs: number,
+    location: any,
+    activity: IdleCombatActivityElement,
+    config: any
+  ) {
     for (let t = 0; t < totalTicks; t++) {
       // User attacks
-      if (userNextAtk <= 0) {
-        const dmg = Battle.calculateDamage(userCombat, monster.combat);
-        monster.combat.hp = Math.max(0, monster.combat.hp - dmg.dmg);
-        userNextAtk = userAtkCooldown;
+      if (simulation.userNextAtk <= 0) {
+        const dmg = Battle.calculateDamage(simulation.userCombat, simulation.monster.combat);
 
-        if (monster.combat.hp === 0) {
-          // Record kill for UI display
-          const key = `${monster.name}-${monster.imgsrc}`;
-          if (monsterKillCounts[key]) {
-            monsterKillCounts[key].quantity += 1;
-          } else {
-            monsterKillCounts[key] = {
-              name: monster.name,
-              uri: monster.imgsrc,
-              quantity: 1,
-            };
-          }
+        if (config.trackDamage) {
+          activity.totalDamageDealt! += Math.min(dmg.dmg, simulation.monster.combat.hp);
+        }
 
-          // Calculate rewards
-          const exp = Math.floor(monster.exp * OfflineCombatManager.EXP_NERF_MULTIPLIER);
-          const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * OfflineCombatManager.DROP_NERF_MULTIPLIER);
-          const dittoGained = Battle.roundWeiTo1DecimalPlace(
-            OfflineCombatManager.scaleBigInt(
-              Battle.getAmountDrop(BigInt(monster.minDittoDrop.toString()), BigInt(monster.maxDittoDrop.toString())),
-              OfflineCombatManager.DROP_NERF_MULTIPLIER
-            )
-          );
+        simulation.monster.combat.hp = Math.max(0, simulation.monster.combat.hp - dmg.dmg);
+        simulation.userNextAtk = simulation.userAtkCooldown;
 
-          // Aggregate totals for UI
-          totalExp += exp;
-          totalHpExp += calculateHpExpGained(exp);
-          totalGold += goldGained;
-          totalDitto += dittoGained;
+        if (simulation.monster.combat.hp === 0) {
+          this.processMonsterDeath(simulation, location, activity, config);
 
-          // Aggregate by monster ID for database logging
-          if (!combatActivitiesByMonster[monster.id]) {
-            combatActivitiesByMonster[monster.id] = {
-              monsterId: monster.id,
-              killCount: 0,
-              totalExp: 0,
-              totalGold: 0,
-              totalDitto: 0n,
-              drops: []
-            };
-          }
+          const nextMonster = config.getNextMonster(location, activity);
+          if (!nextMonster) break;
 
-          const monsterActivity = combatActivitiesByMonster[monster.id];
-          monsterActivity.killCount += 1;
-          monsterActivity.totalExp += exp;
-          monsterActivity.totalGold += goldGained;
-          monsterActivity.totalDitto += dittoGained;
-
-          // Process drops
-          for (const drop of monster.drops) {
-            if (Math.random() <= drop.dropRate * OfflineCombatManager.DROP_NERF_MULTIPLIER) {
-              if (drop.itemId) {
-                // Aggregate for UI
-                const existing = itemDrops.find(d => d.item.id === drop.item!.id);
-                if (existing) {
-                  existing.quantity += drop.quantity;
-                } else {
-                  itemDrops.push({ item: drop.item!, quantity: drop.quantity });
-                }
-
-                // Aggregate for database
-                const existingActivityDrop = monsterActivity.drops.find(d => d.itemId === drop.itemId);
-                if (existingActivityDrop) {
-                  existingActivityDrop.quantity += drop.quantity;
-                } else {
-                  monsterActivity.drops.push({
-                    itemId: drop.itemId,
-                    quantity: drop.quantity,
-                  });
-                }
-              } else if (drop.equipmentId) {
-                // Aggregate for UI
-                const existing = equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
-                if (existing) {
-                  existing.quantity += drop.quantity;
-                } else {
-                  equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
-                }
-
-                // Aggregate for database
-                const existingActivityDrop = monsterActivity.drops.find(d => d.equipmentId === drop.equipmentId);
-                if (existingActivityDrop) {
-                  existingActivityDrop.quantity += drop.quantity;
-                } else {
-                  monsterActivity.drops.push({
-                    equipmentId: drop.equipmentId,
-                    quantity: drop.quantity,
-                  });
-                }
-              }
-            }
-          }
-
-          // Replace monster
-          monster = DomainManager.getRandomMonsterFromDomain(domain)!;
-          if (!monster) break;
-
-          monsterAtkCooldown = getAtkCooldownFromAtkSpd(monster.combat.atkSpd) * 1000;
-          monsterNextAtk = monsterAtkCooldown;
-          monsterRegenTimer = monster.combat.hpRegenRate * 1000;
-          monsterNextRegen = monsterRegenTimer;
+          simulation.monster = nextMonster;
+          simulation.monsterAtkCooldown = getAtkCooldownFromAtkSpd(simulation.monster.combat.atkSpd) * 1000;
+          simulation.monsterNextAtk = simulation.monsterAtkCooldown;
+          simulation.monsterRegenTimer = simulation.monster.combat.hpRegenRate * 1000;
+          simulation.monsterNextRegen = simulation.monsterRegenTimer;
         }
       }
 
       // Monster attacks
-      if (monsterNextAtk <= 0) {
-        const dmg = Battle.calculateDamage(monster.combat, userCombat);
-        userCombat.hp = Math.max(0, userCombat.hp - dmg.dmg);
-        monsterNextAtk = monsterAtkCooldown;
+      if (simulation.monsterNextAtk <= 0) {
+        const dmg = Battle.calculateDamage(simulation.monster.combat, simulation.userCombat);
 
-        if (userCombat.hp === 0) {
-          userDied = true;
+        if (config.trackDamage) {
+          activity.totalDamageTaken! += Math.min(dmg.dmg, simulation.userCombat.hp);
+        }
+
+        simulation.userCombat.hp = Math.max(0, simulation.userCombat.hp - dmg.dmg);
+        simulation.monsterNextAtk = simulation.monsterAtkCooldown;
+
+        if (simulation.userCombat.hp === 0) {
+          simulation.stats.userDied = true;
+          await config.onUserDeath(location, activity);
           break;
         }
       }
 
-      // Regen
-      if (userNextRegen <= 0) {
-        userCombat.hp = Math.min(userCombat.maxHp, userCombat.hp + userCombat.hpRegenAmount);
-        userNextRegen = userRegenTimer;
+      // Regeneration
+      if (simulation.userNextRegen <= 0) {
+        simulation.userCombat.hp = Math.min(simulation.userCombat.maxHp, simulation.userCombat.hp + simulation.userCombat.hpRegenAmount);
+        simulation.userNextRegen = simulation.userRegenTimer;
       }
 
-      if (monsterNextRegen <= 0) {
-        monster.combat.hp = Math.min(monster.combat.maxHp, monster.combat.hp + monster.combat.hpRegenAmount);
-        monsterNextRegen = monsterRegenTimer;
+      if (simulation.monsterNextRegen <= 0) {
+        simulation.monster.combat.hp = Math.min(simulation.monster.combat.maxHp, simulation.monster.combat.hp + simulation.monster.combat.hpRegenAmount);
+        simulation.monsterNextRegen = simulation.monsterRegenTimer;
       }
 
       // Reduce timers
-      userNextAtk -= tickMs;
-      monsterNextAtk -= tickMs;
-      userNextRegen -= tickMs;
-      monsterNextRegen -= tickMs;
-    }
-
-    // Log aggregated combat activities instead of individual kills
-    for (const monsterActivity of Object.values(combatActivitiesByMonster)) {
-      try {
-        await logCombatActivity({
-          userId: activity.userId,
-          monsterId: monsterActivity.monsterId,
-          quantity: monsterActivity.killCount,
-          expGained: monsterActivity.totalExp,
-          goldEarned: monsterActivity.totalGold,
-          dittoEarned: monsterActivity.totalDitto.toString(),
-          drops: monsterActivity.drops
-        });
-
-        // Add to mission updates (aggregate count per monster)
-        missionUpdates.push({
-          telegramId: activity.userId,
-          monsterId: monsterActivity.monsterId,
-          quantity: monsterActivity.killCount
-        });
-      } catch (error) {
-        logger.error(`Failed to log combat activity for monster ${monsterActivity.monsterId}: ${error}`);
-        // Continue with other monsters
-      }
-    }
-
-    // handle increments in db
-    const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
-    await incrementUserGold(activity.userId, totalGold);
-
-    await OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto, redisClient);
-
-    for (const itemDrop of itemDrops) {
-      if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
-        await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
-      }
-    }
-    for (const equipmentDrop of equipmentDrops) {
-      if (await canUserMintEquipment(activity.userId, equipmentDrop.equipment.id)) {
-        await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
-      }
-    }
-
-    await updateCombatMissions(missionUpdates);
-    await emitMissionUpdate(socketManager.getSocketByUserId(activity.userId), activity.userId);
-
-    logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
-
-    return {
-      combatUpdate: {
-        type: 'combat',
-        update: {
-          userDied,
-          monstersKilled: Object.values(monsterKillCounts),
-          items: itemDrops.map(drop => ({
-            itemId: drop.item.id,
-            itemName: drop.item.name,
-            quantity: drop.quantity,
-            uri: drop.item.imgsrc
-          })),
-          equipment: equipmentDrops.map(drop => ({
-            equipmentId: drop.equipment.id,
-            equipmentName: drop.equipment.name,
-            quantity: drop.quantity,
-            uri: drop.equipment.imgsrc
-          })),
-          expGained: totalExp,
-          hpExpGained: totalHpExp,
-          dittoGained: totalDitto.toString(),
-          levelsGained: (expRes.levelUp) ? expRes.level - activity.userLevel : undefined,
-          hpLevelsGained: (expRes.hpLevelUp) ? expRes.hpLevel - activity.userHpLevel : undefined,
-          goldGained: totalGold
-        }
-      },
-      currentCombat: (!userDied) ? {
-        combatType: 'Domain',
-        userId: activity.userId,
-        userCombat: {
-          ...originalCombat,
-          hp: Math.floor(Math.min((userCombat.hp / userCombat.maxHp) * originalCombat.maxHp, originalCombat.maxHp))
-        },
-        locationId: domain.id,
-        startTimestamp: activity.logoutTimestamp! + (totalTicks * tickMs),
-        monsterToStartWith: monster?.combat.hp > 0
-          ? monster
-          : DomainManager.getRandomMonsterFromDomain(domain)
-      } : undefined
+      simulation.userNextAtk -= tickMs;
+      simulation.monsterNextAtk -= tickMs;
+      simulation.userNextRegen -= tickMs;
+      simulation.monsterNextRegen -= tickMs;
     }
   }
 
-  static async handleLoadedDungeonCombat(
-    dittoLedgerSocket: DittoLedgerSocket,
+  private static processMonsterDeath(
+    simulation: CombatSimulation,
+    location: any,
     activity: IdleCombatActivityElement,
-    socketManager: SocketManager,
-    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
-  ): Promise<{
-    combatUpdate: CombatUpdate | undefined;
-    currentCombat: CurrentCombat | undefined;
-  }> {
-    if (!activity.dungeonId) throw new Error(`Dungeon ID not found for idle combat activity`);
+    config: any
+  ) {
+    const monster = simulation.monster;
 
-    const REAL_ELAPSED_MS = Date.now() - activity.logoutTimestamp!;
-    const offlineMs = Math.min(
-      REAL_ELAPSED_MS,
-      MAX_OFFLINE_IDLE_PROGRESS_S * 1000
-    );
-    const tickMs = 100;
-    const totalTicks = Math.floor(offlineMs / tickMs);
-
-    const dungeon = await getDungeonById(activity.dungeonId);
-    if (!dungeon) throw new Error(`Dungeon not found: ${activity.dungeonId}`);
-
-    const userLevel = await getUserLevelMemory(activity.userId);
-    if (
-      userLevel < (dungeon.minCombatLevel ?? -Infinity) ||
-      userLevel > (dungeon.maxCombatLevel ?? Infinity)
-    ) {
-      logger.warn(`User ${activity.userId} does not meet dungeon level requirements. Skipping offline progress.`);
-
-      return {
-        combatUpdate: undefined,
-        currentCombat: undefined
+    // Record kill for UI
+    const key = `${monster.name}-${monster.imgsrc}`;
+    if (simulation.stats.monsterKillCounts[key]) {
+      simulation.stats.monsterKillCounts[key].quantity += 1;
+    } else {
+      simulation.stats.monsterKillCounts[key] = {
+        name: monster.name,
+        uri: monster.imgsrc,
+        quantity: 1,
       };
     }
 
-    let originalCombat = activity.userCombatState;
-    let userCombat = OfflineCombatManager.cloneCombat(originalCombat);
-    OfflineCombatManager.nerfUserCombat(userCombat);
+    // Calculate rewards
+    const exp = Math.floor(monster.exp * this.EXP_NERF_MULTIPLIER);
+    const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * this.DROP_NERF_MULTIPLIER);
+    const dittoGained = Battle.roundWeiTo1DecimalPlace(
+      this.scaleBigInt(
+        Battle.getAmountDrop(BigInt(monster.minDittoDrop.toString()), BigInt(monster.maxDittoDrop.toString())),
+        this.DROP_NERF_MULTIPLIER
+      )
+    );
 
-    let monster = activity.monster;
-    if (activity.currentMonsterIndex == null) throw new Error(`Current monster index not found in idle combat activity`);
-    if (activity.currentFloor == null) throw new Error(`Current floor not found in idle combat activity`);
-    if (activity.totalDamageDealt == null) throw new Error(`Total damage dealt not found in idle combat activity`);
-    if (activity.totalDamageTaken == null) throw new Error(`Total damage taken not found in idle combat activity`);
-    if (!monster || monster.combat.hp <= 0) monster = DungeonManager.getMonsterFromDungeonByIndex(dungeon, activity.currentMonsterIndex);
-    if (!monster) throw new Error(`Failed to get monster from dungeon during offline sim.`);
+    // Update totals
+    simulation.stats.totalExp += exp;
+    simulation.stats.totalHpExp += calculateHpExpGained(exp);
+    simulation.stats.totalGold += goldGained;
+    simulation.stats.totalDitto += dittoGained;
 
-    let userAtkCooldown = getAtkCooldownFromAtkSpd(userCombat.atkSpd) * 1000;
-    let monsterAtkCooldown = getAtkCooldownFromAtkSpd(monster.combat.atkSpd) * 1000;
-    let userNextAtk = userAtkCooldown;
-    let monsterNextAtk = monsterAtkCooldown;
-
-    let userRegenTimer = userCombat.hpRegenRate * 1000;
-    let monsterRegenTimer = monster.combat.hpRegenRate * 1000;
-    let userNextRegen = userRegenTimer;
-    let monsterNextRegen = monsterRegenTimer;
-
-    let totalExp = 0;
-    let totalHpExp = 0;
-    let totalGold = 0;
-    let totalDitto = 0n;
-    let userDied = false;
-
-    // Aggregate kills by monster ID (for UI display)
-    const monsterKillCounts: Record<string, { name: string; uri: string; quantity: number }> = {};
-    const itemDrops: { item: Item; quantity: number }[] = [];
-    const equipmentDrops: { equipment: Equipment; quantity: number }[] = [];
-    const missionUpdates: { telegramId: string; monsterId: number; quantity: number }[] = [];
-
-    // NEW: Aggregate combat activities by monster ID (for database logging)
-    const combatActivitiesByMonster: Record<number, {
-      monsterId: number;
-      killCount: number;
-      totalExp: number;
-      totalGold: number;
-      totalDitto: bigint;
-      drops: { itemId?: number; equipmentId?: number; quantity: number }[];
-    }> = {};
-
-    for (let t = 0; t < totalTicks; t++) {
-      // User attacks
-      if (userNextAtk <= 0) {
-        const dmg = Battle.calculateDamage(userCombat, monster.combat);
-        activity.totalDamageDealt += Math.min(dmg.dmg, monster.combat.hp);
-
-        monster.combat.hp = Math.max(0, monster.combat.hp - dmg.dmg);
-        userNextAtk = userAtkCooldown;
-
-        if (monster.combat.hp === 0) {
-          // Record kill for UI display
-          const key = `${monster.name}-${monster.imgsrc}`;
-          if (monsterKillCounts[key]) {
-            monsterKillCounts[key].quantity += 1;
-          } else {
-            monsterKillCounts[key] = {
-              name: monster.name,
-              uri: monster.imgsrc,
-              quantity: 1,
-            };
-          }
-
-          // Calculate rewards
-          const exp = Math.floor(monster.exp * OfflineCombatManager.EXP_NERF_MULTIPLIER);
-          const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * OfflineCombatManager.DROP_NERF_MULTIPLIER);
-          const dittoGained = Battle.roundWeiTo1DecimalPlace(
-            OfflineCombatManager.scaleBigInt(
-              Battle.getAmountDrop(BigInt(monster.minDittoDrop.toString()), BigInt(monster.maxDittoDrop.toString())),
-              OfflineCombatManager.DROP_NERF_MULTIPLIER
-            )
-          );
-
-          // Aggregate totals for UI
-          totalExp += exp;
-          totalHpExp += calculateHpExpGained(exp);
-          totalGold += goldGained;
-          totalDitto += dittoGained;
-
-          // NEW: Aggregate by monster ID for database logging
-          if (!combatActivitiesByMonster[monster.id]) {
-            combatActivitiesByMonster[monster.id] = {
-              monsterId: monster.id,
-              killCount: 0,
-              totalExp: 0,
-              totalGold: 0,
-              totalDitto: 0n,
-              drops: []
-            };
-          }
-
-          const monsterActivity = combatActivitiesByMonster[monster.id];
-          monsterActivity.killCount += 1;
-          monsterActivity.totalExp += exp;
-          monsterActivity.totalGold += goldGained;
-          monsterActivity.totalDitto += dittoGained;
-
-          // Process drops
-          for (const drop of monster.drops) {
-            if (Math.random() <= drop.dropRate * OfflineCombatManager.DROP_NERF_MULTIPLIER) {
-              if (drop.itemId) {
-                // Aggregate for UI
-                const existing = itemDrops.find(d => d.item.id === drop.item!.id);
-                if (existing) {
-                  existing.quantity += drop.quantity;
-                } else {
-                  itemDrops.push({ item: drop.item!, quantity: drop.quantity });
-                }
-
-                // NEW: Aggregate for database
-                const existingActivityDrop = monsterActivity.drops.find(d => d.itemId === drop.itemId);
-                if (existingActivityDrop) {
-                  existingActivityDrop.quantity += drop.quantity;
-                } else {
-                  monsterActivity.drops.push({
-                    itemId: drop.itemId,
-                    quantity: drop.quantity,
-                  });
-                }
-              } else if (drop.equipmentId) {
-                // Aggregate for UI
-                const existing = equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
-                if (existing) {
-                  existing.quantity += drop.quantity;
-                } else {
-                  equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
-                }
-
-                // NEW: Aggregate for database
-                const existingActivityDrop = monsterActivity.drops.find(d => d.equipmentId === drop.equipmentId);
-                if (existingActivityDrop) {
-                  existingActivityDrop.quantity += drop.quantity;
-                } else {
-                  monsterActivity.drops.push({
-                    equipmentId: drop.equipmentId,
-                    quantity: drop.quantity,
-                  });
-                }
-              }
-            }
-          }
-
-          // handle monster and floor increment
-          activity.currentMonsterIndex++;
-          if (activity.currentMonsterIndex >= dungeon.monsterSequence.length) {
-            activity.currentMonsterIndex = 0;
-            activity.currentFloor++;
-          }
-
-          // Replace monster
-          monster = DungeonManager.getMonsterFromDungeonByIndex(dungeon, activity.currentMonsterIndex);
-          monster = DungeonManager.getBuffedFullMonster(monster, Math.pow(dungeon.monsterGrowthFactor, Math.max(1, activity.currentFloor - 1)));
-
-          if (!monster) break;
-
-          monsterAtkCooldown = getAtkCooldownFromAtkSpd(monster.combat.atkSpd) * 1000;
-          monsterNextAtk = monsterAtkCooldown;
-          monsterRegenTimer = monster.combat.hpRegenRate * 1000;
-          monsterNextRegen = monsterRegenTimer;
-        }
-      }
-
-      // Monster attacks
-      if (monsterNextAtk <= 0) {
-        const dmg = Battle.calculateDamage(monster.combat, userCombat);
-        activity.totalDamageTaken += Math.min(dmg.dmg, userCombat.hp);
-
-        userCombat.hp = Math.max(0, userCombat.hp - dmg.dmg);
-        monsterNextAtk = monsterAtkCooldown;
-
-        if (userCombat.hp === 0) {
-          userDied = true;
-          await prismaUpdateDungeonLeaderboard(
-            activity.userId,
-            dungeon.id,
-            {
-              totalDamageDealt: activity.totalDamageDealt,
-              totalDamageTaken: activity.totalDamageDealt,
-              floor: activity.currentFloor,
-              monsterIndex: activity.currentMonsterIndex,
-              startTimestamp: activity.startTimestamp
-            },
-            dungeon.monsterSequence.length
-          );
-          break;
-        }
-      }
-
-      // Regen
-      if (userNextRegen <= 0) {
-        userCombat.hp = Math.min(userCombat.maxHp, userCombat.hp + userCombat.hpRegenAmount);
-        userNextRegen = userRegenTimer;
-      }
-
-      if (monsterNextRegen <= 0) {
-        monster.combat.hp = Math.min(monster.combat.maxHp, monster.combat.hp + monster.combat.hpRegenAmount);
-        monsterNextRegen = monsterRegenTimer;
-      }
-
-      // Reduce timers
-      userNextAtk -= tickMs;
-      monsterNextAtk -= tickMs;
-      userNextRegen -= tickMs;
-      monsterNextRegen -= tickMs;
+    // Aggregate by monster ID for database
+    if (!simulation.stats.combatActivitiesByMonster[monster.id]) {
+      simulation.stats.combatActivitiesByMonster[monster.id] = {
+        monsterId: monster.id,
+        killCount: 0,
+        totalExp: 0,
+        totalGold: 0,
+        totalDitto: 0n,
+        drops: []
+      };
     }
 
-    // Log aggregated combat activities instead of individual kills
-    for (const monsterActivity of Object.values(combatActivitiesByMonster)) {
+    const monsterActivity = simulation.stats.combatActivitiesByMonster[monster.id];
+    monsterActivity.killCount += 1;
+    monsterActivity.totalExp += exp;
+    monsterActivity.totalGold += goldGained;
+    monsterActivity.totalDitto += dittoGained;
+
+    // Process drops
+    this.processDrops(monster, simulation.stats, monsterActivity);
+
+    config.onMonsterDeath(location, activity);
+  }
+
+  private static processDrops(
+    monster: FullMonster,
+    stats: CombatStats,
+    monsterActivity: any
+  ) {
+    for (const drop of monster.drops) {
+      if (Math.random() <= drop.dropRate * this.DROP_NERF_MULTIPLIER) {
+        if (drop.itemId) {
+          // UI aggregation
+          const existing = stats.itemDrops.find(d => d.item.id === drop.item!.id);
+          if (existing) {
+            existing.quantity += drop.quantity;
+          } else {
+            stats.itemDrops.push({ item: drop.item!, quantity: drop.quantity });
+          }
+
+          // Database aggregation
+          const existingActivityDrop = monsterActivity.drops.find((d: any) => d.itemId === drop.itemId);
+          if (existingActivityDrop) {
+            existingActivityDrop.quantity += drop.quantity;
+          } else {
+            monsterActivity.drops.push({ itemId: drop.itemId, quantity: drop.quantity });
+          }
+        } else if (drop.equipmentId) {
+          // UI aggregation
+          const existing = stats.equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
+          if (existing) {
+            existing.quantity += drop.quantity;
+          } else {
+            stats.equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
+          }
+
+          // Database aggregation
+          const existingActivityDrop = monsterActivity.drops.find((d: any) => d.equipmentId === drop.equipmentId);
+          if (existingActivityDrop) {
+            existingActivityDrop.quantity += drop.quantity;
+          } else {
+            monsterActivity.drops.push({ equipmentId: drop.equipmentId, quantity: drop.quantity });
+          }
+        }
+      }
+    }
+  }
+
+  private static async processResults(
+    activity: IdleCombatActivityElement,
+    stats: CombatStats,
+    dittoLedgerSocket: DittoLedgerSocket,
+    socketManager: SocketManager,
+    redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>
+  ) {
+    // Log combat activities
+    for (const monsterActivity of Object.values(stats.combatActivitiesByMonster)) {
       try {
         await logCombatActivity({
           userId: activity.userId,
@@ -630,86 +475,140 @@ export class OfflineCombatManager {
           drops: monsterActivity.drops
         });
 
-        // Add to mission updates (aggregate count per monster)
-        missionUpdates.push({
+        stats.missionUpdates.push({
           telegramId: activity.userId,
           monsterId: monsterActivity.monsterId,
           quantity: monsterActivity.killCount
         });
       } catch (error) {
         logger.error(`Failed to log combat activity for monster ${monsterActivity.monsterId}: ${error}`);
-        // Continue with other monsters
       }
     }
 
-    // handle increments in db
-    const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(activity.userId, totalExp);
-    await incrementUserGold(activity.userId, totalGold);
-    OfflineCombatManager.handleDittoDrop(dittoLedgerSocket, activity.userId, totalDitto, redisClient);
+    // Handle experience and level ups
+    const { expRes, updatedCombat } = await this.handleExperienceAndLevelUps(
+      activity.userId,
+      stats.totalExp,
+      activity.userCombatState
+    );
 
-    for (const itemDrop of itemDrops) {
+    // Handle rewards
+    await incrementUserGold(activity.userId, stats.totalGold);
+    await this.handleDittoDrop(dittoLedgerSocket, activity.userId, stats.totalDitto, redisClient);
+
+    // Handle drops
+    for (const itemDrop of stats.itemDrops) {
       if (await canUserMintItem(activity.userId, itemDrop.item.id)) {
         await mintItemToUser(activity.userId, itemDrop.item.id, itemDrop.quantity);
       }
     }
-    for (const equipmentDrop of equipmentDrops) {
+
+    for (const equipmentDrop of stats.equipmentDrops) {
       if (await canUserMintEquipment(activity.userId, equipmentDrop.equipment.id)) {
         await mintEquipmentToUser(activity.userId, equipmentDrop.equipment.id, equipmentDrop.quantity);
       }
     }
 
-    await updateCombatMissions(missionUpdates);
+    // Handle missions
+    await updateCombatMissions(stats.missionUpdates);
     await emitMissionUpdate(socketManager.getSocketByUserId(activity.userId), activity.userId);
 
-    logger.info(`Offline combat simulation ended for user ${activity.userId}. UserDied=${userDied}, TotalTicks=${totalTicks}, Will resume=${!userDied}`);
+    return { originalCombat: updatedCombat, expRes };
+  }
 
-    return {
-      combatUpdate: {
-        type: 'combat',
-        update: {
-          userDied,
-          monstersKilled: Object.values(monsterKillCounts),
-          items: itemDrops.map(drop => ({
-            itemId: drop.item.id,
-            itemName: drop.item.name,
-            quantity: drop.quantity,
-            uri: drop.item.imgsrc
-          })),
-          equipment: equipmentDrops.map(drop => ({
-            equipmentId: drop.equipment.id,
-            equipmentName: drop.equipment.name,
-            quantity: drop.quantity,
-            uri: drop.equipment.imgsrc
-          })),
-          expGained: totalExp,
-          hpExpGained: totalHpExp,
-          dittoGained: totalDitto.toString(),
-          levelsGained: (expRes.levelUp) ? expRes.level - activity.userLevel : undefined,
-          hpLevelsGained: (expRes.hpLevelUp) ? expRes.hpLevel - activity.userHpLevel : undefined,
-          goldGained: totalGold
+  private static async handleExperienceAndLevelUps(
+    userId: string,
+    totalExp: number,
+    originalCombat: Combat
+  ): Promise<{ expRes: any; updatedCombat: Combat }> {
+    const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(userId, totalExp);
+    let updatedCombat = originalCombat;
+
+    if (expRes.hpLevelUp || expRes.levelUp) {
+      const userMemoryManager = requireUserMemoryManager();
+      if (userMemoryManager.hasUser(userId)) {
+        const updatedUser = userMemoryManager.getUser(userId);
+        if (updatedUser?.combat) {
+          if (expRes.levelUp) {
+            updatedCombat = { ...updatedUser.combat, hp: updatedUser.combat.maxHp };
+
+            // Update the user's HP in memory to match battle init using existing function
+            await setUserCombatHp(userId, updatedUser.combat.maxHp);
+
+          } else {
+            updatedCombat = { ...updatedUser.combat, hp: originalCombat.hp };
+
+            // Update HP in memory to preserve original HP for HP-only level ups
+            await setUserCombatHp(userId, originalCombat.hp);
+          }
         }
-      },
-      currentCombat: (!userDied) ? {
-        combatType: 'Dungeon',
-        userId: activity.userId,
-        userCombat: {
-          ...originalCombat,
-          hp: Math.floor(Math.min((userCombat.hp / userCombat.maxHp) * originalCombat.maxHp, originalCombat.maxHp))
-        },
-        locationId: dungeon.id,
-        startTimestamp: activity.logoutTimestamp! + (totalTicks * tickMs),
-        monsterToStartWith: monster?.combat.hp > 0
-          ? monster
-          : DungeonManager.getBuffedFullMonster(DungeonManager.getMonsterFromDungeonByIndex(dungeon, activity.currentMonsterIndex), activity.currentFloor),
-        dungeonState: {
-          floor: activity.currentFloor,
-          monsterIndex: activity.currentMonsterIndex,
-          totalDamageDealt: activity.totalDamageDealt,
-          totalDamageTaken: activity.totalDamageTaken,
-          startTimestamp: activity.startTimestamp
-        }
-      } : undefined
+      }
     }
+
+    return { expRes, updatedCombat };
+  }
+
+  private static createCombatUpdate(
+    stats: CombatStats,
+    expRes: any,
+    activity: IdleCombatActivityElement
+  ): CombatUpdate {
+    return {
+      type: 'combat',
+      update: {
+        userDied: stats.userDied,
+        monstersKilled: Object.values(stats.monsterKillCounts),
+        items: stats.itemDrops.map(drop => ({
+          itemId: drop.item.id,
+          itemName: drop.item.name,
+          quantity: drop.quantity,
+          uri: drop.item.imgsrc
+        })),
+        equipment: stats.equipmentDrops.map(drop => ({
+          equipmentId: drop.equipment.id,
+          equipmentName: drop.equipment.name,
+          quantity: drop.quantity,
+          uri: drop.equipment.imgsrc
+        })),
+        expGained: stats.totalExp,
+        hpExpGained: stats.totalHpExp,
+        dittoGained: stats.totalDitto.toString(),
+        levelsGained: (expRes.levelUp) ? expRes.level - activity.userLevel : undefined,
+        hpLevelsGained: (expRes.hpLevelUp) ? expRes.hpLevel - activity.userHpLevel : undefined,
+        goldGained: stats.totalGold
+      }
+    };
+  }
+
+  private static createCurrentCombat(
+    activity: IdleCombatActivityElement,
+    originalCombat: Combat,
+    location: any,
+    monster: FullMonster,
+    totalTicks: number,
+    tickMs: number,
+    config: any
+  ): CurrentCombat {
+    const currentCombat: CurrentCombat = {
+      combatType: config.combatType,
+      userId: activity.userId,
+      userCombat: originalCombat,
+      locationId: location.id,
+      startTimestamp: activity.logoutTimestamp! + (totalTicks * tickMs),
+      monsterToStartWith: monster?.combat.hp > 0 ? monster : config.getNextMonster(location, activity)
+    };
+
+    if (config.combatType === 'Dungeon') {
+      currentCombat.dungeonState = {
+        floor: activity.currentFloor!,
+        monsterIndex: activity.currentMonsterIndex!,
+        totalDamageDealt: activity.totalDamageDealt!,
+        totalDamageTaken: activity.totalDamageTaken!,
+        startTimestamp: activity.startTimestamp
+      };
+    }
+
+    return currentCombat;
   }
 
   static async handleDittoDrop(
@@ -722,11 +621,10 @@ export class OfflineCombatManager {
       const referrer = await getReferrer(userId);
 
       let dittoDrop = amountDitto;
-
       let referrerCut = 0n;
 
       if (referrer && referrer.referrerUserId) {
-        dittoDrop = Battle.scaleBN(dittoDrop, REFERRAL_BOOST + 1); // e.g. 1.1x boost
+        dittoDrop = Battle.scaleBN(dittoDrop, REFERRAL_BOOST + 1);
         referrerCut = Battle.scaleBN(dittoDrop, REFERRAL_COMBAT_CUT);
       }
 
@@ -750,12 +648,7 @@ export class OfflineCombatManager {
           }
         ];
 
-        if (
-          referrer &&
-          !referrer.referrerExternal &&
-          referrer.referrerUserId &&
-          referrerCut > 0n
-        ) {
+        if (referrer && !referrer.referrerExternal && referrer.referrerUserId && referrerCut > 0n) {
           updates.push(
             {
               userId: DEVELOPMENT_FUNDS_KEY,
@@ -784,7 +677,6 @@ export class OfflineCombatManager {
           updates,
         });
 
-        // intract
         await incrementTotalCombatDittoByTelegramId(redisClient, userId, dittoDrop);
 
         return dittoDropUserRounded;
@@ -810,7 +702,7 @@ export class OfflineCombatManager {
     userCombat.hpRegenRate /= multiplier;
     userCombat.hpRegenAmount *= multiplier;
     userCombat.maxHp *= multiplier;
-    userCombat.hp = Math.floor(Math.min(userCombat.hp, userCombat.maxHp)); // clamp HP to new max
+    userCombat.hp = Math.floor(Math.min(userCombat.hp, userCombat.maxHp));
   }
 
   static cloneCombat(combat: Combat): Combat {

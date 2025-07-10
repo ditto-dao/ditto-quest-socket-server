@@ -6,7 +6,7 @@ import { IdleFarmingManager } from './farming-idle-manager';
 import { SocketManager } from '../../socket/socket-manager';
 import { IdleCraftingManager } from './crafting-idle-manager';
 import { IdleBreedingManager } from './breeding-idle-manager';
-import { IdleActivityIntervalElement, IntervalActivity, ProgressUpdate, TimerHandle } from './idle-manager-types';
+import { IdleActivityIntervalElement, IdleCombatActivityElement, IntervalActivity, ProgressUpdate, TimerHandle } from './idle-manager-types';
 import { CurrentCombat, OfflineCombatManager } from './combat/offline-combat-manager';
 import { Socket as DittoLedgerSocket } from "socket.io-client";
 import AsyncLock from 'async-lock';
@@ -224,7 +224,7 @@ export class IdleManager {
         });
     }
 
-    updateCombatActivity(userId: string, updates: Partial<IdleActivityIntervalElement>) {
+    updateCombatActivity(userId: string, updates: Partial<IdleCombatActivityElement>) {
         const list = this.idleActivitiesQueueElementByUser[userId];
         if (!list) return;
 
@@ -232,7 +232,17 @@ export class IdleManager {
         if (!activity) return;
 
         Object.assign(activity, updates);
-        logger.info(`Updated combat activity for user ${userId} with: ${JSON.stringify(updates, null, 2)}`);
+
+        // Log full userCombatState but only monster name and id
+        const logData = {
+            userCombatState: updates.userCombatState,
+            monster: updates.monster ? {
+                id: updates.monster.id,
+                name: updates.monster.name
+            } : undefined
+        };
+
+        logger.info(`Updated combat activity for user ${userId} with: ${JSON.stringify(logData, null, 2)}`);
     }
 
     async saveAllIdleActivitiesOnLogout(userId: string): Promise<void> {

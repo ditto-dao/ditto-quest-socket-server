@@ -27,7 +27,9 @@ export function calculateExpForNextCombatLevel(nextLevel: number): number {
     const c = 120;
     const d = 1.87;
 
-    const baseExp = 2 * (a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d));
+    // No doubling for levels < 10
+    const baseExpCore = a * Math.pow(nextLevel, b) + c * Math.pow(nextLevel, d);
+    const baseExp = nextLevel < 10 ? baseExpCore : 2 * baseExpCore;
 
     // Apply 10% increase per level above 100
     const levelModifier = nextLevel > 100 ? 1 + 0.1 * (nextLevel - 100) : 1;

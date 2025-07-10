@@ -290,7 +290,16 @@ export class IdleCombatManager {
         return battle;
     }
 
-    async startDomainCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, domain: DomainWithMonsters, startTimestamp: number, monster?: FullMonster) {
+    async startDomainCombat(
+        idleManager: IdleManager,
+        userId: string,
+        user: User,
+        userCombat: Combat,
+        domain: DomainWithMonsters,
+        startTimestamp: number,
+        monster?: FullMonster,
+        isContinuingCombat: boolean = false
+    ) {
         await idleManager.removeAllCombatActivities(userId);
 
         const firstMonster = (monster) ? monster : DomainManager.getRandomMonsterFromDomain(domain);
@@ -310,14 +319,16 @@ export class IdleCombatManager {
         this.activeBattlesByUserId[userId] = battle;
         logger.info(`✅ Registered active battle for user ${userId}`);
 
-        // HP recover 
-        if (user.lastBattleEndTimestamp) {
+        // HP recover - ONLY if NOT continuing combat from offline session
+        if (!isContinuingCombat && user.lastBattleEndTimestamp) {
             const elapsedMs = Date.now() - new Date(user.lastBattleEndTimestamp).getTime();
 
             const HEAL_THRESHOLD_MS = 10000;
             if (elapsedMs > HEAL_THRESHOLD_MS) {
                 await battle.refreshUserHp(Math.floor(elapsedMs / 1000));
             }
+        } else if (isContinuingCombat) {
+            logger.info(`🔄 Continuing offline combat session for user ${userId} - skipping HP recovery`);
         }
 
         const completeCallback = async () => {
@@ -352,7 +363,17 @@ export class IdleCombatManager {
         await battle.startBattle();
     }
 
-    async startDungeonCombat(idleManager: IdleManager, userId: string, user: User, userCombat: Combat, dungeon: DungeonWithMonsters, startTimestamp: number, monster?: FullMonster, state?: DungeonState) {
+    async startDungeonCombat(
+        idleManager: IdleManager,
+        userId: string,
+        user: User,
+        userCombat: Combat,
+        dungeon: DungeonWithMonsters,
+        startTimestamp: number,
+        monster?: FullMonster,
+        state?: DungeonState,
+        isContinuingCombat: boolean = false
+    ) {
         await idleManager.removeAllCombatActivities(userId);
 
         DungeonManager.initDungeonState(userId, startTimestamp, state);
@@ -387,14 +408,16 @@ export class IdleCombatManager {
         this.activeBattlesByUserId[userId] = battle;
         logger.info(`✅ Registered active battle for user ${userId}`);
 
-        // HP recover 
-        if (user.lastBattleEndTimestamp) {
+        // HP recover - ONLY if NOT continuing combat from offline session
+        if (!isContinuingCombat && user.lastBattleEndTimestamp) {
             const elapsedMs = Date.now() - new Date(user.lastBattleEndTimestamp).getTime();
 
             const HEAL_THRESHOLD_MS = 10000;
             if (elapsedMs > HEAL_THRESHOLD_MS) {
                 await battle.refreshUserHp(Math.floor(elapsedMs / 1000));
             }
+        } else if (isContinuingCombat) {
+            logger.info(`🔄 Continuing offline combat session for user ${userId} - skipping HP recovery`);
         }
 
         const completeCallback = async () => {
