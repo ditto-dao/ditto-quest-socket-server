@@ -148,10 +148,13 @@ export class IdleCraftingManager {
             timestamp += crafting.durationS * 1000; // Add duration to timestamp
 
             if (timestamp <= now) {
-                if ((await doesUserOwnItems(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions)))) {
+                if ((await doesUserOwnItems(userId.toString(),
+                    crafting.recipe.requiredItems.map(item => item.itemId),
+                    crafting.recipe.requiredItems.map(item => item.quantity * (repetitions + 1))))) {
                     repetitions++
                 } else {
                     startCurrentRepetition = false;
+                    break;
                 }
             }
         }
