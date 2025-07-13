@@ -9,7 +9,7 @@ import { READ_REFERRAL_CODE, READ_REFERRAL_CODE_RES, READ_REFERRAL_STATS, READ_R
 import { applyReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals"
 import { Socket as DittoLedgerSocket } from "socket.io-client"
 import { getEquipmentOrItemFromInventory } from "../../operations/equipment-inventory-operations"
-import { equipEquipmentForUserMemory, getEquippedByEquipmentTypeMemory, getUserData, recalculateAndUpdateUserBaseStatsMemory, unequipEquipmentForUserMemory } from "../../operations/user-operations"
+import { equipEquipmentForUserMemory, getEquippedByEquipmentTypeMemory, getUserData, unequipEquipmentForUserMemory } from "../../operations/user-operations"
 import { EquippedInventory } from "../../sql-services/user-service"
 import { SlimeWithTraits } from "../../sql-services/slime"
 import { equipSlimeForUserMemory, getEquippedSlimeWithTraitsMemory, getSlimeForUserById, unequipSlimeForUserMemory } from "../../operations/slime-operations"
@@ -18,6 +18,7 @@ import { requireUserMemoryManager } from "../../managers/global-managers/global-
 import { globalIdleSocketUserLock } from "../socket-handlers"
 import { requireLoggedInUser } from "../auth-helper"
 import { RestoreObjectRequestFilterSensitiveLog } from "@aws-sdk/client-s3"
+import { recalculateAndUpdateUserBaseStatsMemory } from "../../operations/user-stats-operations"
 
 interface EquipPayload {
     userId: string
@@ -155,6 +156,10 @@ export async function setupUserSocketHandlers(
 
                 if (nextEquippedSlime.ownerId !== data.userId) throw new Error(`User ${data.userId} does not own slime ${data.slimeId}`)
 
+                if (idleManager.isSlimeInActiveBreeding(data.userId, data.slimeId)) {
+                    throw new Error("Cannot equip slime that is currently breeding")
+                }
+
                 const newEquipped = await equipSlimeForUserMemory(data.userId, nextEquippedSlime)
                 idleCombatManager.updateUserCombatMidBattle(data.userId, newEquipped.combat!)
 
@@ -181,9 +186,14 @@ export async function setupUserSocketHandlers(
                     }
                 }
 
+                // Provide specific error message based on error type
+                const errorMsg = typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string' && err.message.toLowerCase().includes('breeding')
+                    ? 'Cannot equip slime that is currently breeding'
+                    : 'Failed to equip slime'
+
                 socket.emit("error", {
                     userId: data.userId,
-                    msg: "Failed to equip slime"
+                    msg: errorMsg
                 })
             }
         })

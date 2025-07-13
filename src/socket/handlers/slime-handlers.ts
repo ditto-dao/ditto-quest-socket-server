@@ -88,6 +88,10 @@ export async function setupSlimeSocketHandlers(
             slime = await getSlimeForUserById(data.userId, data.slimeId)
             if (slime === null) throw new Error(`Slime not found`)
 
+            if (idleManager.isSlimeInActiveBreeding(data.userId, data.slimeId)) {
+                throw new Error("Cannot sell slime that is currently breeding")
+            }
+
             await incrementUserGold(data.userId, getSlimeSellAmountGP(slime)).catch(err => {
                 logger.error(`Error deducting ${SLIME_GACHA_PRICE_GOLD} gold from user balance: ${err}`)
                 socket.emit('error', {
@@ -115,9 +119,14 @@ export async function setupSlimeSocketHandlers(
                 })
             }
 
+            // Provide specific error message based on error type
+            const errorMsg = typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string' && error.message.toLowerCase().includes('breeding')
+                ? 'Cannot sell slime that is currently breeding'
+                : 'Failed to sell slime'
+
             socket.emit('error', {
                 userId: data.userId,
-                msg: 'Failed to burn slime'
+                msg: errorMsg
             })
         }
     })
