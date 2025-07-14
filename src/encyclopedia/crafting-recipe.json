@@ -1062,22 +1062,6 @@
         "quantity": 20
       },
       {
-        "itemId": 4,
-        "quantity": 30
-      }
-    ]
-  },
-  {
-    "equipmentId": 64,
-    "durationS": 50,
-    "craftingLevelRequired": 30,
-    "craftingExp": 535,
-    "CraftingRecipeItems": [
-      {
-        "itemId": 25,
-        "quantity": 20
-      },
-      {
         "itemId": 5,
         "quantity": 40
       }

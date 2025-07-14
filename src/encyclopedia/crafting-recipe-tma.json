@@ -1531,29 +1531,6 @@
         "quantity": 20
       },
       {
-        "itemId": 4,
-        "itemName": "Ironbloom",
-        "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/10-ores-16pc/Icon12.png",
-        "quantity": 30
-      }
-    ]
-  },
-  {
-    "equipmentId": 64,
-    "equipmentName": "Protector Helm",
-    "type": "hat",
-    "durationS": 50,
-    "craftingLevelRequired": 30,
-    "craftingExp": 535,
-    "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/05-helmets-128pc-32x4/Steel_Helm_8.png",
-    "requiredItems": [
-      {
-        "itemId": 25,
-        "itemName": "Ooze Shards",
-        "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/12-ooze-shards/Icon40.png",
-        "quantity": 20
-      },
-      {
         "itemId": 5,
         "itemName": "Stoneflare",
         "imgsrc": "https://kibble.s3.ap-southeast-2.amazonaws.com/ditto-quest/10-ores-16pc/Icon13.png",

@@ -73,6 +73,13 @@ interface StatEffect {
     reinforceWater?: number;
     reinforceEarth?: number;
     reinforceFire?: number;
+
+    efficiencySkillIntervalMod?: number;
+    efficiencyDoubleResourceMod?: number;
+    efficiencyDoubleSkillExpMod?: number;
+    efficiencyDoubleCombatExpMod?: number;
+    efficiencyFlatSkillExpMod?: number;
+    efficiencyFlatCombatExpMod?: number;
 }
 
 interface CraftingRecipe {
@@ -253,6 +260,13 @@ const parseCsvToJson = async () => {
                     equipment.statEffect.reinforceWater = row['REINFORCE WATER'] ? parseInt(row['REINFORCE WATER'], 10) : 0;
                     equipment.statEffect.reinforceEarth = row['REINFORCE EARTH'] ? parseInt(row['REINFORCE EARTH'], 10) : 0;
                     equipment.statEffect.reinforceFire = row['REINFORCE FIRE'] ? parseInt(row['REINFORCE FIRE'], 10) : 0;
+
+                    equipment.statEffect.efficiencySkillIntervalMod = row['Skill Interval Multiplier'] ? parseFloat(row['Skill Interval Multiplier']) : 0;
+                    equipment.statEffect.efficiencyDoubleResourceMod = row['Double Resource Chance'] ? parseFloat(row['Double Resource Chance']) : 0;
+                    equipment.statEffect.efficiencyDoubleSkillExpMod = row['Double Skill XP Chance'] ? parseFloat(row['Double Skill XP Chance']) : 0;
+                    equipment.statEffect.efficiencyDoubleCombatExpMod = row['Double Combat XP Chance'] ? parseFloat(row['Double Combat XP Chance']) : 0;
+                    equipment.statEffect.efficiencyFlatSkillExpMod = row['Flat Skill XP Boost'] ? parseFloat(row['Flat Skill XP Boost']) : 0;
+                    equipment.statEffect.efficiencyFlatCombatExpMod = row['Flat Combat XP Boost'] ? parseFloat(row['Flat Combat XP Boost']) : 0;
 
                     equipmentList.push(equipment);
 
