@@ -1,14 +1,15 @@
-import { SlimeTrait, TraitType, Rarity, StatEffect } from '@prisma/client';
+import { SlimeTrait, TraitType, Rarity, StatEffect, UserEfficiencyStats } from '@prisma/client';
 import { GameCodexManager } from '../managers/game-codex/game-codex-manager';
 import { logger } from '../utils/logger';
 import { prismaFetchEquippedSlimeWithTraits, prismaFetchRandomSlimeTraitId, prismaFetchSlimeObjectWithTraits, prismaFetchSlimeTraitById, SlimeWithTraits } from '../sql-services/slime';
 import { getMutationProbability, probabiltyToPassDownTrait, rarities, traitTypes } from '../utils/helpers';
-import { generateSlimeImageBuffers, generateSlimeImageUri, processAndUploadSlimeImage, uploadSlimeImageAsync } from '../slime-generation/slime-image-generation';
+import { generateSlimeImageBuffers, generateSlimeImageUri, uploadSlimeImageAsync } from '../slime-generation/slime-image-generation';
 import { GACHA_PULL_ODDS_NERF, GACHA_PULL_ODDS } from '../utils/config';
 import { DOMINANT_TRAITS_GACHA_SPECS, HIDDEN_TRAITS_GACHA_SPECS, GACHA_PULL_RARITIES, GachaOddsDominantTraits } from '../utils/gacha-odds';
-import { canUserMintSlimeMemory, ensureRealId, recalculateAndUpdateUserStatsMemory } from './user-operations';
-import { getSlimeIDManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
+import { canUserMintSlimeMemory, ensureRealId } from './user-operations';
+import { getSlimeIDManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager } from '../managers/global-managers/global-managers';
 import { UserStatsWithCombat } from './combat-operations';
+import { recalculateAndUpdateUserEfficiencyStatsMemory, recalculateAndUpdateUserStatsMemory } from './user-stats-operations';
 
 /**
  * Get SlimeTrait by ID using:
@@ -176,7 +177,7 @@ export async function getRandomSlimeTraitId(
 export async function equipSlimeForUserMemory(
     telegramId: string,
     slime: SlimeWithTraits
-): Promise<UserStatsWithCombat> {
+): Promise<{ user: UserStatsWithCombat, efficiency: UserEfficiencyStats }> {
     try {
         const userMemoryManager = requireUserMemoryManager();
 
@@ -197,11 +198,12 @@ export async function equipSlimeForUserMemory(
             logger.info(`User ${telegramId} equipped slime ${slime.id} (MEMORY).`);
 
             // Recalculate stats and immediately persist
-            const result = await recalculateAndUpdateUserStatsMemory(telegramId);
+            const userCombat = await recalculateAndUpdateUserStatsMemory(telegramId);
+            const efficiencyStats = await recalculateAndUpdateUserEfficiencyStatsMemory(telegramId);
 
             logger.info(`✅ Equipment persisted for user ${telegramId}`);
 
-            return result;
+            return { user: userCombat, efficiency: efficiencyStats };
         }
 
         throw new Error('User memory manager not available');
@@ -215,9 +217,10 @@ export async function equipSlimeForUserMemory(
 // Memory-based slime unequip function
 export async function unequipSlimeForUserMemory(
     telegramId: string
-): Promise<UserStatsWithCombat> {
+): Promise<{ user: UserStatsWithCombat, efficiency: UserEfficiencyStats }> {
     try {
         const userMemoryManager = requireUserMemoryManager();
+        const userEfficiencyStatsManager = requireUserEfficiencyStatsMemoryManager();
 
         // Try memory first
         if (userMemoryManager.hasUser(telegramId)) {
@@ -228,7 +231,7 @@ export async function unequipSlimeForUserMemory(
                 logger.info(
                     `User ${telegramId} already has no slime equipped (MEMORY).`
                 );
-                return user;
+                return { user, efficiency: await userEfficiencyStatsManager.loadEfficiencyStats(telegramId) };
             }
 
             // Perform the unequip operation in memory
@@ -240,9 +243,11 @@ export async function unequipSlimeForUserMemory(
             );
 
             // Recalculate stats in memory
-            const result = await recalculateAndUpdateUserStatsMemory(telegramId);
+            const userCombat = await recalculateAndUpdateUserStatsMemory(telegramId);
+            const efficiencyStats = await recalculateAndUpdateUserEfficiencyStatsMemory(telegramId);
 
-            return result;
+            return { user: userCombat, efficiency: efficiencyStats };
+
         }
 
         throw new Error('User memory manager not available');

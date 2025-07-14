@@ -8,6 +8,7 @@ import { emitMissionUpdate, updateFarmMission } from "../../sql-services/mission
 import { addFarmingExpMemory, getUserFarmingLevelMemory } from "../../operations/user-operations";
 import { canUserMintItem, mintItemToUser } from "../../operations/item-inventory-operations";
 import { logFarmingActivity } from "../../operations/user-activity-log-operations";
+import { getUserDoubleResourceChanceMemory, getUserDoubleSkillExpChanceMemory, getUserFlatSkillExpBoostMemory, getUserSkillIntervalMultiplierMemory } from "../../operations/user-stats-operations";
 
 export class IdleFarmingManager {
 
@@ -70,11 +71,15 @@ export class IdleFarmingManager {
 
             await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
-            // Start timer and patch
+            const skillIntervalMul = await getUserSkillIntervalMultiplierMemory(userId);
+
+            // Apply speed multiplier with minimum 1 second duration
+            const adjustedDuration = Math.max(1, item.farmingDurationS * (1 - skillIntervalMul));
+
             timerHandle = await idleManager.startCustomInterval(
                 userId,
-                (startTimestamp + item.farmingDurationS * 1000) - Date.now(),
-                item.farmingDurationS * 1000,
+                (startTimestamp + adjustedDuration * 1000) - Date.now(),
+                adjustedDuration * 1000,
                 completeCallback
             );
 
@@ -126,6 +131,10 @@ export class IdleFarmingManager {
             throw new Error(`Item cannot be farmed.`);
         }
 
+        // Get efficiency stats for interval adjustment
+        const skillIntervalMul = await getUserSkillIntervalMultiplierMemory(userId);
+        const adjustedDuration = Math.max(1, farming.durationS * (1 - skillIntervalMul));
+
         const now = Date.now();
         const maxProgressEndTimestamp = farming.logoutTimestamp + MAX_OFFLINE_IDLE_PROGRESS_S * 1000;
         const progressEndTimestamp = Math.min(maxProgressEndTimestamp, now);
@@ -135,15 +144,15 @@ export class IdleFarmingManager {
 
         // Ensure logoutTimestamp is defined and start processing after it
         if (farming.logoutTimestamp) {
-            // Fast-forward to last rep before logoutTimestamp
-            while (timestamp + farming.durationS * 1000 < farming.logoutTimestamp) {
-                timestamp += farming.durationS * 1000; // Add duration to timestamp
+            // Fast-forward to last rep before logoutTimestamp using adjusted duration
+            while (timestamp + adjustedDuration * 1000 < farming.logoutTimestamp) {
+                timestamp += adjustedDuration * 1000; // Add adjusted duration to timestamp
             }
         }
 
-        // Process farming repetitions after logoutTimestamp up to now
-        while (timestamp + farming.durationS * 1000 <= progressEndTimestamp) {
-            timestamp += farming.durationS * 1000; // Add duration to timestamp
+        // Process farming repetitions after logoutTimestamp up to now using adjusted duration
+        while (timestamp + adjustedDuration * 1000 <= progressEndTimestamp) {
+            timestamp += adjustedDuration * 1000; // Add adjusted duration to timestamp
             repetitions++;
         }
 
@@ -159,7 +168,7 @@ export class IdleFarmingManager {
         logger.info(`Farming repetition completed after logout: ${repetitions}`);
         logger.info(`Current repetition start timestamp: ${currentRepetitionStart}`);
 
-        // Start current repetition
+        // Start current repetition with adjusted duration
         IdleFarmingManager.startFarming(socketManager, idleManager, userId, farming.item, currentRepetitionStart);
 
         socketManager.emitEvent(userId, 'farming-start', {
@@ -169,17 +178,58 @@ export class IdleFarmingManager {
                 name: farming.item.name,
                 imgsrc: farming.item.imgsrc,
                 startTimestamp: currentRepetitionStart,
-                durationS: farming.durationS
+                durationS: adjustedDuration
             }
         });
 
         let expRes;
         if (repetitions > 0) {
-            await mintItemToUser(userId.toString(), farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
-            expRes = await addFarmingExpMemory(userId, farming.item.farmingExp * repetitions);
+            let totalItems = repetitions * FARM_REPS_MULTIPLIER;
+            let bonusItems = 0;
+
+            const baseFarmingExp = farming.item.farmingExp;
+            const flatSkillExpBoost = await getUserFlatSkillExpBoostMemory(userId);
+
+            // Base exp with flat boost multiplier applied
+            let totalExp = Math.floor(baseFarmingExp * (1 + flatSkillExpBoost)) * repetitions;
+            let bonusExp = 0;
+
+            // Check for double resource chance on each repetition
+            const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+            for (let i = 0; i < repetitions; i++) {
+                if (Math.random() < doubleResourceChance) {
+                    bonusItems += FARM_REPS_MULTIPLIER;
+                }
+            }
+
+            // Check for double skill exp chance on each repetition (applies only to base exp)
+            const doubleSkillExpChance = await getUserDoubleSkillExpChanceMemory(userId);
+            for (let i = 0; i < repetitions; i++) {
+                if (Math.random() < doubleSkillExpChance) {
+                    bonusExp += baseFarmingExp; // Only base exp, no flat boost multiplier
+                }
+            }
+
+            // Mint base items
+            await mintItemToUser(userId.toString(), farming.item.id, totalItems);
+
+            // Mint bonus items if any
+            if (bonusItems > 0) {
+                await mintItemToUser(userId.toString(), farming.item.id, bonusItems);
+                logger.info(`🎲 Offline double resource procs for user ${userId}! Bonus items: ${bonusItems}`);
+            }
+
+            // Add base exp (includes flat boost)
+            expRes = await addFarmingExpMemory(userId, totalExp);
+
+            // Add bonus exp if any
+            if (bonusExp > 0) {
+                await addFarmingExpMemory(userId, bonusExp);
+                logger.info(`🎲 Offline double skill exp procs for user ${userId}! Bonus exp: ${bonusExp} (base only)`);
+            }
 
             await logFarmingActivity(userId, farming.item.id, repetitions);
-            await updateFarmMission(userId, farming.item.id, repetitions * FARM_REPS_MULTIPLIER);
+            await updateFarmMission(userId, farming.item.id, totalItems + bonusItems);
             await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
             return {
@@ -189,11 +239,11 @@ export class IdleFarmingManager {
                         {
                             itemId: farming.item.id,
                             itemName: farming.item.name || 'Item',
-                            quantity: repetitions * FARM_REPS_MULTIPLIER,
+                            quantity: totalItems + bonusItems,
                             uri: farming.item.imgsrc
                         }
                     ],
-                    farmingExpGained: (repetitions > 0) ? farming.item.farmingExp * repetitions : undefined,
+                    farmingExpGained: totalExp + bonusExp,
                     farmingLevelsGained: expRes?.farmingLevelsGained
                 },
             };
@@ -208,17 +258,50 @@ export class IdleFarmingManager {
     ): Promise<void> {
         try {
             const updatedItemsInv = await mintItemToUser(userId.toString(), itemId, FARM_REPS_MULTIPLIER);
-            const expRes = await addFarmingExpMemory(userId, updatedItemsInv.item!.farmingExp!);
+
+            const baseFarmingExp = updatedItemsInv.item!.farmingExp!;
+            const flatSkillExpBoost = await getUserFlatSkillExpBoostMemory(userId);
+
+            // Apply flat boost multiplier to base exp
+            let farmingExp = Math.floor(baseFarmingExp * (1 + flatSkillExpBoost));
+            let bonusExp = 0;
+
+            // Double chance applies only to base exp (not the boosted amount)
+            const doubleSkillExpChance = await getUserDoubleSkillExpChanceMemory(userId);
+            if (Math.random() < doubleSkillExpChance) {
+                bonusExp = baseFarmingExp; // Only base exp, no flat boost multiplier
+                logger.info(`🎲 Double skill exp proc for user ${userId}! Bonus exp: ${bonusExp} (base only)`);
+            }
+
+            const expRes = await addFarmingExpMemory(userId, farmingExp);
+            const inventoryUpdates = [updatedItemsInv];
+
+            // Check for double resource chance
+            const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+            if (Math.random() < doubleResourceChance) {
+                const bonusItemsInv = await mintItemToUser(userId.toString(), itemId, FARM_REPS_MULTIPLIER);
+                inventoryUpdates.push(bonusItemsInv);
+                logger.info(`🎲 Double resource proc for user ${userId}! Bonus items: ${FARM_REPS_MULTIPLIER}`);
+            }
 
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,
-                payload: [updatedItemsInv],
+                payload: inventoryUpdates,
             });
 
             socketManager.emitEvent(userId, 'update-farming-exp', {
                 userId: userId,
                 payload: expRes,
             });
+
+            // Send bonus exp update if proc'd
+            if (bonusExp > 0) {
+                const bonusExpRes = await addFarmingExpMemory(userId, bonusExp);
+                socketManager.emitEvent(userId, 'update-farming-exp', {
+                    userId: userId,
+                    payload: bonusExpRes,
+                });
+            }
 
             await logFarmingActivity(userId, itemId, 1);
             await updateFarmMission(userId, itemId, FARM_REPS_MULTIPLIER);

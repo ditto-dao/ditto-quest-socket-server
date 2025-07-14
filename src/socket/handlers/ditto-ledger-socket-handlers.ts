@@ -14,7 +14,7 @@ import { getHighestDominantTraitRarity } from "../../utils/helpers";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
 import { getUserData } from "../../operations/user-operations";
-import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
 
 const lock = new AsyncLock();
 
@@ -168,6 +168,10 @@ export async function setupDittoLedgerSocketServerHandlers(
 
                 const activityLogMemoryManager = requireActivityLogMemoryManager();
                 activityLogMemoryManager.clear();
+
+                // After clearing other managers
+                const efficiencyStatsMemoryManager = requireUserEfficiencyStatsMemoryManager();
+                efficiencyStatsMemoryManager.clear();
             }
 
             // Disconnect all user sockets (do this after user cleanup)

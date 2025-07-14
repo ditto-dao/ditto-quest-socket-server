@@ -2,9 +2,9 @@ import { logger } from '../utils/logger';
 import { prisma } from './client';
 import { Combat, EquipmentType, Prisma, StatEffect, User } from '@prisma/client';
 import { getBaseMaxHpFromHpLvl, getBaseMaxDmg, getBaseCritChanceFromLuk, getBaseCritMulFromLuk, getBaseMagicDmgReductionFromDefAndMagic, getBaseAtkSpdFromLuk, getBaseDmgReductionFromDefAndStr, getBaseHpRegenRateFromHpLvlAndDef, getBaseHpRegenAmtFromHpLvlAndDef, getBaseAccFromLuk, getBaseEvaFromDex, calculateCombatPower } from '../managers/idle-managers/combat/combat-helpers';
-import { applyDelta, calculateNetStatDelta } from '../operations/user-operations';
 import { UserStatsWithCombat } from '../operations/combat-operations';
 import { MAX_INITIAL_INVENTORY_SLOTS } from '../utils/config';
+import { applyDelta, calculateNetStatDelta } from '../operations/user-stats-operations';
 
 // Interface for user input
 interface CreateUserInput {
@@ -1094,24 +1094,15 @@ export async function prismaRecalculateAndUpdateUserStats(
     }
 
     const delta = calculateNetStatDelta(user, statEffects);
-    applyDelta(user, userCombat, delta);
+    applyDelta(userCombat, delta);
 
     const cp = calculateCombatPower(userCombat);
     userCombat.cp = cp;
 
-    await prisma.$transaction([
-        prisma.user.update({
-            where: { telegramId },
-            data: {
-                doubleResourceOdds: user.doubleResourceOdds,
-                skillIntervalReductionMultiplier: user.skillIntervalReductionMultiplier,
-            },
-        }),
-        prisma.combat.update({
-            where: { id: userCombat.id },
-            data: userCombat,
-        }),
-    ]);
+    await prisma.combat.update({
+        where: { id: userCombat.id },
+        data: userCombat,
+    }),
 
     logger.info(`Stats updated for user ${telegramId}`);
 
@@ -1149,8 +1140,6 @@ export async function prismaRecalculateAndUpdateUserBaseStats(
             magicDmgReduction: getBaseMagicDmgReductionFromDefAndMagic(def, magic),
             hpRegenRate: getBaseHpRegenRateFromHpLvlAndDef(hpLevel, def),
             hpRegenAmount: getBaseHpRegenAmtFromHpLvlAndDef(hpLevel, def),
-            doubleResourceOdds: user.doubleResourceOdds,
-            skillIntervalReductionMultiplier: user.skillIntervalReductionMultiplier,
         };
 
         await prisma.user.update({
@@ -1248,8 +1237,6 @@ export async function prismaBatchSaveUsers(users: FullUserData[]): Promise<{
                 expToNextCraftingLevel: userData.expToNextCraftingLevel,
                 maxInventorySlots: userData.maxInventorySlots,
                 maxSlimeInventorySlots: userData.maxSlimeInventorySlots,
-                doubleResourceOdds: userData.doubleResourceOdds,
-                skillIntervalReductionMultiplier: userData.skillIntervalReductionMultiplier,
             };
 
             // ✅ CORRECT: Handle equipped slime as a relation

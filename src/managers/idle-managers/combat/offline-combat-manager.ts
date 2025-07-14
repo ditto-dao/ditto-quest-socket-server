@@ -21,6 +21,7 @@ import { SocketManager } from "../../../socket/socket-manager";
 import { incrementTotalCombatDittoByTelegramId } from "../../../redis/intract";
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
 import { requireUserMemoryManager } from "../../global-managers/global-managers";
+import { getUserDoubleCombatExpChanceMemory, getUserDoubleResourceChanceMemory, getUserFlatCombatExpBoostMemory } from "../../../operations/user-stats-operations";
 
 export interface CurrentCombat {
   combatType: 'Domain' | 'Dungeon',
@@ -301,7 +302,7 @@ export class OfflineCombatManager {
         simulation.userNextAtk = simulation.userAtkCooldown;
 
         if (simulation.monster.combat.hp === 0) {
-          this.processMonsterDeath(simulation, location, activity, config);
+          await this.processMonsterDeath(simulation, location, activity, config);
 
           const nextMonster = config.getNextMonster(location, activity);
           if (!nextMonster) break;
@@ -351,7 +352,7 @@ export class OfflineCombatManager {
     }
   }
 
-  private static processMonsterDeath(
+  private static async processMonsterDeath(
     simulation: CombatSimulation,
     location: any,
     activity: IdleCombatActivityElement,
@@ -371,8 +372,13 @@ export class OfflineCombatManager {
       };
     }
 
-    // Calculate rewards
-    const exp = Math.floor(monster.exp * this.EXP_NERF_MULTIPLIER);
+    // Calculate base rewards
+    const baseExp = Math.floor(monster.exp * this.EXP_NERF_MULTIPLIER);
+
+    // Apply flat combat exp boost
+    const flatCombatExpBoost = await getUserFlatCombatExpBoostMemory(activity.userId);
+    let exp = Math.floor(baseExp * (1 + flatCombatExpBoost));
+
     const goldGained = Math.floor(Number(Battle.getAmountDrop(BigInt(monster.minGoldDrop), BigInt(monster.maxGoldDrop))) * this.DROP_NERF_MULTIPLIER);
     const dittoGained = Battle.roundWeiTo1DecimalPlace(
       this.scaleBigInt(
@@ -380,6 +386,13 @@ export class OfflineCombatManager {
         this.DROP_NERF_MULTIPLIER
       )
     );
+
+    // Check for double combat exp chance (adds only the base exp, not the boosted amount)
+    const doubleCombatExpChance = await getUserDoubleCombatExpChanceMemory(activity.userId);
+    if (Math.random() < doubleCombatExpChance) {
+      exp += baseExp; // Add base exp as bonus, not the boosted exp
+      logger.info(`🎲 Offline double combat exp proc for user ${activity.userId}! Monster: ${monster.name}`);
+    }
 
     // Update totals
     simulation.stats.totalExp += exp;
@@ -406,49 +419,61 @@ export class OfflineCombatManager {
     monsterActivity.totalDitto += dittoGained;
 
     // Process drops
-    this.processDrops(monster, simulation.stats, monsterActivity);
+    await this.processDrops(monster, simulation.stats, monsterActivity, activity.userId);
 
     config.onMonsterDeath(location, activity);
   }
 
-  private static processDrops(
+  private static async processDrops(
     monster: FullMonster,
     stats: CombatStats,
-    monsterActivity: any
+    monsterActivity: any,
+    userId: string
   ) {
+    // Get double resource chance once
+    const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+
     for (const drop of monster.drops) {
       if (Math.random() <= drop.dropRate * this.DROP_NERF_MULTIPLIER) {
+        let quantity = drop.quantity;
+
+        // Check for double resource chance
+        if (Math.random() < doubleResourceChance) {
+          quantity *= 2;
+          logger.info(`🎲 Offline double resource proc for user ${userId}! Monster: ${monster.name}`);
+        }
+
         if (drop.itemId) {
           // UI aggregation
           const existing = stats.itemDrops.find(d => d.item.id === drop.item!.id);
           if (existing) {
-            existing.quantity += drop.quantity;
+            existing.quantity += quantity;
           } else {
-            stats.itemDrops.push({ item: drop.item!, quantity: drop.quantity });
+            stats.itemDrops.push({ item: drop.item!, quantity: quantity });
           }
 
           // Database aggregation
           const existingActivityDrop = monsterActivity.drops.find((d: any) => d.itemId === drop.itemId);
           if (existingActivityDrop) {
-            existingActivityDrop.quantity += drop.quantity;
+            existingActivityDrop.quantity += quantity;
           } else {
-            monsterActivity.drops.push({ itemId: drop.itemId, quantity: drop.quantity });
+            monsterActivity.drops.push({ itemId: drop.itemId, quantity: quantity });
           }
         } else if (drop.equipmentId) {
           // UI aggregation
           const existing = stats.equipmentDrops.find(d => d.equipment.id === drop.equipment!.id);
           if (existing) {
-            existing.quantity += drop.quantity;
+            existing.quantity += quantity;
           } else {
-            stats.equipmentDrops.push({ equipment: drop.equipment!, quantity: drop.quantity });
+            stats.equipmentDrops.push({ equipment: drop.equipment!, quantity: quantity });
           }
 
           // Database aggregation
           const existingActivityDrop = monsterActivity.drops.find((d: any) => d.equipmentId === drop.equipmentId);
           if (existingActivityDrop) {
-            existingActivityDrop.quantity += drop.quantity;
+            existingActivityDrop.quantity += quantity;
           } else {
-            monsterActivity.drops.push({ equipmentId: drop.equipmentId, quantity: drop.quantity });
+            monsterActivity.drops.push({ equipmentId: drop.equipmentId, quantity: quantity });
           }
         }
       }

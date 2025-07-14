@@ -1,7 +1,7 @@
-import { Prisma, Rarity, TraitType } from "@prisma/client";
+import { Prisma, Rarity, TraitType, UserEfficiencyStats } from "@prisma/client";
 import { HP_EXP_PER_EXP } from "./config";
 import { SlimeWithTraits } from "../sql-services/slime";
-import { COMBAT_UPDATE_EVENT, USER_UPDATE_EVENT } from "../socket/events";
+import { COMBAT_UPDATE_EVENT, EFFICIENCY_STATS_UPDATE_EVENT, USER_UPDATE_EVENT } from "../socket/events";
 import { FullUserData, UserDataEquipped } from "../sql-services/user-service";
 import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
@@ -183,7 +183,12 @@ export function getColourHexByRarity(rarity: Rarity): string {
     return colourHex;
 }
 
-export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, userId: string, res: Partial<FullUserData> | UserDataEquipped | Prisma.UserGetPayload<{ include: { combat: true } }> | UserStatsWithCombat) {
+export function emitUserAndCombatUpdate(
+    socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
+    userId: string,
+    res: Partial<FullUserData> | UserDataEquipped | Prisma.UserGetPayload<{ include: { combat: true } }> | UserStatsWithCombat,
+    efficiencyStats?: UserEfficiencyStats
+) {
     socket.emit(USER_UPDATE_EVENT, {
         userId: userId,
         payload: {
@@ -209,8 +214,6 @@ export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, Default
             hpRegenRate: res.hpRegenRate,
             hpRegenAmount: res.hpRegenAmount,
             outstandingSkillPoints: res.outstandingSkillPoints,
-            doubleResourceOdds: res.doubleResourceOdds,
-            skillIntervalReductionMultiplier: res.skillIntervalReductionMultiplier,
         }
     });
 
@@ -241,6 +244,20 @@ export function emitUserAndCombatUpdate(socket: Socket<DefaultEventsMap, Default
                 reinforceWater: res.combat.reinforceWater,
                 reinforceEarth: res.combat.reinforceEarth,
                 reinforceFire: res.combat.reinforceFire
+            }
+        });
+    }
+
+    if (efficiencyStats) {
+        socket.emit(EFFICIENCY_STATS_UPDATE_EVENT, {
+            userId: userId,
+            payload: {
+                skillIntervalMultiplier: efficiencyStats.skillIntervalMultiplier,
+                doubleResourceChance: efficiencyStats.doubleResourceChance,
+                doubleSkillExpChance: efficiencyStats.doubleSkillExpChance,
+                doubleCombatExpChance: efficiencyStats.doubleCombatExpChance,
+                flatSkillExpBoost: efficiencyStats.flatSkillExpBoost,
+                flatCombatExpBoost: efficiencyStats.flatCombatExpBoost
             }
         });
     }

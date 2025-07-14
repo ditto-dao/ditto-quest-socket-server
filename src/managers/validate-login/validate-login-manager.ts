@@ -8,6 +8,7 @@ import { FullUserData, prismaCreateUser, prismaUserExists } from "../../sql-serv
 import {
     BETA_TESTER_LOGIN_EVENT,
     DISCONNECT_USER_EVENT,
+    EFFICIENCY_STATS_UPDATE_EVENT,
     FIRST_LOGIN_EVENT,
     LEDGER_INIT_USER_SOCKET_EVENT,
     LEDGER_READ_BALANCE_EVENT,
@@ -26,7 +27,7 @@ import { getUserDataWithSnapshot } from "../../operations/user-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { mintItemToUser } from "../../operations/item-inventory-operations";
-import { requireActivityLogMemoryManager, requireUserMemoryManager, requireUserSessionManager } from "../global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager, requireUserSessionManager } from "../global-managers/global-managers";
 import { UserSessionState } from "../memory/user-session-manager";
 import AsyncLock from "async-lock";
 
@@ -49,9 +50,10 @@ interface LoginQueueData {
 }
 
 export class ValidateLoginManager {
-    sessionManager = requireUserSessionManager();
-    activityLogMemoryManager = requireActivityLogMemoryManager();
-    userMemoryManager = requireUserMemoryManager();
+    private sessionManager = requireUserSessionManager();
+    private activityLogMemoryManager = requireActivityLogMemoryManager();
+    private userMemoryManager = requireUserMemoryManager();
+    private efficiencyStatsMemoryManager = requireUserEfficiencyStatsMemoryManager();
 
     private dittoLedgerSocket: DittoLedgerSocket;
     private socketManager: SocketManager;
@@ -309,8 +311,15 @@ export class ValidateLoginManager {
 
             if (!user) throw new Error(`Failed to load user data for ${userId}`);
 
+            const efficiencyStats = await this.efficiencyStatsMemoryManager.loadEfficiencyStats(userId);
+
             // Process offline activities and idle progress
             await this.processOfflineProgress(userId, user, data);
+
+            data.socket.emit(EFFICIENCY_STATS_UPDATE_EVENT, {
+                userId: data.loginPayload.userData.id,
+                payload: efficiencyStats
+            });
 
             // Send mission data (delayed, non-blocking)
             this.sendMissionData(userId, data.socket);

@@ -295,7 +295,8 @@ export type PrismaInventoryWithEquipment = Prisma.InventoryGetPayload<{ include:
 
 export async function getEquipmentOrItemFromInventory(
     telegramId: string,
-    inventoryId: number
+    inventoryId: number,
+    hasTriedFlush: boolean = false
 ): Promise<PrismaInventoryWithEquipment | undefined> {
     try {
         // Try memory first
@@ -343,8 +344,33 @@ export async function getEquipmentOrItemFromInventory(
                     } as PrismaInventoryWithEquipment;
                 }
 
-                // If not found in memory and it's a temporary ID, it might not exist yet
+                // ✅ FIX: If temp ID not found and we haven't tried flushing, flush and retry
+                if (inventoryId < 0 && !hasTriedFlush) {
+                    logger.info(`⚠️ Temp ID ${inventoryId} not found in memory - attempting flush and retry for user ${telegramId}`);
+
+                    // Check if user has pending changes that might contain this temp ID
+                    if (userMemoryManager.hasPendingChanges(telegramId)) {
+                        await userMemoryManager.flushUserInventory(telegramId);
+
+                        // Retry once after flush
+                        return getEquipmentOrItemFromInventory(telegramId, inventoryId, true);
+                    } else {
+                        logger.warn(`⚠️ No pending changes found for user ${telegramId} - temp ID ${inventoryId} truly missing`);
+                    }
+                }
+
+                // If not found in memory and it's a temporary ID, it might not exist
                 if (inventoryId < 0) {
+                    const debugInfo = {
+                        userId: telegramId,
+                        tempId: inventoryId,
+                        hasRemap: !!userMemoryManager.inventoryIdRemap.get(telegramId),
+                        pendingCreates: userMemoryManager.pendingCreateInventory.get(telegramId)?.length || 0,
+                        inventoryCount: user.inventory.length,
+                        triedFlush: hasTriedFlush
+                    };
+                    logger.error(`❌ Temp ID debug info:`, debugInfo);
+
                     throw new Error(`Temporary inventory ID ${inventoryId} not found in memory for user ${telegramId}`);
                 }
             }

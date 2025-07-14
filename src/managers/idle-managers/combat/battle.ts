@@ -20,6 +20,7 @@ import { canUserMintEquipment, mintEquipmentToUser } from "../../../operations/e
 import { requireUserMemoryManager } from "../../global-managers/global-managers";
 import { incrementTotalCombatDittoByTelegramId } from "../../../redis/intract";
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
+import { getUserDoubleCombatExpChanceMemory, getUserDoubleResourceChanceMemory, getUserFlatCombatExpBoostMemory } from "../../../operations/user-stats-operations";
 
 export class Battle {
   combatAreaType: 'Domain' | 'Dungeon';
@@ -595,13 +596,37 @@ export class Battle {
     try {
       if (this.battleEnded || this.battleStopRequested) return;
 
-      const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, this.monster.exp);
+      const baseCombatExp = this.monster.exp;
+      const flatCombatExpBoost = await getUserFlatCombatExpBoostMemory(this.user.telegramId);
+      let combatExp = Math.floor(baseCombatExp * (1 + flatCombatExpBoost));
+      let bonusExp = 0;
+
+      // Check for double combat exp chance
+      const doubleCombatExpChance = await getUserDoubleCombatExpChanceMemory(this.user.telegramId);
+      if (Math.random() < doubleCombatExpChance) {
+        bonusExp = baseCombatExp;
+        logger.info(`🎲 Double combat exp proc for user ${this.user.telegramId}! Bonus exp: ${bonusExp}`);
+      }
+
+      // Add base exp
+      const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, combatExp);
 
       this.socketManager.emitEvent(this.user.telegramId, COMBAT_EXP_UPDATE_EVENT, {
         userId: this.user.telegramId,
         payload: expRes
       });
 
+      // Add bonus exp if proc'd
+      if (bonusExp > 0) {
+        const bonusExpRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, bonusExp);
+
+        this.socketManager.emitEvent(this.user.telegramId, COMBAT_EXP_UPDATE_EVENT, {
+          userId: this.user.telegramId,
+          payload: bonusExpRes
+        });
+      }
+
+      // Use the final exp result for user updates (base exp result should be sufficient for level checks)
       if (expRes.simpleUser) {
         const userSocket = this.socketManager.getSocketByUserId(this.user.telegramId);
         if (userSocket) emitUserAndCombatUpdate(userSocket, this.user.telegramId, expRes.simpleUser);
@@ -725,6 +750,9 @@ export class Battle {
     const res = [];
 
     try {
+      // Get double resource chance once
+      const doubleResourceChance = await getUserDoubleResourceChanceMemory(this.user.telegramId);
+
       for (const drop of this.monster.drops) {
         const roll = Math.random(); // 0.0 to 1.0
 
@@ -734,11 +762,25 @@ export class Battle {
               if (await canUserMintItem(this.user.telegramId, drop.itemId)) {
                 const updateItemInv = await mintItemToUser(this.user.telegramId, drop.itemId, drop.quantity);
                 res.push(updateItemInv);
+
+                // Check for double resource chance
+                if (Math.random() < doubleResourceChance) {
+                  const bonusItemInv = await mintItemToUser(this.user.telegramId, drop.itemId, drop.quantity);
+                  res.push(bonusItemInv);
+                  logger.info(`🎲 Double resource proc for user ${this.user.telegramId}! Bonus item: ${drop.quantity}`);
+                }
               }
             } else if (drop.equipmentId) {
               if (await canUserMintEquipment(this.user.telegramId, drop.equipmentId)) {
                 const updatedEquipmentInv = await mintEquipmentToUser(this.user.telegramId, drop.equipmentId, drop.quantity);
                 res.push(updatedEquipmentInv);
+
+                // Check for double resource chance
+                if (Math.random() < doubleResourceChance) {
+                  const bonusEquipmentInv = await mintEquipmentToUser(this.user.telegramId, drop.equipmentId, drop.quantity);
+                  res.push(bonusEquipmentInv);
+                  logger.info(`🎲 Double resource proc for user ${this.user.telegramId}! Bonus equipment: ${drop.quantity}`);
+                }
               }
             } else {
               throw new Error(`Drop has neither itemId nor equipmentId`);

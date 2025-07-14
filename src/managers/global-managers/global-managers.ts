@@ -5,12 +5,16 @@ import { ActivityLogMemoryManager } from '../memory/activity-log-memory-manager'
 import { UserMemoryManager } from '../memory/user-memory-manager';
 import { SlimeIDManager, slimeIdManager } from '../slime-id-memory-manager.ts/slime-id-memory-manager';
 import { UserSessionManager } from '../memory/user-session-manager';
+import { EfficiencyStatsRedisManager } from '../../redis/user-efficiency-stats-redis';
+import { UserEfficiencyStatsMemoryManager } from '../memory/efficiency-stats-memory-manager';
 
 // Global manager instances
 let snapshotRedisManager: SnapshotRedisManager | null = null;
 let userMemoryManager: UserMemoryManager | null = null;
 let activityLogMemoryManager: ActivityLogMemoryManager | null = null;
 let userSessionManager: UserSessionManager | null = null;
+let efficiencyStatsRedisManager: EfficiencyStatsRedisManager | null = null;
+let userEfficiencyStatsMemoryManager: UserEfficiencyStatsMemoryManager | null = null;
 
 /**
  * Initialize all global managers
@@ -29,6 +33,10 @@ export async function initializeGlobalManagers(redisClient: RedisClientType<Redi
 
     // Initialize Redis managers
     snapshotRedisManager = new SnapshotRedisManager(redisClient);
+    efficiencyStatsRedisManager = new EfficiencyStatsRedisManager(redisClient);
+
+    // Initialize efficiency stats memory manager (depends on Redis manager)
+    userEfficiencyStatsMemoryManager = new UserEfficiencyStatsMemoryManager(efficiencyStatsRedisManager);
 
     // Initialize Slime ID manager first
     await slimeIdManager.initialize();
@@ -62,6 +70,20 @@ export function getActivityLogMemoryManager(): ActivityLogMemoryManager | null {
  */
 export function getUserSessionManager(): UserSessionManager | null {
     return userSessionManager;
+}
+
+/**
+ * Get efficiency stats redis manager (safe for use in other modules)
+ */
+export function getEfficiencyStatsRedisManager(): EfficiencyStatsRedisManager | null {
+    return efficiencyStatsRedisManager;
+}
+
+/**
+ * Get user efficiency stats memory manager (safe for use in other modules)
+ */
+export function getUserEfficiencyStatsMemoryManager(): UserEfficiencyStatsMemoryManager | null {
+    return userEfficiencyStatsMemoryManager;
 }
 
 /**
@@ -103,6 +125,26 @@ export function requireUserSessionManager(): UserSessionManager {
 }
 
 /**
+ * Require efficiency stats redis manager (safe for use in other modules)
+ */
+export function requireEfficiencyStatsRedisManager(): EfficiencyStatsRedisManager {
+    if (!efficiencyStatsRedisManager) {
+        throw new Error('EfficiencyStatsRedisManager not initialized');
+    }
+    return efficiencyStatsRedisManager;
+}
+
+/**
+ * Require user efficiency stats memory manager (safe for use in other modules)
+ */
+export function requireUserEfficiencyStatsMemoryManager(): UserEfficiencyStatsMemoryManager {
+    if (!userEfficiencyStatsMemoryManager) {
+        throw new Error('UserEfficiencyStatsMemoryManager not initialized');
+    }
+    return userEfficiencyStatsMemoryManager;
+}
+
+/**
  * Cleanup all managers (for graceful shutdown)
  */
 export async function cleanupGlobalManagers(): Promise<void> {
@@ -127,6 +169,11 @@ export async function cleanupGlobalManagers(): Promise<void> {
         if (activityLogMemoryManager) {
             logger.info("🗑️ Clearing activity log memory manager...");
             activityLogMemoryManager.clear();
+        }
+
+        if (userEfficiencyStatsMemoryManager) {
+            logger.info("🗑️ Clearing user efficiency stats memory manager...");
+            userEfficiencyStatsMemoryManager.clear();
         }
 
         logger.info('✅ Global managers cleanup complete');

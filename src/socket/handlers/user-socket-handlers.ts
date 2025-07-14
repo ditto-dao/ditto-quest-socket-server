@@ -49,19 +49,19 @@ export async function setupUserSocketHandlers(
                 try {
                     // Attempt to equip new item
                     const res = await equipEquipmentForUserMemory(data.userId.toString(), inventoryEl)
-                    idleCombatManager.updateUserCombatMidBattle(data.userId, res.combat)
-                    emitUserAndCombatUpdate(socket, data.userId, res)
+                    idleCombatManager.updateUserCombatMidBattle(data.userId, res.user.combat)
+                    emitUserAndCombatUpdate(socket, data.userId, res.user, res.efficiency)
                 } catch (err) {
                     logger.warn(`Equip failed, reverting to previous state...`)
 
                     // Attempt to revert to previously equipped item
                     if (previouslyEquipped) {
                         const revertRes = await equipEquipmentForUserMemory(data.userId.toString(), previouslyEquipped)
-                        if (revertRes) emitUserAndCombatUpdate(socket, data.userId, revertRes)
+                        emitUserAndCombatUpdate(socket, data.userId, revertRes.user, revertRes.efficiency)
                     } else if (inventoryEl.equipment) {
                         // If nothing was previously equipped, unequip the current type
                         const res = await unequipEquipmentForUserMemory(data.userId, inventoryEl.equipment.type)
-                        if (res) emitUserAndCombatUpdate(socket, data.userId, res)
+                        emitUserAndCombatUpdate(socket, data.userId, res.user, res.efficiency)
                     }
 
                     socket.emit("unequip-update", {
@@ -105,10 +105,10 @@ export async function setupUserSocketHandlers(
                     throw new Error(`unequipEquipmentForUser returned null unexpectedly`)
                 }
 
-                idleCombatManager.updateUserCombatMidBattle(data.userId, userDataAfterUnequip.combat)
+                idleCombatManager.updateUserCombatMidBattle(data.userId, userDataAfterUnequip.user.combat)
 
                 logger.info(`Successfully unequipped ${data.equipmentType} for user ${data.userId}`)
-                emitUserAndCombatUpdate(socket, data.userId, userDataAfterUnequip)
+                emitUserAndCombatUpdate(socket, data.userId, userDataAfterUnequip.user, userDataAfterUnequip.efficiency)
 
             } catch (error) {
                 logger.error(`Error processing unequip-equipment for user ${data.userId}: ${error}`)
@@ -118,9 +118,7 @@ export async function setupUserSocketHandlers(
                     try {
                         logger.warn(`Reverting equipment for user ${data.userId}...`)
                         const revertRes = await equipEquipmentForUserMemory(data.userId, currentEquipped)
-                        if (revertRes) {
-                            emitUserAndCombatUpdate(socket, data.userId, revertRes)
-                        }
+                        emitUserAndCombatUpdate(socket, data.userId, revertRes.user, revertRes.efficiency)
 
                         socket.emit("equip-update", {
                             userId: data.userId,
@@ -161,9 +159,9 @@ export async function setupUserSocketHandlers(
                 }
 
                 const newEquipped = await equipSlimeForUserMemory(data.userId, nextEquippedSlime)
-                idleCombatManager.updateUserCombatMidBattle(data.userId, newEquipped.combat!)
+                idleCombatManager.updateUserCombatMidBattle(data.userId, newEquipped.user.combat!)
 
-                emitUserAndCombatUpdate(socket, data.userId, newEquipped)
+                emitUserAndCombatUpdate(socket, data.userId, newEquipped.user, newEquipped.efficiency)
 
                 // After equipping, log the memory state:
                 const userMemoryManager = requireUserMemoryManager()
@@ -176,7 +174,7 @@ export async function setupUserSocketHandlers(
                 if (previouslyEquippedSlime) {
                     try {
                         const revertRes = await equipSlimeForUserMemory(data.userId, previouslyEquippedSlime)
-                        emitUserAndCombatUpdate(socket, data.userId, revertRes)
+                        emitUserAndCombatUpdate(socket, data.userId, revertRes.user, revertRes.efficiency)
                         socket.emit("equip-slime-update", {
                             userId: data.userId,
                             payload: previouslyEquippedSlime
@@ -218,7 +216,7 @@ export async function setupUserSocketHandlers(
 
                 idleCombatManager.stopCombat(idleManager, data.userId)
 
-                emitUserAndCombatUpdate(socket, data.userId, unequipped)
+                emitUserAndCombatUpdate(socket, data.userId, unequipped.user, unequipped.efficiency)
 
             } catch (err) {
                 logger.error(`Error during unequip-slime for user ${data.userId}: ${err}`)
@@ -227,7 +225,7 @@ export async function setupUserSocketHandlers(
                 if (currentEquipped) {
                     try {
                         const revertRes = await equipSlimeForUserMemory(data.userId, currentEquipped)
-                        emitUserAndCombatUpdate(socket, data.userId, revertRes)
+                        emitUserAndCombatUpdate(socket, data.userId, revertRes.user, revertRes.efficiency)
                         socket.emit("equip-slime-update", {
                             userId: data.userId,
                             payload: currentEquipped

@@ -63,15 +63,6 @@ model User {
   craftingExp            Int @default(0)
   expToNextCraftingLevel Int @default(570) @map("exp_to_next_crafting_level")
 
-  /**
-   * // Crafting and farming boost
-   * doubleResourceOddsBase               Float @default(0.01)
-   * skillIntervalReductionMultiplierBase Float @default(1) // need to push db changes
-   */
-
-  doubleResourceOdds               Float @default(0.01)
-  skillIntervalReductionMultiplier Float @default(1)
-
   // inventory slots
   maxInventorySlots      Int @default(40) // Set a reasonable default
   maxSlimeInventorySlots Int @default(40) // Set a reasonable default
@@ -488,8 +479,12 @@ model StatEffect {
   reinforceEarth Float? @default(0) @map("reinforce_earth")
   reinforceFire  Float? @default(0) @map("reinforce_fire")
 
-  doubleResourceOddsMod               Float? @map("double_resource_odds_mod") // always add
-  skillIntervalReductionMultiplierMod Float? @map("skill_interval_reduction_multiplier_mod") // always add
+  efficiencySkillIntervalMod     Float? @map("efficiency_skill_interval_mod") // always add
+  efficiencyDoubleResourceMod    Float? @map("efficiency_double_resource_mod") // always add  
+  efficiencyDoubleSkillExpMod    Float? @map("efficiency_double_skill_exp_mod") // always add
+  efficiencyDoubleCombatExpMod   Float? @map("efficiency_double_combat_exp_mod") // always add
+  efficiencyFlatSkillExpMod      Float?   @map("efficiency_flat_skill_exp_mod") // always add
+  efficiencyFlatCombatExpMod     Float?   @map("efficiency_flat_combat_exp_mod") // always add
 
   durationS Int? // Duration in seconds for temporary buffs
 
@@ -900,4 +895,33 @@ enum MissionType {
   COMBAT
   GACHA
   BREED
+}
+
+model UserEfficiencyStats {
+  id     Int    @id @default(autoincrement())
+  userId String @unique // Direct reference to User.telegramId
+  
+  // Skilling interval duration multiplier (farm/craft) - 0.2 = 20% faster
+  skillIntervalMultiplier Float @default(0.0) @map("skill_interval_multiplier")
+  
+  // Double resource chance (farm/craft) - probability 0-1
+  doubleResourceChance Float @default(0.0) @map("double_resource_chance")
+  
+  // Double exp chance (skills) - probability 0-1
+  doubleSkillExpChance Float @default(0.0) @map("double_skill_exp_chance")
+  
+  // Double exp chance (combat) - probability 0-1
+  doubleCombatExpChance Float @default(0.0) @map("double_combat_exp_chance")
+  
+  // Flat exp boost (skills) - additive bonus
+  flatSkillExpBoost Int @default(0) @map("flat_skill_exp_boost")
+  
+  // Flat exp boost (combat) - additive bonus
+  flatCombatExpBoost Int @default(0) @map("flat_combat_exp_boost")
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_efficiency_stats")
 }

@@ -3,10 +3,10 @@ import { logger } from "../utils/logger";
 import { GameCodexManager } from "../managers/game-codex/game-codex-manager";
 import { FullUserData } from "../sql-services/user-service";
 import { calculateExpForNextCombatLevel, calculateHpExpGained } from "../utils/helpers";
-import { recalculateAndUpdateUserBaseStatsMemory } from "./user-operations";
 import { ABILITY_POINTS_PER_LEVEL } from "../utils/config";
 import { requireUserMemoryManager } from "../managers/global-managers/global-managers";
 import { prismaFetchDomainById, prismaFetchDungeonById, prismaFetchMonsterById } from "../sql-services/combat-service";
+import { recalculateAndUpdateUserBaseStatsMemory } from "./user-stats-operations";
 
 /**
  * Type representing a full Monster with all its nested data.
@@ -182,9 +182,6 @@ export type UserStatsWithCombat = {
     dex: number;
     luk: number;
     magic: number;
-
-    doubleResourceOdds: number;
-    skillIntervalReductionMultiplier: number;
 
     // Combat relation
     combat: Prisma.CombatGetPayload<{}> | null;

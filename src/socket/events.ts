@@ -60,6 +60,10 @@ export const GET_DUNGEON_LB = 'get-dungeon-lb';
 
 export const DUNGEON_LB_UPDATE_EVENT = 'dungeon-lb-update';
 
+// Efficiency stats
+
+export const EFFICIENCY_STATS_UPDATE_EVENT = 'efficiency-stats-update';
+
 // Ledger
 
 export const LEDGER_INIT_USER_SOCKET_EVENT = 'ditto-ledger-init-user-socket';

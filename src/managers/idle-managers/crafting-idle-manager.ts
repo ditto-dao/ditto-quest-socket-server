@@ -10,6 +10,7 @@ import { addCraftingExpMemory, getUserCraftingLevelMemory } from "../../operatio
 import { canUserMintEquipment, mintEquipmentToUser } from "../../operations/equipment-inventory-operations";
 import { deleteItemsFromUserInventory, doesUserOwnItems } from "../../operations/item-inventory-operations";
 import { logCraftingActivity } from "../../operations/user-activity-log-operations";
+import { getUserDoubleResourceChanceMemory, getUserDoubleSkillExpChanceMemory, getUserFlatSkillExpBoostMemory, getUserSkillIntervalMultiplierMemory } from "../../operations/user-stats-operations";
 
 export class IdleCraftingManager {
 
@@ -75,11 +76,16 @@ export class IdleCraftingManager {
 
             await idleManager.appendIdleActivityByUser(userId, activity as IdleActivityIntervalElement);
 
+            const skillIntervalMul = await getUserSkillIntervalMultiplierMemory(userId);
+
+            // Apply speed multiplier with minimum 1 second duration
+            const adjustedDuration = Math.max(1, recipe.durationS * (1 - skillIntervalMul));
+
             // Start and patch interval
             timerHandle = await idleManager.startCustomInterval(
                 userId,
-                (startTimestamp + recipe.durationS * 1000) - Date.now(),
-                recipe.durationS * 1000,
+                (startTimestamp + adjustedDuration * 1000) - Date.now(),
+                adjustedDuration * 1000,
                 completeCallback
             );
 
@@ -130,6 +136,10 @@ export class IdleCraftingManager {
 
         logger.info(`Crafting activity loaded: ${JSON.stringify(crafting, null, 2)}`);
 
+        // Get efficiency stats for interval adjustment
+        const skillIntervalMul = await getUserSkillIntervalMultiplierMemory(userId);
+        const adjustedDuration = Math.max(1, crafting.durationS * (1 - skillIntervalMul));
+
         const now = Date.now();
         const maxProgressEndTimestamp = crafting.logoutTimestamp + MAX_OFFLINE_IDLE_PROGRESS_S * 1000;
         const progressEndTimestamp = Math.min(maxProgressEndTimestamp, now);
@@ -138,14 +148,14 @@ export class IdleCraftingManager {
         let repetitions = 0;
         let startCurrentRepetition = true;
 
-        // Fast-forward to last rep before logoutTimestamp
-        while (timestamp + crafting.durationS * 1000 < crafting.logoutTimestamp) {
-            timestamp += crafting.durationS * 1000; // Add duration to timestamp
+        // Fast-forward to last rep before logoutTimestamp using adjusted duration
+        while (timestamp + adjustedDuration * 1000 < crafting.logoutTimestamp) {
+            timestamp += adjustedDuration * 1000; // Add adjusted duration to timestamp
         }
 
-        // Process crafting repetitions after logoutTimestamp up to now
-        while (timestamp + crafting.durationS * 1000 <= progressEndTimestamp) {
-            timestamp += crafting.durationS * 1000; // Add duration to timestamp
+        // Process crafting repetitions after logoutTimestamp up to now using adjusted duration
+        while (timestamp + adjustedDuration * 1000 <= progressEndTimestamp) {
+            timestamp += adjustedDuration * 1000; // Add adjusted duration to timestamp
 
             if (timestamp <= now) {
                 if ((await doesUserOwnItems(userId.toString(),
@@ -171,7 +181,7 @@ export class IdleCraftingManager {
         logger.info(`Crafting repetition completed after logout: ${repetitions}`);
         logger.info(`Current repetition start timestamp: ${currentRepetitionStart}`);
 
-        // Start current repetition
+        // Start current repetition with adjusted duration
         if (startCurrentRepetition) {
             IdleCraftingManager.startCrafting(socketManager, idleManager, userId, crafting.equipment, crafting.recipe, currentRepetitionStart);
             socketManager.emitEvent(userId, 'crafting-start', {
@@ -181,19 +191,58 @@ export class IdleCraftingManager {
                     name: crafting.equipment.name,
                     imgsrc: crafting.equipment.imgsrc,
                     startTimestamp: currentRepetitionStart,
-                    durationS: crafting.recipe.durationS
+                    durationS: adjustedDuration
                 }
             });
         }
 
         let expRes;
         if (repetitions > 0) {
+            let totalEquipment = repetitions;
+            let bonusEquipment = 0;
+
+            const baseCraftingExp = crafting.recipe.craftingExp;
+            const flatSkillExpBoost = await getUserFlatSkillExpBoostMemory(userId);
+
+            // Base exp with flat boost multiplier applied
+            let totalExp = Math.floor(baseCraftingExp * (1 + flatSkillExpBoost)) * repetitions;
+            let bonusExp = 0;
+
+            // Check for double resource chance on each repetition
+            const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+            for (let i = 0; i < repetitions; i++) {
+                if (Math.random() < doubleResourceChance) {
+                    bonusEquipment += 1;
+                }
+            }
+
+            // Check for double skill exp chance on each repetition (applies only to base exp)
+            const doubleSkillExpChance = await getUserDoubleSkillExpChanceMemory(userId);
+            for (let i = 0; i < repetitions; i++) {
+                if (Math.random() < doubleSkillExpChance) {
+                    bonusExp += baseCraftingExp; // Only base exp, no flat boost multiplier
+                }
+            }
+
             // Logic for completed repetitions after logout
-            await mintEquipmentToUser(userId.toString(), crafting.equipment.id, repetitions);
+            await mintEquipmentToUser(userId.toString(), crafting.equipment.id, totalEquipment);
+
+            // Mint bonus equipment if any
+            if (bonusEquipment > 0) {
+                await mintEquipmentToUser(userId.toString(), crafting.equipment.id, bonusEquipment);
+                logger.info(`🎲 Offline double resource procs for user ${userId}! Bonus equipment: ${bonusEquipment}`);
+            }
 
             await deleteItemsFromUserInventory(userId.toString(), crafting.recipe.requiredItems.map(item => item.itemId), crafting.recipe.requiredItems.map(item => item.quantity * repetitions));
 
-            expRes = await addCraftingExpMemory(userId, crafting.recipe.craftingExp * repetitions);
+            // Add base exp (includes flat boost)
+            expRes = await addCraftingExpMemory(userId, totalExp);
+
+            // Add bonus exp if any
+            if (bonusExp > 0) {
+                await addCraftingExpMemory(userId, bonusExp);
+                logger.info(`🎲 Offline double skill exp procs for user ${userId}! Bonus exp: ${bonusExp} (base only)`);
+            }
 
             await logCraftingActivity(
                 userId,
@@ -204,7 +253,7 @@ export class IdleCraftingManager {
                     quantity: item.quantity * repetitions,
                 }))
             );
-            await updateCraftMission(userId, crafting.equipment.id, repetitions);
+            await updateCraftMission(userId, crafting.equipment.id, totalEquipment + bonusEquipment);
             await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
             return {
@@ -219,10 +268,10 @@ export class IdleCraftingManager {
                     equipment: [{
                         equipmentId: crafting.equipment.id,
                         equipmentName: crafting.recipe.equipmentName,
-                        quantity: repetitions,
+                        quantity: totalEquipment + bonusEquipment,
                         uri: crafting.equipment.imgsrc
                     }],
-                    craftingExpGained: (repetitions > 0) ? crafting.recipe.craftingExp * repetitions : undefined,
+                    craftingExpGained: totalExp + bonusExp,
                     craftingLevelsGained: expRes?.craftingLevelsGained
                 },
             };
@@ -240,17 +289,50 @@ export class IdleCraftingManager {
 
             const updatedItemsInv = await deleteItemsFromUserInventory(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity));
 
+            const inventoryUpdates = [...updatedItemsInv, updatedEquipmentInv];
+
+            const baseCraftingExp = recipe.craftingExp;
+            const flatSkillExpBoost = await getUserFlatSkillExpBoostMemory(userId);
+
+            // Apply flat boost multiplier to base exp
+            let craftingExp = Math.floor(baseCraftingExp * (1 + flatSkillExpBoost));
+            let bonusExp = 0;
+
+            // Double chance applies only to base exp (not the boosted amount)
+            const doubleSkillExpChance = await getUserDoubleSkillExpChanceMemory(userId);
+            if (Math.random() < doubleSkillExpChance) {
+                bonusExp = baseCraftingExp; // Only base exp, no flat boost multiplier
+                logger.info(`🎲 Double skill exp proc for user ${userId}! Bonus exp: ${bonusExp} (base only)`);
+            }
+
+            // Check for double resource chance
+            const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+            if (Math.random() < doubleResourceChance) {
+                const bonusEquipmentInv = await mintEquipmentToUser(userId.toString(), recipe.equipmentId);
+                inventoryUpdates.push(bonusEquipmentInv);
+                logger.info(`🎲 Double resource proc for user ${userId}! Bonus equipment: ${recipe.equipmentName}`);
+            }
+
             socketManager.emitEvent(userId, 'update-inventory', {
                 userId: userId,
-                payload: [...updatedItemsInv, updatedEquipmentInv]
+                payload: inventoryUpdates
             });
 
-            const expRes = await addCraftingExpMemory(userId, recipe.craftingExp);
+            const expRes = await addCraftingExpMemory(userId, craftingExp);
 
             socketManager.emitEvent(userId, 'update-crafting-exp', {
                 userId: userId,
                 payload: expRes,
             });
+
+            // Send bonus exp update if proc'd
+            if (bonusExp > 0) {
+                const bonusExpRes = await addCraftingExpMemory(userId, bonusExp);
+                socketManager.emitEvent(userId, 'update-crafting-exp', {
+                    userId: userId,
+                    payload: bonusExpRes,
+                });
+            }
 
             await logCraftingActivity(
                 userId,

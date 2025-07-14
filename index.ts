@@ -14,7 +14,7 @@ import { ValidateLoginManager } from "./src/managers/validate-login/validate-log
 import { IdleCombatManager } from "./src/managers/idle-managers/combat/combat-idle-manager"
 import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
-import { getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
+import { getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
 import { IntractVerificationAPI } from "./src/intract/intract-verification"
 
 require("@aws-sdk/crc64-nvme-crt");
@@ -131,11 +131,12 @@ async function main() {
     // Flush all dirty users every 5 minutes
     setInterval(async () => {
         try {
-            const userManager = getUserMemoryManager();
-            if (userManager) {
-                await userManager.flushAllDirtyUsers();
-                logger.info("✅ Flushed all dirty users to database");
-            }
+            const userManager = requireUserMemoryManager();
+            const userEfficiencyStatsManager = requireUserEfficiencyStatsMemoryManager();
+
+            await userManager.flushAllDirtyUsers();
+            await userEfficiencyStatsManager.flushAllDirtyUsers();
+            logger.info("✅ Flushed all dirty users to database");
         } catch (error) {
             logger.error("❌ Failed to flush dirty users:", error);
         }
@@ -239,6 +240,7 @@ async function gracefulShutdown(
     try {
         const userMemoryManager = getUserMemoryManager();
         const activityLogMemoryManager = getActivityLogMemoryManager();
+        const efficiencyStatsMemoryManager = requireUserEfficiencyStatsMemoryManager();
 
         if (!userMemoryManager || !activityLogMemoryManager) {
             logger.warn('⚠️ Memory managers not available during shutdown');
@@ -256,6 +258,12 @@ async function gracefulShutdown(
         // STEP 3: Flush all activity logs
         logger.info("📝 Flushing all activity logs...");
         await activityLogMemoryManager.flushAll();
+
+        logger.info("⚡ Flushing all efficiency stats...");
+        if (efficiencyStatsMemoryManager) {
+            await efficiencyStatsMemoryManager.flushAllDirtyUsers();
+            logger.info("✅ All efficiency stats flushed to database");
+        }
 
         // STEP 4: Generate snapshots for all active users (CRITICAL - BEFORE clearing memory)
         logger.info("📸 Generating snapshots for all active users...");
@@ -291,6 +299,7 @@ async function gracefulShutdown(
         logger.info("🧹 Clearing memory managers...");
         userMemoryManager.clear();
         activityLogMemoryManager.clear();
+        efficiencyStatsMemoryManager.clear();
 
         // Close socket server
         io.close(() => {

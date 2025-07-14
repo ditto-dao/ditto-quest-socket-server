@@ -3,7 +3,7 @@ import { prismaDeleteInventoryFromDB, prismaFetchUserInventory, prismaInsertInve
 import { prismaDeleteSlimesFromDB, prismaFetchSlimesForUser, prismaInsertSlimesToDB, SlimeWithTraits } from "../../sql-services/slime";
 import { FullUserData, prismaSaveUser } from "../../sql-services/user-service";
 import { logger } from "../../utils/logger";
-import { requireSnapshotRedisManager, requireUserSessionManager } from "../global-managers/global-managers";
+import { requireSnapshotRedisManager, requireUserEfficiencyStatsMemoryManager, requireUserSessionManager } from "../global-managers/global-managers";
 import { MAX_INITIAL_SLIME_INVENTORY_SLOTS } from "../../utils/config";
 import { LEDGER_REMOVE_USER_SOCKET_EVENT } from "../../socket/events";
 import { SocketManager } from "../../socket/socket-manager";
@@ -1076,10 +1076,10 @@ export class UserMemoryManager {
 				throw new Error(`User ${userId} disappeared from memory during sync`);
 			}
 
-			// Map temp IDs to real IDs
+			// Map temp IDs to real IDs BEFORE replacing inventory
 			const tempIdMapping = this.mapTempIdsToRealIds(userId, cleanInventory);
 
-			// Update user inventory in memory
+			// Replace user inventory in memory
 			user.inventory = cleanInventory.sort((a, b) => a.order - b.order);
 
 			if (tempIdMapping.size > 0) {
@@ -1278,7 +1278,7 @@ export class UserMemoryManager {
 		}
 	}
 
-	async logoutUser(userId: string, removeFromMemory: boolean = false): Promise<boolean> {
+	private async logoutUser(userId: string, removeFromMemory: boolean = false): Promise<boolean> {
 		const userLock = this.getUserLock(userId);
 
 		return await userLock.acquire('logout', async () => {
@@ -1420,7 +1420,6 @@ export class UserMemoryManager {
 	}
 
 	/**
-	 * MODIFY the coordinatedLogout method - REMOVE the session lock acquisition
 	 * Since UserSessionManager will handle the session lock, this method should only
 	 * handle the data operations with internal user locks
 	 */
@@ -1461,7 +1460,24 @@ export class UserMemoryManager {
 				logger.debug(`✅ Flushed activity logs for user ${userId}`);
 			}
 
-			// STEP 3: User data flush + snapshot + memory removal
+			// STEP 3: Efficiency stats cleanup
+			try {
+				const efficiencyStatsManager = requireUserEfficiencyStatsMemoryManager();
+
+				if (efficiencyStatsManager.hasUser(userId)) {
+					const efficiencyLogoutSuccess = await efficiencyStatsManager.logoutUser(userId, true);
+					if (efficiencyLogoutSuccess) {
+						logger.debug(`✅ Flushed efficiency stats for user ${userId}`);
+					} else {
+						logger.warn(`⚠️ Failed to flush efficiency stats for user ${userId} during logout`);
+					}
+				}
+			} catch (efficiencyError) {
+				logger.error(`❌ Efficiency stats cleanup failed for user ${userId}: ${efficiencyError}`);
+				// Don't fail the whole logout for efficiency stats issues
+			}
+
+			// STEP 4: User data flush + snapshot + memory removal
 			const logoutSuccess = await this.logoutUser(userId, true);
 
 			if (!logoutSuccess) {
@@ -1480,7 +1496,7 @@ export class UserMemoryManager {
 				}
 			}
 
-			// STEP 4: Socket cleanup (always do this unless explicitly skipped)
+			// STEP 5: Socket cleanup (always do this unless explicitly skipped)
 			if (!skipSocketCleanup && socketManager) {
 				socketManager.removeSocketIdCacheForUser(userId);
 				if (dittoLedgerSocket) {

@@ -1,4 +1,5 @@
 import { prisma } from '../../sql-services/client';
+import { prismaRecalculateAndUpdateUserEfficiencyStats } from '../../sql-services/user-efficiency-stats';
 import { prismaRecalculateAndUpdateUserBaseStats } from '../../sql-services/user-service';
 import { logger } from '../../utils/logger';
 
@@ -12,6 +13,7 @@ async function updateAllUserCombat() {
     for (const user of users) {
         try {
             await prismaRecalculateAndUpdateUserBaseStats(user.telegramId);
+            await prismaRecalculateAndUpdateUserEfficiencyStats(user.telegramId);
             logger.info(`✅ Updated stats for user ${user.telegramId}`);
         } catch (err) {
             console.error(`❌ Failed to update user ${user.telegramId}:`, err);
