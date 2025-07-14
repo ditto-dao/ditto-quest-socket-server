@@ -474,4 +474,14 @@ export class IdleManager {
             }
         }
     }
+
+    isSlimeInActiveBreeding(userId: string, slimeId: number): boolean {
+        const activities = this.idleActivitiesQueueElementByUser[userId];
+        if (!activities) return false;
+
+        return activities.some(activity =>
+            activity.activity === 'breeding' &&
+            (activity.sire.id === slimeId || activity.dame.id === slimeId)
+        );
+    }
 }
