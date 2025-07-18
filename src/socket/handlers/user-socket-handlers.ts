@@ -5,7 +5,7 @@ import { EquipmentType } from "@prisma/client"
 import { emitUserAndCombatUpdate } from "../../utils/helpers"
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager"
 import { IdleManager } from "../../managers/idle-managers/idle-manager"
-import { READ_REFERRAL_CODE, READ_REFERRAL_CODE_RES, READ_REFERRAL_STATS, READ_REFERRAL_STATS_RES, USE_REFERRAL_CODE, USE_REFERRAL_CODE_SUCCESS } from "../events"
+import { READ_REFERRAL_CODE, READ_REFERRAL_CODE_RES, READ_REFERRAL_STATS, READ_REFERRAL_STATS_RES, USE_REFERRAL_CODE, USE_REFERRAL_CODE_SUCCESS, USER_UPDATE_EVENT } from "../events"
 import { applyReferralCode, getReferralStats, getReferrerDetails, getUserReferralCode, validateReferralCodeUsage } from "../../sql-services/referrals"
 import { Socket as DittoLedgerSocket } from "socket.io-client"
 import { getEquipmentOrItemFromInventory } from "../../operations/equipment-inventory-operations"
@@ -18,7 +18,6 @@ import { requireUserMemoryManager } from "../../managers/global-managers/global-
 import { globalIdleSocketUserLock } from "../socket-handlers"
 import { requireLoggedInUser } from "../auth-helper"
 import { RestoreObjectRequestFilterSensitiveLog } from "@aws-sdk/client-s3"
-import { recalculateAndUpdateUserBaseStatsMemory } from "../../operations/user-stats-operations"
 
 interface EquipPayload {
     userId: string
@@ -250,14 +249,19 @@ export async function setupUserSocketHandlers(
 
                 if (!requireLoggedInUser(data.userId, socket)) return
 
-                await applySkillUpgradesMemory(data.userId, data.statsToUpgrade)
-                const updateRes = await recalculateAndUpdateUserBaseStatsMemory(data.userId)
+                const res = await applySkillUpgradesMemory(data.userId, data.statsToUpgrade)
+                const updateRes = res.userUpdatedStats
 
                 logger.info(`pump-stats updateRes: ${JSON.stringify(updateRes)}`)
 
                 idleCombatManager.updateUserCombatMidBattle(data.userId, updateRes.combat!)
 
                 emitUserAndCombatUpdate(socket, data.userId, updateRes)
+
+                socket.emit(USER_UPDATE_EVENT, {
+                    userId: data.userId,
+                    payload: { statResetPoints: res.newResetPoints }
+                });
             } catch (err) {
                 logger.error(`Error during pump-skill for user ${data.userId}: ${err}`)
 
@@ -267,11 +271,14 @@ export async function setupUserSocketHandlers(
                 })
 
                 // emit prev user stats
-                await getUserData(data.userId).then(res => {
-                    if (res) emitUserAndCombatUpdate(socket, data.userId, res)
-                }).catch(err => {
-                    logger.error(`Error emitting prev user stats after failed stat pump: ${err}`)
-                })
+                const userMemoryManager = requireUserMemoryManager();
+
+                if (userMemoryManager.hasUser(data.userId)) {
+                    const user = userMemoryManager.getUser(data.userId)!;
+                    emitUserAndCombatUpdate(socket, data.userId, user);
+                } else {
+                    logger.error(`Error emitting prev user stats after failed stat pump: user not in memory`)
+                }
             } finally {
                 socket.emit("pump-stats-complete", {
                     userId: data.userId,
@@ -279,7 +286,6 @@ export async function setupUserSocketHandlers(
             }
         })
     })
-
 
     // REFERRALS
     socket.on(READ_REFERRAL_CODE, async (data: { userId: string }) => {

@@ -300,68 +300,103 @@ export async function applySkillUpgradesMemory(
         if (userMemoryManager.hasUser(userId)) {
             const user = userMemoryManager.getUser(userId)!;
 
-            const entries = Object.entries(upgrades).filter(([_, v]) => v !== undefined);
+            const entries = Object.entries(upgrades).filter(([_, v]) => v !== undefined && v !== 0);
             if (entries.length === 0) {
                 throw new Error(`No skill upgrades provided for user ${userId}`);
             }
 
-            let totalPointsNeeded = 0;
+            let totalPositiveChanges = 0;  // For skill point consumption
+            let totalNegativeChanges = 0;  // For reset point consumption
             const validKeys = ["str", "def", "dex", "luk", "magic", "hpLevel"] as const;
-            let isHpUpgrade = false;
-            let hpLevelToAdd = 0;
+            let isHpChange = false;
+            let hpLevelChange = 0;
 
             // Validate inputs and calculate totals
             for (const [key, value] of entries) {
                 if (!validKeys.includes(key as any)) {
                     throw new Error(`Invalid skill key: "${key}"`);
                 }
-                if (typeof value !== "number" || value <= 0 || !Number.isInteger(value)) {
+                if (typeof value !== "number" || !Number.isInteger(value)) {
                     throw new Error(
-                        `Invalid skill upgrade value for "${key}": must be a positive integer`
+                        `Invalid skill upgrade value for "${key}": must be an integer`
                     );
                 }
-                totalPointsNeeded += value;
+
+                const currentStatValue = user[key as keyof typeof user] as number;
+
+                if (value > 0) {
+                    // Positive = pumping stats (costs skill points)
+                    totalPositiveChanges += value;
+                } else if (value < 0) {
+                    // Negative = resetting stats (costs reset points)
+                    totalNegativeChanges += Math.abs(value);
+
+                    // Check if user has enough points in this stat to reset
+                    if (currentStatValue + value < 1) {
+                        throw new Error(
+                            `Cannot reduce "${key}" by ${Math.abs(value)}: would result in ${currentStatValue + value} (minimum is 1)`
+                        );
+                    }
+                }
+
                 if (key === "hpLevel") {
-                    isHpUpgrade = true;
-                    hpLevelToAdd = value;
+                    isHpChange = true;
+                    hpLevelChange = value;
                 }
             }
 
-            // Check if user has enough skill points
-            if (user.outstandingSkillPoints < totalPointsNeeded) {
+            // Check if user has enough skill points for positive changes
+            if (totalPositiveChanges > user.outstandingSkillPoints) {
                 throw new Error(
-                    `User ${userId} has ${user.outstandingSkillPoints} skill points, but tried to use ${totalPointsNeeded}`
+                    `User ${userId} has ${user.outstandingSkillPoints} skill points, but tried to use ${totalPositiveChanges}`
                 );
             }
 
-            // Apply upgrades to memory
+            // Check if user has enough reset points for negative changes
+            if (totalNegativeChanges > user.statResetPoints) {
+                throw new Error(
+                    `User ${userId} has ${user.statResetPoints} reset points, but tried to use ${totalNegativeChanges}`
+                );
+            }
+
+            // Apply upgrades/resets to memory
             for (const [key, value] of entries) {
                 const currentValue = user[key as keyof typeof user] as number;
                 await userMemoryManager.updateUserField(userId, key as keyof FullUserData, currentValue + value);
             }
 
             // Handle HP level specific updates
-            if (isHpUpgrade) {
+            if (isHpChange) {
+                const newHpLevel = user.hpLevel + hpLevelChange;
                 await userMemoryManager.updateUserField(userId, 'expHp', 0);
-                await userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextCombatLevel(user.hpLevel + hpLevelToAdd));
+                await userMemoryManager.updateUserField(userId, 'expToNextHpLevel', calculateExpForNextCombatLevel(newHpLevel));
             }
 
-            // Deduct skill points
-            await userMemoryManager.updateUserField(userId, 'outstandingSkillPoints', user.outstandingSkillPoints - totalPointsNeeded);
+            // Update skill points and reset points
+            const newSkillPoints = user.outstandingSkillPoints - totalPositiveChanges + totalNegativeChanges;
+            const newResetPoints = user.statResetPoints - totalNegativeChanges;
+
+            await userMemoryManager.updateUserField(userId, 'outstandingSkillPoints', newSkillPoints);
+            await userMemoryManager.updateUserField(userId, 'statResetPoints', newResetPoints);
 
             logger.info(
-                `✅ Applied skill upgrades to user ${userId} (MEMORY) — used ${totalPointsNeeded} points`
+                `✅ Applied skill changes to user ${userId} (MEMORY) — used ${totalPositiveChanges} skill points, ${totalNegativeChanges} reset points`
             );
 
-            await recalculateAndUpdateUserBaseStatsMemory(userId);
+            const userUpdatedStats = await recalculateAndUpdateUserBaseStatsMemory(userId);
 
-            return { totalPointsUsed: totalPointsNeeded };
+            return {
+                totalPointsUsed: totalPositiveChanges,
+                totalResetPointsUsed: totalNegativeChanges,
+                newResetPoints,
+                userUpdatedStats,
+            };
         }
 
         throw new Error('User memory manager not available');
 
     } catch (error) {
-        logger.error(`Error in applySkillUpgradesOnlyMemory: ${error}`);
+        logger.error(`Error in applySkillUpgradesMemory: ${error}`);
         throw error;
     }
 }

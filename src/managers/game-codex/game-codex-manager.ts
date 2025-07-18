@@ -1,4 +1,4 @@
-import { Item, SlimeTrait, CraftingRecipe, StatEffect, Prisma } from "@prisma/client";
+import { Item, SlimeTrait, CraftingRecipe, StatEffect, ShopItem, Prisma } from "@prisma/client";
 import { logger } from "../../utils/logger";
 import { prisma } from "../../sql-services/client";
 import { FullMonster, DomainWithMonsters, DungeonWithMonsters } from "../../sql-services/combat-service";
@@ -38,6 +38,8 @@ export class GameCodexManager {
     private static slimeTraits: Map<number, SlimeTrait & { statEffect: StatEffect | null }> = new Map();
     // Updated to store the full crafting recipe with nested items
     private static craftingRecipes: Map<number, FullCraftingRecipe> = new Map();
+    // Shop items for O(1) access
+    private static shopItems: Map<number, ShopItem> = new Map();
 
     // Initialization status
     private static isInitialized = false;
@@ -63,7 +65,8 @@ export class GameCodexManager {
                 this.loadDomains(),
                 this.loadDungeons(),
                 this.loadSlimeTraits(),
-                this.loadCraftingRecipes()
+                this.loadCraftingRecipes(),
+                this.loadShopItems()
             ]);
 
             this.isInitialized = true;
@@ -246,6 +249,21 @@ export class GameCodexManager {
     }
 
     /**
+     * Load all active shop items
+     */
+    private static async loadShopItems(): Promise<void> {
+        const shopItems = await prisma.shopItem.findMany({
+            where: { isActive: true }
+        });
+
+        for (const shopItem of shopItems) {
+            this.shopItems.set(shopItem.id, shopItem);
+        }
+
+        logger.info(`🏪 Loaded ${shopItems.length} shop items into memory`);
+    }
+
+    /**
      * Log current memory usage
      */
     private static logMemoryUsage(): void {
@@ -256,6 +274,7 @@ export class GameCodexManager {
         const dungeonsSize = this.dungeons.size;
         const slimeTraitsSize = this.slimeTraits.size;
         const recipesSize = this.craftingRecipes.size;
+        const shopItemsSize = this.shopItems.size;
 
         logger.info(`📊 Game Codex Memory Usage:`);
         logger.info(`   Items: ${itemsSize} entries`);
@@ -265,6 +284,7 @@ export class GameCodexManager {
         logger.info(`   Dungeons: ${dungeonsSize} entries`);
         logger.info(`   Slime Traits: ${slimeTraitsSize} entries`);
         logger.info(`   Crafting Recipes: ${recipesSize} entries`);
+        logger.info(`   Shop Items: ${shopItemsSize} entries`);
     }
 
     // ========== PUBLIC GETTERS (O(1) lookups) ==========
@@ -387,6 +407,30 @@ export class GameCodexManager {
         return Array.from(this.craftingRecipes.values());
     }
 
+    /**
+     * Get shop item by ID from memory cache
+     */
+    static getShopItem(shopItemId: number): ShopItem | null {
+        this.ensureInitialized();
+        return this.shopItems.get(shopItemId) || null;
+    }
+
+    /**
+     * Get all shop items from memory cache
+     */
+    static getAllShopItems(): ShopItem[] {
+        this.ensureInitialized();
+        return Array.from(this.shopItems.values());
+    }
+
+    /**
+     * Get shop items by type from memory cache
+     */
+    static getShopItemsByType(type: string): ShopItem[] {
+        this.ensureInitialized();
+        return Array.from(this.shopItems.values()).filter(item => item.type === type);
+    }
+
     // ========== UTILITY METHODS ==========
 
     /**
@@ -417,6 +461,7 @@ export class GameCodexManager {
         this.dungeons.clear();
         this.slimeTraits.clear();
         this.craftingRecipes.clear();
+        this.shopItems.clear();
     }
 
     /**
@@ -441,6 +486,7 @@ export class GameCodexManager {
             dungeons: number;
             slimeTraits: number;
             craftingRecipes: number;
+            shopItems: number;
         };
     } {
         return {
@@ -452,7 +498,8 @@ export class GameCodexManager {
                 domains: this.domains.size,
                 dungeons: this.dungeons.size,
                 slimeTraits: this.slimeTraits.size,
-                craftingRecipes: this.craftingRecipes.size
+                craftingRecipes: this.craftingRecipes.size,
+                shopItems: this.shopItems.size
             }
         };
     }

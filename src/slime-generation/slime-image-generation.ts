@@ -150,33 +150,97 @@ async function fetchImageFromS3(bucket: string, key: string): Promise<Buffer | n
     }
 }
 
-// Modified upload function that accepts pre-determined URI
-async function uploadImageToS3WithUri(bucket: string, key: string, imageBuffer: Buffer, expectedUri: string): Promise<string> {
-    const finalKey = `${SLIMES_TARGET_FOLDER}/${key}`;
+/**
+ * Generate sticker variations for a slime (add decorations first, then resize to 512x512)
+ */
+export async function generateSlimeStickerVariations(slime: SlimeWithTraits): Promise<Buffer[]> {
     try {
-        await s3.send(
-            new PutObjectCommand({
-                Bucket: bucket,
-                Key: finalKey,
-                Body: imageBuffer,
-                ContentType: "image/png",
-                CacheControl: S3_UPLOAD_CACHE_CONTROL,
-            })
-        );
+        logger.info(`Generating sticker variations for slime ${slime.id}`);
 
-        // Verify the generated URI matches expected
-        const actualUri = `https://${bucket}.s3.${AWS_S3_REGION}.amazonaws.com/${finalKey}`;
-        if (actualUri !== expectedUri) {
-            logger.error(`❌ URI mismatch! Expected: ${expectedUri}, Actual: ${actualUri}`);
-            throw new Error(`S3 URI generation mismatch`);
+        // Get the base slime without background (1000x1000)
+        const { imageNoBg } = await generateSlimeImageBuffers(slime);
+
+        // Define sticker variations with decorative layers
+        const stickerVariations = [
+            '1', '2', '3', '4', '5', '6'
+        ];
+
+        const stickerBuffers: Buffer[] = [];
+
+        for (const variation of stickerVariations) {
+            try {
+                let finalImage: Buffer;
+
+                // Get the decorative layer (should be 1000x1000 to match base slime)
+                const decorativeLayer = await getStickerDecorationLayer(variation);
+
+                if (decorativeLayer) {
+                    // Stack base slime with decorative layer at original size (1000x1000)
+                    finalImage = await sharp({
+                        create: {
+                            width: 1000,
+                            height: 1000,
+                            channels: 4,
+                            background: { r: 0, g: 0, b: 0, alpha: 0 }
+                        }
+                    })
+                        .composite([
+                            { input: imageNoBg, top: 0, left: 0 },
+                            { input: decorativeLayer, top: 0, left: 0 }
+                        ])
+                        .png()
+                        .toBuffer();
+
+                    logger.info(`Added decorative layer: ${variation}`);
+                } else {
+                    // If decorative layer not found, use base slime
+                    finalImage = imageNoBg;
+                    logger.warn(`Decorative layer not found: ${variation}, using base slime`);
+                }
+
+                // NOW resize the whole composite to 512x512
+                const sticker512 = await sharp(finalImage)
+                    .resize(512, 512, {
+                        fit: 'contain',
+                        background: { r: 0, g: 0, b: 0, alpha: 0 } // Transparent
+                    })
+                    .png()
+                    .toBuffer();
+
+                stickerBuffers.push(sticker512);
+                logger.info(`Generated sticker variation: ${variation} (512x512)`);
+
+            } catch (error) {
+                logger.error(`Error generating sticker variation ${variation}: ${error}`);
+
+                // Fallback: resize base slime to 512x512
+                const fallbackSticker = await sharp(imageNoBg)
+                    .resize(512, 512, {
+                        fit: 'contain',
+                        background: { r: 0, g: 0, b: 0, alpha: 0 }
+                    })
+                    .png()
+                    .toBuffer();
+
+                stickerBuffers.push(fallbackSticker);
+            }
         }
 
-        logger.info(`Uploaded image to S3: ${actualUri}`);
-        return actualUri;
+        logger.info(`Generated ${stickerBuffers.length} sticker variations for slime ${slime.id}`);
+        return stickerBuffers;
+
     } catch (error) {
-        logger.error(`Error uploading image to S3: ${error}`);
+        logger.error(`Error generating sticker variations for slime ${slime.id}: ${error}`);
         throw error;
     }
+}
+
+/**
+ * Fetch sticker decoration layers from S3
+ */
+async function getStickerDecorationLayer(decorationType: string): Promise<Buffer | null> {
+    const key = `ditto-quest/sticker-layers/${decorationType}.png`;
+    return fetchImageFromS3(BUCKET, key);
 }
 
 interface RGBAColor {

@@ -35,6 +35,7 @@ model User {
   expHp                  Int @default(0) @map("exp_hp")
   expToNextHpLevel       Int @default(570) @map("exp_to_next_hp_level")
   outstandingSkillPoints Int @default(0) @map("outstanding_skill_points")
+  statResetPoints        Int @default(0)
 
   // Base combat stats
   maxHp             Float @default(100) @map("max_hp")
@@ -479,12 +480,12 @@ model StatEffect {
   reinforceEarth Float? @default(0) @map("reinforce_earth")
   reinforceFire  Float? @default(0) @map("reinforce_fire")
 
-  efficiencySkillIntervalMod     Float? @map("efficiency_skill_interval_mod") // always add
-  efficiencyDoubleResourceMod    Float? @map("efficiency_double_resource_mod") // always add  
-  efficiencyDoubleSkillExpMod    Float? @map("efficiency_double_skill_exp_mod") // always add
-  efficiencyDoubleCombatExpMod   Float? @map("efficiency_double_combat_exp_mod") // always add
-  efficiencyFlatSkillExpMod      Float?   @map("efficiency_flat_skill_exp_mod") // always add
-  efficiencyFlatCombatExpMod     Float?   @map("efficiency_flat_combat_exp_mod") // always add
+  efficiencySkillIntervalMod   Float? @map("efficiency_skill_interval_mod") // always add
+  efficiencyDoubleResourceMod  Float? @map("efficiency_double_resource_mod") // always add  
+  efficiencyDoubleSkillExpMod  Float? @map("efficiency_double_skill_exp_mod") // always add
+  efficiencyDoubleCombatExpMod Float? @map("efficiency_double_combat_exp_mod") // always add
+  efficiencyFlatSkillExpMod    Float? @map("efficiency_flat_skill_exp_mod") // always add
+  efficiencyFlatCombatExpMod   Float? @map("efficiency_flat_combat_exp_mod") // always add
 
   durationS Int? // Duration in seconds for temporary buffs
 
@@ -873,9 +874,9 @@ model UserMission {
   slimeRarity Rarity? // for breeding - DEPRECATED, use slimeRarities
 
   // NEW: Multiple target IDs (JSON arrays)
-  itemIds      Json? // Array of item IDs for farm missions
-  equipmentIds Json? // Array of equipment IDs for craft missions
-  monsterIds   Json? // Array of monster IDs for combat missions
+  itemIds       Json? // Array of item IDs for farm missions
+  equipmentIds  Json? // Array of equipment IDs for craft missions
+  monsterIds    Json? // Array of monster IDs for combat missions
   slimeRarities Json? // Array of slime rarities for breeding missions
 
   quantity    Int
@@ -900,22 +901,22 @@ enum MissionType {
 model UserEfficiencyStats {
   id     Int    @id @default(autoincrement())
   userId String @unique // Direct reference to User.telegramId
-  
+
   // Skilling interval duration multiplier (farm/craft) - 0.2 = 20% faster
   skillIntervalMultiplier Float @default(0.0) @map("skill_interval_multiplier")
-  
+
   // Double resource chance (farm/craft) - probability 0-1
   doubleResourceChance Float @default(0.0) @map("double_resource_chance")
-  
+
   // Double exp chance (skills) - probability 0-1
   doubleSkillExpChance Float @default(0.0) @map("double_skill_exp_chance")
-  
+
   // Double exp chance (combat) - probability 0-1
   doubleCombatExpChance Float @default(0.0) @map("double_combat_exp_chance")
-  
+
   // Flat exp boost (skills) - additive bonus
   flatSkillExpBoost Int @default(0) @map("flat_skill_exp_boost")
-  
+
   // Flat exp boost (combat) - additive bonus
   flatCombatExpBoost Int @default(0) @map("flat_combat_exp_boost")
 
@@ -924,4 +925,42 @@ model UserEfficiencyStats {
   updatedAt DateTime @updatedAt
 
   @@map("user_efficiency_stats")
+}
+
+enum ShopItemType {
+  EQUIPMENT // Existing equipment from Equipment table
+  ITEM // Existing items from Item table  
+  SERVICE // Special services like stat reset, inventory slots
+}
+
+enum ServiceType {
+  STAT_RESET_POINT // Gives user a stat reset point
+  INVENTORY_SLOT // Add +1 inventory slot
+  SLIME_INVENTORY_SLOT // Add +1 slime inventory slot
+}
+
+model ShopItem {
+  id   Int          @id @default(autoincrement())
+  type ShopItemType
+  name String
+
+  // For equipment/items
+  equipmentId Int?
+  itemId      Int?
+
+  // For services
+  serviceType  ServiceType?
+
+  // Pricing
+  priceGP       Int?
+  priceDittoWei Decimal? @db.Decimal(65, 0)
+  priceStars    Int?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([type])
 }

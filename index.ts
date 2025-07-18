@@ -16,6 +16,7 @@ import { snapshotMetrics } from "./src/workers/snapshot/snapshot-metrics"
 import { GameCodexManager } from "./src/managers/game-codex/game-codex-manager"
 import { getActivityLogMemoryManager, getUserMemoryManager, initializeGlobalManagers, requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager } from "./src/managers/global-managers/global-managers"
 import { IntractVerificationAPI } from "./src/intract/intract-verification"
+import { createStarsPaymentRouter } from "./src/tg-stars/api/stars-payment"
 
 require("@aws-sdk/crc64-nvme-crt");
 
@@ -85,7 +86,7 @@ async function main() {
     const validateLoginManager = new ValidateLoginManager(dittoLedgerSocket, socketManager, idleManager, combatManager)
 
     // ========== STEP 5: SETUP SOCKET HANDLERS ==========
-    await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager, requireUserMemoryManager(), requireActivityLogMemoryManager());
+    await setupSocketHandlers(dqIo, dittoLedgerSocket, socketManager, idleManager, combatManager, validateLoginManager);
 
     setupGlobalErrorHandlers()
 
@@ -150,8 +151,14 @@ async function main() {
 
     // ========== STEP 7: SETUP ADMIN ENDPOINTS ==========
 
+    // Add JSON middleware FIRST
+    app.use(express.json());
+
     // Setup Intract API routes
     setupIntractRoutes(app, redisClient);
+
+    // TG Stars Payment API
+    setupStarsPaymentRoutes(app, socketManager);
 
     // Health check route
     app.get('/', async (req, res) => {
@@ -207,6 +214,11 @@ async function main() {
         } catch (error) {
             res.status(500).json({ error: 'Failed to get snapshot metrics' });
         }
+    });
+
+    // Add this right after your existing routes in main()
+    app.get('/api/stars-payment/debug', (req, res) => {
+        res.json({ message: 'Direct route works' });
     });
 
     // ========== STEP 8: START SERVER ==========
@@ -332,9 +344,6 @@ async function gracefulShutdown(
 function setupIntractRoutes(app: express.Application, redisClient: RedisClientType<RedisModules, RedisFunctions, RedisScripts>): void {
     logger.info('🎯 Setting up Intract API routes...');
 
-    // Add JSON middleware FIRST
-    app.use(express.json());
-
     const router = express.Router();
     const intractAPI = new IntractVerificationAPI(redisClient);
 
@@ -350,6 +359,16 @@ function setupIntractRoutes(app: express.Application, redisClient: RedisClientTy
     app.use('/api/intract', router);
 
     logger.info('✅ Intract API routes configured');
+}
+
+// Add this after your existing setupIntractRoutes call
+function setupStarsPaymentRoutes(app: express.Application, socketManager: SocketManager): void {
+    logger.info('💫 Setting up Stars Payment API routes...');
+
+    const starsPaymentRouter = createStarsPaymentRouter(socketManager);
+    app.use('/api/stars-payment', starsPaymentRouter);
+
+    logger.info('✅ Stars Payment API routes configured');
 }
 
 main()

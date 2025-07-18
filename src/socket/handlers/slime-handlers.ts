@@ -8,13 +8,16 @@ import { SLIME_GACHA_PRICE_GOLD } from "../../utils/transaction-config"
 import { globalIdleSocketUserLock } from "../socket-handlers"
 import { emitMissionUpdate, updateGachaMission } from "../../sql-services/missions"
 import { getHighestDominantTraitRarity, getSlimeSellAmountGP } from "../../utils/helpers"
-import { USER_UPDATE_EVENT } from "../events"
+import { ADD_STICKERS_FOR_SLIME, ADD_STICKERS_FOR_SLIME_SUCCESS, USER_UPDATE_EVENT } from "../events"
 import { incrementUserGold } from "../../operations/user-operations"
 import { burnSlimeMemory, getSlimeForUserById, slimeGachaPullMemory } from "../../operations/slime-operations"
 import { SlimeWithTraits } from "../../sql-services/slime"
 import { requireLoggedInUser } from "../auth-helper"
+import { generateSlimeStickerVariations } from "../../slime-generation/slime-image-generation"
+import { requireUserMemoryManager } from "../../managers/global-managers/global-managers"
+import { STICKER_ENDPOINT } from "../../utils/config"
 
-interface BurnSlimeRequest {
+interface UserSlimeRequest {
     userId: string,
     slimeId: number
 }
@@ -77,7 +80,7 @@ export async function setupSlimeSocketHandlers(
         }
     })
 
-    socket.on("burn-slime", async (data: BurnSlimeRequest) => {
+    socket.on("burn-slime", async (data: UserSlimeRequest) => {
         let slime: SlimeWithTraits | null = null
 
         try {
@@ -174,6 +177,72 @@ export async function setupSlimeSocketHandlers(
                 socket.emit('error', {
                     userId: data.userId,
                     msg: 'Failed to breed slime'
+                })
+            }
+        })
+    })
+
+    socket.on(ADD_STICKERS_FOR_SLIME, async (data: UserSlimeRequest) => {
+        /**
+         * Get emoji for sticker variation based on index
+         */
+        function getEmojiForStickerVariation(index: number): string {
+            const emojis = ['👋', '😍', '😭', '💀', '😂', '😎'];
+            return emojis[index] || '🟢';
+        }
+
+        await globalIdleSocketUserLock.acquire(data.userId, async () => {
+            try {
+                logger.info(`Received ADD_STICKERS_FOR_SLIME event from user ${data.userId}`)
+
+                if (!requireLoggedInUser(data.userId, socket)) return
+
+                const slime = await getSlimeForUserById(data.userId, data.slimeId);
+                if (!slime) throw new Error(`Unable to add stickers. Slime does not exist in backend.`)
+
+                // Generate sticker variations
+                const stickerBuffers = await generateSlimeStickerVariations(slime);
+
+                // Get user info for sticker pack naming
+                const userMemoryManager = requireUserMemoryManager();
+                const user = userMemoryManager.getUser(data.userId);
+
+                // Prepare sticker data for bot service
+                const stickerImages = stickerBuffers.map((buffer, index) => ({
+                    buffer: buffer.toString('base64'),
+                    emoji: getEmojiForStickerVariation(index) // Define this function
+                }));
+
+                // Send to bot service
+                const response = await fetch(STICKER_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegramId: data.userId,
+                        slimeId: data.slimeId,
+                        username: user?.username,
+                        images: stickerImages
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    socket.emit(ADD_STICKERS_FOR_SLIME_SUCCESS, {
+                        userId: data.userId,
+                    });
+                    logger.info(`Stickers created successfully for user ${data.userId}, slime ${data.slimeId}`);
+                } else {
+                    throw new Error(result.error || 'Failed to generate stickers');
+                }
+
+            } catch (error) {
+                logger.error(`Error creating stickers for slime: ${error}`)
+                socket.emit('error', {
+                    userId: data.userId,
+                    msg: 'Failed to generate stickers for slime'
                 })
             }
         })

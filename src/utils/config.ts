@@ -15,7 +15,7 @@ export const DEVELOPMENT_FUNDS_KEY  = process.env.DEVELOPMENT_FUNDS_KEY || ""
 
 export const DITTO_DECIMALS = (process.env.DITTO_DECIMALS !== undefined && !isNaN(parseInt(process.env.DITTO_DECIMALS))) ? parseInt(process.env.DITTO_DECIMALS) : 9;
 
-export const BOT_TOKEN = process.env.BOT_TOKEN || ""
+export const BOT_TOKEN = ((process.env.NODE_ENV === 'prod') ? process.env.BOT_TOKEN_PROD : process.env.BOT_TOKEN_DEV) || "";
 
 export const LOGIN_TIMEOUT_MS = (process.env.LOGIN_TIMEOUT_MS !== undefined && !isNaN(parseInt(process.env.LOGIN_TIMEOUT_MS))) ? parseInt(process.env.LOGIN_TIMEOUT_MS) : 5000
 
@@ -50,3 +50,5 @@ export const MAX_INITIAL_INVENTORY_SLOTS = (process.env.MAX_INITIAL_INVENTORY_SL
 export const MAX_INITIAL_SLIME_INVENTORY_SLOTS = (process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS !== undefined && !isNaN(parseInt(process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS))) ? parseInt(process.env.MAX_INITIAL_SLIME_INVENTORY_SLOTS) : 20
 
 export const FARM_REPS_MULTIPLIER = (process.env.FARM_REPS_MULTIPLIER !== undefined && !isNaN(parseInt(process.env.FARM_REPS_MULTIPLIER))) ? parseInt(process.env.FARM_REPS_MULTIPLIER) : 1
+
+export const STICKER_ENDPOINT = ((process.env.NODE_ENV === 'prod') ? process.env.STICKER_ENDPOINT_PROD : process.env.STICKER_ENDPOINT_DEV) || "";

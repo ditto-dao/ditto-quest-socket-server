@@ -243,7 +243,7 @@ async function checkUserValues(telegramId: string) {
 // Main execution function
 async function main() {
     try {
-        const userId = "183055980";
+        const userId = "138050881";
 
         // Connect to Redis once at the start
         await ensureRedisConnection();
@@ -254,7 +254,7 @@ async function main() {
         // Example: Add levels to a single user
         const singleUserResult = await addLevelsAndSkillPoints({
             telegramId: userId,
-            levelsToAdd: 5,
+            levelsToAdd: 50,
             addSkillPoints: true
         });
 

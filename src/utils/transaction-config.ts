@@ -11,3 +11,6 @@ export const ENTER_DOMAIN_TRX_NOTE = 'Enter domain';
 
 // Dungeon
 export const ENTER_DUNGEON_TRX_NOTE = 'Enter dungeon';
+
+//Shop
+export const SHOP_PURCHASE_DITTO_TRX_NOTE_PREFIX = "SHOP_PURCHASE";

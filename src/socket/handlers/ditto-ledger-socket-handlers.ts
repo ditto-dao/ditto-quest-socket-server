@@ -1,10 +1,10 @@
 import { logger } from "../../utils/logger";
 import { Socket as UserSocket, DefaultEventsMap } from "socket.io";
 import { Socket as DittoLedgerSocket } from "socket.io-client";
-import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT, ON_CHAIN_PRICE_UPDATE_RES_EVENT, READ_ON_CHAIN_PRICE_EVENT } from "../events";
+import { COMBAT_STOPPED_EVENT, LEDGER_BALANCE_ERROR_RES_EVENT, LEDGER_BALANCE_UPDATE_RES_EVENT, LEDGER_INIT_USER_SOCKET_SUCCESS_EVENT, LEDGER_REVERT_TRX_EVENT, LEDGER_UPDATE_BALANCE_EVENT, LEDGER_USER_ERROR_RES_EVENT, ON_CHAIN_PRICE_UPDATE_RES_EVENT, READ_ON_CHAIN_PRICE_EVENT, USER_UPDATE_EVENT } from "../events";
 import { ValidateLoginManager } from "../../managers/validate-login/validate-login-manager";
 import { SocketManager } from "../socket-manager";
-import { ENTER_DOMAIN_TRX_NOTE, ENTER_DUNGEON_TRX_NOTE, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
+import { ENTER_DOMAIN_TRX_NOTE, ENTER_DUNGEON_TRX_NOTE, SHOP_PURCHASE_DITTO_TRX_NOTE_PREFIX, SLIME_GACHA_PRICE_DITTO_WEI, SLIME_GACHA_PULL_TRX_NOTE } from "../../utils/transaction-config";
 import { DEVELOPMENT_FUNDS_KEY } from "../../utils/config";
 import { IdleCombatManager } from "../../managers/idle-managers/combat/combat-idle-manager";
 import { IdleManager } from "../../managers/idle-managers/idle-manager";
@@ -14,7 +14,10 @@ import { getHighestDominantTraitRarity } from "../../utils/helpers";
 import { slimeGachaPullMemory } from "../../operations/slime-operations";
 import { getDomainById, getDungeonById } from "../../operations/combat-operations";
 import { getUserData } from "../../operations/user-operations";
-import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
+import { requireActivityLogMemoryManager, requireUserEfficiencyStatsMemoryManager, requireUserMemoryManager } from "../../managers/global-managers/global-managers";
+import { GameCodexManager } from "../../managers/game-codex/game-codex-manager";
+import { getInventorySlotPriceDittoWei, getSlimeInventorySlotPriceDittoWei, handleShopPurchase } from "../../operations/shop-operations";
+import { ServiceType, ShopItemType } from "@prisma/client";
 
 const lock = new AsyncLock();
 
@@ -92,6 +95,9 @@ export async function setupDittoLedgerSocketServerHandlers(
                     logger.info(`Entering domain after paying DITTO fee.`);
                     const domainId = res.payload.notes.split(" ").pop();
                     await handleDomainEntry(combatManager, idleManager, socketManager, ledgerSocket, res.payload, res.userId, Number(domainId));
+                } else if (res.payload.notes && res.payload.notes.includes(SHOP_PURCHASE_DITTO_TRX_NOTE_PREFIX)) {
+                    logger.info(`Processing shop purchase after DITTO payment.`);
+                    await handleShopPurchaseDitto(socketManager, ledgerSocket, res.payload, res.userId);
                 }
 
                 socketManager.emitEvent(res.userId, LEDGER_BALANCE_UPDATE_RES_EVENT, res);
@@ -348,5 +354,82 @@ async function revertTrxToLedger(ledgerSocket: DittoLedgerSocket, userId: string
         });
     } catch (err) {
         logger.error(`Error reverting trx to ditto ledger ${err}`)
+    }
+}
+
+// Updated function
+async function handleShopPurchaseDitto(
+    socketManager: SocketManager,
+    ledgerSocket: DittoLedgerSocket,
+    balanceUpdate: UserBalanceUpdateRes,
+    userId: string
+): Promise<void> {
+    try {
+        // Parse the transaction note: "SHOP_PURCHASE_{shopItemId}_{quantity}"
+        const noteParts = balanceUpdate.notes!.split('_');
+        const shopItemId = parseInt(noteParts[2]);
+        const quantity = parseInt(noteParts[3]);
+
+        const shopItem = GameCodexManager.getShopItem(shopItemId);
+        if (!shopItem) {
+            throw new Error(`Shop item ${shopItemId} not found`);
+        }
+
+        if (!shopItem.priceDittoWei) {
+            throw new Error("Item not available for DITTO purchase");
+        }
+
+        // Calculate expected price based on item type
+        let expectedPrice: bigint;
+
+        if (shopItem.type === ShopItemType.SERVICE) {
+            // Dynamic pricing for services
+            if (shopItem.serviceType === ServiceType.INVENTORY_SLOT) {
+                const unitPriceWei = getInventorySlotPriceDittoWei(userId, shopItem.priceDittoWei.toString());
+                expectedPrice = BigInt(unitPriceWei) * BigInt(quantity);
+            } else if (shopItem.serviceType === ServiceType.SLIME_INVENTORY_SLOT) {
+                const unitPriceWei = getSlimeInventorySlotPriceDittoWei(userId, shopItem.priceDittoWei.toString());
+                expectedPrice = BigInt(unitPriceWei) * BigInt(quantity);
+            } else {
+                // Other services use static pricing
+                expectedPrice = BigInt(shopItem.priceDittoWei.toString()) * BigInt(quantity);
+            }
+        } else {
+            // Equipment and items use static pricing
+            expectedPrice = BigInt(shopItem.priceDittoWei.toString()) * BigInt(quantity);
+        }
+
+        // Verify payment amount
+        const paidAmount = (BigInt(balanceUpdate.liveBalanceChange) + BigInt(balanceUpdate.accumulatedBalanceChange)) * BigInt(-1);
+
+        if (paidAmount < expectedPrice) {
+            throw new Error(`Insufficient DITTO deducted for shop purchase. Required: ${expectedPrice}, Paid: ${paidAmount}`);
+        }
+
+        logger.info(`💰 DITTO payment verified for user ${userId}: ${paidAmount} wei paid for ${expectedPrice} wei expected (${quantity}x item ${shopItemId})`);
+
+        // Process the purchase and collect service updates
+        const serviceUpdates = await handleShopPurchase(userId, shopItem, quantity, socketManager);
+
+        // EMIT USER_UPDATE_EVENT with service updates (if any)
+        if (Object.keys(serviceUpdates).length > 0) {
+            socketManager.emitEvent(userId, USER_UPDATE_EVENT, {
+                userId,
+                payload: serviceUpdates
+            });
+        }
+
+        logger.info(`✅ Successfully processed DITTO shop purchase for user ${userId}: ${quantity}x item ${shopItemId} for ${expectedPrice} wei`);
+
+    } catch (err) {
+        logger.error(`Error processing shop purchase with DITTO: ${err}`);
+
+        socketManager.emitEvent(userId, 'error', {
+            userId,
+            msg: `Shop purchase failed: ${(err as Error).message}`
+        });
+
+        // Revert the transaction
+        await revertTrxToLedger(ledgerSocket, userId, DEVELOPMENT_FUNDS_KEY, balanceUpdate);
     }
 }

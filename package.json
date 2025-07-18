@@ -31,6 +31,7 @@
     "seed-domains": "ts-node ./src/scripts/monsters/seed-domains-db.ts",
     "seed-dungeons": "ts-node ./src/scripts/monsters/seed-dungeons-db.ts",
     "seed-beta-testers": "ts-node ./src/scripts/beta-testers/seed-beta-testers.ts",
+    "seed-shop": "ts-node ./src/scripts/shop/seed-shop-db.ts",
     "purge-all-user-data": "ts-node ./src/scripts/purge-all-user-data-db.ts",
     "purge-tables": "ts-node ./src/scripts/purge-all-tables-db.ts",
     "trim-offline-activities": "ts-node ./src/scripts/redis-offline-activities/trim-user-offline-activities.ts",
@@ -44,6 +45,7 @@
     "generate-monster-stats": "ts-node ./src/encyclopedia/scripts/generate-monster-stats.ts",
     "update-user-combat": "ts-node ./src/scripts/user-combat/update-user-combat.ts",
     "add-levels": "ts-node ./src/scripts/user-combat/add-lvls.ts",
+    "credit-gold": "ts-node ./src/scripts/gold/credit-gold.ts",
     "upgrade-missions": "ts-node ./src/scripts/missions/upgrade-mission-data.ts"
   },
   "dependencies": {
@@ -57,6 +59,7 @@
     "dotenv-cli": "^7.4.2",
     "ethers": "^6.13.5",
     "express": "^4.21.1",
+    "node-fetch": "2",
     "pino": "^9.5.0",
     "pino-pretty": "^11.3.0",
     "prisma": "^6.5.0",
@@ -69,6 +72,7 @@
     "@types/async-lock": "^1.4.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
+    "@types/node-fetch": "^2.6.12",
     "@types/uuid": "^10.0.0",
     "csv-parser": "^3.1.0",
     "ts-node": "^10.9.2",

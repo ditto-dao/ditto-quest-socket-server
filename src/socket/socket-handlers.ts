@@ -14,9 +14,7 @@ import { IdleCombatManager } from "../managers/idle-managers/combat/combat-idle-
 import { setupCombatSocketHandlers } from "./handlers/combat-handlers"
 import AsyncLock from "async-lock"
 import { setupMissionSocketHandlers } from "./handlers/mission-handlers"
-import { requireActivityLogMemoryManager, requireSnapshotRedisManager, requireUserMemoryManager } from "../managers/global-managers/global-managers"
-import { ActivityLogMemoryManager } from "../managers/memory/activity-log-memory-manager"
-import { UserMemoryManager } from "../managers/memory/user-memory-manager"
+import { setupShopSocketHandlers } from "./handlers/shop-handlers"
 
 export const globalIdleSocketUserLock = new AsyncLock()
 
@@ -32,8 +30,6 @@ export async function setupSocketHandlers(
     idleManager: IdleManager,
     combatManager: IdleCombatManager,
     validateLoginManager: ValidateLoginManager,
-    userMemoryManager: UserMemoryManager,
-    activityLogMemoryManager: ActivityLogMemoryManager
 ): Promise<void> {
 
     setupDittoLedgerSocketServerHandlers(dittoLedgerSocket, validateLoginManager, socketManager, idleManager, combatManager);
@@ -56,6 +52,8 @@ export async function setupSocketHandlers(
         setupMissionSocketHandlers(socket, dittoLedgerSocket)
 
         setupDittoLedgerUserSocketHandlers(socket, dittoLedgerSocket)
+
+        setupShopSocketHandlers(socket, socketManager)
 
         socket.on("disconnect", async () => {
             try {

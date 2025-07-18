@@ -97,3 +97,19 @@ export const GET_NEXT_MISSION = 'refresh-mission';
 export const READ_ON_CHAIN_PRICE_EVENT = 'ditto-ledger-read-on-chain-price';
 
 export const ON_CHAIN_PRICE_UPDATE_RES_EVENT = 'ditto-ledger-on-chain-price-update';
+
+// Shop events
+
+export const PURCHASE_SHOP_ITEM_GP_EVENT = "purchase-shop-item-gp";
+
+// Stars payment events
+
+export const CREATE_STARS_PURCHASE_EVENT = "create-stars-purchase";
+
+export const STARS_INVOICE_CREATED_EVENT = "stars-invoice-created";
+
+// Slime stickers
+
+export const ADD_STICKERS_FOR_SLIME = "add-stickers-for-slime";
+
+export const ADD_STICKERS_FOR_SLIME_SUCCESS = "add-stickers-for-slime-success";

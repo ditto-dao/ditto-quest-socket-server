@@ -5221,7 +5221,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 10000000,
-    "buyPriceDittoWei": "500000000000000"
+    "buyPriceDittoWei": "200000000000000"
   },
   {
     "id": 113,
@@ -5249,7 +5249,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 40000000,
-    "buyPriceDittoWei": "2000000000000000"
+    "buyPriceDittoWei": "800000000000000"
   },
   {
     "id": 114,
@@ -5277,7 +5277,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 10000000,
-    "buyPriceDittoWei": "500000000000000"
+    "buyPriceDittoWei": "200000000000000"
   },
   {
     "id": 115,
@@ -5305,7 +5305,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 40000000,
-    "buyPriceDittoWei": "2000000000000000"
+    "buyPriceDittoWei": "800000000000000"
   },
   {
     "id": 116,
@@ -5333,7 +5333,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 20000000,
-    "buyPriceDittoWei": "1000000000000000"
+    "buyPriceDittoWei": "400000000000000"
   },
   {
     "id": 117,
@@ -5361,7 +5361,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 80000000,
-    "buyPriceDittoWei": "4000000000000000"
+    "buyPriceDittoWei": "1600000000000000"
   },
   {
     "id": 118,
@@ -5389,7 +5389,7 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 20000000,
-    "buyPriceDittoWei": "1000000000000000"
+    "buyPriceDittoWei": "400000000000000"
   },
   {
     "id": 119,
@@ -5417,6 +5417,6 @@
     "type": "necklace",
     "sellPriceGP": 1,
     "buyPriceGP": 80000000,
-    "buyPriceDittoWei": "4000000000000000"
+    "buyPriceDittoWei": "1600000000000000"
   }
 ]
