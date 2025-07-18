@@ -609,32 +609,24 @@ export class Battle {
       }
 
       // Add base exp
-      const expRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, combatExp);
+      await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, combatExp);
+
+      const bonusExpRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, bonusExp);
 
       this.socketManager.emitEvent(this.user.telegramId, COMBAT_EXP_UPDATE_EVENT, {
         userId: this.user.telegramId,
-        payload: expRes
+        payload: bonusExpRes
       });
 
-      // Add bonus exp if proc'd
-      if (bonusExp > 0) {
-        const bonusExpRes = await incrementExpAndHpExpAndCheckLevelUpMemory(this.user.telegramId, bonusExp);
-
-        this.socketManager.emitEvent(this.user.telegramId, COMBAT_EXP_UPDATE_EVENT, {
-          userId: this.user.telegramId,
-          payload: bonusExpRes
-        });
-      }
-
       // Use the final exp result for user updates (base exp result should be sufficient for level checks)
-      if (expRes.simpleUser) {
+      if (bonusExpRes.simpleUser) {
         const userSocket = this.socketManager.getSocketByUserId(this.user.telegramId);
-        if (userSocket) emitUserAndCombatUpdate(userSocket, this.user.telegramId, expRes.simpleUser);
-        if (!expRes.simpleUser.combat) {
+        if (userSocket) emitUserAndCombatUpdate(userSocket, this.user.telegramId, bonusExpRes.simpleUser);
+        if (!bonusExpRes.simpleUser.combat) {
           logger.error(`No combat found in exp res for user HP LVL up. Unable to update user combat in battle`);
           return;
         }
-        this.updateUserCombat(expRes.simpleUser.combat);
+        this.updateUserCombat(bonusExpRes.simpleUser.combat);
       }
     } catch (err) {
       logger.error(`Failed to handle user exp increment in battle.`)

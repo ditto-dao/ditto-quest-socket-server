@@ -273,15 +273,17 @@ export class IdleFarmingManager {
                 logger.info(`🎲 Double skill exp proc for user ${userId}! Bonus exp: ${bonusExp} (base only)`);
             }
 
-            const expRes = await addFarmingExpMemory(userId, farmingExp);
+            await addFarmingExpMemory(userId, farmingExp);
             const inventoryUpdates = [updatedItemsInv];
 
             // Check for double resource chance
             const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+            let doubleResourceSuccess = false;
             if (Math.random() < doubleResourceChance) {
                 const bonusItemsInv = await mintItemToUser(userId.toString(), itemId, FARM_REPS_MULTIPLIER);
                 inventoryUpdates.push(bonusItemsInv);
                 logger.info(`🎲 Double resource proc for user ${userId}! Bonus items: ${FARM_REPS_MULTIPLIER}`);
+                doubleResourceSuccess = true;
             }
 
             socketManager.emitEvent(userId, 'update-inventory', {
@@ -289,22 +291,14 @@ export class IdleFarmingManager {
                 payload: inventoryUpdates,
             });
 
+            const bonusExpRes = await addFarmingExpMemory(userId, bonusExp);
             socketManager.emitEvent(userId, 'update-farming-exp', {
                 userId: userId,
-                payload: expRes,
+                payload: bonusExpRes,
             });
 
-            // Send bonus exp update if proc'd
-            if (bonusExp > 0) {
-                const bonusExpRes = await addFarmingExpMemory(userId, bonusExp);
-                socketManager.emitEvent(userId, 'update-farming-exp', {
-                    userId: userId,
-                    payload: bonusExpRes,
-                });
-            }
-
             await logFarmingActivity(userId, itemId, 1);
-            await updateFarmMission(userId, itemId, FARM_REPS_MULTIPLIER);
+            await updateFarmMission(userId, itemId, FARM_REPS_MULTIPLIER * (doubleResourceSuccess ? 2 : 1));
             await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
         } catch (error) {

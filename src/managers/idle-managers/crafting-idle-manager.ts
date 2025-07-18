@@ -307,10 +307,12 @@ export class IdleCraftingManager {
 
             // Check for double resource chance
             const doubleResourceChance = await getUserDoubleResourceChanceMemory(userId);
+            let doubleResourceSuccess = false;
             if (Math.random() < doubleResourceChance) {
                 const bonusEquipmentInv = await mintEquipmentToUser(userId.toString(), recipe.equipmentId);
                 inventoryUpdates.push(bonusEquipmentInv);
                 logger.info(`🎲 Double resource proc for user ${userId}! Bonus equipment: ${recipe.equipmentName}`);
+                doubleResourceSuccess = true;
             }
 
             socketManager.emitEvent(userId, 'update-inventory', {
@@ -318,21 +320,13 @@ export class IdleCraftingManager {
                 payload: inventoryUpdates
             });
 
-            const expRes = await addCraftingExpMemory(userId, craftingExp);
+            await addCraftingExpMemory(userId, craftingExp);
 
+            const bonusExpRes = await addCraftingExpMemory(userId, bonusExp);
             socketManager.emitEvent(userId, 'update-crafting-exp', {
                 userId: userId,
-                payload: expRes,
+                payload: bonusExpRes,
             });
-
-            // Send bonus exp update if proc'd
-            if (bonusExp > 0) {
-                const bonusExpRes = await addCraftingExpMemory(userId, bonusExp);
-                socketManager.emitEvent(userId, 'update-crafting-exp', {
-                    userId: userId,
-                    payload: bonusExpRes,
-                });
-            }
 
             await logCraftingActivity(
                 userId,
@@ -343,7 +337,7 @@ export class IdleCraftingManager {
                     quantity: item.quantity,
                 }))
             );
-            await updateCraftMission(userId, recipe.equipmentId, 1);
+            await updateCraftMission(userId, recipe.equipmentId, (doubleResourceSuccess ? 2 : 1));
             await emitMissionUpdate(socketManager.getSocketByUserId(userId), userId);
 
             if (!(await doesUserOwnItems(userId.toString(), recipe.requiredItems.map(item => item.itemId), recipe.requiredItems.map(item => item.quantity)))) {
