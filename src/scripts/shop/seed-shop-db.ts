@@ -9,14 +9,14 @@ const EQUIPMENT_IDS = [112, 113, 114, 115, 116, 117, 118, 119]; // Equipment IDs
 const ITEM_IDS: number[] = []; // Item IDs here
 
 const EQUIPMENT_STARS_PRICE: Record<number, number> = {
-    112: 400,
-    113: 1400,
-    114: 400,
-    115: 1400,
-    116: 800,
-    117: 2800,
-    118: 800,
-    119: 2800
+    112: 150,
+    113: 600,
+    114: 150,
+    115: 600,
+    116: 250,
+    117: 1200,
+    118: 250,
+    119: 1200
 }
 
 /* const EQUIPMENT_STARS_PRICE: Record<number, number> = {
